@@ -24,38 +24,50 @@ spi.open(0, 0)  # spi port 0, device 0
 spi.max_speed_hz = 976000
 
 # CONSTANTS
-PH_ACCURACY = 0.01  # Needed accuracy for final pH level after titration
-TARGET_PH = 3.0  # Target pH value for titration process
-TARGET_TEMP = 30  # degrees C
+PH_ACCURACY = 0.01          # Needed accuracy for final pH level after titration
+TARGET_PH = 3.0             # Target pH value for titration process
+TARGET_TEMP = 30            # degrees C
 TEMPERATURE_ACCURACY = 0.1  # degrees C
-SLEEPTIME = 0.005  # time between measurements
-RECORD_FREQUENCY = 5  # how many measurements/second should be recorded
+SLEEPTIME = 0.005           # time between measurements
+RECORD_FREQUENCY = 5        # how many measurements/second should be recorded
 
 # STIR SPEEDS
-SLOW = 0
-FAST = 1
+STIR_STOP = 0
+STIR_SLOW = 1
+STIR_FAST = 2
 
-initialize()
+# INITIALIZE PORTS
+spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
+cs = digitalio.DigitalInOut(board.D5)
+sensor = adafruit_max31865.MAX31865(spi, cs, wires=3, rtd_nominal=1000.0, ref_resistor=4300.0)
 
-def displayOptions():
+display_options()
+
+
+def display_options():
     print("0. Run titration\n1. Calibrate\n2. Settings")  # user options upon startup of system
 
     # TODO read input from keypad; runMode based on user input
     runMode = 0
 
     if runMode == 0:
-        titrate()
+        run_titration()
     elif runMode == 1:
         calibrate()
     else:
-        editSettings()
+        edit_settings()
 
 
-def initialize():
-    '''Initialize GPIO ports'''
-    spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
-    cs = digitalio.DigitalInOut(board.D5)
-    sensor = adafruit_max31865.MAX31865(spi, cs, wires=3, rtd_nominal=1000.0, ref_resistor=4300.0)
+def run_titration():
+    '''Driver for running the titration'''
+    solution_weight, pH_molarity = read_user_values_for_titration()
+    fast_titration()
+    titrate(TARGET_PH, 0.05)
+
+
+def read_user_values_for_titration():
+    '''Prompts the user to input solution weight, pH molarity'''
+    # TODO output to LCD screen prompt asking user to enter solution weight, pH molarity
 
 
 def calibrate():
@@ -63,32 +75,33 @@ def calibrate():
     # TODO implement calibration routine 
 
 
-def editSettings(setting1, setting2):
+def edit_settings(setting1, setting2):
     '''Updates settings with user input'''
     # TODO implement GUI allowing the user to edit certain titration values
 
-    
-    titrate(3.5, 20, SLOW)
 
-
-def initialTitration():
-    '''Initial titration
+def fast_titration(target_pH):
+    '''Initial titration; differs from normal titration in that the goal is to reach the target pH with as little effort as possible. 
     (1) Adds HCL until a pH of about 3.5 is reached
     (2) Begin stirring slowly'''
 
-    stir(SLOW)
+    stir(STIR_SLOW)
+    vol_to
+    while (determine_addition_volume())
+    dispence_HCl()
+
+
     titrate(3.5, 20)
 
-    stir(slow)  # start stirring slowly to ensure mixture
+def determine_addition_volume():
+    '''Function for determining how much vol cm^3 HCl should be added to get to the required pH value without passing it'''
 
 
 def titrate(pH_target, solution_increment_amount):
     '''Incrementally adds HCl depending on the input parameters, until target pH is reached
-
-    (1) 
-
-    If increment value is 20, don't want to add that again to get it close to 3.5...
     '''
+    # NOTE If increment value is 20, don't want to add that again to get it close to 3.5...
+
     # Current pH level; calculated from pH monitor readings
     current_pH = 3.5
 
@@ -110,7 +123,7 @@ def titrate(pH_target, solution_increment_amount):
         if ((pH_new - pH_old) < STABILIZATION_CONSTANT):
             if (pH_new - pH_target < PH_ACCURACY):
                 break
-            dispenseHCL(solution_increment_amount)
+            dispence_HCl(solution_increment_amount)
         pH_old = pH_new
 
         # TODO store temp, pH values or immediately write to file (might be slow)
@@ -122,29 +135,32 @@ def titrate(pH_target, solution_increment_amount):
 
     while (current_pH - TARGET_PH) > PH_ACCURACY:
         # TODO 
-        dispenseHCL(0.05)
+        dispence_HCl(0.05)
         # TODO measure new pH level; wait until readings have settled
         current_pH = new_pH
         # TODO write out data to csv file
 
 
-def dispenseHCL(amount):
-    '''Adds HCL to the solution'''
+
+# GPIO in/out Functions
+
+def dispence_HCl(volume):
+    '''Adds HCl to the solution'''
     # stepper motor driver needed here
 
 
-def readPh():
+def read_pH():
     '''Reads and returns the pH value from GPIO'''
 
 
-def readTemperature():
+def read_temperature():
     '''Reads and returns the temperature from GPIO'''
     print('Temperature: {0:0.3f}C'.format(sensor.temperature))
     print('Resistance: {0:0.3f} Ohms'.format(sensor.resistance))
 
 
 def stir(speed):
-    '''Speeds needed are (1) stop, (2) slow, and (3) fast
+    '''Speeds needed are (0) STIR_STOP, (1) STIR_SLOW, and (2) STIR_FAST
     Speed is a value between 
     '''
     # NOTE potentiometer will likely be SPI (plenty of pins for SPI)
