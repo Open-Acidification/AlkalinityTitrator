@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d02b426528e9b377f64f902ced2eb00a05f5f2786c02c9b8dfcb18b91e5e010d"
+            "sha256": "b11793fc051b85134dcd142d75ee848defe23265c4f6d399d33d09d58c191c6b"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -18,15 +18,15 @@
     "default": {
         "adafruit-blinka": {
             "hashes": [
-                "sha256:85dc7b3817079d90ccbc5d97ec00f8d361033e02e508cb5edac7974c7a256502"
+                "sha256:633519e30f56bf65837bfe43b146932917721a4826198d22e4dc38895a6575d2"
             ],
-            "version": "==3.7.1"
+            "version": "==4.0.0"
         },
         "adafruit-circuitpython-busdevice": {
             "hashes": [
-                "sha256:c4aac498db646801f486b213bfb2697706171bcb9020ddcf35606125b9d0c3dc"
+                "sha256:3eb93c6a78afb2f1c7910b6bf99754106991cd2f162ec34cff90cd4517f0ba7b"
             ],
-            "version": "==4.1.2"
+            "version": "==4.2.1"
         },
         "adafruit-circuitpython-max31865": {
             "hashes": [
@@ -37,9 +37,9 @@
         },
         "adafruit-platformdetect": {
             "hashes": [
-                "sha256:382e462bb31f615b1a51c20b9ab734221dd693cc52634edafa505a07694be197"
+                "sha256:82e0746096fe0e32cd6a6acb66742ea3dbe7eb3143aca557077bb69b6c3fe15f"
             ],
-            "version": "==2.1.0"
+            "version": "==2.2.0"
         },
         "adafruit-pureio": {
             "hashes": [
@@ -64,9 +64,9 @@
         },
         "pyftdi": {
             "hashes": [
-                "sha256:72436911f1f5da15869027401ef666e9b0c8f051e4ba8cd32377b0757016ebae"
+                "sha256:958911cc67c0ee7a5df0d013202c79d90f2bd2fa1ac546f77982b407d5decff4"
             ],
-            "version": "==0.42.2"
+            "version": "==0.44.0"
         },
         "pyserial": {
             "hashes": [
@@ -80,6 +80,13 @@
                 "sha256:4e9b72cc4a4205ca64fbf1f3fff39a335512166c151ad103e55c8223ac147362"
             ],
             "version": "==1.0.2"
+        },
+        "smbus2": {
+            "hashes": [
+                "sha256:210e66eebe4d0b1fe836b3ec2751841942e1c4918c0b429b20a0e20a222228b4"
+            ],
+            "index": "pypi",
+            "version": "==0.3.0"
         },
         "sysv-ipc": {
             "hashes": [

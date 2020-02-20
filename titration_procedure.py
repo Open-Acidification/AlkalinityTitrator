@@ -7,7 +7,10 @@ Walla Walla University
 from time import sleep
 from datetime import datetime
 
-from gpiozero as gpio
+# Keypad
+from pad4pi import rpi_gpio
+
+import gpiozero as gpio
 
 import board 
 import busio
@@ -15,7 +18,7 @@ import digitalio
 import adafruit_max31865
 
 # for use with I2C
-import smbus
+import smbus2
 
 # CircuitPython? For communicating with PT1000 sensor
 # Before continuing make sure your board's lib folder or root filesystem has the adafruit_max31865.mpy, and adafruit_bus_device files and folders copied over.
@@ -42,37 +45,48 @@ STIR_SLOW = 1
 STIR_FAST = 2
 
 # INITIALIZE PORTS
+
+# setup temperature sensor
 spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
 cs = digitalio.DigitalInOut(board.D5)
 sensor = adafruit_max31865.MAX31865(spi, cs, wires=3, rtd_nominal=1000.0, ref_resistor=4300.0)
 
+# Setup I2C bus (for use with pH probe)
+bus = smbus2.SMBus(0)
+pH_address = 0x60 # TODO run 'sudo i2cdetect -y 0' to get actual address
+
+# Register addresses; not sure why this is needed
+reg_pH = 0x00
+
+# Setup Keypad
+KEYPAD = [
+        ["1","2","3","A"],
+        ["4","5","6","B"],
+        ["7","8","9","C"],
+        ["*","0","#","D"]
+]
+
+factory = rpi_gpio.KeypadFactory()
+factory.create_4_by_4_keypad()
+
+def printKey(key):
+  print(key)
+  if (key=="1"):
+    print("number")
+  elif (key=="A"):
+    print("letter")
+
+# printKey will be called each time a keypad button is pressed
+keypad.registerKeyPressHandler(printKey)
+
+
 test_readings()
 
-bus = smbus.SMBus(0)
-address = 0x60
-
-def bearing255():
-        bear = bus.read_byte_data(address, 1)
-        return bear
-
-def bearing3599():
-        bear1 = bus.read_byte_data(address, 2)
-        bear2 = bus.read_byte_data(address, 3)
-        bear = (bear1 << 8) + bear2
-        bear = bear/10.0
-        return bear
-
-while True:
-        bearing = bearing3599()     #this returns the value to 1 decimal place in degrees. 
-        bear255 = bearing255()      #this returns the value as a byte between 0 and 255. 
-        print bearing
-        print bear255
-        time.sleep(1)
-
 # Display options to the user (including starting titration)
-# display_options()
+# run_options()
 
 def test_readings():
+    '''Test function to test data readings; prints temperature and pH readings every second'''
     while True:
         print(datetime.now())
         print("Temperature readings: ")
@@ -81,11 +95,11 @@ def test_readings():
         print('Resistance: {0:0.3f} Ohms'.format(res))
 
         print("pH readings: ")
-        volt = read_pH()
-        print('Voltage: {0:0.3f}mV'.format(volt))
+        pH_val = read_pH()
+        print('Voltage: {0:0.3f}mV'.format(pH_val))
         time.sleep(1)
 
-def display_options():
+def run_options():
     print("0. Run titration\n1. Calibrate\n2. Settings")  # user options upon startup of system
 
     # TODO read input from keypad; runMode based on user input
@@ -101,9 +115,9 @@ def display_options():
 
 def run_titration():
     '''Driver for running the titration'''
-    current_pH = 0  # TODO get this value from GPIO; should this be a global variable or passed from function to function?
+    current_pH = read_pH()  
     solution_weight, pH_molarity = read_user_values_for_titration()
-    fast_titration()
+    initial_titration()
     titrate(TARGET_PH, 0.05)
 
 
@@ -122,22 +136,22 @@ def edit_settings(setting1, setting2):
     # TODO implement GUI allowing the user to edit certain titration values
 
 
-def fast_titration(target_pH):
+def initial_titration(target_pH, current_pH, solution_weight, pH_molarity):
     '''Initial titration; differs from normal titration in that the goal is to reach the target pH with as little effort as possible. 
     (1) Adds HCL until a pH of about 3.5 is reached
     (2) Begin stirring slowly'''
 
     stir(STIR_SLOW)
-    vol_to_add = determine_addition_volume(current_pH)
+    vol_to_add = determine_addition_volume(target_pH, current_pH, solution_weight, pH_molarity)
     while vol_to_add > 0:
         dispense_HCl(vol_to_add)
         current_pH = read_pH()
         vol_to_add = determine_addition_volume(current_pH)
 
-    titrate(3.5, 20)
 
-def determine_addition_volume():
+def determine_addition_volume(target_pH, current_pH, solution_weight, pH_molarity):
     '''Function for determining how much vol cm^3 HCl should be added to get to the required pH value without passing it; returns 0 if no HCl should be added'''
+    return 
 
 
 def titrate(pH_target, solution_increment_amount):
@@ -146,12 +160,12 @@ def titrate(pH_target, solution_increment_amount):
     # NOTE If increment value is 20, don't want to add that again to get it close to 3.5...
 
     # Current pH level; calculated from pH monitor readings
-    current_pH = 3.5
+    pH_old = read_pH()
 
     # how many iterations should the pH value be close before breaking?
     while True:
-        pH_new = pH_GPIO
-        temp_reading = temp_GPIO
+        pH_new = read_pH()
+        temp_reading = read_temperature()
         # measure temp from GPIO
         # measure pH from GPIO
         
@@ -190,19 +204,21 @@ def titrate(pH_target, solution_increment_amount):
 def dispense_HCl(volume):
     '''Adds HCl to the solution'''
     # stepper motor driver needed here; will likely connect to the Arduino
+    # NOTE should this wait for pH to settle instead of read_pH?
 
 
 def read_pH():
     '''Reads and returns the pH value from GPIO'''
-    # NOTE this function should wait and make sure pH is stable before returning a value
-    
+    # Read pH registers; pH_val is raw value from pH probe
+    pH_val = bus.read_i2c_block_data(pH_address, reg_pH, 2) 
+    # TODO check datasheet for pH probe to determine how many bits/bytes needed
 
-    return pH
+    return pH_val
 
 
 def convert_pH_to_voltage():
     '''Since we don't want to be converting the voltage readings to equivalent pH values each time, we will go the other way (when converting user input pH values and for readability within the code)'''
-
+    
 
 
 def read_temperature():
