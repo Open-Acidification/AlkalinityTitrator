@@ -7,29 +7,15 @@ Walla Walla University
 from time import sleep
 from datetime import datetime
 
-# Keypad
-from pad4pi import rpi_gpio
+# for pH sensor
+import adafruit_ads1x15.ads1015 as ADS
+from adafruit_ads1x15.analog_in import AnalogIn
 
-import gpiozero as gpio
-
+# for max31865 temp sensor
 import board 
 import busio
 import digitalio
 import adafruit_max31865
-
-# for use with I2C
-import smbus2
-
-# CircuitPython? For communicating with PT1000 sensor
-# Before continuing make sure your board's lib folder or root filesystem has the adafruit_max31865.mpy, and adafruit_bus_device files and folders copied over.
-
-# Python script to continuously read data
-#!/usr/bin/python
-import spidev
-
-spi = spidev.SpiDev()
-spi.open(0, 0)  # spi port 0, device 0
-spi.max_speed_hz = 976000
 
 # CONSTANTS
 PH_ACCURACY = 0.01          # Needed accuracy for final pH level after titration
@@ -44,41 +30,15 @@ STIR_STOP = 0
 STIR_SLOW = 1
 STIR_FAST = 2
 
-# INITIALIZE PORTS
-
 # setup temperature sensor
 spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
 cs = digitalio.DigitalInOut(board.D5)
 sensor = adafruit_max31865.MAX31865(spi, cs, wires=3, rtd_nominal=1000.0, ref_resistor=4300.0)
 
-# Setup I2C bus (for use with pH probe)
-bus = smbus2.SMBus(0)
-pH_address = 0x60 # TODO run 'sudo i2cdetect -y 0' to get actual address
-
-# Register addresses; not sure why this is needed
-reg_pH = 0x00
-
-# Setup Keypad
-KEYPAD = [
-        ["1","2","3","A"],
-        ["4","5","6","B"],
-        ["7","8","9","C"],
-        ["*","0","#","D"]
-]
-
-factory = rpi_gpio.KeypadFactory()
-factory.create_4_by_4_keypad()
-
-def printKey(key):
-  print(key)
-  if (key=="1"):
-    print("number")
-  elif (key=="A"):
-    print("letter")
-
-# printKey will be called each time a keypad button is pressed
-keypad.registerKeyPressHandler(printKey)
-
+# setup pH sensor
+i2c = busio.I2C(board.SCL, board.SDA)
+adc = ADS.ads1015(i2c, data_rate=920, gain=2)
+chan = AnalogIn(adc, ADS.P0, ADS.P1)
 
 test_readings()
 
@@ -87,6 +47,8 @@ test_readings()
 
 def test_readings():
     '''Test function to test data readings; prints temperature and pH readings every second'''
+    # print("Ideal: {}\tActual: {}\tPercDiff: {}".format(volts, diff, percent_diff))
+
     while True:
         print(datetime.now())
         print("Temperature readings: ")
@@ -95,8 +57,8 @@ def test_readings():
         print('Resistance: {0:0.3f} Ohms'.format(res))
 
         print("pH readings: ")
-        pH_val = read_pH()
-        print('Voltage: {0:0.3f}mV'.format(pH_val))
+        volts, diff, percent_diff = read_pH()
+        print('Voltage: {0:0.3f}mV'.format(volts))
         time.sleep(1)
 
 def run_options():
@@ -210,10 +172,14 @@ def dispense_HCl(volume):
 def read_pH():
     '''Reads and returns the pH value from GPIO'''
     # Read pH registers; pH_val is raw value from pH probe
-    pH_val = bus.read_i2c_block_data(pH_address, reg_pH, 2) 
+    # pH_val = bus.read_i2c_block_data(pH_address, reg_pH, 2) 
     # TODO check datasheet for pH probe to determine how many bits/bytes needed
+    volts = chan.voltage
+    diff = volts / 9.7
+    volts = volts / 10
+    percent_diff = (diff - volts)/volts*100
 
-    return pH_val
+    return volts, diff, percent_diff
 
 
 def convert_pH_to_voltage():
