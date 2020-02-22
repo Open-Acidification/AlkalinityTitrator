@@ -9,6 +9,11 @@ verify_ssl = true
 gpiozero = "*"
 adafruit-circuitpython-max31865 = "*"
 smbus2 = "*"
+adafruit-circuitpython-lis3dh = "*"
+"rpi.gpio" = "*"
+adafruit-blinka = "*"
+adafruit-circuitpython-ads1x15 = "*"
+pad4pi = "*"
 
 [requires]
 python_version = "3.7"
