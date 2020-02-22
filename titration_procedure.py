@@ -37,10 +37,8 @@ sensor = adafruit_max31865.MAX31865(spi, cs, wires=3, rtd_nominal=1000.0, ref_re
 
 # setup pH sensor
 i2c = busio.I2C(board.SCL, board.SDA)
-adc = ADS.ads1015(i2c, data_rate=920, gain=2)
+adc = ADS.ADS1015(i2c, data_rate=920, gain=2)
 chan = AnalogIn(adc, ADS.P0, ADS.P1)
-
-test_readings()
 
 # Display options to the user (including starting titration)
 # run_options()
@@ -204,3 +202,6 @@ def stir(speed):
     msb = speed >> 8
     lsb = speed & 0xFF
     spi.xfer([msb, lsb])
+
+# DRIVER CODE
+test_readings()
