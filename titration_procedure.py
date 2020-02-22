@@ -4,7 +4,7 @@ Author: Kaden Sukachevin
 Walla Walla University 
 '''
 # Libraries
-from time import sleep
+import time
 from datetime import datetime
 
 # for pH sensor
