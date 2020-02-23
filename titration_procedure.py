@@ -48,15 +48,16 @@ def test_readings():
     # print("Ideal: {}\tActual: {}\tPercDiff: {}".format(volts, diff, percent_diff))
 
     while True:
+        print("----------------")
         print(datetime.now())
-        print("Temperature readings: ")
+        print("TEMP READINGS")
         temp, res = read_temperature()
         print('Temperature: {0:0.3f}C'.format(temp))
         print('Resistance: {0:0.3f} Ohms'.format(res))
 
-        print("pH readings: ")
+        print("PH READINGS")
         volts, diff, percent_diff = read_pH()
-        print('Voltage: {0:0.3f}mV'.format(volts))
+        print('Voltage: {0:0.3f}V'.format(volts))
         time.sleep(1)
 
 def run_options():
