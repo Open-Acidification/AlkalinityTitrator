@@ -55,9 +55,9 @@ def test_readings():
         print('Temperature: {0:0.3f}C'.format(temp))
         print('Resistance: {0:0.3f} Ohms'.format(res))
 
-        print("PH READINGS")
-        volts, diff, percent_diff = read_pH()
-        print('Voltage: {0:0.3f}V'.format(volts))
+        print("\nPH READINGS")
+        volts, diff = read_pH()
+        print('Voltage: {0:0.6f}V'.format(volts))
         time.sleep(1)
 
 def run_options():
@@ -171,14 +171,12 @@ def dispense_HCl(volume):
 def read_pH():
     '''Reads and returns the pH value from GPIO'''
     # Read pH registers; pH_val is raw value from pH probe
-    # pH_val = bus.read_i2c_block_data(pH_address, reg_pH, 2) 
-    # TODO check datasheet for pH probe to determine how many bits/bytes needed
     volts = chan.voltage
     diff = volts / 9.7
     volts = volts / 10
-    percent_diff = (diff - volts)/volts*100
+    #percent_diff = (diff - volts)/volts*100
 
-    return volts, diff, percent_diff
+    return volts, diff #, percent_diff
 
 
 def convert_pH_to_voltage():
