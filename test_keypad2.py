@@ -19,7 +19,7 @@ factory = rpi_gpio.KeypadFactory()
 # and factory.create_4_by_4_keypad for reasonable defaults
 keypad = factory.create_keypad(keypad=KEYPAD, row_pins=ROW_PINS, col_pins=COL_PINS)
 
-def select_menu_option(key):
+def select_menu_options(key):
     print(key)
 
 def run_options():
