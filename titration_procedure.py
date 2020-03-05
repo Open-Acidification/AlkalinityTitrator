@@ -17,6 +17,9 @@ import busio
 import digitalio
 import adafruit_max31865
 
+# keypad
+from pad4pi import rpi_gpio
+
 # CONSTANTS
 PH_ACCURACY = 0.01          # Needed accuracy for final pH level after titration
 TARGET_PH = 3.0             # Target pH value for titration process
@@ -30,6 +33,7 @@ STIR_STOP = 0
 STIR_SLOW = 1
 STIR_FAST = 2
 
+####### SETUP #######
 # setup temperature sensor
 spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
 cs = digitalio.DigitalInOut(board.D5)
@@ -40,8 +44,36 @@ i2c = busio.I2C(board.SCL, board.SDA)
 adc = ADS.ADS1015(i2c, data_rate=920, gain=2)
 chan = AnalogIn(adc, ADS.P0, ADS.P1)
 
-# Display options to the user (including starting titration)
-# run_options()
+# Setup Keypad
+KEYPAD = [
+        ["1","2","3","A"],
+        ["4","5","6","B"],
+        ["7","8","9","C"],
+        ["*","0","#","D"]
+]
+
+# same as calling: factory.create_4_by_4_keypad, still we put here fyi:
+ROW_PINS = [26, 19, 13, 6] # BCM numbering
+COL_PINS = [5, 16, 20, 21] # BCM numbering
+
+factory = rpi_gpio.KeypadFactory()
+
+# Try factory.create_4_by_3_keypad
+# and factory.create_4_by_4_keypad for reasonable defaults
+keypad = factory.create_keypad(keypad=KEYPAD, row_pins=ROW_PINS, col_pins=COL_PINS)
+
+
+####### FUNCTIONS #######
+
+def printKey(key):
+    print(key)
+    if (key=="1"):
+        print("number")
+    elif (key=="A"):
+        print("letter")
+
+def select_menu_option(key):
+    print(key)
 
 def test_readings():
     '''Test function to test data readings; prints temperature and pH readings every second'''
@@ -61,16 +93,25 @@ def test_readings():
 
 def run_options():
     print("0. Run titration\n1. Calibrate\n2. Settings")  # user options upon startup of system
+    # printKey will be called each time a keypad button is pressed
+    keypad.registerKeyPressHandler(select_menu_options)
+
+    try:
+        while(True):
+            time.sleep(0.2)
+        except:
+            keypad.cleanup()
+
 
     # TODO read input from keypad; runMode based on user input
-    runMode = 0
+    # runMode = 0
 
-    if runMode == 0:
-        run_titration()
-    elif runMode == 1:
-        calibrate()
-    else:
-        edit_settings()
+    # if runMode == 0:
+    #     run_titration()
+    # elif runMode == 1:
+    #     calibrate()
+    # else:
+    #     edit_settings()
 
 
 def run_titration():
@@ -91,7 +132,7 @@ def calibrate():
     # TODO implement calibration routine 
 
 
-def edit_settings(setting1, setting2):
+def edit_settings():
     '''Updates settings with user input'''
     # TODO implement GUI allowing the user to edit certain titration values
 
@@ -111,7 +152,7 @@ def initial_titration(target_pH, current_pH, solution_weight, pH_molarity):
 
 def determine_addition_volume(target_pH, current_pH, solution_weight, pH_molarity):
     '''Function for determining how much vol cm^3 HCl should be added to get to the required pH value without passing it; returns 0 if no HCl should be added'''
-    return 
+    return 10
 
 
 def titrate(pH_target, solution_increment_amount):
@@ -157,8 +198,6 @@ def titrate(pH_target, solution_increment_amount):
         current_pH = new_pH
         # TODO write out data to csv file
 
-
-
 # GPIO in/out Functions
 
 def dispense_HCl(volume):
@@ -201,5 +240,6 @@ def stir(speed):
     lsb = speed & 0xFF
     spi.xfer([msb, lsb])
 
-# DRIVER CODE
-test_readings()
+
+####### DRIVER CODE #######
+run_options()
