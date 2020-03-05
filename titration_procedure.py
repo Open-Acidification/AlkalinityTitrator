@@ -51,9 +51,8 @@ def test_readings():
         print("----------------")
         print(datetime.now())
         print("TEMP READINGS")
-        temp, res = read_temperature()
+        temp = read_temperature()
         print('Temperature: {0:0.3f}C'.format(temp))
-        print('Resistance: {0:0.3f} Ohms'.format(res))
 
         print("\nPH READINGS")
         volts, diff = read_pH()
@@ -188,7 +187,7 @@ def read_temperature():
     '''Reads and returns the temperature from GPIO'''
     # print('Temperature: {0:0.3f}C'.format(sensor.temperature))
     # print('Resistance: {0:0.3f} Ohms'.format(sensor.resistance))
-    return sensor.temperature, sensor.resistance
+    return sensor.temperature
 
 
 def stir(speed):
