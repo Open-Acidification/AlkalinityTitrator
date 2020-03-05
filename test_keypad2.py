@@ -21,9 +21,15 @@ keypad = factory.create_keypad(keypad=KEYPAD, row_pins=ROW_PINS, col_pins=COL_PI
 
 def select_menu_options(key):
     print(key)
+    if key == '1':
+        print("Run titration")
+    elif key == '2':
+        print("Calibrate")
+    elif key == '3':
+        print("Settings")
 
 def run_options():
-    print("0. Run titration\n1. Calibrate\n2. Settings")  # user options upon startup of system
+    print("1. Run titration\n2. Calibrate\n3. Settings")  # user options upon startup of system
     # printKey will be called each time a keypad button is pressed
     keypad.registerKeyPressHandler(select_menu_options)
 
