@@ -99,8 +99,8 @@ def run_options():
     try:
         while(True):
             time.sleep(0.2)
-        except:
-            keypad.cleanup()
+    except:
+        keypad.cleanup()
 
 
     # TODO read input from keypad; runMode based on user input

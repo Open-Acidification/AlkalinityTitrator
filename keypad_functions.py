@@ -19,6 +19,9 @@ factory = rpi_gpio.KeypadFactory()
 # and factory.create_4_by_4_keypad for reasonable defaults
 keypad = factory.create_keypad(keypad=KEYPAD, row_pins=ROW_PINS, col_pins=COL_PINS)
 
+def get_key_pressed_value(key):
+    return key
+
 def select_menu_options(key):
     print(key)
     if key == '1':
@@ -39,4 +42,20 @@ def run_options():
     except:
         keypad.cleanup()
 
-run_options()
+def get_user_input():
+    next_val = keypad.registerKeyPressHandler(get_key_pressed_value)
+    total_input = ''
+
+    try:
+        while(next_val != '*'):
+            time.sleep(0.2)
+            total_input += next_val
+    except:
+        keypad.cleanup()
+
+    print(total_input)
+
+
+get_user_input()
+#run_options()
+keypad.cleanup()
