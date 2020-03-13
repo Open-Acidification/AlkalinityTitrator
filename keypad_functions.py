@@ -1,4 +1,5 @@
 from pad4pi import rpi_gpio
+import RPi.GPIO as GPIO
 import time
 
 # Setup Keypad
@@ -15,6 +16,24 @@ COL_PINS = [5, 16, 20, 21] # BCM numbering
 
 factory = rpi_gpio.KeypadFactory()
 
+################
+GPIO_PIN = 23
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(GPIO_PIN, GPIO.OUT)
+
+# Send a signal to the relay
+def OpenGarageDoor():
+  try:
+    GPIO.output(GPIO_PIN, GPIO.HIGH)
+    time.sleep(0.5)
+    GPIO.output(GPIO_PIN, GPIO.LOW)
+  except:
+    print ("Error inside function OpenGarageDoor")
+    pass
+
+GPIO.cleanup()
+################
+
 # Try factory.create_4_by_3_keypad
 # and factory.create_4_by_4_keypad for reasonable defaults
 keypad = factory.create_keypad(keypad=KEYPAD, row_pins=ROW_PINS, col_pins=COL_PINS)
@@ -25,7 +44,14 @@ def get_key_pressed_value(key):
 def select_menu_options(key):
     print(key)
     if key == '1':
-        print("Run titration")
+        print("Key 1 pressed")
+        try:
+            GPIO.output(GPIO_PIN, GPIO.HIGH)
+            time.sleep(0.5)
+            GPIO.output(GPIO_PIN, GPIO.LOW)
+        except:
+            print ("Error inside function OpenGarageDoor")
+            pass
     elif key == '2':
         print("Calibrate")
     elif key == '3':
@@ -42,7 +68,9 @@ def run_options():
     except:
         keypad.cleanup()
 
+
 def get_user_input():
+    '''Returns a string from the keypad'''
     next_val = keypad.registerKeyPressHandler(get_key_pressed_value)
     total_input = ''
 
