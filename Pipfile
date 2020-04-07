@@ -4,6 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pycodestyle = "*"
 
 [packages]
 gpiozero = "*"
@@ -14,7 +15,7 @@ adafruit-circuitpython-lis3dh = "*"
 adafruit-blinka = "*"
 adafruit-circuitpython-ads1x15 = "*"
 pad4pi = "*"
-
+pep8 = "*"
 
 [requires]
 python_version = "3.7"
