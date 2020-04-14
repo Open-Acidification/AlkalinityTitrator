@@ -1,4 +1,5 @@
 # Functions to interface with sensors and peripherals
+import constants
 
 
 def lcd_out(info):
@@ -7,11 +8,24 @@ def lcd_out(info):
     print(info)
 
 
-def read_user_input():
+def display_list(list_to_display):
+    """Display a list of options"""
+    # NOTE this may need to be updated based on how the LCD actually displays
+    # characters
+    for key, value in list_to_display.items():
+        lcd_out(str(key) + '. ' + value)
+
+
+def read_user_input(valid_inputs=None):
     """Reads user input from keypad"""
     # TODO interface with keypad
-    # TODO verify input?
-    
+    # TODO verify input through valid_inputs parameter?
+    # Temporarily query user input from terminal
+    while True:
+        user_input = input()
+        if valid_inputs is None or user_input in valid_inputs:
+            break
+        lcd_out(constants.VALID_INPUT_WARNING)
     return user_input
 
 

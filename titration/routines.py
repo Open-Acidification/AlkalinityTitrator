@@ -1,11 +1,44 @@
 # Code for running the different routines
+import interfaces
+import constants
+
+
+def run_routine(selection):
+    """Runs routine based on input"""
+    if selection == 1:
+        titration()
+    elif selection == 2:
+        calibration()
+    elif selection == 3:
+        edit_settings()
 
 
 def calibration():
-    pass
+    interfaces.display_list(constants.SENSOR_OPTIONS)
+    sensor_selection = interfaces.read_user_input(['1', '2'])
+    if sensor_selection == '1':
+        _calibrate_pH()
+    elif sensor_selection == '2':
+        _calibrate_temperature()
 
 
-def titrate(pH_target, solution_increment_amount):
+def _calibrate_pH():
+    """Routine for calibrating pH sensor"""
+    interfaces.lcd_out('Enter buffer pH')
+    interfaces.read_user_input()
+    # TODO wait until user hits another key to stop reading pH and use the value of pH on key press?
+    interfaces.lcd_out('Press key to enter value')
+    while True:
+        # TODO onKeyPress break
+        pH = interfaces.read_pH()
+        interfaces.lcd_out("pH: ", pH)
+
+
+def _calibrate_temperature():
+    """Routine for calibrating temperature sensor"""
+
+
+def titration(pH_target, solution_increment_amount):
     '''Incrementally adds HCl depending on the input parameters, until target pH is reached
     '''
     # NOTE If increment value is 20, don't want to add that again to get it close to 3.5...
@@ -49,5 +82,5 @@ def titrate(pH_target, solution_increment_amount):
         # TODO write out data to csv file
 
 
-def settings():
+def edit_settings():
     pass
