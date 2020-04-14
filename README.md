@@ -38,6 +38,10 @@ This project utilizes SPI and I2C protocols, both of which often come disabled o
 $ sudo raspi-config
 ```
 and navigate to "Interfacing Options"; enable both SPI and I2C.
+To install RPI.GPIO:
+```
+$ sudo apt-get install rpi.gpio
+```
 
 ## User Instructions
 

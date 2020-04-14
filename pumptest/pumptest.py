@@ -1,5 +1,9 @@
 # Test routine for pump
 # pin map https://pinout.xyz/
+# to setup raspberr pi for the test:
+
+
+
 import RPi.GPIO as GPIO
 import time
 PIN_NUMBER = 24
