@@ -18,6 +18,6 @@ while(True):
         print('Pulse')
     elif user_input == 'q':
         break
-    time.sleep(3)
+    time.sleep(1)
     GPIO.output(PIN_NUMBER, GPIO.LOW)
 GPIO.cleanup()  # use this instead
