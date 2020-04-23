@@ -20,3 +20,18 @@ KEY_6 = 16
 KEY_7 = 17
 KEY_8 = 18
 KEY_9 = 19
+# for pH calibration constants
+calibrated_pH = {
+    'measured': [None, None],
+    'actual': [None, None],
+    'slope': None
+}
+# temp
+calibrated_ref_resistor_value = 4300
+# titration routine
+TARGET_TEMP = 25  # degrees C
+TARGET_PH = 3.0
+TEMPERATURE_ACCURACY = 0.01
+STABILIZATION_CONSTANT = 0.1  # how much the pH is allowed to change between measurements to ensure the value is stable
+PH_ACCURACY = 0.05
+SLEEP_TIME = 1
