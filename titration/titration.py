@@ -5,7 +5,7 @@ import routines
 import constants
 import analysis
 import events
-import RPI.GPIO as GPIO
+# import RPI.GPIO as GPIO
 import time
 
 
@@ -14,8 +14,10 @@ def test():
     analysis.write_json(analysis.DATA_PATH+'calibration_data.json', 
                         constants.calibrated_pH)
     while True:
-        print(interfaces.read_temperature())
-        time.sleep(constants.SLEEP_TIME)
+        temp, res = interfaces.read_temperature()
+        print('Temperature: {0:0.3f}C'.format(temp))
+        print('Resistance: {0:0.3f} Ohms'.format(res))
+        #time.sleep(constants.SLEEP_TIME)
 
 
 def start():

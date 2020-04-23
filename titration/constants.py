@@ -27,7 +27,7 @@ calibrated_pH = {
     'slope': None
 }
 # temp
-calibrated_ref_resistor_value = 4300
+calibrated_ref_resistor_value = 4300.0
 # titration routine
 TARGET_TEMP = 25  # degrees C
 TARGET_PH = 3.0
