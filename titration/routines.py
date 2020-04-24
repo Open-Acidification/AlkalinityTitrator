@@ -17,7 +17,7 @@ def run_routine(selection):
 
 
 def _test_temp():
-    while True:
+    for i in range(10):
         temp, res = interfaces.read_temperature()
         print("Temperature: {0:0.3f}C".format(temp))
         print("Resistance: {0:0.3f}C".format(res))
@@ -76,7 +76,7 @@ def _calibrate_temperature():
     interfaces.lcd_out("Recorded temp: {0:0.3f}".format(temperature))
     diff = 1000 - resistance
     new_resistance = 4300 + diff
-    constants.calibrated_ref_resistor_value = new_resistance
+    constants.calibrated_ref_resistor_value = float(new_resistance)
     # reinitialize sensors with calibrated values
     print(new_resistance)
     interfaces.setup_interfaces()
