@@ -26,10 +26,11 @@ def start():
     initialize_components()
     # While loop to continuously prompt user?
     # output prompt to LCD screen
-    interfaces.display_list(constants.ROUTINE_OPTIONS)
-    # wait for user input to select which routine (polling should be fine here)
-    routine_selection = interfaces.read_user_input(['1','2','3'])
-    routines.run_routine(routine_selection)
+    while True:
+        interfaces.display_list(constants.ROUTINE_OPTIONS)
+        # wait for user input to select which routine (polling should be fine here)
+        routine_selection = interfaces.read_user_input(['1','2','3'])
+        routines.run_routine(routine_selection)
 
 
 def initialize_components():
