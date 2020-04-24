@@ -66,7 +66,7 @@ def read_user_input(valid_inputs=None):
 
 def read_pH():
     """TEMP FUNCTION until I can test pH"""
-
+    constants.pH_call_iter += 1
     return constants.test_pH_vals[constants.hcl_call_iter][constants.pH_call_iter]
 
 
