@@ -66,7 +66,8 @@ def read_user_input(valid_inputs=None):
 
 def read_pH():
     """TEMP FUNCTION until I can test pH"""
-    return constants.test_pH_vals[constants.pH_call_iter]
+
+    return constants.test_pH_vals[constants.hcl_call_iter][constants.pH_call_iter]
 
 
 def read_raw_pH():
@@ -90,5 +91,5 @@ def dispense_HCl(volume):
     """Adds HCl to the solution"""
     # TODO stepper motor driver needed here; will likely connect to the Arduino
     # NOTE should this wait for pH to settle instead of read_pH?
-    constants.pH_call_iter += 1  # value only used for testing while reading pH doesn't work
+    constants.hcl_call_iter += 1  # value only used for testing while reading pH doesn't work
     print("{} ml HCL added".format(volume))
