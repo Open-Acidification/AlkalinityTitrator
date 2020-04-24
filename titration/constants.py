@@ -3,7 +3,8 @@ ROUTINE_OPTIONS = {
     1: 'Run titration',
     2: 'Calibrate sensors',
     3: 'Update settings',
-    4: 'Exit'
+    4: 'Test',
+    5: 'Exit'
 }
 SENSOR_OPTIONS = {
     1: 'pH',
@@ -27,7 +28,8 @@ calibrated_pH = {
     'slope': None
 }
 # temp
-calibrated_ref_resistor_value = 4300.0
+calibrated_ref_resistor_value = 4200.0
+nominal_resistance = 1000.0
 # titration routine
 TARGET_TEMP = 25  # degrees C
 TARGET_PH = 3.0

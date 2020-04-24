@@ -21,11 +21,12 @@ def setup_interfaces():
     #i2c = busio.I2C(board.SCL, board.SDA)
     #adc = ads.ADS1015(i2c, data_rate=920, gain=2)  # Todo: do we want a higher gain?
     #ph_input_channel = analog_in.AnalogIn(adc, ads.P0, ads.P1)
-
+    
+    print("Setting up...")
     # setup temperature sensor
     spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
     cs = digitalio.DigitalInOut(board.D5)
-    temp_sensor = adafruit_max31865.MAX31865(spi, cs, wires=3, rtd_nominal=1000.0, ref_resistor=constants.calibrated_ref_resistor_value)
+    temp_sensor = adafruit_max31865.MAX31865(spi, cs, wires=3, rtd_nominal=constants.nominal_resistance, ref_resistor=constants.calibrated_ref_resistor_value)
 
 
 def lcd_out(info):
