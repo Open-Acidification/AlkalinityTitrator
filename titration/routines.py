@@ -12,6 +12,16 @@ def run_routine(selection):
         calibration()
     elif selection == '3':
         edit_settings()
+    elif selection == '4':
+        _test_temp()
+
+
+def _test_temp():
+    while True:
+        temp, res = interfaces.read_temperature()
+        print("Temperature: {0:0.3f}C".format(temp))
+        print("Resistance: {0:0.3f}C".format(res))
+        time.sleep(1)
 
 
 def calibration():
