@@ -42,4 +42,4 @@ def initialize_components():
 
 
 if __name__ == "__main__":
-    test()
+    start()

@@ -62,12 +62,13 @@ def _calibrate_temperature():
     interfaces.lcd_out('Lower temperature probe into sufficiently cooled water; hit enter when done')
     input()  # to make the program wait indefinitely for the user to press enter
 
-    measured_buffer_pH1 = float(interfaces.read_raw_pH())
-    interfaces.lcd_out("Recorded pH: {}".format(measured_buffer_pH1))
-    resistance = interfaces.read_temperature()[1]
+    temperature, resistance = interfaces.read_temperature()
+    interfaces.lcd_out("Recorded temp: {0:0.3f}".format(temperature))
     diff = 1000 - resistance
-    constants.calibrated_ref_resistor_value = 4300 + diff
+    new_resistance = 4300 + diff
+    constants.calibrated_ref_resistor_value = new_resistance
     # reinitialize sensors with calibrated values
+    print(new_resistance)
     interfaces.setup_interfaces()
 
 
