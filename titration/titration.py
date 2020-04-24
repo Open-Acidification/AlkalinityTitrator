@@ -20,16 +20,17 @@ def test():
         #time.sleep(constants.SLEEP_TIME)
 
 
-def start():
+def run():
     # Default program
     # initialize components
     initialize_components()
     # While loop to continuously prompt user?
     # output prompt to LCD screen
-    while True:
+    routine_selection = '0'
+    while routine_selection != '5':
         interfaces.display_list(constants.ROUTINE_OPTIONS)
         # wait for user input to select which routine (polling should be fine here)
-        routine_selection = interfaces.read_user_input(['1','2','3', '4', '5'])
+        routine_selection = interfaces.read_user_input(['1','2','3', '4','5'])
         routines.run_routine(routine_selection)
 
 
@@ -43,4 +44,4 @@ def initialize_components():
 
 
 if __name__ == "__main__":
-    start()
+    run()

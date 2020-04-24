@@ -95,7 +95,9 @@ def titration(pH_target, solution_increment_amount):
     # how many iterations should the pH value be close before breaking?
     while True:
         pH_new = interfaces.read_pH()
-        temp_reading = interfaces.read_temperature()
+        interfaces.lcd_out("pH: {}".format(pH_new))
+        temp_reading = interfaces.read_temperature()[0]
+        interfaces.lcd_out("temp: {0:0.3f}C".format(temp_reading))
         # measure temp from GPIO
         # measure pH from GPIO
         
@@ -107,8 +109,8 @@ def titration(pH_target, solution_increment_amount):
             # Log error and alert user; write last data to file
 
         # ensure pH hasn't changed that much since last reading (might not be robust enough)
-        if ((pH_new - pH_old) < constants.STABILIZATION_CONSTANT):
-            if (pH_new - pH_target < constants.PH_ACCURACY):
+        if (abs(pH_new - pH_old) < constants.STABILIZATION_CONSTANT):
+            if (abs(pH_new - pH_target) < constants.PH_ACCURACY):
                 break
             interfaces.dispense_HCl(solution_increment_amount)
         pH_old = pH_new
