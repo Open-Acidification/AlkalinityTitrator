@@ -56,13 +56,18 @@ def read_user_input(valid_inputs=None):
     return user_input
 
 
+# def read_pH():
+#     """Reads calibration-adjusted value for pH"""
+#     global ph_input_channel
+#     volts = ph_input_channel.voltage / 10
+#     pH_val = constants.calibrated_pH['measured'][0]+ constants.calibrated_pH['slope'] * \
+#              (volts - constants.calibrated_pH['measured'][0])
+#     return pH_val
+
 def read_pH():
-    """Reads calibration-adjusted value for pH"""
-    global ph_input_channel
-    volts = ph_input_channel.voltage / 10
-    pH_val = constants.calibrated_pH['measured'][0]+ constants.calibrated_pH['slope'] * \
-             (volts - constants.calibrated_pH['measured'][0])
-    return pH_val
+    """TEMP FUNCTION until I can test pH"""
+    constants.pH_call_iter += 1
+    return constants.test_pH_vals(constants.pH_call_iter)
 
 
 def read_raw_pH():

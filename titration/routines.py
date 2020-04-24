@@ -23,7 +23,6 @@ def _test_temp():
         temp, res = interfaces.read_temperature()
         print("Temperature: {0:0.3f}C".format(temp))
         print("Resistance: {0:0.3f}C".format(res))
-        print("Raw resistance: {}".format(res))
         time.sleep(1)
 
 
