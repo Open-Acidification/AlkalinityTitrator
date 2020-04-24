@@ -7,7 +7,7 @@ import time
 def run_routine(selection):
     """Runs routine based on input"""
     if selection == '1':
-        titration()
+        titration(constants.TARGET_PH, constants.INCREMENT_AMOUNT)
     elif selection == '2':
         calibration()
     elif selection == '3':

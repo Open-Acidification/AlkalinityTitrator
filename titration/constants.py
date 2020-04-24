@@ -37,6 +37,7 @@ TEMPERATURE_ACCURACY = 0.01
 STABILIZATION_CONSTANT = 0.1  # how much the pH is allowed to change between measurements to ensure the value is stable
 PH_ACCURACY = 0.05
 SLEEP_TIME = 1
+INCREMENT_AMOUNT = 0.5
 
 # TESTING
 test_pH_vals = [7, 5, 4, 3.5]

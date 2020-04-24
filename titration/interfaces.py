@@ -91,3 +91,4 @@ def dispense_HCl(volume):
     """Adds HCl to the solution"""
     # TODO stepper motor driver needed here; will likely connect to the Arduino
     # NOTE should this wait for pH to settle instead of read_pH?
+    print("{} ml HCL added".format(volume))
