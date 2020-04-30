@@ -1,6 +1,7 @@
 # Code for running the different routines
 import interfaces
 import constants
+import analysis
 import time
 
 
@@ -71,16 +72,19 @@ def _calibrate_pH():
 def _calibrate_temperature():
     """Routine for calibrating temperature sensor"""
     # TODO wait until user hits another key to stop reading pH and use the value of pH on key press?
+    interfaces.lcd_out("What is temperature of the reference solution?")
+    expected_temp = input()
     interfaces.lcd_out('Lower temperature probe into sufficiently cooled water; hit enter when done')
     input()  # to make the program wait indefinitely for the user to press enter
+    expected_resistance = analysis.calculate_expected_resistance(expected_temp)
 
-    temperature, resistance = interfaces.read_temperature()
-    interfaces.lcd_out("Recorded temp: {0:0.3f}".format(temperature))
-    diff = constants.nominal_resistance - resistance
-    new_resistance = constants.calibrated_ref_resistor_value + diff*constants.calibrated_ref_resistor_value/constants.nominal_resistance
-    constants.calibrated_ref_resistor_value = float(new_resistance)
+    actual_temperature, actual_resistance = interfaces.read_temperature()
+    interfaces.lcd_out("Recorded temp: {0:0.3f}".format(actual_temperature))
+    diff = expected_resistance - actual_resistance
+    new_ref_resistance = constants.calibrated_ref_resistor_value + diff * constants.calibrated_ref_resistor_value / expected_resistance
+    constants.calibrated_ref_resistor_value = float(new_ref_resistance)
     # reinitialize sensors with calibrated values
-    print(new_resistance)
+    print(new_ref_resistance)
     interfaces.setup_interfaces()
 
 
@@ -91,6 +95,7 @@ def titration(pH_target, solution_increment_amount):
 
     # Current pH level; calculated from pH monitor readings
     pH_old = interfaces.read_pH()
+    pH_values = []  # keep track of 10 most recent pH values to ensure pH is stable
 
     # how many iterations should the pH value be close before breaking?
     while True:
@@ -100,7 +105,7 @@ def titration(pH_target, solution_increment_amount):
         interfaces.lcd_out("temp: {0:0.3f}C".format(temp_reading))
         # measure temp from GPIO
         # measure pH from GPIO
-        
+
         # make sure temperature within correct bounds; global value for all titrations
         if (temp_reading - constants.TARGET_TEMP > constants.TEMPERATURE_ACCURACY):
             print("TEMPERATURE ERROR MESSAGE")

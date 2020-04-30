@@ -10,6 +10,10 @@ import busio
 import digitalio
 import adafruit_max31865
 
+# for pump
+import RPi.GPIO as GPIO
+import time
+
 # global
 ph_input_channel = None
 temp_sensor = None
@@ -27,6 +31,10 @@ def setup_interfaces():
     spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
     cs = digitalio.DigitalInOut(board.D5)
     temp_sensor = adafruit_max31865.MAX31865(spi, cs, wires=3, rtd_nominal=constants.nominal_resistance, ref_resistor=constants.calibrated_ref_resistor_value)
+
+    # setup pump
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(constants.PUMP_PIN_NUMBER, GPIO.OUT)
 
 
 def lcd_out(info):
@@ -93,3 +101,10 @@ def dispense_HCl(volume):
     # NOTE should this wait for pH to settle instead of read_pH?
     constants.hcl_call_iter += 1  # value only used for testing while reading pH doesn't work
     print("{} ml HCL added".format(volume))
+
+    GPIO.output(constants.PUMP_PIN_NUMBER, GPIO.HIGH)
+    time.sleep(constants.PUMP_PULSE_TIME)
+    GPIO.output(constants.PUMP_PIN_NUMBER, GPIO.LOW)
+
+
+GPIO.cleanup()  # use this instead

@@ -38,6 +38,9 @@ STABILIZATION_CONSTANT = 0.1  # how much the pH is allowed to change between mea
 PH_ACCURACY = 0.05
 SLEEP_TIME = 1
 INCREMENT_AMOUNT = 0.5
+# pump
+PUMP_PIN_NUMBER = 24
+PUMP_PULSE_TIME = 1  # seconds
 
 # TESTING
 test_pH_vals = [[7.0, 6.8, 6.5, 6.4, 6.0, 5.4, 5.2, 5.1, 5.1, 5.0, 5.0, 5.0],
