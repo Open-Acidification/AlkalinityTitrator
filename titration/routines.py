@@ -73,7 +73,7 @@ def _calibrate_temperature():
     """Routine for calibrating temperature sensor"""
     # TODO wait until user hits another key to stop reading pH and use the value of pH on key press?
     interfaces.lcd_out("What is temperature of the reference solution?")
-    expected_temp = input()
+    expected_temp = float(input())
     interfaces.lcd_out('Lower temperature probe into sufficiently cooled water; hit enter when done')
     input()  # to make the program wait indefinitely for the user to press enter
     expected_resistance = analysis.calculate_expected_resistance(expected_temp)
