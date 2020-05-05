@@ -22,18 +22,35 @@ KEY_7 = 17
 KEY_8 = 18
 KEY_9 = 19
 # for pH calibration constants
+calibration_data_format = {
+    'pH': {
+        'ref_voltage': None,
+        'ref_pH': None,
+        'slope': None
+    },
+    'temp': {
+        'ref_resistance': 4300.0,
+        'nominal_resistance': 1000.0
+    }
+}
+
 calibrated_pH = {
     'measured_volts': [None, None],
     'actual_pH': [None, None],
     'slope': None
 }
-# temp
-calibrated_ref_resistor_value = 4300.0
-nominal_resistance = 1000.0
+CALIBRATION_FILENAME = 'calibration.json'
+# temp calibration values
+TEMP_REF_RESISTANCE = 4300.0
+TEMP_NOMINAL_RESISTANCE = 1000.0
 # pH
 UNIVERSAL_GAS_CONST = 8.31447215
 FARADAY_CONST = 96485.33212
 CELSIUS_TO_KELVIN = 273.15
+# pH calibration values
+PH_SLOPE = None
+PH_REF_VOLTAGE = None
+PH_REF_PH = None
 # titration routine
 TARGET_TEMP = 25.0  # degrees C
 INITIAL_TARGET_PH = 3.5
@@ -47,7 +64,9 @@ INCREMENT_AMOUNT = 0.05
 TARGET_STD_DEVIATION = 0.010
 # pump
 PUMP_PIN_NUMBER = 24
-PUMP_PULSE_TIME = 1  # seconds
+PUMP_PULSE_TIME = 0.001  # seconds
+# data out
+DATA_PATH = 'data/'
 
 # TESTING
 test_pH_vals = [[7.0, 6.8, 6.5, 6.4, 6.0, 5.4, 5.2, 5.1, 5.1, 5.0, 5.0, 5.0],

@@ -8,14 +8,14 @@ import json
 import math
 import constants
 
-DATA_PATH = 'data/'
 
 # data in/out
-def write_csv(data_to_write):
-    file_name = dt.datetime.strftime(dt.datetime.now(), '%m-%d-%Y %H:%M:%S:%f') + '.csv'
+def _write_csv(file_name, data_to_write):
+    """Helper function for writing to csv"""
     with open(file_name, mode='w') as open_file:
         data_writer = csv.writer(open_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        # TODO convert data_to_write to csv
+        for data in data_to_write:
+            data_writer.writerow(data)
 
 
 def write_json(file_name, data):
@@ -24,8 +24,8 @@ def write_json(file_name, data):
         json.dump(data, outfile)
 
 
-def read_json(file_name):
-    """Reads calibration data"""
+def _read_json(file_name):
+    """Reads from json; returns data"""
     with open(file_name) as json_file:
         data = json.load(json_file)
         return data
@@ -33,9 +33,24 @@ def read_json(file_name):
 
 # calibration
 def setup_calibration():
-    """Sets up cailbration constants"""
-    state_data = read_json(DATA_PATH + 'calibration_data.json')
-    constants.calibrated_pH = state_data
+    """Sets calibration constants from persistent storage"""
+    data = _read_json(constants.DATA_PATH + constants.CALIBRATION_FILENAME)
+    constants.PH_SLOPE = data['pH']['slope']
+    constants.PH_REF_VOLTAGE = data['pH']['ref_voltage']
+    constants.PH_REF_PH = data['pH']['ref_pH']
+    constants.TEMP_REF_RESISTANCE = data['temp']['ref_resistance']
+    constants.TEMP_NOMINAL_RESISTANCE = data['temp']['nominal_resistance']
+
+
+def save_calibration_data():
+    """Saves calibration data to json file"""
+    calibration_data = constants.calibration_data_format
+    calibration_data['pH']['ref_voltage'] = constants.PH_REF_VOLTAGE
+    calibration_data['pH']['ref_pH'] = constants.PH_REF_PH
+    calibration_data['pH']['slope'] = constants.PH_SLOPE
+    calibration_data['temp']['ref_resistance'] = constants.TEMP_REF_RESISTANCE
+    calibration_data['temp']['nominal_resistance'] = constants.TEMP_NOMINAL_RESISTANCE
+    write_json(constants.CALIBRATION_FILENAME, calibration_data)
 
 
 def calculate_expected_resistance(temp):
@@ -46,10 +61,10 @@ def calculate_expected_resistance(temp):
     C = -0.000000000004183
 
     if temp >= 0:
-        return constants.nominal_resistance * (1 + A * temp + B * temp ** 2)
+        return constants.TEMP_NOMINAL_RESISTANCE * (1 + A * temp + B * temp ** 2)
 
     # for temps below 0 celsius
-    return constants.nominal_resistance * (1 + A * temp + B * temp ** 2 + C * (temp - 100) * temp ** 3)
+    return constants.TEMP_NOMINAL_RESISTANCE * (1 + A * temp + B * temp ** 2 + C * (temp - 100) * temp ** 3)
 
 
 # pH
@@ -68,6 +83,7 @@ def calculate_mean(values):
 
 
 def std_deviation(values):
+    """Returns sample std deviation of values"""
     mean = calculate_mean(values)
     running_sum = 0
     for val in values:
@@ -75,7 +91,14 @@ def std_deviation(values):
     return math.sqrt(running_sum/(len(values)-1))
 
 
+def write_titration_data(data):
+    """Writes titration data to csv"""
+    file_name = constants.DATA_PATH + dt.datetime.strftime(dt.datetime.now(), '%m-%d-%Y %H:%M:%S:%f') + '.csv'
+    _write_csv(file_name, data)
+
+
+
 # testing
 if __name__ == "__main__":
-    print("Expected res = ", calculate_expected_resistance(0))
-
+    # print("Expected res = ", calculate_expected_resistance(0))
+    write_json('calibration_data.json')

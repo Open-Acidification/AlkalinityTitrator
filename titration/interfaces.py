@@ -21,7 +21,7 @@ temp_sensor = None
 
 
 def setup_interfaces():
-    global ph_input_channel, temp_sensor
+    # global ph_input_channel, temp_sensor
     # setup pH sensor
     #i2c = busio.I2C(board.SCL, board.SDA)
     #adc = ads.ADS1015(i2c, data_rate=920, gain=2)  # Todo: do we want a higher gain?
@@ -31,7 +31,7 @@ def setup_interfaces():
     # setup temperature sensor
     spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
     cs = digitalio.DigitalInOut(board.D5)
-    temp_sensor = adafruit_max31865.MAX31865(spi, cs, wires=3, rtd_nominal=constants.nominal_resistance, ref_resistor=constants.calibrated_ref_resistor_value)
+    temp_sensor = adafruit_max31865.MAX31865(spi, cs, wires=3, rtd_nominal=constants.TEMP_NOMINAL_RESISTANCE, ref_resistor=constants.TEMP_REF_RESISTANCE)
 
     # setup pump
     GPIO.setmode(GPIO.BCM)
@@ -70,13 +70,13 @@ def read_user_input(valid_inputs=None):
 #     volts = read_raw_pH()
 #     temp = read_temperature()[0]
 #     pH_val = analysis.calculate_pH(volts, temp)
-#     return pH_val
+#     return pH_val, volts
 
 
 def read_pH():
     """TEMP FUNCTION until I can test pH"""
     constants.pH_call_iter += 1
-    return constants.test_pH_vals[constants.hcl_call_iter][constants.pH_call_iter]
+    return constants.test_pH_vals[constants.hcl_call_iter][constants.pH_call_iter], 1
 
 
 def read_raw_pH():
@@ -103,9 +103,18 @@ def dispense_HCl(volume):
     constants.hcl_call_iter += 1  # value only used for testing while reading pH doesn't work
     print("{} ml HCL added".format(volume))
 
+    # TODO calculate number of pulses needed for volume
     GPIO.output(constants.PUMP_PIN_NUMBER, GPIO.HIGH)
     time.sleep(constants.PUMP_PULSE_TIME)
     GPIO.output(constants.PUMP_PIN_NUMBER, GPIO.LOW)
+
+
+def _pulse_pump(num_pulses):
+    # 1000 Hz frequency is good
+    for i in range(num_pulses):
+        GPIO.output(constants.PUMP_PIN_NUMBER, GPIO.HIGH)
+        time.sleep(constants.PUMP_PULSE_TIME)
+        GPIO.output(constants.PUMP_PIN_NUMBER, GPIO.LOW)
 
 
 GPIO.cleanup()  # use this instead

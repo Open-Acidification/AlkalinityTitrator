@@ -11,8 +11,8 @@ import time
 
 def test():
     initialize_components()
-    analysis.write_json(analysis.DATA_PATH+'calibration_data.json', 
-                        constants.calibrated_pH)
+    analysis.write_json('calibration_data.json',
+                        constants.calibration_data)
     while True:
         temp, res = interfaces.read_temperature()
         print('Temperature: {0:0.3f}C'.format(temp))
