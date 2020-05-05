@@ -1,5 +1,6 @@
 """Functions to interface with sensors and peripherals"""
 import constants
+import analysis
 # for pH sensor
 import adafruit_ads1x15.ads1015 as ads
 import adafruit_ads1x15.analog_in as analog_in
@@ -66,11 +67,11 @@ def read_user_input(valid_inputs=None):
 
 # def read_pH():
 #     """Reads calibration-adjusted value for pH"""
-#     global ph_input_channel
-#     volts = ph_input_channel.voltage / 10
-#     pH_val = constants.calibrated_pH['measured'][0]+ constants.calibrated_pH['slope'] * \
-#              (volts - constants.calibrated_pH['measured'][0])
+#     volts = read_raw_pH()
+#     temp = read_temperature()[0]
+#     pH_val = analysis.calculate_pH(volts, temp)
 #     return pH_val
+
 
 def read_pH():
     """TEMP FUNCTION until I can test pH"""
@@ -79,13 +80,13 @@ def read_pH():
 
 
 def read_raw_pH():
-    """Reads and returns the pH value from GPIO"""
+    """Reads and returns the pH value from GPIO as volts"""
     # Read pH registers; pH_val is raw value from pH probe
     volts = ph_input_channel.voltage
     diff = volts / 9.7
     volts = volts / 10
     # percent_diff = (diff - volts)/volts*100
-    return volts, diff  # , percent_diff
+    return volts  # , percent_diff
 
 
 def read_temperature():

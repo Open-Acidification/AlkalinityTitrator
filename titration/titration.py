@@ -17,7 +17,7 @@ def test():
         temp, res = interfaces.read_temperature()
         print('Temperature: {0:0.3f}C'.format(temp))
         print('Resistance: {0:0.3f} Ohms'.format(res))
-        #time.sleep(constants.SLEEP_TIME)
+        #time.sleep(constants.TITRATION_WAIT_TIME)
 
 
 def run():

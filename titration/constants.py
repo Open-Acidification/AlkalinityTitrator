@@ -23,21 +23,28 @@ KEY_8 = 18
 KEY_9 = 19
 # for pH calibration constants
 calibrated_pH = {
-    'measured': [None, None],
-    'actual': [None, None],
+    'measured_volts': [None, None],
+    'actual_pH': [None, None],
     'slope': None
 }
 # temp
 calibrated_ref_resistor_value = 4300.0
 nominal_resistance = 1000.0
+# pH
+UNIVERSAL_GAS_CONST = 8.31447215
+FARADAY_CONST = 96485.33212
+CELSIUS_TO_KELVIN = 273.15
 # titration routine
-TARGET_TEMP = 0.0  # degrees C
-TARGET_PH = 3.0
-TEMPERATURE_ACCURACY = 0.5
+TARGET_TEMP = 25.0  # degrees C
+INITIAL_TARGET_PH = 3.5
+FINAL_TARGET_PH = 3.0
+TEMPERATURE_ACCURACY = 0.25
 STABILIZATION_CONSTANT = 0.1  # how much the pH is allowed to change between measurements to ensure the value is stable
 PH_ACCURACY = 0.05
-SLEEP_TIME = 1
-INCREMENT_AMOUNT = 0.5
+TITRATION_WAIT_TIME = 1
+INCREMENT_AMOUNT = 0.05
+
+TARGET_STD_DEVIATION = 0.010
 # pump
 PUMP_PIN_NUMBER = 24
 PUMP_PULSE_TIME = 1  # seconds

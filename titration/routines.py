@@ -8,7 +8,10 @@ import time
 def run_routine(selection):
     """Runs routine based on input"""
     if selection == '1':
-        titration(constants.TARGET_PH, constants.INCREMENT_AMOUNT)
+        # initial titration
+        titration(constants.INITIAL_TARGET_PH, constants.INCREMENT_AMOUNT, 10 * 60)
+        # 3.5 -> 3.0
+        titration(constants.FINAL_TARGET_PH, constants.INCREMENT_AMOUNT)
     elif selection == '2':
         calibration()
     elif selection == '3':
@@ -41,32 +44,32 @@ def _calibrate_pH():
     """Routine for calibrating pH sensor"""
     # get first buffer pH
     interfaces.lcd_out('Enter buffer pH')
-    actual_buffer_pH1 = float(interfaces.read_user_input())
+    buffer1_actual_pH = float(interfaces.read_user_input())
     # TODO wait until user hits another key to stop reading pH and use the value of pH on key press?
     interfaces.lcd_out('Lower sensor into buffer, and press enter to record value')
     input()  # to make the program wait indefinitely for the user to press enter
-    measured_buffer_pH1 = float(interfaces.read_raw_pH()[0])
-    interfaces.lcd_out("Recorded pH: {}".format(measured_buffer_pH1))
+    buffer1_measured_volts = float(interfaces.read_raw_pH()[0])
+    interfaces.lcd_out("Recorded pH: {}".format(buffer1_measured_volts))
 
     # get second buffer pH
     interfaces.lcd_out('Enter second buffer pH')
-    actual_buffer_pH2 = float(interfaces.read_user_input())
+    buffer2_actual_pH = float(interfaces.read_user_input())
     # TODO wait until user hits another key to stop reading pH and use the value of pH on key press?
     interfaces.lcd_out('Lower sensor into buffer, and press enter to record value')
     input()  # to make the program wait indefinitely for the user to press enter
-    measured_buffer_pH2 = float(interfaces.read_raw_pH()[0])
-    interfaces.lcd_out("Recorded pH: {}".format(measured_buffer_pH2))
+    buffer2_measured_volts = float(interfaces.read_raw_pH()[0])
+    interfaces.lcd_out("Recorded pH: {}".format(buffer2_measured_volts))
 
     # set calibration constants
-    constants.calibrated_pH['measured'][0] = min(measured_buffer_pH1, measured_buffer_pH2)
-    constants.calibrated_pH['measured'][1] = max(measured_buffer_pH1, measured_buffer_pH2)
-    constants.calibrated_pH['actual'][0] = min(actual_buffer_pH1, actual_buffer_pH2)
-    constants.calibrated_pH['actual'][1] = max(actual_buffer_pH1, actual_buffer_pH2)
-    constants.calibrated_pH['slope'] = float((constants.calibrated_pH['actual'][1] -
-                                              constants.calibrated_pH['actual'][0]) /
-                                             (constants.calibrated_pH['measured'][1] -
-                                              constants.calibrated_pH['measured'][0]))
-    # return measured_buffer_pH1, measured_buffer_pH2, actual_buffer_pH1, actual_buffer_pH2
+    constants.calibrated_pH['measured_volts'][0] = min(buffer1_measured_volts, buffer2_measured_volts)
+    constants.calibrated_pH['measured_volts'][1] = max(buffer1_measured_volts, buffer2_measured_volts)
+    constants.calibrated_pH['actual_pH'][0] = min(buffer1_actual_pH, buffer2_actual_pH)
+    constants.calibrated_pH['actual_pH'][1] = max(buffer1_actual_pH, buffer2_actual_pH)
+    constants.calibrated_pH['slope'] = float((constants.calibrated_pH['actual_pH'][1] -
+                                              constants.calibrated_pH['actual_pH'][0]) /
+                                             (constants.calibrated_pH['measured_volts'][1] -
+                                              constants.calibrated_pH['measured_volts'][0]))
+    # return buffer1_measured_volts, buffer2_measured_volts, buffer1_actual_pH, buffer2_actual_pH
 
 
 def _calibrate_temperature():
@@ -88,43 +91,52 @@ def _calibrate_temperature():
     interfaces.setup_interfaces()
 
 
-def titration(pH_target, solution_increment_amount):
+def titration(pH_target, solution_increment_amount, degas_time=0):
     '''Incrementally adds HCl depending on the input parameters, until target pH is reached
     '''
     # NOTE If increment value is 20, don't want to add that again to get it close to 3.5...
 
     # Current pH level; calculated from pH monitor readings
     pH_old = interfaces.read_pH()
-    pH_values = []  # keep track of 10 most recent pH values to ensure pH is stable
+    # keep track of 10 most recent pH values to ensure pH is stable 
+    pH_values = [pH_old] * 10
+    # a counter used for updating values in pH_values
+    pH_list_counter = 0
 
     # how many iterations should the pH value be close before breaking?
     while True:
-        pH_new = interfaces.read_pH()
-        interfaces.lcd_out("pH: {}".format(pH_new))
+        pH_reading = interfaces.read_pH()
         temp_reading = interfaces.read_temperature()[0]
-        interfaces.lcd_out("temp: {0:0.3f}C".format(temp_reading))
-        # measure temp from GPIO
-        # measure pH from GPIO
+        # interfaces.lcd_out("pH: {}".format(pH_new))
+        # interfaces.lcd_out("temp: {0:0.3f}C".format(temp))
+        pH_values[pH_list_counter] = pH_reading
 
         # make sure temperature within correct bounds; global value for all titrations
-        if (temp_reading - constants.TARGET_TEMP > constants.TEMPERATURE_ACCURACY):
-            print("TEMPERATURE ERROR MESSAGE")
-            break
-            # Does this invalidate experiment? If so, break out
+        if abs(temp_reading - constants.TARGET_TEMP) > constants.TEMPERATURE_ACCURACY:
+            print("TEMPERATURE OUT OF BOUNDS")
+            # TODO output to error log
             # Log error and alert user; write last data to file
+            # note: this does not invalidate the results, but should probably be taken into consideration
 
-        # ensure pH hasn't changed that much since last reading (might not be robust enough)
-        if (abs(pH_new - pH_old) < constants.STABILIZATION_CONSTANT):
-            if (abs(pH_new - pH_target) < constants.PH_ACCURACY):
+        if analysis.std_deviation(pH_values) < constants.TARGET_STD_DEVIATION:
+            if analysis.calculate_mean(pH_values) - pH_target < constants.PH_ACCURACY:
+                # pH is close or at target; exit while loop
                 break
             interfaces.dispense_HCl(solution_increment_amount)
-        pH_old = pH_new
+
+        # check last pH value against current (might not be needed with std deviation test)
+        # if abs(pH_new - pH_old) < constants.STABILIZATION_CONSTANT:
+        #     if abs(pH_new - pH_target) < constants.PH_ACCURACY:
+        #         break
+        #     interfaces.dispense_HCl(solution_increment_amount)
+        # pH_old = pH_new
 
         # TODO store temp, pH values or immediately write to file (might be slow)
         # Write to raw data file and (more usable) data file?
-        time.sleep(constants.SLEEP_TIME)
+        time.sleep(constants.TITRATION_WAIT_TIME)
+        pH_list_counter = 0 if pH_list_counter >= 9 else pH_list_counter + 1
 
-    # TODO add de-gas time?
+    time.sleep(degas_time)
 
     # while (current_pH - constants.TARGET_PH) > constants.PH_ACCURACY:
     #     # TODO
