@@ -34,7 +34,7 @@ def _read_json(file_name):
 # calibration
 def setup_calibration():
     """Sets calibration constants from persistent storage"""
-    data = _read_json(constants.DATA_PATH + constants.CALIBRATION_FILENAME)
+    data = _read_json(constants.CALIBRATION_FILENAME)
     constants.PH_SLOPE = data['pH']['slope']
     constants.PH_REF_VOLTAGE = data['pH']['ref_voltage']
     constants.PH_REF_PH = data['pH']['ref_pH']
