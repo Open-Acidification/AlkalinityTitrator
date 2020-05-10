@@ -8,8 +8,7 @@ import analysis
 
 def test():
     initialize_components()
-    analysis.write_json('calibration_data.json',
-                        constants.calibration_data)
+    analysis.write_json('calibration_data.json', constants.calibration_data)
     while True:
         temp, res = interfaces.read_temperature()
         print('Temperature: {0:0.3f}C'.format(temp))
@@ -18,10 +17,8 @@ def test():
 
 
 def run():
-    # Default program
     # initialize components
     initialize_components()
-    # While loop to continuously prompt user?
     # output prompt to LCD screen
     routine_selection = '0'
     while routine_selection != '5':
