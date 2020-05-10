@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b11793fc051b85134dcd142d75ee848defe23265c4f6d399d33d09d58c191c6b"
+            "sha256": "b6189459957aef6ce6c5540640fb11f126a946a8f0c997bf97c591f79a7da054"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -18,34 +18,49 @@
     "default": {
         "adafruit-blinka": {
             "hashes": [
-                "sha256:633519e30f56bf65837bfe43b146932917721a4826198d22e4dc38895a6575d2"
+                "sha256:1254c70430f7dfb4e0a74825d040bcab2d01cedf91e480f7fb580fe30aa32570"
             ],
-            "version": "==4.0.0"
+            "index": "pypi",
+            "version": "==4.3.0"
+        },
+        "adafruit-circuitpython-ads1x15": {
+            "hashes": [
+                "sha256:1170211dea7cdb15690e0b637b27131b0896fb5fb450a43381677caf9bdb2546"
+            ],
+            "index": "pypi",
+            "version": "==2.2.0"
         },
         "adafruit-circuitpython-busdevice": {
             "hashes": [
-                "sha256:3eb93c6a78afb2f1c7910b6bf99754106991cd2f162ec34cff90cd4517f0ba7b"
+                "sha256:3a1649478bfe8772f90f1867f5a244e0957d1885433dc431e11d39096647c677"
             ],
-            "version": "==4.2.1"
+            "version": "==4.3.0"
+        },
+        "adafruit-circuitpython-lis3dh": {
+            "hashes": [
+                "sha256:d26b91d9af423f7e4ad8dc7cc02664eba72de98d7145e9f7a6e6744ad22548d8"
+            ],
+            "index": "pypi",
+            "version": "==5.1.0"
         },
         "adafruit-circuitpython-max31865": {
             "hashes": [
-                "sha256:158dce6c6c84d3df27d98619cf0100af858b0dd79205c843449890669a35b651"
+                "sha256:7ddc305a5523a0a84b00f9e2879ba6e3e66f1db29a96ca33283e06d31f65569d"
             ],
             "index": "pypi",
-            "version": "==2.1.4"
+            "version": "==2.2.1"
         },
         "adafruit-platformdetect": {
             "hashes": [
-                "sha256:82e0746096fe0e32cd6a6acb66742ea3dbe7eb3143aca557077bb69b6c3fe15f"
+                "sha256:bf446f8365cdf0a87d4bf6620e70bd59da99b0523c2111f0dc74a1155236ff61"
             ],
-            "version": "==2.2.0"
+            "version": "==2.5.0"
         },
         "adafruit-pureio": {
             "hashes": [
-                "sha256:b67587ed3c4dc90bd0e9b988587efa66b4466abf71eb0dcbcd4695e7e4350326"
+                "sha256:7f3384a2cedb3f9d1b0d3f0f8424e47ac53157235514d8d936703139c63cfd45"
             ],
-            "version": "==1.0.4"
+            "version": "==1.1.0"
         },
         "colorzero": {
             "hashes": [
@@ -62,11 +77,27 @@
             "index": "pypi",
             "version": "==1.5.1"
         },
+        "pad4pi": {
+            "hashes": [
+                "sha256:fa855896a1793d0005cf810ed5aa7aa639984cb83dc50cba51b4236b8badb764"
+            ],
+            "index": "pypi",
+            "version": "==1.1.5"
+        },
+        "pep8": {
+            "hashes": [
+                "sha256:b22cfae5db09833bb9bd7c8463b53e1a9c9b39f12e304a8d0bba729c501827ee",
+                "sha256:fe249b52e20498e59e0b5c5256aa52ee99fc295b26ec9eaa85776ffdb9fe6374"
+            ],
+            "index": "pypi",
+            "version": "==1.7.1"
+        },
         "pyftdi": {
             "hashes": [
-                "sha256:958911cc67c0ee7a5df0d013202c79d90f2bd2fa1ac546f77982b407d5decff4"
+                "sha256:7d617fbf4973452f73349383454aaec6eee298bb0789686c34b9c346c717d7db",
+                "sha256:be03977320abb31ab8be35f95bdd82fdfbef22288a63e78c0676353e06a73099"
             ],
-            "version": "==0.44.0"
+            "version": "==0.50.0"
         },
         "pyserial": {
             "hashes": [
@@ -80,6 +111,13 @@
                 "sha256:4e9b72cc4a4205ca64fbf1f3fff39a335512166c151ad103e55c8223ac147362"
             ],
             "version": "==1.0.2"
+        },
+        "rpi.gpio": {
+            "hashes": [
+                "sha256:7424bc6c205466764f30f666c18187a0824077daf20b295c42f08aea2cb87d3f"
+            ],
+            "index": "pypi",
+            "version": "==0.7.0"
         },
         "smbus2": {
             "hashes": [

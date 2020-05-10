@@ -4,32 +4,21 @@ Author: Kaden Sukachevin
 Walla Walla University 
 '''
 # Libraries
-from time import sleep
+import time
 from datetime import datetime
 
-# Keypad
-from pad4pi import rpi_gpio
+# for pH sensor
+import adafruit_ads1x15.ads1015 as ADS
+from adafruit_ads1x15.analog_in import AnalogIn
 
-import gpiozero as gpio
-
+# for max31865 temp sensor
 import board 
 import busio
 import digitalio
 import adafruit_max31865
 
-# for use with I2C
-import smbus2
-
-# CircuitPython? For communicating with PT1000 sensor
-# Before continuing make sure your board's lib folder or root filesystem has the adafruit_max31865.mpy, and adafruit_bus_device files and folders copied over.
-
-# Python script to continuously read data
-#!/usr/bin/python
-import spidev
-
-spi = spidev.SpiDev()
-spi.open(0, 0)  # spi port 0, device 0
-spi.max_speed_hz = 976000
+# keypad
+from pad4pi import rpi_gpio
 
 # CONSTANTS
 PH_ACCURACY = 0.01          # Needed accuracy for final pH level after titration
@@ -44,19 +33,16 @@ STIR_STOP = 0
 STIR_SLOW = 1
 STIR_FAST = 2
 
-# INITIALIZE PORTS
-
+####### SETUP #######
 # setup temperature sensor
 spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
 cs = digitalio.DigitalInOut(board.D5)
 sensor = adafruit_max31865.MAX31865(spi, cs, wires=3, rtd_nominal=1000.0, ref_resistor=4300.0)
 
-# Setup I2C bus (for use with pH probe)
-bus = smbus2.SMBus(0)
-pH_address = 0x60 # TODO run 'sudo i2cdetect -y 0' to get actual address
-
-# Register addresses; not sure why this is needed
-reg_pH = 0x00
+# setup pH sensor
+i2c = busio.I2C(board.SCL, board.SDA)
+adc = ADS.ADS1015(i2c, data_rate=920, gain=2)
+chan = AnalogIn(adc, ADS.P0, ADS.P1)
 
 # Setup Keypad
 KEYPAD = [
@@ -66,51 +52,66 @@ KEYPAD = [
         ["*","0","#","D"]
 ]
 
+# same as calling: factory.create_4_by_4_keypad, still we put here fyi:
+ROW_PINS = [26, 19, 13, 6] # BCM numbering
+COL_PINS = [5, 16, 20, 21] # BCM numbering
+
 factory = rpi_gpio.KeypadFactory()
-factory.create_4_by_4_keypad()
+
+# Try factory.create_4_by_3_keypad
+# and factory.create_4_by_4_keypad for reasonable defaults
+keypad = factory.create_keypad(keypad=KEYPAD, row_pins=ROW_PINS, col_pins=COL_PINS)
+
+
+####### FUNCTIONS #######
 
 def printKey(key):
-  print(key)
-  if (key=="1"):
-    print("number")
-  elif (key=="A"):
-    print("letter")
+    print(key)
+    if (key=="1"):
+        print("number")
+    elif (key=="A"):
+        print("letter")
 
-# printKey will be called each time a keypad button is pressed
-keypad.registerKeyPressHandler(printKey)
-
-
-test_readings()
-
-# Display options to the user (including starting titration)
-# run_options()
+def select_menu_option(key):
+    print(key)
 
 def test_readings():
     '''Test function to test data readings; prints temperature and pH readings every second'''
-    while True:
-        print(datetime.now())
-        print("Temperature readings: ")
-        temp, res = read_temperature()
-        print('Temperature: {0:0.3f}C'.format(temp))
-        print('Resistance: {0:0.3f} Ohms'.format(res))
+    # print("Ideal: {}\tActual: {}\tPercDiff: {}".format(volts, diff, percent_diff))
 
-        print("pH readings: ")
-        pH_val = read_pH()
-        print('Voltage: {0:0.3f}mV'.format(pH_val))
+    while True:
+        print("----------------")
+        print(datetime.now())
+        print("TEMP READINGS")
+        temp = read_temperature()
+        print('Temperature: {0:0.3f}C'.format(temp))
+
+        print("\nPH READINGS")
+        volts, diff = read_pH()
+        print('Voltage: {0:0.6f}V'.format(volts))
         time.sleep(1)
 
 def run_options():
     print("0. Run titration\n1. Calibrate\n2. Settings")  # user options upon startup of system
+    # printKey will be called each time a keypad button is pressed
+    keypad.registerKeyPressHandler(select_menu_options)
+
+    try:
+        while(True):
+            time.sleep(0.2)
+    except:
+        keypad.cleanup()
+
 
     # TODO read input from keypad; runMode based on user input
-    runMode = 0
+    # runMode = 0
 
-    if runMode == 0:
-        run_titration()
-    elif runMode == 1:
-        calibrate()
-    else:
-        edit_settings()
+    # if runMode == 0:
+    #     run_titration()
+    # elif runMode == 1:
+    #     calibrate()
+    # else:
+    #     edit_settings()
 
 
 def run_titration():
@@ -131,7 +132,7 @@ def calibrate():
     # TODO implement calibration routine 
 
 
-def edit_settings(setting1, setting2):
+def edit_settings():
     '''Updates settings with user input'''
     # TODO implement GUI allowing the user to edit certain titration values
 
@@ -151,7 +152,7 @@ def initial_titration(target_pH, current_pH, solution_weight, pH_molarity):
 
 def determine_addition_volume(target_pH, current_pH, solution_weight, pH_molarity):
     '''Function for determining how much vol cm^3 HCl should be added to get to the required pH value without passing it; returns 0 if no HCl should be added'''
-    return 
+    return 10
 
 
 def titrate(pH_target, solution_increment_amount):
@@ -197,8 +198,6 @@ def titrate(pH_target, solution_increment_amount):
         current_pH = new_pH
         # TODO write out data to csv file
 
-
-
 # GPIO in/out Functions
 
 def dispense_HCl(volume):
@@ -210,10 +209,12 @@ def dispense_HCl(volume):
 def read_pH():
     '''Reads and returns the pH value from GPIO'''
     # Read pH registers; pH_val is raw value from pH probe
-    pH_val = bus.read_i2c_block_data(pH_address, reg_pH, 2) 
-    # TODO check datasheet for pH probe to determine how many bits/bytes needed
+    volts = chan.voltage
+    diff = volts / 9.7
+    volts = volts / 10
+    #percent_diff = (diff - volts)/volts*100
 
-    return pH_val
+    return volts, diff #, percent_diff
 
 
 def convert_pH_to_voltage():
@@ -225,7 +226,8 @@ def read_temperature():
     '''Reads and returns the temperature from GPIO'''
     # print('Temperature: {0:0.3f}C'.format(sensor.temperature))
     # print('Resistance: {0:0.3f} Ohms'.format(sensor.resistance))
-    return sensor.temperature, sensor.resistance
+    
+    return sensor.temperature
 
 
 def stir(speed):
@@ -238,3 +240,7 @@ def stir(speed):
     msb = speed >> 8
     lsb = speed & 0xFF
     spi.xfer([msb, lsb])
+
+
+####### DRIVER CODE #######
+run_options()
