@@ -21,7 +21,7 @@ temp_sensor = None
 
 
 def setup_interfaces():
-    # global ph_input_channel, temp_sensor
+    global ph_input_channel, temp_sensor
     # setup pH sensor
     print("Setting up...")
     i2c = busio.I2C(board.SCL, board.SDA)
@@ -114,3 +114,7 @@ def _pulse_pump(num_pulses):
         time.sleep(constants.PUMP_PULSE_TIME)
 
 # GPIO.cleanup()  # use this instead
+
+
+if __name__ == "__main__":
+    dispense_HCl(0.05)
