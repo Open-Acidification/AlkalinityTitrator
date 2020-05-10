@@ -35,7 +35,7 @@ def initialize_components():
     """Function to initialize components"""
     # Should this go under interfaces?
     # GPIO.add_event_detect(constants.KEY_0, GPIO.RISING, events.handle)
-
+    analysis.setup_calibration()
     interfaces.setup_interfaces()
     # TODO load saved constants, such as calibration values
 
