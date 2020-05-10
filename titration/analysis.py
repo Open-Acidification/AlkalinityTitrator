@@ -34,7 +34,7 @@ def _read_json(file_name):
 # calibration
 def setup_calibration():
     """Sets calibration constants from persistent storage"""
-    data = _read_json(constants.DATA_PATH + constants.CALIBRATION_FILENAME)
+    data = _read_json(constants.CALIBRATION_FILENAME)
     constants.PH_SLOPE = data['pH']['slope']
     constants.PH_REF_VOLTAGE = data['pH']['ref_voltage']
     constants.PH_REF_PH = data['pH']['ref_pH']
@@ -71,8 +71,8 @@ def calculate_expected_resistance(temp):
 def calculate_pH(voltage, temp):
     """Calculates pH value from voltage"""
     temp_k = temp + constants.CELSIUS_TO_KELVIN
-    ref_voltage = min(constants.calibrated_pH['measured_volts'])
-    ref_pH = min(constants.calibrated_pH['actual_pH'])
+    ref_voltage = constants.PH_REF_VOLTAGE
+    ref_pH = constants.PH_REF_PH
     return ref_pH + (ref_voltage/1000 - voltage/1000)/(constants.UNIVERSAL_GAS_CONST * temp_k * math.log10(10)/constants.FARADAY_CONST)
 
 

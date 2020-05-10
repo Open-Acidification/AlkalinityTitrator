@@ -39,6 +39,7 @@ def calibration():
         _calibrate_pH()
     elif sensor_selection == '2':
         _calibrate_temperature()
+    analysis.save_calibration_data()
 
 
 def _calibrate_pH():
@@ -65,7 +66,6 @@ def _calibrate_pH():
     constants.PH_SLOPE = float((buffer2_actual_pH - buffer1_actual_pH) / (buffer2_measured_volts - buffer1_measured_volts))
     constants.PH_REF_VOLTAGE = min(buffer1_measured_volts, buffer2_measured_volts)
     constants.PH_REF_PH = min(buffer1_actual_pH, buffer2_actual_pH)
-    analysis.save_calibration_data()
 
 
 def _calibrate_temperature():
@@ -85,8 +85,6 @@ def _calibrate_temperature():
     # reinitialize sensors with calibrated values
     print(new_ref_resistance)
     interfaces.setup_interfaces()
-
-    analysis.save_calibration_data()
 
 
 def titration(pH_target, solution_increment_amount, degas_time=0):

@@ -24,7 +24,7 @@ KEY_9 = 19
 # for pH calibration constants
 calibration_data_format = {
     'pH': {
-        'ref_voltage': None,
+        'ref_voltage': 200,
         'ref_pH': None,
         'slope': None
     },
@@ -48,9 +48,9 @@ UNIVERSAL_GAS_CONST = 8.31447215
 FARADAY_CONST = 96485.33212
 CELSIUS_TO_KELVIN = 273.15
 # pH calibration values
-PH_SLOPE = None
-PH_REF_VOLTAGE = None
-PH_REF_PH = None
+PH_SLOPE = 59  # note: not sure we need or care about this with how we're currently calculating pH
+PH_REF_VOLTAGE = 200  # todo these are bad values for defaults
+PH_REF_PH = 7  # todo these are bad values for defaults
 # titration routine
 TARGET_TEMP = 25.0  # degrees C
 INITIAL_TARGET_PH = 3.5
@@ -64,8 +64,8 @@ INCREMENT_AMOUNT = 0.05
 TARGET_STD_DEVIATION = 0.010
 # pump
 PUMP_PIN_NUMBER = 24
-PUMP_PULSE_TIME = 0.01  # seconds
-NUM_PULSES = {0.05 : 470}
+PUMP_PULSE_TIME = 0.0015  # seconds
+NUM_PULSES = {0.05 : 470}  # maps vol to number of pulses needed
 # data out
 DATA_PATH = 'data/'
 
