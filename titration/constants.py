@@ -64,7 +64,8 @@ INCREMENT_AMOUNT = 0.05
 TARGET_STD_DEVIATION = 0.010
 # pump
 PUMP_PIN_NUMBER = 24
-PUMP_PULSE_TIME = 0.001  # seconds
+PUMP_PULSE_TIME = 0.01  # seconds
+NUM_PULSES = {0.05 : 470}
 # data out
 DATA_PATH = 'data/'
 

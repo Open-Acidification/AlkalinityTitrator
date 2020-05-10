@@ -4,9 +4,6 @@ import interfaces
 import routines
 import constants
 import analysis
-import events
-# import RPI.GPIO as GPIO
-import time
 
 
 def test():

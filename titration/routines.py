@@ -65,18 +65,7 @@ def _calibrate_pH():
     constants.PH_SLOPE = float((buffer2_actual_pH - buffer1_actual_pH) / (buffer2_measured_volts - buffer1_measured_volts))
     constants.PH_REF_VOLTAGE = min(buffer1_measured_volts, buffer2_measured_volts)
     constants.PH_REF_PH = min(buffer1_actual_pH, buffer2_actual_pH)
-
     analysis.save_calibration_data()
-
-    # constants.calibrated_pH['measured_volts'][0] = min(buffer1_measured_volts, buffer2_measured_volts)
-    # constants.calibrated_pH['measured_volts'][1] = max(buffer1_measured_volts, buffer2_measured_volts)
-    # constants.calibrated_pH['actual_pH'][0] = min(buffer1_actual_pH, buffer2_actual_pH)
-    # constants.calibrated_pH['actual_pH'][1] = max(buffer1_actual_pH, buffer2_actual_pH)
-    # constants.calibrated_pH['slope'] = float((constants.calibrated_pH['actual_pH'][1] -
-    #                                           constants.calibrated_pH['actual_pH'][0]) /
-    #                                          (constants.calibrated_pH['measured_volts'][1] -
-    #                                           constants.calibrated_pH['measured_volts'][0]))
-    # return buffer1_measured_volts, buffer2_measured_volts, buffer1_actual_pH, buffer2_actual_pH
 
 
 def _calibrate_temperature():
@@ -138,13 +127,6 @@ def titration(pH_target, solution_increment_amount, degas_time=0):
                 break
             interfaces.dispense_HCl(solution_increment_amount)
             total_sol += solution_increment_amount
-
-        # check last pH value against current (might not be needed with std deviation test)
-        # if abs(pH_new - pH_old) < constants.STABILIZATION_CONSTANT:
-        #     if abs(pH_new - pH_target) < constants.PH_ACCURACY:
-        #         break
-        #     interfaces.dispense_HCl(solution_increment_amount)
-        # pH_old = pH_new
 
         # Record data point (temp, pH, total HCl)
         data.append((temp_reading, pH_reading, pH_volts, total_sol))

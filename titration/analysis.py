@@ -97,7 +97,6 @@ def write_titration_data(data):
     _write_csv(file_name, data)
 
 
-
 # testing
 if __name__ == "__main__":
     # print("Expected res = ", calculate_expected_resistance(0))
