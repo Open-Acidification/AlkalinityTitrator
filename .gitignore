@@ -1,2 +1,4 @@
 .vscode/
 notes.md
+titration/data
+*.pyc
