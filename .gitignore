@@ -2,3 +2,5 @@
 notes.md
 titration/data
 *.pyc
+*.csv
+titration/.idea

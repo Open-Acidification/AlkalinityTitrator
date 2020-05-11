@@ -12,7 +12,7 @@ def run_routine(selection):
         # initial titration
         # todo set stir speed slow
         interfaces.lcd_out("Stir speed: slow")
-        total_sol = titration(constants.INITIAL_TARGET_PH, constants.INCREMENT_AMOUNT, data, 0, 10 * 60)
+        total_sol = titration(constants.INITIAL_TARGET_PH, constants.INCREMENT_AMOUNT, data, 0, 1)
         # 3.5 -> 3.0
         # todo set stir speed fast
         interfaces.lcd_out("Stir speed: fast")
@@ -120,7 +120,7 @@ def titration(pH_target, solution_increment_amount, data, total_sol_added, degas
 
         # make sure temperature within correct bounds; global value for all titrations
         if abs(temp_reading - constants.TARGET_TEMP) > constants.TEMPERATURE_ACCURACY:
-            print("TEMPERATURE OUT OF BOUNDS")
+            interfaces.lcd_out("TEMPERATURE OUT OF BOUNDS")
             # TODO output to error log
             # Log error and alert user; write last data to file
 
@@ -142,7 +142,7 @@ def titration(pH_target, solution_increment_amount, data, total_sol_added, degas
         time.sleep(constants.TITRATION_WAIT_TIME)
 
     interfaces.lcd_out("Degassing " + str(degas_time) + " seconds...")
-    # time.sleep(degas_time)
+    time.sleep(degas_time)
     return total_sol
 
 
