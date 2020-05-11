@@ -11,9 +11,11 @@ def run_routine(selection):
         data = [('temperature', 'pH', 'pH volts', 'solution volume')]
         # initial titration
         # todo set stir speed slow
+        interfaces.lcd_out("Stir speed: slow")
         titration(constants.INITIAL_TARGET_PH, constants.INCREMENT_AMOUNT, data, 10 * 60)
         # 3.5 -> 3.0
         # todo set stir speed fast
+        interfaces.lcd_out("Stir speed: fast")
         titration(constants.FINAL_TARGET_PH, constants.INCREMENT_AMOUNT, data)
         # save data to csv
         print(data)  # for testing
@@ -78,7 +80,7 @@ def _calibrate_temperature():
     # TODO wait until user hits another key to stop reading pH and use the value of pH on key press?
     interfaces.lcd_out("What is temperature of the reference solution?")
     expected_temp = float(input())
-    interfaces.lcd_out('Lower temperature probe into sufficiently cooled water; hit enter when done')
+    interfaces.lcd_out('Lower temperature probe into reference solution; hit enter when done')
     input()  # to make the program wait indefinitely for the user to press enter
     expected_resistance = analysis.calculate_expected_resistance(expected_temp)
 
@@ -95,6 +97,7 @@ def _calibrate_temperature():
 def titration(pH_target, solution_increment_amount, data, degas_time=0):
     '''Incrementally adds HCl depending on the input parameters, until target pH is reached
     '''
+    interfaces.lcd_out("Titrating to a pH of " + str(pH_target))
     # total HCl added
     total_sol = 0
     # keep track of 10 most recent pH values to ensure pH is stable
@@ -108,8 +111,10 @@ def titration(pH_target, solution_increment_amount, data, degas_time=0):
     while True:
         pH_reading, pH_volts = interfaces.read_pH()
         temp_reading = interfaces.read_temperature()[0]
+        interfaces.lcd_out("pH: {}".format(pH_reading))
+        interfaces.lcd_out("temp: {0:0.3f}C".format(temp_reading))
         pH_values[pH_list_counter] = pH_reading
-        print(pH_reading)
+
         if pH_list_counter == 9:
             valid_num_values_tested = True
 
@@ -125,6 +130,7 @@ def titration(pH_target, solution_increment_amount, data, degas_time=0):
 
         if valid_num_values_tested and analysis.std_deviation(pH_values) < constants.TARGET_STD_DEVIATION:
             if analysis.calculate_mean(pH_values) - pH_target < constants.PH_ACCURACY:
+                interfaces.lcd_out("pH value reached")
                 # pH is close or at target; exit while loop
                 break
             interfaces.dispense_HCl(solution_increment_amount)
