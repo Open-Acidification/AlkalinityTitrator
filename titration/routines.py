@@ -11,10 +11,10 @@ def run_routine(selection):
         data = [('temperature', 'pH', 'pH volts', 'solution volume')]
         # initial titration
         # todo set stir speed slow
-        titration(constants.INITIAL_TARGET_PH, constants.INCREMENT_AMOUNT, data, 10 * 60)
+        total_sol = titration(constants.INITIAL_TARGET_PH, constants.INCREMENT_AMOUNT, data, 0, 10 * 60)
         # 3.5 -> 3.0
         # todo set stir speed fast
-        titration(constants.FINAL_TARGET_PH, constants.INCREMENT_AMOUNT, data)
+        titration(constants.FINAL_TARGET_PH, constants.INCREMENT_AMOUNT, data, total_sol)
         # save data to csv
         print(data)  # for testing
         analysis.write_titration_data(data)
@@ -92,11 +92,11 @@ def _calibrate_temperature():
     interfaces.setup_interfaces()
 
 
-def titration(pH_target, solution_increment_amount, data, degas_time=0):
+def titration(pH_target, solution_increment_amount, data, total_sol_added, degas_time=0):
     '''Incrementally adds HCl depending on the input parameters, until target pH is reached
     '''
     # total HCl added
-    total_sol = 0
+    total_sol = total_sol_added
     # keep track of 10 most recent pH values to ensure pH is stable
     pH_values = [0] * 10
     # a counter used for updating values in pH_values
@@ -135,8 +135,9 @@ def titration(pH_target, solution_increment_amount, data, degas_time=0):
 
         time.sleep(constants.TITRATION_WAIT_TIME)
 
-    interfaces.lcd_out("Degassing " + degas_time + " seconds...")
+    interfaces.lcd_out("Degassing " + str(degas_time) + " seconds...")
     # time.sleep(degas_time)
+    return total_sol
 
 
 def edit_settings():
