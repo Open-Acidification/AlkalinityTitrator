@@ -8,11 +8,16 @@ import time
 def run_routine(selection):
     """Runs routine based on input"""
     if selection == '1':
-        data = []
+        data = [('temperature', 'pH', 'pH volts', 'solution volume')]
         # initial titration
-        titration(constants.INITIAL_TARGET_PH, constants.INCREMENT_AMOUNT, 10 * 60)
+        # todo set stir speed slow
+        titration(constants.INITIAL_TARGET_PH, constants.INCREMENT_AMOUNT, data, 10 * 60)
         # 3.5 -> 3.0
-        titration(constants.FINAL_TARGET_PH, constants.INCREMENT_AMOUNT)
+        # todo set stir speed fast
+        titration(constants.FINAL_TARGET_PH, constants.INCREMENT_AMOUNT, data)
+        # save data to csv
+        print(data)  # for testing
+        analysis.write_titration_data(data)
     elif selection == '2':
         calibration()
     elif selection == '3':
@@ -87,22 +92,16 @@ def _calibrate_temperature():
     interfaces.setup_interfaces()
 
 
-def titration(pH_target, solution_increment_amount, degas_time=0, stir_speed=0):
+def titration(pH_target, solution_increment_amount, data, degas_time=0):
     '''Incrementally adds HCl depending on the input parameters, until target pH is reached
     '''
-    # List to store temp and pH data
-    data = [('temperature', 'pH', 'pH volts', 'solution volume')]
     # total HCl added
     total_sol = 0
-
-    # NOTE If increment value is 20, don't want to add that again to get it close to 3.5...
-
-    # Current pH level; calculated from pH monitor readings
-    pH_old = interfaces.read_pH()[0]
     # keep track of 10 most recent pH values to ensure pH is stable
-    pH_values = [pH_old] * 10
+    pH_values = [0] * 10
     # a counter used for updating values in pH_values
     pH_list_counter = 0
+    # flag to ensure at least 10 pH readings have been made before adding solution
     valid_num_values_tested = False
 
     # how many iterations should the pH value be close before breaking?
@@ -120,21 +119,23 @@ def titration(pH_target, solution_increment_amount, degas_time=0, stir_speed=0):
             # TODO output to error log
             # Log error and alert user; write last data to file
 
+        # Record data point (temp, pH, pH volts, total HCl)
+        data.append((temp_reading, pH_reading, pH_volts, total_sol))
+        pH_list_counter = 0 if pH_list_counter >= 9 else pH_list_counter + 1
+
         if valid_num_values_tested and analysis.std_deviation(pH_values) < constants.TARGET_STD_DEVIATION:
             if analysis.calculate_mean(pH_values) - pH_target < constants.PH_ACCURACY:
                 # pH is close or at target; exit while loop
                 break
             interfaces.dispense_HCl(solution_increment_amount)
             total_sol += solution_increment_amount
+            # reset pH verification variables
+            pH_list_counter = 0
             valid_num_values_tested = False
 
-        # Record data point (temp, pH, pH volts, total HCl)
-        data.append((temp_reading, pH_reading, pH_volts, total_sol))
-        pH_list_counter = 0 if pH_list_counter >= 9 else pH_list_counter + 1
         time.sleep(constants.TITRATION_WAIT_TIME)
 
-    print(data)  # for testing
-    analysis.write_titration_data(data)
+    interfaces.lcd_out("Degassing " + degas_time + " seconds...")
     # time.sleep(degas_time)
 
 
