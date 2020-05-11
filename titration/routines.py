@@ -87,7 +87,7 @@ def _calibrate_temperature():
     interfaces.setup_interfaces()
 
 
-def titration(pH_target, solution_increment_amount, degas_time=0):
+def titration(pH_target, solution_increment_amount, degas_time=0, stir_speed=0):
     '''Incrementally adds HCl depending on the input parameters, until target pH is reached
     '''
     # List to store temp and pH data
@@ -103,39 +103,41 @@ def titration(pH_target, solution_increment_amount, degas_time=0):
     pH_values = [pH_old] * 10
     # a counter used for updating values in pH_values
     pH_list_counter = 0
+    valid_num_values_tested = False
 
     # how many iterations should the pH value be close before breaking?
     while True:
         pH_reading, pH_volts = interfaces.read_pH()
         temp_reading = interfaces.read_temperature()[0]
-        # interfaces.lcd_out("pH: {}".format(pH_new))
-        # interfaces.lcd_out("temp: {0:0.3f}C".format(temp))
         pH_values[pH_list_counter] = pH_reading
         print(pH_reading)
+        if pH_list_counter == 9:
+            valid_num_values_tested = True
 
         # make sure temperature within correct bounds; global value for all titrations
         if abs(temp_reading - constants.TARGET_TEMP) > constants.TEMPERATURE_ACCURACY:
             print("TEMPERATURE OUT OF BOUNDS")
             # TODO output to error log
             # Log error and alert user; write last data to file
-            # note: this does not invalidate the results, but should probably be taken into consideration
 
-        if analysis.std_deviation(pH_values) < constants.TARGET_STD_DEVIATION:
+        if valid_num_values_tested and analysis.std_deviation(pH_values) < constants.TARGET_STD_DEVIATION:
             if analysis.calculate_mean(pH_values) - pH_target < constants.PH_ACCURACY:
                 # pH is close or at target; exit while loop
                 break
             interfaces.dispense_HCl(solution_increment_amount)
             total_sol += solution_increment_amount
+            valid_num_values_tested = False
 
-        # Record data point (temp, pH, total HCl)
+        # Record data point (temp, pH, pH volts, total HCl)
         data.append((temp_reading, pH_reading, pH_volts, total_sol))
-        time.sleep(constants.TITRATION_WAIT_TIME)
         pH_list_counter = 0 if pH_list_counter >= 9 else pH_list_counter + 1
+        time.sleep(constants.TITRATION_WAIT_TIME)
 
     print(data)  # for testing
     analysis.write_titration_data(data)
-    time.sleep(degas_time)
+    # time.sleep(degas_time)
 
 
 def edit_settings():
+    # TODO reset settings to default option
     pass
