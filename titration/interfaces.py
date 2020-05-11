@@ -1,5 +1,40 @@
-# Functions to interface with sensors and peripherals
+"""Functions to interface with sensors and peripherals"""
 import constants
+import analysis
+# for pH sensor
+import adafruit_ads1x15.ads1015 as ads
+import adafruit_ads1x15.analog_in as analog_in
+
+# for max31865 temp sensor
+import board
+import busio
+import digitalio
+import adafruit_max31865
+
+# for pump
+import RPi.GPIO as GPIO
+import time
+
+# global
+ph_input_channel = None
+temp_sensor = None
+
+
+def setup_interfaces():
+    global ph_input_channel, temp_sensor
+    # setup pH sensor
+    i2c = busio.I2C(board.SCL, board.SDA)
+    adc = ads.ADS1015(i2c, data_rate=920, gain=2)  # Todo: do we want a higher gain?
+    ph_input_channel = analog_in.AnalogIn(adc, ads.P0, ads.P1)
+
+    # setup temperature sensor
+    spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
+    cs = digitalio.DigitalInOut(board.D5)
+    temp_sensor = adafruit_max31865.MAX31865(spi, cs, wires=3, rtd_nominal=constants.TEMP_NOMINAL_RESISTANCE, ref_resistor=constants.TEMP_REF_RESISTANCE)
+
+    # setup pump
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(constants.PUMP_PIN_NUMBER, GPIO.OUT)
 
 
 def lcd_out(info):
@@ -29,27 +64,58 @@ def read_user_input(valid_inputs=None):
     return user_input
 
 
-# old but usable?
+def read_pH():
+    """Reads calibration-adjusted value for pH"""
+    volts = read_raw_pH()
+    temp = read_temperature()[0]
+    pH_val = analysis.calculate_pH(volts, temp)
+    return pH_val, volts
+
+
+# def read_pH():
+#     """TEMP FUNCTION until I can test pH"""
+#     constants.pH_call_iter += 1
+#     return constants.test_pH_vals[constants.hcl_call_iter][constants.pH_call_iter], 1
+
+
+def read_raw_pH():
+    """Reads and returns the pH value from GPIO as volts"""
+    # Read pH registers; pH_val is raw value from pH probe
+    volts = ph_input_channel.voltage
+    diff = volts / 9.7
+    volts = volts / 10
+    return volts
 
 
 def read_temperature():
     """Reads and returns the temperature from GPIO"""
     # print('Temperature: {0:0.3f}C'.format(sensor.temperature))
-    # print('Resistance: {0:0.3f} Ohms'.format(sensor.resistance))    
-    return sensor.temperature
-
-
-def read_pH():
-    """Reads and returns the pH value from GPIO"""
-    # Read pH registers; pH_val is raw value from pH probe
-    volts = chan.voltage
-    diff = volts / 9.7
-    volts = volts / 10
-    # percent_diff = (diff - volts)/volts*100
-    return volts, diff  # , percent_diff
+    # print('Resistance: {0:0.3f} Ohms'.format(sensor.resistance))
+    return temp_sensor.temperature, temp_sensor.resistance
 
 
 def dispense_HCl(volume):
     """Adds HCl to the solution"""
-    # stepper motor driver needed here; will likely connect to the Arduino
+    # TODO stepper motor driver needed here; will likely connect to the Arduino
     # NOTE should this wait for pH to settle instead of read_pH?
+    # constants.hcl_call_iter += 1  # value only used for testing while reading pH doesn't work
+    # print("{} ml HCL added".format(volume))
+    num_pulses = constants.NUM_PULSES[volume]
+    _pulse_pump(num_pulses)
+
+
+def _pulse_pump(num_pulses):
+    """Generates square waves"""
+    for i in range(num_pulses):
+        GPIO.output(constants.PUMP_PIN_NUMBER, GPIO.HIGH)
+        time.sleep(constants.PUMP_PULSE_TIME)
+        GPIO.output(constants.PUMP_PIN_NUMBER, GPIO.LOW)
+        time.sleep(constants.PUMP_PULSE_TIME)
+
+
+if __name__ == "__main__":
+    setup_interfaces()
+    start = time.time()
+    dispense_HCl(0.05)
+    end = time.time()
+    print("Time: ", end - start)
