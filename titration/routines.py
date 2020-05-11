@@ -18,7 +18,6 @@ def run_routine(selection):
         interfaces.lcd_out("Stir speed: fast")
         titration(constants.FINAL_TARGET_PH, constants.INCREMENT_AMOUNT, data, total_sol)
         # save data to csv
-        print(data)  # for testing
         analysis.write_titration_data(data)
     elif selection == '2':
         calibration()

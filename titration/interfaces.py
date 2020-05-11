@@ -34,7 +34,7 @@ def setup_interfaces():
     temp_sensor = adafruit_max31865.MAX31865(spi, cs, wires=3, rtd_nominal=constants.TEMP_NOMINAL_RESISTANCE, ref_resistor=constants.TEMP_REF_RESISTANCE)
 
     # setup pump
-    GPIO.setmode(GPIO.BOARD)
+    GPIO.setmode(GPIO.BCM)
     GPIO.setup(constants.PUMP_PIN_NUMBER, GPIO.OUT)
 
 
