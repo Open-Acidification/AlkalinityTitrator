@@ -98,7 +98,7 @@ def titration(pH_target, solution_increment_amount, degas_time=0):
     # NOTE If increment value is 20, don't want to add that again to get it close to 3.5...
 
     # Current pH level; calculated from pH monitor readings
-    pH_old = interfaces.read_pH()
+    pH_old = interfaces.read_pH()[0]
     # keep track of 10 most recent pH values to ensure pH is stable
     pH_values = [pH_old] * 10
     # a counter used for updating values in pH_values
@@ -111,6 +111,7 @@ def titration(pH_target, solution_increment_amount, degas_time=0):
         # interfaces.lcd_out("pH: {}".format(pH_new))
         # interfaces.lcd_out("temp: {0:0.3f}C".format(temp))
         pH_values[pH_list_counter] = pH_reading
+        print(pH_reading)
 
         # make sure temperature within correct bounds; global value for all titrations
         if abs(temp_reading - constants.TARGET_TEMP) > constants.TEMPERATURE_ACCURACY:
@@ -132,7 +133,7 @@ def titration(pH_target, solution_increment_amount, degas_time=0):
         pH_list_counter = 0 if pH_list_counter >= 9 else pH_list_counter + 1
 
     print(data)  # for testing
-    analysis.write_csv(data)
+    analysis.write_titration_data(data)
     time.sleep(degas_time)
 
 
