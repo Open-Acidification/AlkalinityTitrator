@@ -98,7 +98,7 @@ def titration(pH_target, solution_increment_amount, degas_time=0):
     # NOTE If increment value is 20, don't want to add that again to get it close to 3.5...
 
     # Current pH level; calculated from pH monitor readings
-    pH_old = interfaces.read_pH()
+    pH_old = interfaces.read_pH()[0]
     # keep track of 10 most recent pH values to ensure pH is stable
     pH_values = [pH_old] * 10
     # a counter used for updating values in pH_values

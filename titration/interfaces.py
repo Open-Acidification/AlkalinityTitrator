@@ -2,7 +2,7 @@
 import constants
 import analysis
 # for pH sensor
-import adafruit_ads1x15.ads1015 as ads
+import adafruit_ads1x15.ads1115 as ADS
 import adafruit_ads1x15.analog_in as analog_in
 
 # for max31865 temp sensor
@@ -22,18 +22,19 @@ temp_sensor = None
 
 def setup_interfaces():
     global ph_input_channel, temp_sensor
-    # setup pH sensor
+    # setup pH probe
     i2c = busio.I2C(board.SCL, board.SDA)
-    adc = ads.ADS1015(i2c, data_rate=920, gain=2)  # Todo: do we want a higher gain?
-    ph_input_channel = analog_in.AnalogIn(adc, ads.P0, ads.P1)
+    ads = ADS.ADS(i2c)
+    ph_input_channel = analog_in.AnalogIn(ads, ADS.P0, ADS.P1)
+    ads.gain = 2
 
-    # setup temperature sensor
+    # setup temperature probe
     spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
     cs = digitalio.DigitalInOut(board.D5)
     temp_sensor = adafruit_max31865.MAX31865(spi, cs, wires=3, rtd_nominal=constants.TEMP_NOMINAL_RESISTANCE, ref_resistor=constants.TEMP_REF_RESISTANCE)
 
     # setup pump
-    GPIO.setmode(GPIO.BCM)
+    GPIO.setmode(GPIO.BOARD)
     GPIO.setup(constants.PUMP_PIN_NUMBER, GPIO.OUT)
 
 

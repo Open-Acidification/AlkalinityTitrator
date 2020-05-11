@@ -63,7 +63,7 @@ INCREMENT_AMOUNT = 0.05
 
 TARGET_STD_DEVIATION = 0.010
 # pump
-PUMP_PIN_NUMBER = 24
+PUMP_PIN_NUMBER = 13
 PUMP_PULSE_TIME = 0.0015  # seconds
 NUM_PULSES = {0.05 : 470}  # maps vol to number of pulses needed
 # data out
