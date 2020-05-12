@@ -56,8 +56,8 @@ def _calibrate_pH():
     # TODO wait until user hits another key to stop reading pH and use the value of pH on key press?
     interfaces.lcd_out('Lower sensor into buffer, and press enter to record value')
     input()  # to make the program wait indefinitely for the user to press enter
-    buffer1_measured_volts = float(interfaces.read_raw_pH()[0])
-    interfaces.lcd_out("Recorded pH: {}".format(buffer1_measured_volts))
+    buffer1_measured_volts = float(interfaces.read_raw_pH())
+    interfaces.lcd_out("Recorded volts for pH {}: {}".format(buffer1_actual_pH, buffer1_measured_volts))
 
     # get second buffer pH
     interfaces.lcd_out('Enter second buffer pH')
@@ -65,8 +65,8 @@ def _calibrate_pH():
     # TODO wait until user hits another key to stop reading pH and use the value of pH on key press?
     interfaces.lcd_out('Lower sensor into buffer, and press enter to record value')
     input()  # to make the program wait indefinitely for the user to press enter
-    buffer2_measured_volts = float(interfaces.read_raw_pH()[0])
-    interfaces.lcd_out("Recorded pH: {}".format(buffer2_measured_volts))
+    buffer2_measured_volts = float(interfaces.read_raw_pH())
+    interfaces.lcd_out("Recorded volts for pH {}: {}".format(buffer2_actual_pH, buffer2_measured_volts))
 
     # set calibration constants
     constants.PH_SLOPE = float((buffer2_actual_pH - buffer1_actual_pH) / (buffer2_measured_volts - buffer1_measured_volts))

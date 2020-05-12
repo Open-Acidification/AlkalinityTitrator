@@ -26,20 +26,26 @@ def write_json(file_name, data):
 
 def _read_json(file_name):
     """Reads from json; returns data"""
-    with open(file_name) as json_file:
-        data = json.load(json_file)
-        return data
+    try:
+        with open(file_name) as json_file:
+            data = json.load(json_file)
+            return data
+    except FileNotFoundError:
+        return None
 
 
 # calibration
 def setup_calibration():
     """Sets calibration constants from persistent storage"""
     data = _read_json(constants.CALIBRATION_FILENAME)
-    constants.PH_SLOPE = data['pH']['slope']
-    constants.PH_REF_VOLTAGE = data['pH']['ref_voltage']
-    constants.PH_REF_PH = data['pH']['ref_pH']
-    constants.TEMP_REF_RESISTANCE = data['temp']['ref_resistance']
-    constants.TEMP_NOMINAL_RESISTANCE = data['temp']['nominal_resistance']
+    if data:
+        constants.PH_SLOPE = data['pH']['slope']
+        constants.PH_REF_VOLTAGE = data['pH']['ref_voltage']
+        constants.PH_REF_PH = data['pH']['ref_pH']
+        constants.TEMP_REF_RESISTANCE = data['temp']['ref_resistance']
+        constants.TEMP_NOMINAL_RESISTANCE = data['temp']['nominal_resistance']
+    else:
+        save_calibration_data()
 
 
 def save_calibration_data():
