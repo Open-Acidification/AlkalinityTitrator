@@ -42,6 +42,14 @@ To install RPI.GPIO:
 ```
 $ sudo apt-get install rpi.gpio
 ```
+Next, create a virtual environment and install libraries (make sure you're in the ```alkalinity-titrator``` directory)
+```
+$ pipenv install 
+```
+Activate virtual environment
+``` 
+$ pipenv shell
+```
 
 ## User Instructions
 
