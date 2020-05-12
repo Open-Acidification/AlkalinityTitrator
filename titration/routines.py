@@ -147,4 +147,5 @@ def titration(pH_target, solution_increment_amount, data, total_sol_added, degas
 
 def edit_settings():
     # TODO reset settings to default option
+
     pass
