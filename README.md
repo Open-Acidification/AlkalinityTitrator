@@ -46,13 +46,17 @@ Next, create a virtual environment and install libraries (make sure you're in th
 ```
 $ pipenv install 
 ```
-Activate virtual environment
+
+## User Instructions
+Activate the virtual environment
 ``` 
 $ pipenv shell
 ```
-
-## User Instructions
-
+To run the program, navigate to ```alkalinity-titrator/titration``` and
+```
+$ python titration.py
+```
+Follow the user prompts and you're good to go!
 
 ## Libraries
 1. Circuit Python - https://github.com/adafruit/Adafruit_CircuitPython_MAX31865 
