@@ -1,5 +1,3 @@
-# Main driver function for everything
-# initializations, calling other functions
 import interfaces
 import routines
 import constants
@@ -7,6 +5,7 @@ import analysis
 
 
 def test():
+    """Function for running specific tests for the program"""
     initialize_components()
     analysis.write_json('calibration_data.json', constants.calibration_data)
     while True:
@@ -17,6 +16,7 @@ def test():
 
 
 def run():
+    """Main driver for the program. Initializes components and queries the user for next steps"""
     # initialize components
     initialize_components()
     # output prompt to LCD screen
@@ -29,12 +29,9 @@ def run():
 
 
 def initialize_components():
-    """Function to initialize components"""
-    # Should this go under interfaces?
-    # GPIO.add_event_detect(constants.KEY_0, GPIO.RISING, events.handle)
+    """Initializes external interfaces and saved calibration data"""
     analysis.setup_calibration()
     interfaces.setup_interfaces()
-    # TODO load saved constants, such as calibration values
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 """Functions to interface with sensors and peripherals"""
 import constants
 import analysis
+
 # for pH sensor
 import adafruit_ads1x15.ads1115 as ADS
 import adafruit_ads1x15.analog_in as analog_in
@@ -15,47 +16,59 @@ import adafruit_max31865
 import RPi.GPIO as GPIO
 import time
 
-# global
+# global, pH and temperature probes
 ph_input_channel = None
 temp_sensor = None
 
 
 def setup_interfaces():
+    """Initializes components for interfacing with pH probe, temperature probe, and stepper motor/syringe pump"""
     global ph_input_channel, temp_sensor
-    # setup pH probe
+    # pH probe setup
     i2c = busio.I2C(board.SCL, board.SDA)
     ads = ADS.ADS(i2c)
     ph_input_channel = analog_in.AnalogIn(ads, ADS.P0, ADS.P1)
     ads.gain = 2
 
-    # setup temperature probe
+    # temperature probe setup
     spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
     cs = digitalio.DigitalInOut(board.D5)
-    temp_sensor = adafruit_max31865.MAX31865(spi, cs, wires=3, rtd_nominal=constants.TEMP_NOMINAL_RESISTANCE, ref_resistor=constants.TEMP_REF_RESISTANCE)
+    temp_sensor = adafruit_max31865.MAX31865(spi=spi,
+                                             cs=cs,
+                                             wires=3,
+                                             rtd_nominal=constants.TEMP_NOMINAL_RESISTANCE,
+                                             ref_resistor=constants.TEMP_REF_RESISTANCE)
 
-    # setup pump
+    # pump setup
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(constants.PUMP_PIN_NUMBER, GPIO.OUT)
 
 
 def lcd_out(info):
-    """Outputs given string to LCD screen"""
-    # TODO interface with LCD; for now, print to console
+    """
+    Outputs given string to LCD screen
+    :param info: string to be displayed on LCD screen
+    """
+    # TODO output to actual LCD screen
     print(info)
 
 
 def display_list(list_to_display):
-    """Display a list of options"""
-    # NOTE this may need to be updated based on how the LCD actually displays
-    # characters
+    """
+    Display a list of options
+    :param list_to_display: list to be displayed on LCD screen
+    """
     for key, value in list_to_display.items():
         lcd_out(str(key) + '. ' + value)
 
 
 def read_user_input(valid_inputs=None):
-    """Reads user input from keypad"""
+    """
+    Reads user input from keypad
+    :param valid_inputs: optional, valid inputs from the user
+    :return: user input selection
+    """
     # TODO interface with keypad
-    # TODO verify input through valid_inputs parameter?
     # Temporarily query user input from terminal
     while True:
         user_input = input()
@@ -66,11 +79,14 @@ def read_user_input(valid_inputs=None):
 
 
 def read_pH():
-   """Reads calibration-adjusted value for pH"""
-   volts = read_raw_pH()
-   temp = read_temperature()[0]
-   pH_val = analysis.calculate_pH(volts, temp)
-   return pH_val, volts
+    """
+    Reads calibration-adjusted value for pH
+    :returns: adjusted pH value in units of pH, raw mV reading from probe
+    """
+    volts = read_raw_pH()
+    temp = read_temperature()[0]
+    pH_val = analysis.calculate_pH(volts, temp)
+    return pH_val, volts
 
 
 # def read_pH():
@@ -80,7 +96,10 @@ def read_pH():
 
 
 def read_raw_pH():
-    """Reads and returns the pH value from GPIO as volts"""
+    """
+    Reads and pH value pH probe in mV
+    :return: raw mV reading from probe
+    """
     # Read pH registers; pH_val is raw value from pH probe
     volts = ph_input_channel.voltage
     diff = volts / 9.7
@@ -89,7 +108,10 @@ def read_raw_pH():
 
 
 def read_temperature():
-    """Reads and returns the temperature from GPIO"""
+    """
+    Reads and returns the temperature from GPIO
+    :returns: temperature in celsius, resistance in ohms
+    """
     return temp_sensor.temperature, temp_sensor.resistance
 
 
@@ -107,7 +129,10 @@ def dispense_HCl(volume):
 
 
 def _pulse_pump(num_pulses):
-    """Generates square waves"""
+    """
+    Generates square waves
+    :param num_pulses: number of square wave pulses for stepper motor/syringe pump assembly
+    """
     for i in range(num_pulses):
         GPIO.output(constants.PUMP_PIN_NUMBER, GPIO.HIGH)
         time.sleep(constants.PUMP_PULSE_TIME)

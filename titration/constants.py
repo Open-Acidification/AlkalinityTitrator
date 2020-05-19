@@ -1,4 +1,3 @@
-# Program constants and strings
 ROUTINE_OPTIONS = {
     1: 'Run titration',
     2: 'Calibrate sensors',

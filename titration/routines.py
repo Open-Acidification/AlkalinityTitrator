@@ -1,4 +1,3 @@
-# Code for running the different routines
 import interfaces
 import constants
 import analysis
@@ -6,7 +5,10 @@ import time
 
 
 def run_routine(selection):
-    """Runs routine based on input"""
+    """
+    Selects which routine to run
+    :param selection: user input used to determine which routine to run
+    """
     if selection == '1':
         data = [('temperature', 'pH', 'pH volts', 'solution volume')]
         # initial titration
@@ -26,10 +28,11 @@ def run_routine(selection):
     elif selection == '4':
         _test_temp()
     elif selection == '5':
-        return -1
+        pass
 
 
 def _test_temp():
+    """Tests the temperature probe"""
     for i in range(5):
         temp, res = interfaces.read_temperature()
         print("Temperature: {0:0.3f}C".format(temp))
@@ -38,7 +41,7 @@ def _test_temp():
 
 
 def calibration():
-    """Routine for letting the user pick the sensor to calibrate"""
+    """Routine for letting the user pick the sensor to calibrate. Call another routine to calibrate the sensor"""
     interfaces.display_list(constants.SENSOR_OPTIONS)
     sensor_selection = interfaces.read_user_input(['1', '2'])
     if sensor_selection == '1':
@@ -49,22 +52,22 @@ def calibration():
 
 
 def _calibrate_pH():
-    """Routine for calibrating pH sensor"""
+    """Routine for calibrating pH sensor."""
     # get first buffer pH
     interfaces.lcd_out('Enter buffer pH')
     buffer1_actual_pH = float(interfaces.read_user_input())
-    # TODO wait until user hits another key to stop reading pH and use the value of pH on key press?
     interfaces.lcd_out('Lower sensor into buffer, and press enter to record value')
-    input()  # to make the program wait indefinitely for the user to press enter
+    # Waits for user to press enter
+    input()
     buffer1_measured_volts = float(interfaces.read_raw_pH())
     interfaces.lcd_out("Recorded volts for pH {}: {}".format(buffer1_actual_pH, buffer1_measured_volts))
 
     # get second buffer pH
     interfaces.lcd_out('Enter second buffer pH')
     buffer2_actual_pH = float(interfaces.read_user_input())
-    # TODO wait until user hits another key to stop reading pH and use the value of pH on key press?
     interfaces.lcd_out('Lower sensor into buffer, and press enter to record value')
-    input()  # to make the program wait indefinitely for the user to press enter
+    # Waits for user to press enter
+    input()
     buffer2_measured_volts = float(interfaces.read_raw_pH())
     interfaces.lcd_out("Recorded volts for pH {}: {}".format(buffer2_actual_pH, buffer2_measured_volts))
 
@@ -75,12 +78,12 @@ def _calibrate_pH():
 
 
 def _calibrate_temperature():
-    """Routine for calibrating temperature sensor"""
-    # TODO wait until user hits another key to stop reading pH and use the value of pH on key press?
+    """Routine for calibrating the temperature probe."""
     interfaces.lcd_out("What is temperature of the reference solution?")
     expected_temp = float(input())
     interfaces.lcd_out('Lower temperature probe into reference solution; hit enter when done')
-    input()  # to make the program wait indefinitely for the user to press enter
+    # Waits for user to press enter
+    input()
     expected_resistance = analysis.calculate_expected_resistance(expected_temp)
 
     actual_temperature, actual_resistance = interfaces.read_temperature()
@@ -94,7 +97,14 @@ def _calibrate_temperature():
 
 
 def titration(pH_target, solution_increment_amount, data, total_sol_added, degas_time=0):
-    '''Incrementally adds HCl depending on the input parameters, until target pH is reached
+    '''
+    Incrementally adds HCl depending on the input parameters, until target pH is reached
+    :param pH_target: target pH for the titration
+    :param solution_increment_amount: amount of HCl to add to solution. Units of mL
+    :param data: list of recorded temperature, pH, and solution volume data so far
+    :param total_sol_added: total amount of HCl added to the solution so far
+    :param degas_time: optional parameter defining the de-gas time for the solution after the target pH has been reached
+    :return: total solution added so far
     '''
     interfaces.lcd_out("Titrating to a pH of " + str(pH_target))
     # total HCl added
@@ -106,7 +116,7 @@ def titration(pH_target, solution_increment_amount, data, total_sol_added, degas
     # flag to ensure at least 10 pH readings have been made before adding solution
     valid_num_values_tested = False
 
-    # how many iterations should the pH value be close before breaking?
+    # Continuously checks temp and pH and adds HCl until
     while True:
         pH_reading, pH_volts = interfaces.read_pH()
         temp_reading = interfaces.read_temperature()[0]
@@ -117,20 +127,20 @@ def titration(pH_target, solution_increment_amount, data, total_sol_added, degas
         if pH_list_counter == 9:
             valid_num_values_tested = True
 
-        # make sure temperature within correct bounds; global value for all titrations
+        # Check that the temperature of the solution is within bounds
         if abs(temp_reading - constants.TARGET_TEMP) > constants.TEMPERATURE_ACCURACY:
             interfaces.lcd_out("TEMPERATURE OUT OF BOUNDS")
             # TODO output to error log
-            # Log error and alert user; write last data to file
 
         # Record data point (temp, pH, pH volts, total HCl)
         data.append((temp_reading, pH_reading, pH_volts, total_sol))
         pH_list_counter = 0 if pH_list_counter >= 9 else pH_list_counter + 1
 
+        # Ensures enough pH measurements have been made so the pH of the solution is stable before adding more HCl
         if valid_num_values_tested and analysis.std_deviation(pH_values) < constants.TARGET_STD_DEVIATION:
             if analysis.calculate_mean(pH_values) - pH_target < constants.PH_ACCURACY:
                 interfaces.lcd_out("pH value reached")
-                # pH is close or at target; exit while loop
+                # pH is close enough to target; exit loop
                 break
             interfaces.dispense_HCl(solution_increment_amount)
             total_sol += solution_increment_amount
@@ -147,5 +157,4 @@ def titration(pH_target, solution_increment_amount, data, total_sol_added, degas
 
 def edit_settings():
     # TODO reset settings to default option
-
     pass
