@@ -25,10 +25,15 @@ def setup_interfaces():
     """Initializes components for interfacing with pH probe, temperature probe, and stepper motor/syringe pump"""
     global ph_input_channel, temp_sensor
     # pH probe setup
-    i2c = busio.I2C(board.SCL, board.SDA)
-    ads = ADS.ADS(i2c)
-    ph_input_channel = analog_in.AnalogIn(ads, ADS.P0, ADS.P1)
-    ads.gain = 2
+    try:
+        i2c = busio.I2C(board.SCL, board.SDA)
+        ads = ADS.ADS1115(i2c)
+        ph_input_channel = analog_in.AnalogIn(ads, ADS.P0, ADS.P1)
+        ads.gain = 2
+        constants.IS_TEST = False
+    except ValueError:
+        print("Error initializing pH probe; will use test functions instead.")
+        constants.IS_TEST = True
 
     # temperature probe setup
     spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
@@ -83,16 +88,18 @@ def read_pH():
     Reads calibration-adjusted value for pH
     :returns: adjusted pH value in units of pH, raw mV reading from probe
     """
+    if constants.IS_TEST:
+        return test_read_pH()
     volts = read_raw_pH()
     temp = read_temperature()[0]
     pH_val = analysis.calculate_pH(volts, temp)
     return pH_val, volts
 
 
-# def read_pH():
-#      """TEMP FUNCTION until I can test pH"""
-#      constants.pH_call_iter += 1
-#      return constants.test_pH_vals[constants.hcl_call_iter][constants.pH_call_iter], 1
+def test_read_pH():
+    """Test function for pH"""
+    constants.pH_call_iter += 1
+    return constants.test_pH_vals[constants.hcl_call_iter][constants.pH_call_iter], 1
 
 
 def read_raw_pH():
