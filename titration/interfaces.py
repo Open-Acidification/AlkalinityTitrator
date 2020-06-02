@@ -52,6 +52,7 @@ def setup_interfaces():
                                 timeout=constants.ARDUINO_TIMEOUT)
         arduino.reset_output_buffer()
         arduino.reset_input_buffer()
+        pass
     except FileNotFoundError:
         lcd_out("Port file not found")
 
@@ -132,7 +133,7 @@ def read_temperature():
 
 
 def _test_read_temperature():
-    return 29.9
+    return 29.9, 200
 
 
 def dispense_HCl(volume):
@@ -141,8 +142,15 @@ def dispense_HCl(volume):
     :param volume: volume of HCl to add
     """
     lcd_out("{} ml HCl added".format(volume))
+    if constants.IS_TEST:
+        return _test_add_HCl()
     cycles = constants.NUM_CYCLES[volume]
     _drive_step_stick(cycles, 1)
+
+
+def _test_add_HCl():
+    constants.hcl_call_iter += 1  # value only used for testing while reading pH doesn't work
+    constants.pH_call_iter = -1
 
 
 def _drive_step_stick(cycles, direction):

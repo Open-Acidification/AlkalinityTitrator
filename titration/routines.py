@@ -16,7 +16,8 @@ def run_routine(selection):
     elif selection == '3':
         edit_settings()
     elif selection == '4':
-        constants.IS_TEST = True
+        constants.IS_TEST = not constants.IS_TEST
+        interfaces.lcd_out("Testing: {}".format(constants.IS_TEST))
     elif selection == '5':
         pass
 
@@ -92,7 +93,7 @@ def total_alkalinity_titration():
     # query user for initial solution weight
     interfaces.lcd_out("Initial solution weight (g): ")
     initial_weight = interfaces.read_user_input()
-    while not initial_weight.isnumeric():
+    while not initial_weight.replace('.', '').isdigit():
         interfaces.lcd_out("Please enter a numeric value.")
         initial_weight = interfaces.read_user_input()
     # initial titration
@@ -171,4 +172,6 @@ def edit_settings():
     selection = interfaces.read_user_input()
     if selection != 'n' or selection != 'N':
         analysis.reset_calibration()
+        analysis.save_calibration_data()
+        interfaces.lcd_out("Default constants restored")
 
