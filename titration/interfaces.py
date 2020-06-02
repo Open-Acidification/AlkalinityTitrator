@@ -33,7 +33,7 @@ def setup_interfaces():
         ads.gain = 2
         constants.IS_TEST = False
     except ValueError:
-        print("Error initializing pH probe; will use test functions instead.")
+        lcd_out("Error initializing pH probe; will use test functions instead.")
         constants.IS_TEST = True
 
     # temperature probe setup
@@ -46,11 +46,14 @@ def setup_interfaces():
                                              ref_resistor=constants.TEMP_REF_RESISTANCE)
 
     # pump setup (through Arduino)
-    arduino = serial.Serial(port=constants.ARDUINO_PORT,
-                            baudrate=constants.ARDUINO_BAUD,
-                            timeout=constants.ARDUINO_TIMEOUT)
-    arduino.reset_output_buffer()
-    arduino.reset_input_buffer()
+    try:
+        arduino = serial.Serial(port=constants.ARDUINO_PORT,
+                                baudrate=constants.ARDUINO_BAUD,
+                                timeout=constants.ARDUINO_TIMEOUT)
+        arduino.reset_output_buffer()
+        arduino.reset_input_buffer()
+    except FileNotFoundError:
+        lcd_out("Port file not found")
 
 
 def lcd_out(info):
