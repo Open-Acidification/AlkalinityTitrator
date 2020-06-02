@@ -13,17 +13,18 @@ import digitalio
 import adafruit_max31865
 
 # for pump
-import RPi.GPIO as GPIO
 import time
+import serial
 
 # global, pH and temperature probes
 ph_input_channel = None
 temp_sensor = None
+arduino = None
 
 
 def setup_interfaces():
     """Initializes components for interfacing with pH probe, temperature probe, and stepper motor/syringe pump"""
-    global ph_input_channel, temp_sensor
+    global ph_input_channel, temp_sensor, arduino
     # pH probe setup
     try:
         i2c = busio.I2C(board.SCL, board.SDA)
@@ -44,9 +45,12 @@ def setup_interfaces():
                                              rtd_nominal=constants.TEMP_NOMINAL_RESISTANCE,
                                              ref_resistor=constants.TEMP_REF_RESISTANCE)
 
-    # pump setup
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(constants.PUMP_PIN_NUMBER, GPIO.OUT)
+    # pump setup (through Arduino)
+    arduino = serial.Serial(port=constants.ARDUINO_PORT,
+                            baudrate=constants.ARDUINO_BAUD,
+                            timeout=constants.ARDUINO_TIMEOUT)
+    arduino.reset_output_buffer()
+    arduino.reset_input_buffer()
 
 
 def lcd_out(info):
@@ -89,14 +93,14 @@ def read_pH():
     :returns: adjusted pH value in units of pH, raw mV reading from probe
     """
     if constants.IS_TEST:
-        return test_read_pH()
+        return _test_read_pH()
     volts = read_raw_pH()
     temp = read_temperature()[0]
     pH_val = analysis.calculate_pH(volts, temp)
     return pH_val, volts
 
 
-def test_read_pH():
+def _test_read_pH():
     """Test function for pH"""
     constants.pH_call_iter += 1
     return constants.test_pH_vals[constants.hcl_call_iter][constants.pH_call_iter], 1
@@ -123,28 +127,34 @@ def read_temperature():
 
 
 def dispense_HCl(volume):
-    """Adds HCl to the solution"""
-    # TODO stepper motor driver needed here; will likely connect to the Arduino
-    # NOTE should this wait for pH to settle instead of read_pH?
+    """
+    Adds HCl to the solution
+    :param volume: volume of HCl to add
+    """
     lcd_out("{} ml HCl added".format(volume))
-    # testing
-    # constants.hcl_call_iter += 1  # value only used for testing while reading pH doesn't work
-    # constants.pH_call_iter = -1
-    # actual
-    num_pulses = constants.NUM_PULSES[volume]
-    _pulse_pump(num_pulses)
+    cycles = constants.NUM_CYCLES[volume]
+    _drive_step_stick(cycles, 1)
 
 
-def _pulse_pump(num_pulses):
+def _drive_step_stick(cycles, direction):
     """
-    Generates square waves
-    :param num_pulses: number of square wave pulses for stepper motor/syringe pump assembly
+    Communicates with arduino to add HCl through pump
+    :param cycles: number of rising edges for the pump
+    :param direction: direction of pump
     """
-    for i in range(num_pulses):
-        GPIO.output(constants.PUMP_PIN_NUMBER, GPIO.HIGH)
-        time.sleep(constants.PUMP_PULSE_TIME)
-        GPIO.output(constants.PUMP_PIN_NUMBER, GPIO.LOW)
-        time.sleep(constants.PUMP_PULSE_TIME)
+    time.sleep(.01)
+    if arduino.writable():
+        arduino.write(cycles.to_bytes(4, 'little'))
+        arduino.write(direction.to_bytes(1, 'little'))
+        arduino.flush()
+        wait_time = cycles/1000 + .5
+        time.sleep(wait_time)
+        temp = arduino.readline()
+        if temp != b'DONE\r\n':
+            lcd_out("Error writing to Arduino")
+            print(temp)
+    else:
+        lcd_out("Arduino not available.")
 
 
 if __name__ == "__main__":

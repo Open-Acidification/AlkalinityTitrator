@@ -97,7 +97,8 @@ def calculate_pH(voltage, temp):
     temp_k = temp + constants.CELSIUS_TO_KELVIN
     ref_voltage = constants.PH_REF_VOLTAGE
     ref_pH = constants.PH_REF_PH
-    return ref_pH + (ref_voltage/1000 - voltage/1000)/(constants.UNIVERSAL_GAS_CONST * temp_k * math.log10(10)/constants.FARADAY_CONST)
+    return ref_pH + (ref_voltage/1000 - voltage/1000) / \
+           (constants.UNIVERSAL_GAS_CONST * temp_k * math.log10(10)/constants.FARADAY_CONST)
 
 
 # titration
@@ -134,7 +135,7 @@ def write_titration_data(data):
 
 
 # alkalinity
-def determine_total_alkalinity(S=35):
+def determine_total_alkalinity(S=35, temp=25, C=0.1, d=1, pHTris=None, ETris=None, weight=None, E=None, volume=None, csv_file=None):
     """Calculates the total alkalinity of the solution"""
     pass
 
