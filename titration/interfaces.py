@@ -126,7 +126,13 @@ def read_temperature():
     Reads and returns the temperature from GPIO
     :returns: temperature in celsius, resistance in ohms
     """
+    if constants.IS_TEST:
+        return _test_read_temperature()
     return temp_sensor.temperature, temp_sensor.resistance
+
+
+def _test_read_temperature():
+    return 29.9
 
 
 def dispense_HCl(volume):

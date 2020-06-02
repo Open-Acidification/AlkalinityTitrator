@@ -10,23 +10,13 @@ def run_routine(selection):
     :param selection: user input used to determine which routine to run
     """
     if selection == '1':
-        data = [('temperature', 'pH', 'pH volts', 'solution volume')]
-        # initial titration
-        # todo set stir speed slow
-        interfaces.lcd_out("Stir speed: slow")
-        total_sol = titration(constants.INITIAL_TARGET_PH, constants.INCREMENT_AMOUNT, data, 0, 1)
-        # 3.5 -> 3.0
-        # todo set stir speed fast
-        interfaces.lcd_out("Stir speed: fast")
-        titration(constants.FINAL_TARGET_PH, constants.INCREMENT_AMOUNT, data, total_sol)
-        # save data to csv
-        analysis.write_titration_data(data)
+        total_alkalinity_titration()
     elif selection == '2':
         calibration()
     elif selection == '3':
         edit_settings()
     elif selection == '4':
-        _test_temp()
+        constants.IS_TEST = True
     elif selection == '5':
         pass
 
@@ -72,7 +62,7 @@ def _calibrate_pH():
     interfaces.lcd_out("Recorded volts for pH {}: {}".format(buffer2_actual_pH, buffer2_measured_volts))
 
     # set calibration constants
-    constants.PH_SLOPE = float((buffer2_actual_pH - buffer1_actual_pH) / (buffer2_measured_volts - buffer1_measured_volts))
+    # constants.PH_SLOPE = float((buffer2_actual_pH - buffer1_actual_pH) / (buffer2_measured_volts - buffer1_measured_volts))
     constants.PH_REF_VOLTAGE = min(buffer1_measured_volts, buffer2_measured_volts)
     constants.PH_REF_PH = min(buffer1_actual_pH, buffer2_actual_pH)
 
@@ -94,6 +84,27 @@ def _calibrate_temperature():
     # reinitialize sensors with calibrated values
     print(new_ref_resistance)
     interfaces.setup_interfaces()
+
+
+def total_alkalinity_titration():
+    """Runs through the full titration routine to find total alkalinity"""
+    data = [('temperature', 'pH mV', 'solution volume')]
+    # query user for initial solution weight
+    interfaces.lcd_out("Initial solution weight (g): ")
+    initial_weight = interfaces.read_user_input()
+    while not initial_weight.isnumeric():
+        interfaces.lcd_out("Please enter a numeric value.")
+        initial_weight = interfaces.read_user_input()
+    # initial titration
+    # todo set stir speed slow
+    interfaces.lcd_out("Stir speed: slow")
+    total_sol = titration(constants.INITIAL_TARGET_PH, constants.INCREMENT_AMOUNT, data, 0, 1)
+    # 3.5 -> 3.0
+    # todo set stir speed fast
+    interfaces.lcd_out("Stir speed: fast")
+    titration(constants.FINAL_TARGET_PH, constants.INCREMENT_AMOUNT, data, total_sol)
+    # save data to csv
+    analysis.write_titration_data(data)
 
 
 def titration(pH_target, solution_increment_amount, data, total_sol_added, degas_time=0):
@@ -132,8 +143,8 @@ def titration(pH_target, solution_increment_amount, data, total_sol_added, degas
             interfaces.lcd_out("TEMPERATURE OUT OF BOUNDS")
             # TODO output to error log
 
-        # Record data point (temp, pH, pH volts, total HCl)
-        data.append((temp_reading, pH_reading, pH_volts, total_sol))
+        # Record data point (temp, pH volts, total HCl)
+        data.append((temp_reading, pH_volts, total_sol))
         pH_list_counter = 0 if pH_list_counter >= 9 else pH_list_counter + 1
 
         # Ensures enough pH measurements have been made so the pH of the solution is stable before adding more HCl
@@ -156,5 +167,8 @@ def titration(pH_target, solution_increment_amount, data, total_sol_added, degas
 
 
 def edit_settings():
-    # TODO reset settings to default option
-    pass
+    interfaces.lcd_out("Reset calibration settings to default? (Y/n)")
+    selection = interfaces.read_user_input()
+    if selection != 'n' or selection != 'N':
+        analysis.reset_calibration()
+

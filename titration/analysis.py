@@ -47,7 +47,7 @@ def setup_calibration():
     """Sets calibration constants from persistent storage"""
     data = _read_json(constants.CALIBRATION_FILENAME)
     if data:
-        constants.PH_SLOPE = data['pH']['slope']
+        # constants.PH_SLOPE = data['pH']['slope']
         constants.PH_REF_VOLTAGE = data['pH']['ref_voltage']
         constants.PH_REF_PH = data['pH']['ref_pH']
         constants.TEMP_REF_RESISTANCE = data['temp']['ref_resistance']
@@ -61,7 +61,7 @@ def save_calibration_data():
     calibration_data = constants.calibration_data_format
     calibration_data['pH']['ref_voltage'] = constants.PH_REF_VOLTAGE
     calibration_data['pH']['ref_pH'] = constants.PH_REF_PH
-    calibration_data['pH']['slope'] = constants.PH_SLOPE
+    # calibration_data['pH']['slope'] = constants.PH_SLOPE
     calibration_data['temp']['ref_resistance'] = constants.TEMP_REF_RESISTANCE
     calibration_data['temp']['nominal_resistance'] = constants.TEMP_NOMINAL_RESISTANCE
     write_json(constants.CALIBRATION_FILENAME, calibration_data)
@@ -83,6 +83,15 @@ def calculate_expected_resistance(temp):
 
     # for temps below 0 celsius
     return constants.TEMP_NOMINAL_RESISTANCE * (1 + A * temp + B * temp ** 2 + C * (temp - 100) * temp ** 3)
+
+
+def reset_calibration():
+    """Reset calibraiton settings to default"""
+    constants.TEMP_REF_RESISTANCE = constants.DEFAULT_TEMP_REF_RESISTANCE
+    constants.TEMP_NOMINAL_RESISTANCE = constants.DEFAULT_TEMP_NOMINAL_RESISTANCE = 1000.0
+    # constants.PH_SLOPE = constants.DEFAULT_PH_SLOPE = 59
+    constants.PH_REF_VOLTAGE = constants.DEFAULT_PH_REF_VOLTAGE = 200
+    constants.PH_REF_PH = constants.DEFAULT_PH_REF_PH = 7
 
 
 # pH

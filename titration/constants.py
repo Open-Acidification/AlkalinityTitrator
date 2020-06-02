@@ -42,9 +42,9 @@ UNIVERSAL_GAS_CONST = 8.31447215
 FARADAY_CONST = 96485.33212
 CELSIUS_TO_KELVIN = 273.15
 # pH calibration values
-PH_SLOPE = 59  # note: not sure we need or care about this with how we're currently calculating pH
-PH_REF_VOLTAGE = 200  # todo these are bad values for defaults
-PH_REF_PH = 7  # todo these are bad values for defaults
+# PH_SLOPE = 59  # note: not sure we need or care about this with how we're currently calculating pH
+PH_REF_VOLTAGE = -96.6
+PH_REF_PH = 8.339
 # titration routine
 TARGET_TEMP = 25.0  # degrees C
 INITIAL_TARGET_PH = 3.5
@@ -54,13 +54,18 @@ STABILIZATION_CONSTANT = 0.1  # how much the pH is allowed to change between mea
 PH_ACCURACY = 0.05
 TITRATION_WAIT_TIME = 0.25
 INCREMENT_AMOUNT = 0.05
-
 TARGET_STD_DEVIATION = 0.010
 # pump
 ARDUINO_PORT = "/dev/ttyUSB0"
 ARDUINO_BAUD = 9600
 ARDUINO_TIMEOUT = 5
 NUM_CYCLES = {0.05 : 470}  # maps vol to number of pulses needed
+# defaults
+DEFAULT_TEMP_REF_RESISTANCE = 4300.0
+DEFAULT_TEMP_NOMINAL_RESISTANCE = 1000.0
+# DEFAULT_PH_SLOPE = 59
+DEFAULT_PH_REF_VOLTAGE = -96.6
+DEFAULT_PH_REF_PH = 8.339
 # data out
 DATA_PATH = 'data/'
 
