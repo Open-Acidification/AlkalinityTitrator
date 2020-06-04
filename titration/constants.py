@@ -1,15 +1,18 @@
+# user choice options
 ROUTINE_OPTIONS = {
     1: 'Run titration',
     2: 'Calibrate sensors',
-    3: 'Update settings',
-    4: 'Test',
-    5: 'Exit'
+    3: 'Prime Pump',
+    4: 'Update settings',
+    5: 'Test Mode',
+    6: 'Exit'
 }
 SENSOR_OPTIONS = {
     1: 'pH',
     2: 'Temperature'
 }
 VALID_INPUT_WARNING = 'Please enter a valid input'
+# keypad
 KEY_0 = 10
 KEY_1 = 11
 KEY_2 = 12
@@ -51,22 +54,25 @@ INITIAL_TARGET_PH = 3.5
 FINAL_TARGET_PH = 3.0
 TEMPERATURE_ACCURACY = 0.25
 STABILIZATION_CONSTANT = 0.1  # how much the pH is allowed to change between measurements to ensure the value is stable
-PH_ACCURACY = 0.05
+PH_ACCURACY = 0.1
 TITRATION_WAIT_TIME = 1
 INCREMENT_AMOUNT = 0.05
 TARGET_STD_DEVIATION = 0.010
-# pump
+# pump settings
 ARDUINO_PORT = "/dev/ttyUSB0"
 ARDUINO_BAUD = 9600
 ARDUINO_TIMEOUT = 5
-NUM_CYCLES = {0.05 : 470}  # maps vol to number of pulses needed
+# maps vol to number of pulses needed
+NUM_CYCLES = {0.05 : 470,
+              1: 9550}
+CYCLES_VOLUME_RATIO = 9550  # 1 mL is 9550 pump cycles
+MAX_PUMP_CAPACITY = 1.1  # max capacity of pump in mL
 # defaults
 DEFAULT_TEMP_REF_RESISTANCE = 4300.0
 DEFAULT_TEMP_NOMINAL_RESISTANCE = 1000.0
-# DEFAULT_PH_SLOPE = 59
 DEFAULT_PH_REF_VOLTAGE = -96.6
 DEFAULT_PH_REF_PH = 8.339
-# data out
+# data paths
 DATA_PATH = 'data/'
 
 # TESTING

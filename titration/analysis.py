@@ -143,6 +143,20 @@ def write_titration_data(data):
     _write_csv(file_name, data)
 
 
+# pump
+def determine_pump_cycles(volume_to_add):
+    """
+    Determines the number of cycles to move given volume
+    :param volume_to_add: amount of volume to add in mL
+    :return: number of cycles
+    """
+    if volume_to_add in constants.NUM_CYCLES:
+        return constants.NUM_CYCLES[volume_to_add]
+    pump_cycles = constants.CYCLES_VOLUME_RATIO * volume_to_add
+    # NOTE rounds down
+    return int(pump_cycles)
+
+
 # alkalinity
 def determine_total_alkalinity(S=35, temp=25, C=0.1, d=1, pHTris=None, ETris=None, weight=None, E=None, volume=None, csv_file=None):
     """Calculates the total alkalinity of the solution"""

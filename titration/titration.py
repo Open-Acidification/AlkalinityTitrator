@@ -7,7 +7,6 @@ import analysis
 def test():
     """Function for running specific tests for the program"""
     initialize_components()
-    analysis.write_json('calibration_data.json', constants.calibration_data)
     while True:
         temp, res = interfaces.read_temperature()
         print('Temperature: {0:0.3f}C'.format(temp))
@@ -21,10 +20,11 @@ def run():
     initialize_components()
     # output prompt to LCD screen
     routine_selection = '0'
-    while routine_selection != '5':
+    options = [str(key) for key in constants.ROUTINE_OPTIONS]
+    while routine_selection != '6':
         interfaces.display_list(constants.ROUTINE_OPTIONS)
         # wait for user input to select which routine (polling should be fine here)
-        routine_selection = interfaces.read_user_input(['1', '2', '3', '4', '5'])
+        routine_selection = interfaces.read_user_input(options)
         routines.run_routine(routine_selection)
 
 

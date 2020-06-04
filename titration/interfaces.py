@@ -21,6 +21,9 @@ ph_input_channel = None
 temp_sensor = None
 arduino = None
 
+# keep track of solution in pump
+volume_in_pump = 0
+
 
 def setup_interfaces():
     """Initializes components for interfacing with pH probe, temperature probe, and stepper motor/syringe pump"""
@@ -136,16 +139,37 @@ def _test_read_temperature():
     return 29.9, 200
 
 
-def dispense_HCl(volume):
+def pump_volume(volume, direction):
     """
-    Adds HCl to the solution
-    :param volume: volume of HCl to add
+    Moves volume of solution through pump
+    :param volume: amount of volume to move (float)
+    :param direction: 0 to pull solution in, 1 to pump out
     """
-    lcd_out("{} ml HCl added".format(volume))
+    global volume_in_pump
+
     if constants.IS_TEST:
         return _test_add_HCl()
-    cycles = constants.NUM_CYCLES[volume]
-    _drive_step_stick(cycles, 1)
+
+    # determine new volume in pump
+    new_volume_in_pump = volume_in_pump + volume * ((-1) ** direction)
+
+    if new_volume_in_pump < 0:
+        # Pull in solution before pushing out
+        volume_to_pull_in = volume - volume_in_pump
+        cycles = analysis.determine_pump_cycles(volume_to_pull_in)
+        drive_step_stick(cycles, 0)
+    elif new_volume_in_pump > constants.MAX_PUMP_CAPACITY:
+        lcd_out("Error - addition amount is more than pump capacity\nWill fill pump to capacity")
+        volume = constants.MAX_PUMP_CAPACITY - volume_in_pump
+
+    if direction == 0:
+        lcd_out("Drawing in {} mL HCl".format(volume))
+    elif direction == 1:
+        lcd_out("Adding {} mL HCl".format(volume))
+
+    cycles = analysis.determine_pump_cycles(volume)
+    drive_step_stick(cycles, direction)
+    volume_in_pump = new_volume_in_pump
 
 
 def _test_add_HCl():
@@ -153,7 +177,7 @@ def _test_add_HCl():
     constants.pH_call_iter = -1
 
 
-def _drive_step_stick(cycles, direction):
+def drive_step_stick(cycles, direction):
     """
     Communicates with arduino to add HCl through pump
     :param cycles: number of rising edges for the pump
@@ -175,8 +199,11 @@ def _drive_step_stick(cycles, direction):
 
 
 if __name__ == "__main__":
+    """Variable pump priming"""
     setup_interfaces()
-    start = time.time()
-    dispense_HCl(0.05)
-    end = time.time()
-    print("Time: ", end - start)
+    analysis.setup_calibration()
+    while True:
+        p_volume = read_user_input("Volume: ")
+        p_direction = read_user_input("Direction: ")
+        if p_direction == '0' or p_direction == '1':
+            pump_volume(float(p_volume), int(p_direction))
