@@ -21,6 +21,12 @@ Run standard updates on the pi:
 $ sudo apt-get update 
 $ sudo apt-get upgrade
 ```
+This project utilizes SPI and I2C protocols, both of which often come disabled on the pi. To enable them, run:
+```
+$ sudo raspi-config
+```
+and navigate to "Interfacing Options"; enable both SPI and I2C.
+
 Install git:
 ```
 $ sudo apt-get install git
@@ -29,32 +35,15 @@ Clone alkalinity titrator repository to the pi
 ```
 $ git clone https://github.com/Open-Acidification/alkalinity-titrator.git
 ```
-Install Pipenv (a Python virtual environment manager)
+Run installation script
 ```
-$ sudo apt install pipenv
-```
-This project utilizes SPI and I2C protocols, both of which often come disabled on the pi. To enable them, run:
-```
-$ sudo raspi-config
-```
-and navigate to "Interfacing Options"; enable both SPI and I2C.
-To install RPI.GPIO:
-```
-$ sudo apt-get install rpi.gpio
-```
-Next, create a virtual environment and install libraries (make sure you're in the ```alkalinity-titrator``` directory)
-```
-$ pipenv install 
+$ sudo ./install.sh
 ```
 
 ## User Instructions
-Activate the virtual environment
+Run script
 ``` 
-$ pipenv shell
-```
-To run the program, navigate to ```alkalinity-titrator/titration``` and
-```
-$ python titration.py
+$ ./run.sh
 ```
 Follow the user prompts and you're good to go!
 
