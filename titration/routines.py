@@ -53,18 +53,20 @@ def _calibrate_pH():
     interfaces.lcd_out("Recorded volts for pH {}: {}".format(buffer1_actual_pH, buffer1_measured_volts))
 
     # get second buffer pH
-    interfaces.lcd_out('Enter second buffer pH')
-    buffer2_actual_pH = float(interfaces.read_user_input())
-    interfaces.lcd_out('Lower sensor into buffer, and press enter to record value')
+    # interfaces.lcd_out('Enter second buffer pH')
+    # buffer2_actual_pH = float(interfaces.read_user_input())
+    # interfaces.lcd_out('Lower sensor into buffer, and press enter to record value')
     # Waits for user to press enter
-    input()
-    buffer2_measured_volts = float(interfaces.read_raw_pH())
-    interfaces.lcd_out("Recorded volts for pH {}: {}".format(buffer2_actual_pH, buffer2_measured_volts))
+    # input()
+    # buffer2_measured_volts = float(interfaces.read_raw_pH())
+    # interfaces.lcd_out("Recorded volts for pH {}: {}".format(buffer2_actual_pH, buffer2_measured_volts))
 
     # set calibration constants
     # constants.PH_SLOPE = float((buffer2_actual_pH - buffer1_actual_pH) / (buffer2_measured_volts - buffer1_measured_volts))
-    constants.PH_REF_VOLTAGE = min(buffer1_measured_volts, buffer2_measured_volts)
-    constants.PH_REF_PH = min(buffer1_actual_pH, buffer2_actual_pH)
+    constants.PH_REF_VOLTAGE = buffer1_measured_volts
+    constants.PH_REF_PH = buffer1_actual_pH
+    # constants.PH_REF_VOLTAGE = min(buffer1_measured_volts, buffer2_measured_volts)
+    # constants.PH_REF_PH = min(buffer1_actual_pH, buffer2_actual_pH)
 
 
 def _calibrate_temperature():

@@ -52,7 +52,7 @@ FINAL_TARGET_PH = 3.0
 TEMPERATURE_ACCURACY = 0.25
 STABILIZATION_CONSTANT = 0.1  # how much the pH is allowed to change between measurements to ensure the value is stable
 PH_ACCURACY = 0.05
-TITRATION_WAIT_TIME = 0.25
+TITRATION_WAIT_TIME = 1
 INCREMENT_AMOUNT = 0.05
 TARGET_STD_DEVIATION = 0.010
 # pump
