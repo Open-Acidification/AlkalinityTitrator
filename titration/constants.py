@@ -33,7 +33,7 @@ calibration_data_format = {
     }
 }
 
-CALIBRATION_FILENAME = 'calibration.json'
+CALIBRATION_FILENAME = 'titration/calibration.json'
 # temp calibration values
 TEMP_REF_RESISTANCE = 4300.0
 TEMP_NOMINAL_RESISTANCE = 1000.0
