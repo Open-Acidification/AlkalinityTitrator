@@ -1,1 +1,1 @@
-{"pH": {"ref_voltage": -96.6, "ref_pH": 8.339, "slope": 0.03}, "temp": {"ref_resistance": 4300.0, "nominal_resistance": 1000.0}}
+{"pH": {"ref_voltage": -0.012256624042481765, "ref_pH": 7.0, "slope": 0.03}, "temp": {"ref_resistance": 4300.0, "nominal_resistance": 1000.0}}

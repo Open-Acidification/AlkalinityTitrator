@@ -41,7 +41,7 @@ def setup_interfaces():
 
     # temperature probe setup
     spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
-    cs = digitalio.DigitalInOut(board.D5)
+    cs = digitalio.DigitalInOut(board.D6)
     temp_sensor = adafruit_max31865.MAX31865(spi=spi,
                                              cs=cs,
                                              wires=3,
@@ -100,7 +100,8 @@ def read_pH():
     :returns: adjusted pH value in units of pH, raw mV reading from probe
     """
     if constants.IS_TEST:
-        return _test_read_pH()
+        pass
+        #return _test_read_pH()
     volts = read_raw_pH()
     temp = read_temperature()[0]
     pH_val = analysis.calculate_pH(volts, temp)
@@ -151,16 +152,16 @@ def pump_volume(volume, direction):
         return _test_add_HCl()
 
     # determine new volume in pump
-    new_volume_in_pump = volume_in_pump + volume * ((-1) ** direction)
+    #new_volume_in_pump = volume_in_pump + volume * ((-1) ** direction)
 
-    if new_volume_in_pump < 0:
-        # Pull in solution before pushing out
-        volume_to_pull_in = volume - volume_in_pump
-        cycles = analysis.determine_pump_cycles(volume_to_pull_in)
-        drive_step_stick(cycles, 0)
-    elif new_volume_in_pump > constants.MAX_PUMP_CAPACITY:
-        lcd_out("Error - addition amount is more than pump capacity\nWill fill pump to capacity")
-        volume = constants.MAX_PUMP_CAPACITY - volume_in_pump
+#     if new_volume_in_pump < 0:
+#         # Pull in solution before pushing out
+#         volume_to_pull_in = volume - volume_in_pump
+#         cycles = analysis.determine_pump_cycles(volume_to_pull_in)
+#         drive_step_stick(cycles, 0)
+#     elif new_volume_in_pump > constants.MAX_PUMP_CAPACITY:
+#         lcd_out("Error - addition amount is more than pump capacity\nWill fill pump to capacity")
+#         volume = constants.MAX_PUMP_CAPACITY - volume_in_pump
 
     if direction == 0:
         lcd_out("Drawing in {} mL HCl".format(volume))
@@ -169,7 +170,7 @@ def pump_volume(volume, direction):
 
     cycles = analysis.determine_pump_cycles(volume)
     drive_step_stick(cycles, direction)
-    volume_in_pump = new_volume_in_pump
+    #volume_in_pump = new_volume_in_pump
 
 
 def _test_add_HCl():
@@ -203,7 +204,9 @@ if __name__ == "__main__":
     setup_interfaces()
     analysis.setup_calibration()
     while True:
-        p_volume = read_user_input("Volume: ")
-        p_direction = read_user_input("Direction: ")
+        lcd_out("Volume: ")
+        p_volume = read_user_input()
+        lcd_out("Direction: ")
+        p_direction = read_user_input()
         if p_direction == '0' or p_direction == '1':
             pump_volume(float(p_volume), int(p_direction))

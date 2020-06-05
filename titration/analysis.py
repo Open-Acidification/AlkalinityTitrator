@@ -106,7 +106,7 @@ def calculate_pH(voltage, temp):
     temp_k = temp + constants.CELSIUS_TO_KELVIN
     ref_voltage = constants.PH_REF_VOLTAGE
     ref_pH = constants.PH_REF_PH
-    return ref_pH + (ref_voltage/1000 - voltage/1000) / \
+    return ref_pH + (ref_voltage - voltage) / \
            (constants.UNIVERSAL_GAS_CONST * temp_k * math.log10(10)/constants.FARADAY_CONST)
 
 

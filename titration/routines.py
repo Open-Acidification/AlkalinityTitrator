@@ -32,11 +32,23 @@ def run_routine(selection):
         edit_settings()
     elif selection == '5':
         # testing mode
-        constants.IS_TEST = not constants.IS_TEST
-        interfaces.lcd_out("Testing: {}".format(constants.IS_TEST))
+        #constants.IS_TEST = not constants.IS_TEST
+        #interfaces.lcd_out("Testing: {}".format(constants.IS_TEST))
+        test()
     else:
         # exit
         pass
+    
+
+def test():
+    """Function for running specific tests for the program"""
+    while True:
+        temp, res = interfaces.read_temperature()
+        pH_reading, pH_volts = interfaces.read_pH()
+        print('Temperature: {0:0.3f}C'.format(temp))
+        print('Resistance: {0:0.3f} Ohms'.format(res))
+        interfaces.lcd_out("pH: {}".format(pH_reading))
+        interfaces.lcd_out("pH volt: {}".format(pH_volts))
 
 
 def _test_temp():
@@ -97,7 +109,9 @@ def _calibrate_temperature():
 def total_alkalinity_titration():
     """Runs through the full titration routine to find total alkalinity"""
     # pull in 1 ml of solution into pump for use in titration
-    interfaces.pump_volume(1, 0)
+    interfaces.lcd_out("Volume: ")
+    p_volume = interfaces.read_user_input()
+    interfaces.pump_volume(float(p_volume), 0)
     # data object to hold recorded data
     data = [('temperature', 'pH mV', 'solution volume')]
 
@@ -118,12 +132,13 @@ def total_alkalinity_titration():
     if user_choice == '1':
         # Manual
         while user_choice == '1':
-            p_volume = interfaces.read_user_input("Volume: ")
-            p_direction = interfaces.read_user_input("Direction: ")
+            p_volume = input("Volume: ")
+            p_direction = input("Direction: ")
+            p_volume = float(p_volume)
             if p_direction == '1':
                 total_sol += p_volume
             if p_direction == '0' or p_direction == '1':
-                interfaces.pump_volume(float(p_volume), int(p_direction))
+                interfaces.pump_volume(p_volume, int(p_direction))
             current_pH = wait_pH_stable(total_sol, data)
             interfaces.lcd_out("Current pH: {}".format(current_pH))
             interfaces.lcd_out("Continue adding solution? (0 - No, 1 - Yes")
@@ -185,6 +200,7 @@ def wait_pH_stable(total_sol, data):
         pH_reading, pH_volts = interfaces.read_pH()
         temp_reading = interfaces.read_temperature()[0]
         interfaces.lcd_out("pH: {}".format(pH_reading))
+        interfaces.lcd_out("pH volts: {}".format(pH_volts))
         interfaces.lcd_out("temp: {0:0.3f}C".format(temp_reading))
         pH_values[pH_list_counter] = pH_reading
 
@@ -220,9 +236,12 @@ def prime_pump():
     """Primes pump by pulling in and pushing out solution"""
     selection = '1'
     while selection == '1':
-        p_volume = interfaces.read_user_input("Volume: ")
+        interfaces.lcd_out("Volume: ")
+        p_volume = interfaces.read_user_input()
         interfaces.pump_volume(float(p_volume), 0)
         interfaces.pump_volume(float(p_volume), 1)
+        interfaces.lcd_out("Continue (1)")
+        selection = interfaces.read_user_input()
 
 
     # # draw in solution
