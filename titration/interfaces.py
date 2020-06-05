@@ -152,16 +152,16 @@ def pump_volume(volume, direction):
         return _test_add_HCl()
 
     # determine new volume in pump
-    #new_volume_in_pump = volume_in_pump + volume * ((-1) ** direction)
+    new_volume_in_pump = volume_in_pump + volume * ((-1) ** direction)
 
-#     if new_volume_in_pump < 0:
-#         # Pull in solution before pushing out
-#         volume_to_pull_in = volume - volume_in_pump
-#         cycles = analysis.determine_pump_cycles(volume_to_pull_in)
-#         drive_step_stick(cycles, 0)
-#     elif new_volume_in_pump > constants.MAX_PUMP_CAPACITY:
-#         lcd_out("Error - addition amount is more than pump capacity\nWill fill pump to capacity")
-#         volume = constants.MAX_PUMP_CAPACITY - volume_in_pump
+    if new_volume_in_pump < 0:
+        # Pull in solution before pushing out
+        volume_to_pull_in = volume - volume_in_pump
+        cycles = analysis.determine_pump_cycles(volume_to_pull_in)
+        drive_step_stick(cycles, 0)
+    elif new_volume_in_pump > constants.MAX_PUMP_CAPACITY:
+        lcd_out("Error - addition amount is more than pump capacity\nWill fill pump to capacity")
+        volume = constants.MAX_PUMP_CAPACITY - volume_in_pump
 
     if direction == 0:
         lcd_out("Drawing in {} mL HCl".format(volume))

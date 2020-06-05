@@ -43,13 +43,26 @@ def run_routine(selection):
 def test():
     """Function for running specific tests for the program"""
     while True:
-        temp, res = interfaces.read_temperature()
-        pH_reading, pH_volts = interfaces.read_pH()
-        print('Temperature: {0:0.3f}C'.format(temp))
-        print('Resistance: {0:0.3f} Ohms'.format(res))
-        interfaces.lcd_out("pH: {}".format(pH_reading))
-        interfaces.lcd_out("pH volt: {}".format(pH_volts))
-
+        user_choice = input("1 - Read values\n2 - Pump")
+        if user_choice == '1':
+            for i in range(10):
+                temp, res = interfaces.read_temperature()
+                pH_reading, pH_volts = interfaces.read_pH()
+                print('Temperature: {0:0.3f}C'.format(temp))
+                print('Resistance: {0:0.3f} Ohms'.format(res))
+                interfaces.lcd_out("pH: {}".format(pH_reading))
+                interfaces.lcd_out("pH volt: {}".format(pH_volts))
+                time.sleep(1)
+        elif user_choice == '2':
+            interfaces.lcd_out("Volume: ")
+            p_volume = interfaces.read_user_input()
+            interfaces.lcd_out("Direction: ")
+            p_direction = interfaces.read_user_input()
+            if p_direction == '0' or p_direction == '1':
+                interfaces.pump_volume(float(p_volume), int(p_direction))
+        elif user_choice == '3':
+            interfaces.volume_in_pump = float(input("Volume in pump: "))
+        
 
 def _test_temp():
     """Tests the temperature probe"""

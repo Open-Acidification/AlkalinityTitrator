@@ -57,7 +57,7 @@ STABILIZATION_CONSTANT = 0.1  # how much the pH is allowed to change between mea
 PH_ACCURACY = 0.1
 TITRATION_WAIT_TIME = 1
 INCREMENT_AMOUNT = 0.05
-TARGET_STD_DEVIATION = 0.010
+TARGET_STD_DEVIATION = 0.20
 # pump settings
 ARDUINO_PORT = "/dev/ttyUSB0"
 ARDUINO_BAUD = 9600
@@ -73,7 +73,7 @@ DEFAULT_TEMP_NOMINAL_RESISTANCE = 1000.0
 DEFAULT_PH_REF_VOLTAGE = -96.6
 DEFAULT_PH_REF_PH = 8.339
 # data paths
-DATA_PATH = 'data/'
+DATA_PATH = ''
 
 # TESTING
 test_pH_vals = [[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0],
