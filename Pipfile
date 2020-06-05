@@ -16,6 +16,7 @@ adafruit-blinka = "*"
 adafruit-circuitpython-ads1x15 = "*"
 pad4pi = "*"
 pep8 = "*"
+pyserial = "*"
 
 [requires]
 python_version = "3.7"

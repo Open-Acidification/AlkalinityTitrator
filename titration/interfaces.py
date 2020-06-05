@@ -1,8 +1,9 @@
 """Functions to interface with sensors and peripherals"""
 import constants
 import analysis
+
 # for pH sensor
-import adafruit_ads1x15.ads1015 as ads
+import adafruit_ads1x15.ads1115 as ADS
 import adafruit_ads1x15.analog_in as analog_in
 
 # for max31865 temp sensor
@@ -12,49 +13,78 @@ import digitalio
 import adafruit_max31865
 
 # for pump
-import RPi.GPIO as GPIO
 import time
+import serial
 
-# global
+# global, pH and temperature probes
 ph_input_channel = None
 temp_sensor = None
+arduino = None
+
+# keep track of solution in pump
+volume_in_pump = 0
 
 
 def setup_interfaces():
-    global ph_input_channel, temp_sensor
-    # setup pH sensor
-    i2c = busio.I2C(board.SCL, board.SDA)
-    adc = ads.ADS1015(i2c, data_rate=920, gain=2)  # Todo: do we want a higher gain?
-    ph_input_channel = analog_in.AnalogIn(adc, ads.P0, ads.P1)
+    """Initializes components for interfacing with pH probe, temperature probe, and stepper motor/syringe pump"""
+    global ph_input_channel, temp_sensor, arduino
+    # pH probe setup
+    try:
+        i2c = busio.I2C(board.SCL, board.SDA)
+        ads = ADS.ADS1115(i2c)
+        ph_input_channel = analog_in.AnalogIn(ads, ADS.P0, ADS.P1)
+        ads.gain = 2
+        constants.IS_TEST = False
+    except ValueError:
+        lcd_out("Error initializing pH probe; will use test functions instead.")
+        constants.IS_TEST = True
 
-    # setup temperature sensor
+    # temperature probe setup
     spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
     cs = digitalio.DigitalInOut(board.D5)
-    temp_sensor = adafruit_max31865.MAX31865(spi, cs, wires=3, rtd_nominal=constants.TEMP_NOMINAL_RESISTANCE, ref_resistor=constants.TEMP_REF_RESISTANCE)
+    temp_sensor = adafruit_max31865.MAX31865(spi=spi,
+                                             cs=cs,
+                                             wires=3,
+                                             rtd_nominal=constants.TEMP_NOMINAL_RESISTANCE,
+                                             ref_resistor=constants.TEMP_REF_RESISTANCE)
 
-    # setup pump
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(constants.PUMP_PIN_NUMBER, GPIO.OUT)
+    # pump setup (through Arduino)
+    try:
+        arduino = serial.Serial(port=constants.ARDUINO_PORT,
+                                baudrate=constants.ARDUINO_BAUD,
+                                timeout=constants.ARDUINO_TIMEOUT)
+        arduino.reset_output_buffer()
+        arduino.reset_input_buffer()
+        pass
+    except FileNotFoundError:
+        lcd_out("Port file not found")
 
 
 def lcd_out(info):
-    """Outputs given string to LCD screen"""
-    # TODO interface with LCD; for now, print to console
+    """
+    Outputs given string to LCD screen
+    :param info: string to be displayed on LCD screen
+    """
+    # TODO output to actual LCD screen
     print(info)
 
 
 def display_list(list_to_display):
-    """Display a list of options"""
-    # NOTE this may need to be updated based on how the LCD actually displays
-    # characters
+    """
+    Display a list of options
+    :param list_to_display: list to be displayed on LCD screen
+    """
     for key, value in list_to_display.items():
         lcd_out(str(key) + '. ' + value)
 
 
 def read_user_input(valid_inputs=None):
-    """Reads user input from keypad"""
+    """
+    Reads user input from keypad
+    :param valid_inputs: optional, valid inputs from the user
+    :return: user input selection
+    """
     # TODO interface with keypad
-    # TODO verify input through valid_inputs parameter?
     # Temporarily query user input from terminal
     while True:
         user_input = input()
@@ -65,21 +95,29 @@ def read_user_input(valid_inputs=None):
 
 
 def read_pH():
-    """Reads calibration-adjusted value for pH"""
+    """
+    Reads calibration-adjusted value for pH
+    :returns: adjusted pH value in units of pH, raw mV reading from probe
+    """
+    if constants.IS_TEST:
+        return _test_read_pH()
     volts = read_raw_pH()
     temp = read_temperature()[0]
     pH_val = analysis.calculate_pH(volts, temp)
     return pH_val, volts
 
 
-# def read_pH():
-#     """TEMP FUNCTION until I can test pH"""
-#     constants.pH_call_iter += 1
-#     return constants.test_pH_vals[constants.hcl_call_iter][constants.pH_call_iter], 1
+def _test_read_pH():
+    """Test function for pH"""
+    constants.pH_call_iter += 1
+    return constants.test_pH_vals[constants.hcl_call_iter][constants.pH_call_iter], 1
 
 
 def read_raw_pH():
-    """Reads and returns the pH value from GPIO as volts"""
+    """
+    Reads and pH value pH probe in mV
+    :return: raw mV reading from probe
+    """
     # Read pH registers; pH_val is raw value from pH probe
     volts = ph_input_channel.voltage
     diff = volts / 9.7
@@ -88,34 +126,84 @@ def read_raw_pH():
 
 
 def read_temperature():
-    """Reads and returns the temperature from GPIO"""
-    # print('Temperature: {0:0.3f}C'.format(sensor.temperature))
-    # print('Resistance: {0:0.3f} Ohms'.format(sensor.resistance))
+    """
+    Reads and returns the temperature from GPIO
+    :returns: temperature in celsius, resistance in ohms
+    """
+    if constants.IS_TEST:
+        return _test_read_temperature()
     return temp_sensor.temperature, temp_sensor.resistance
 
 
-def dispense_HCl(volume):
-    """Adds HCl to the solution"""
-    # TODO stepper motor driver needed here; will likely connect to the Arduino
-    # NOTE should this wait for pH to settle instead of read_pH?
-    # constants.hcl_call_iter += 1  # value only used for testing while reading pH doesn't work
-    # print("{} ml HCL added".format(volume))
-    num_pulses = constants.NUM_PULSES[volume]
-    _pulse_pump(num_pulses)
+def _test_read_temperature():
+    return 29.9, 200
 
 
-def _pulse_pump(num_pulses):
-    """Generates square waves"""
-    for i in range(num_pulses):
-        GPIO.output(constants.PUMP_PIN_NUMBER, GPIO.HIGH)
-        time.sleep(constants.PUMP_PULSE_TIME)
-        GPIO.output(constants.PUMP_PIN_NUMBER, GPIO.LOW)
-        time.sleep(constants.PUMP_PULSE_TIME)
+def pump_volume(volume, direction):
+    """
+    Moves volume of solution through pump
+    :param volume: amount of volume to move (float)
+    :param direction: 0 to pull solution in, 1 to pump out
+    """
+    global volume_in_pump
+
+    if constants.IS_TEST:
+        return _test_add_HCl()
+
+    # determine new volume in pump
+    new_volume_in_pump = volume_in_pump + volume * ((-1) ** direction)
+
+    if new_volume_in_pump < 0:
+        # Pull in solution before pushing out
+        volume_to_pull_in = volume - volume_in_pump
+        cycles = analysis.determine_pump_cycles(volume_to_pull_in)
+        drive_step_stick(cycles, 0)
+    elif new_volume_in_pump > constants.MAX_PUMP_CAPACITY:
+        lcd_out("Error - addition amount is more than pump capacity\nWill fill pump to capacity")
+        volume = constants.MAX_PUMP_CAPACITY - volume_in_pump
+
+    if direction == 0:
+        lcd_out("Drawing in {} mL HCl".format(volume))
+    elif direction == 1:
+        lcd_out("Adding {} mL HCl".format(volume))
+
+    cycles = analysis.determine_pump_cycles(volume)
+    drive_step_stick(cycles, direction)
+    volume_in_pump = new_volume_in_pump
+
+
+def _test_add_HCl():
+    constants.hcl_call_iter += 1  # value only used for testing while reading pH doesn't work
+    constants.pH_call_iter = -1
+
+
+def drive_step_stick(cycles, direction):
+    """
+    Communicates with arduino to add HCl through pump
+    :param cycles: number of rising edges for the pump
+    :param direction: direction of pump
+    """
+    time.sleep(.01)
+    if arduino.writable():
+        arduino.write(cycles.to_bytes(4, 'little'))
+        arduino.write(direction.to_bytes(1, 'little'))
+        arduino.flush()
+        wait_time = cycles/1000 + .5
+        time.sleep(wait_time)
+        temp = arduino.readline()
+        if temp != b'DONE\r\n':
+            lcd_out("Error writing to Arduino")
+            print(temp)
+    else:
+        lcd_out("Arduino not available.")
 
 
 if __name__ == "__main__":
+    """Variable pump priming"""
     setup_interfaces()
-    start = time.time()
-    dispense_HCl(0.05)
-    end = time.time()
-    print("Time: ", end - start)
+    analysis.setup_calibration()
+    while True:
+        p_volume = read_user_input("Volume: ")
+        p_direction = read_user_input("Direction: ")
+        if p_direction == '0' or p_direction == '1':
+            pump_volume(float(p_volume), int(p_direction))

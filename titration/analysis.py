@@ -1,7 +1,3 @@
-# Data handling
-# calculate linear fits for calibration routine
-# Query and save data
-# Format data for output
 import datetime as dt
 import csv
 import json
@@ -11,7 +7,11 @@ import constants
 
 # data in/out
 def _write_csv(file_name, data_to_write):
-    """Helper function for writing to csv"""
+    """
+    Helper function for writing out to csv
+    :param file_name: file path to write to
+    :param data_to_write: data to write; expects an iterable
+    """
     with open(file_name, mode='w') as open_file:
         data_writer = csv.writer(open_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for data in data_to_write:
@@ -19,27 +19,41 @@ def _write_csv(file_name, data_to_write):
 
 
 def write_json(file_name, data):
-    """Simple function to write to json"""
+    """
+    Write to json
+    :param file_name: file path to write to
+    :param data: dictionary data to dump to json format
+    """
     with open(file_name, 'w') as outfile:
         json.dump(data, outfile)
 
 
 def _read_json(file_name):
-    """Reads from json; returns data"""
-    with open(file_name) as json_file:
-        data = json.load(json_file)
-        return data
+    """
+    Reads data from json file
+    :param file_name: file path to write to
+    :return: dictionary with data from json file
+    """
+    try:
+        with open(file_name) as json_file:
+            data = json.load(json_file)
+            return data
+    except FileNotFoundError:
+        return None
 
 
 # calibration
 def setup_calibration():
     """Sets calibration constants from persistent storage"""
     data = _read_json(constants.CALIBRATION_FILENAME)
-    constants.PH_SLOPE = data['pH']['slope']
-    constants.PH_REF_VOLTAGE = data['pH']['ref_voltage']
-    constants.PH_REF_PH = data['pH']['ref_pH']
-    constants.TEMP_REF_RESISTANCE = data['temp']['ref_resistance']
-    constants.TEMP_NOMINAL_RESISTANCE = data['temp']['nominal_resistance']
+    if data:
+        # constants.PH_SLOPE = data['pH']['slope']
+        constants.PH_REF_VOLTAGE = data['pH']['ref_voltage']
+        constants.PH_REF_PH = data['pH']['ref_pH']
+        constants.TEMP_REF_RESISTANCE = data['temp']['ref_resistance']
+        constants.TEMP_NOMINAL_RESISTANCE = data['temp']['nominal_resistance']
+    else:
+        save_calibration_data()
 
 
 def save_calibration_data():
@@ -47,15 +61,19 @@ def save_calibration_data():
     calibration_data = constants.calibration_data_format
     calibration_data['pH']['ref_voltage'] = constants.PH_REF_VOLTAGE
     calibration_data['pH']['ref_pH'] = constants.PH_REF_PH
-    calibration_data['pH']['slope'] = constants.PH_SLOPE
+    # calibration_data['pH']['slope'] = constants.PH_SLOPE
     calibration_data['temp']['ref_resistance'] = constants.TEMP_REF_RESISTANCE
     calibration_data['temp']['nominal_resistance'] = constants.TEMP_NOMINAL_RESISTANCE
     write_json(constants.CALIBRATION_FILENAME, calibration_data)
 
 
 def calculate_expected_resistance(temp):
-    """Calculates the expected resistance
-    https://www.analog.com/media/en/technical-documentation/application-notes/AN709_0.pdf"""
+    """
+    Calculates the expected resistance. Used for calibrating temperature probe.
+    https://www.analog.com/media/en/technical-documentation/application-notes/AN709_0.pdf
+    :param temp: temperature reading
+    :return: expected probe resistance for temperature reading
+    """
     A = 0.0039083
     B = -0.000000578
     C = -0.000000000004183
@@ -67,23 +85,47 @@ def calculate_expected_resistance(temp):
     return constants.TEMP_NOMINAL_RESISTANCE * (1 + A * temp + B * temp ** 2 + C * (temp - 100) * temp ** 3)
 
 
+def reset_calibration():
+    """Reset calibraiton settings to default"""
+    constants.TEMP_REF_RESISTANCE = constants.DEFAULT_TEMP_REF_RESISTANCE
+    constants.TEMP_NOMINAL_RESISTANCE = constants.DEFAULT_TEMP_NOMINAL_RESISTANCE
+    # constants.PH_SLOPE = constants.DEFAULT_PH_SLOPE
+    constants.PH_REF_VOLTAGE = constants.DEFAULT_PH_REF_VOLTAGE
+    constants.PH_REF_PH = constants.DEFAULT_PH_REF_PH
+
+
 # pH
 def calculate_pH(voltage, temp):
-    """Calculates pH value from voltage"""
+    """
+    Calculates pH value from pH probe voltage. The pH probes read values of mV, so to get the actual pH value, mV needs
+    to be converted.
+    :param voltage: voltage reading from pH probe
+    :param temp: temperature of solution
+    :return: actual pH value in units of pH
+    """
     temp_k = temp + constants.CELSIUS_TO_KELVIN
     ref_voltage = constants.PH_REF_VOLTAGE
     ref_pH = constants.PH_REF_PH
-    return ref_pH + (ref_voltage/1000 - voltage/1000)/(constants.UNIVERSAL_GAS_CONST * temp_k * math.log10(10)/constants.FARADAY_CONST)
+    return ref_pH + (ref_voltage/1000 - voltage/1000) / \
+           (constants.UNIVERSAL_GAS_CONST * temp_k * math.log10(10)/constants.FARADAY_CONST)
 
 
 # titration
 def calculate_mean(values):
-    """Returns the mean of given values"""
+    """
+    Calculates mean of given values
+    :param values: values to calculate mean of
+    :return: mean of values
+    """
     return sum(values)/len(values)
 
 
 def std_deviation(values):
-    """Returns sample std deviation of values"""
+    """
+    Calculates sample std deviation of values
+    :param values: values to calculate std deviation of
+    :return: std deviation of values
+    """
     mean = calculate_mean(values)
     running_sum = 0
     for val in values:
@@ -92,9 +134,33 @@ def std_deviation(values):
 
 
 def write_titration_data(data):
-    """Writes titration data to csv"""
+    """
+    Writes titration data to csv
+    Data in form of ('temperature', 'pH', 'pH volts', 'solution volume')
+    :param data: titration data to write out
+    """
     file_name = constants.DATA_PATH + dt.datetime.strftime(dt.datetime.now(), '%m-%d-%Y %H:%M:%S:%f') + '.csv'
     _write_csv(file_name, data)
+
+
+# pump
+def determine_pump_cycles(volume_to_add):
+    """
+    Determines the number of cycles to move given volume
+    :param volume_to_add: amount of volume to add in mL
+    :return: number of cycles
+    """
+    if volume_to_add in constants.NUM_CYCLES:
+        return constants.NUM_CYCLES[volume_to_add]
+    pump_cycles = constants.CYCLES_VOLUME_RATIO * volume_to_add
+    # NOTE rounds down
+    return int(pump_cycles)
+
+
+# alkalinity
+def determine_total_alkalinity(S=35, temp=25, C=0.1, d=1, pHTris=None, ETris=None, weight=None, E=None, volume=None, csv_file=None):
+    """Calculates the total alkalinity of the solution"""
+    pass
 
 
 # testing

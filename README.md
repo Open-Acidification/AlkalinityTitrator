@@ -21,6 +21,12 @@ Run standard updates on the pi:
 $ sudo apt-get update 
 $ sudo apt-get upgrade
 ```
+This project utilizes SPI and I2C protocols, both of which often come disabled on the pi. To enable them, run:
+```
+$ sudo raspi-config
+```
+and navigate to "Interfacing Options"; enable both SPI and I2C.
+
 Install git:
 ```
 $ sudo apt-get install git
@@ -29,22 +35,32 @@ Clone alkalinity titrator repository to the pi
 ```
 $ git clone https://github.com/Open-Acidification/alkalinity-titrator.git
 ```
-Install Pipenv (a Python virtual environment manager)
+Run installation script
 ```
-$ sudo apt install pipenv
-```
-This project utilizes SPI and I2C protocols, both of which often come disabled on the pi. To enable them, run:
-```
-$ sudo raspi-config
-```
-and navigate to "Interfacing Options"; enable both SPI and I2C.
-To install RPI.GPIO:
-```
-$ sudo apt-get install rpi.gpio
+$ sudo ./install.sh
 ```
 
 ## User Instructions
+Run script
+``` 
+$ ./run.sh
+```
+Follow the user prompts and you're good to go!
 
+## Pins
+### Temperature probe ([MAX31865 breakout board](https://learn.adafruit.com/adafruit-max31865-rtd-pt100-amplifier/python-circuitpython))
+- PIN 1 (3.3v) to sensor VIN
+- PIN 9 to sensor GND
+- PIN 19/BCM 10 to sensor SDI
+- PIN 21/BCM 21 to sensor SDO
+- PIN 23/BCM 23 to sensor CLK
+- PIN 29/BCM 5 to sensor CS (or use any other free GPIO pin)
+
+### pH probe ([ADS1115 analog converter](https://learn.adafruit.com/adafruit-4-channel-adc-breakouts/python-circuitpython))
+- PIN 17 (3.3v) to ADS1115 VDD - Remember the maximum input voltage to any ADC channel cannot exceed this VDD 3V value!
+- PIN 6 to ADS1115 GND
+- PIN 5/BCM 3 SCL to ADS1115 SCL
+- PIN 3/BCM 2 to ADS1115 SDA
 
 ## Libraries
 1. Circuit Python - https://github.com/adafruit/Adafruit_CircuitPython_MAX31865 
