@@ -171,5 +171,5 @@ if __name__ == "__main__":
     while True:
         option = input("1 - Save Calibration data")
         if option == '1':
-            setup_calibration()
             save_calibration_data()
+            setup_calibration()
