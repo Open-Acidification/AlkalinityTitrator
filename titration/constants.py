@@ -33,7 +33,8 @@ calibration_data_format = {
     'temp': {
         'ref_resistance': 4300.0,
         'nominal_resistance': 1000.0
-    }
+    },
+    'vol_pump': 0
 }
 
 CALIBRATION_FILENAME = 'titration/calibration.json'
@@ -74,6 +75,7 @@ DEFAULT_PH_REF_VOLTAGE = -96.6
 DEFAULT_PH_REF_PH = 8.339
 # data paths
 DATA_PATH = ''
+volume_in_pump = 0  # keep track of solution in pump
 
 # TESTING
 test_pH_vals = [[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0],

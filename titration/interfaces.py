@@ -22,7 +22,7 @@ temp_sensor = None
 arduino = None
 
 # keep track of solution in pump
-volume_in_pump = 0
+# volume_in_pump = 0
 
 
 def setup_interfaces():
@@ -146,31 +146,60 @@ def pump_volume(volume, direction):
     :param volume: amount of volume to move (float)
     :param direction: 0 to pull solution in, 1 to pump out
     """
-    global volume_in_pump
-
     if constants.IS_TEST:
         return _test_add_HCl()
 
-    # determine new volume in pump
-    new_volume_in_pump = volume_in_pump + volume * ((-1) ** direction)
+    volume_to_add = volume
 
-    if new_volume_in_pump < 0:
-        # Pull in solution before pushing out
-        volume_to_pull_in = volume - volume_in_pump
-        cycles = analysis.determine_pump_cycles(volume_to_pull_in)
-        drive_step_stick(cycles, 0)
-    elif new_volume_in_pump > constants.MAX_PUMP_CAPACITY:
-        lcd_out("Error - addition amount is more than pump capacity\nWill fill pump to capacity")
-        volume = constants.MAX_PUMP_CAPACITY - volume_in_pump
-
+    # pull in solution
     if direction == 0:
-        lcd_out("Drawing in {} mL HCl".format(volume))
-    elif direction == 1:
-        lcd_out("Adding {} mL HCl".format(volume))
+        # if volume_to_add is greater than space in the pump
+        if volume_to_add > (constants.MAX_PUMP_CAPACITY - constants.volume_in_pump):
+            volume_to_add = constants.MAX_PUMP_CAPACITY - constants.volume_in_pump
+        lcd_out("Drawing in {} mL HCl".format(volume_to_add))
+        cycles = analysis.determine_pump_cycles(volume_to_add)
+        drive_step_stick(cycles, 0)
+        constants.volume_in_pump += volume_to_add
 
-    cycles = analysis.determine_pump_cycles(volume)
-    drive_step_stick(cycles, direction)
-    #volume_in_pump = new_volume_in_pump
+    # pump out solution
+    elif direction == 1:
+        lcd_out("Adding {} mL HCl".format(volume_to_add))
+        if volume_to_add > constants.MAX_PUMP_CAPACITY:
+            # volume greater than max capacity of pump
+
+            # add all current volume in pump
+            cycles = analysis.determine_pump_cycles(constants.volume_in_pump)
+            drive_step_stick(cycles, 1)
+            volume_to_add = volume_to_add - constants.volume_in_pump
+            constants.volume_in_pump -= constants.volume_in_pump
+
+            while volume_to_add > 0:
+                # pump in and out more solution
+                next_volume = min(volume_to_add, constants.MAX_PUMP_CAPACITY)
+                cycles = analysis.determine_pump_cycles(next_volume)
+                drive_step_stick(cycles, 0)
+                constants.volume_in_pump += next_volume
+                drive_step_stick(cycles, 1)
+                constants.volume_in_pump -= next_volume
+                volume_to_add = volume_to_add - next_volume
+
+        elif volume_to_add > constants.volume_in_pump:
+            # volume greater than volume in pump
+            cycles = analysis.determine_pump_cycles(constants.volume_in_pump)
+            drive_step_stick(cycles, 1)
+            volume_to_add = volume_to_add - constants.volume_in_pump
+            constants.volume_in_pump -= constants.volume_in_pump
+
+            cycles = analysis.determine_pump_cycles(volume_to_add)
+            drive_step_stick(cycles, 0)
+            constants.volume_in_pump += volume_to_add
+            drive_step_stick(cycles, 1)
+            constants.volume_in_pump -= volume_to_add
+
+        else:
+            # volume less than volume in pump
+            cycles = analysis.determine_pump_cycles(volume_to_add)
+            drive_step_stick(cycles, direction)
 
 
 def _test_add_HCl():

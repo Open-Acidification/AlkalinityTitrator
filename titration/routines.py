@@ -186,6 +186,9 @@ def titration(pH_target, solution_increment_amount, data, total_sol_added, degas
 
     while current_pH - pH_target > constants.PH_ACCURACY:
         interfaces.pump_volume(solution_increment_amount, 1)
+        if constants.volume_in_pump < .05:
+            # pump in 1 mL
+            interfaces.pump_volume(1.0, 0)
         total_sol += solution_increment_amount
         current_pH = wait_pH_stable(total_sol, data)
     interfaces.lcd_out("pH value {} reached".format(current_pH))
@@ -243,6 +246,16 @@ def edit_settings():
         analysis.reset_calibration()
         analysis.save_calibration_data()
         interfaces.lcd_out("Default constants restored")
+
+    interfaces.lcd_out("Set volume in pump? (Y/n)")
+    selection = interfaces.read_user_input()
+    if selection != 'n' or selection != 'N':
+        interfaces.lcd_out("Volume in pump: ")
+        vol_in_pump = interfaces.read_user_input()
+        vol_in_pump = float(vol_in_pump)
+        constants.volume_in_pump = vol_in_pump
+        analysis.save_calibration_data()
+        interfaces.lcd_out("Volume in pump set")
 
 
 def prime_pump():
