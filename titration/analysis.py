@@ -97,7 +97,7 @@ def reset_calibration():
 # pH
 def calculate_pH(voltage, temp):
     """
-    Calculates pH value from pH probe voltage. The pH probes read values of mV, so to get the actual pH value, mV needs
+    Calculates pH value from pH probe voltage. The pH probes read values of V, so to get the actual pH value, V needs
     to be converted.
     :param voltage: voltage reading from pH probe
     :param temp: temperature of solution
@@ -106,8 +106,7 @@ def calculate_pH(voltage, temp):
     temp_k = temp + constants.CELSIUS_TO_KELVIN
     ref_voltage = constants.PH_REF_VOLTAGE
     ref_pH = constants.PH_REF_PH
-    return ref_pH + (ref_voltage/1000 - voltage/1000) / \
-           (constants.UNIVERSAL_GAS_CONST * temp_k * math.log10(10)/constants.FARADAY_CONST)
+    return ref_pH + (ref_voltage - voltage) / (constants.UNIVERSAL_GAS_CONST * temp_k * math.log(10)/constants.FARADAY_CONST)
 
 
 # titration
@@ -166,4 +165,8 @@ def determine_total_alkalinity(S=35, temp=25, C=0.1, d=1, pHTris=None, ETris=Non
 # testing
 if __name__ == "__main__":
     # print("Expected res = ", calculate_expected_resistance(0))
-    write_json('calibration_data.json')
+    setup_calibration()
+    while True:
+        voltage = input("Voltage: ")
+        temp = input("Temp: ")
+        print("pH: {}".format(calculate_pH(float(voltage), float(temp))))

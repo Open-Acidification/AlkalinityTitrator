@@ -46,8 +46,8 @@ FARADAY_CONST = 96485.33212
 CELSIUS_TO_KELVIN = 273.15
 # pH calibration values
 # PH_SLOPE = 59  # note: not sure we need or care about this with how we're currently calculating pH
-PH_REF_VOLTAGE = -96.6
-PH_REF_PH = 8.339
+PH_REF_VOLTAGE = -0.012
+PH_REF_PH = 7.0
 # titration routine
 TARGET_TEMP = 25.0  # degrees C
 INITIAL_TARGET_PH = 3.5
