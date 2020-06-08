@@ -169,7 +169,9 @@ def determine_total_alkalinity(S=35, temp=25, C=0.1, d=1, pHTris=None, ETris=Non
 if __name__ == "__main__":
     # print("Expected res = ", calculate_expected_resistance(0))
     while True:
-        option = input("1 - Save Calibration data")
+        option = input("1 - Save Calibration data\n2 - Write csv")
         if option == '1':
             save_calibration_data()
             setup_calibration()
+        if option == '2':
+            _write_csv('test_data', [(1,2,3),(4,5,6)])
