@@ -47,8 +47,8 @@ FARADAY_CONST = 96485.33212
 CELSIUS_TO_KELVIN = 273.15
 # pH calibration values
 # PH_SLOPE = 59  # note: not sure we need or care about this with how we're currently calculating pH
-PH_REF_VOLTAGE = -96.6
-PH_REF_PH = 8.339
+PH_REF_VOLTAGE = -.012
+PH_REF_PH = 7.0
 # titration routine
 TARGET_TEMP = 25.0  # degrees C
 INITIAL_TARGET_PH = 3.5
@@ -58,7 +58,7 @@ STABILIZATION_CONSTANT = 0.1  # how much the pH is allowed to change between mea
 PH_ACCURACY = 0.1
 TITRATION_WAIT_TIME = 1
 INCREMENT_AMOUNT = 0.05
-TARGET_STD_DEVIATION = 0.20
+TARGET_STD_DEVIATION = 0.15
 # pump settings
 ARDUINO_PORT = "/dev/ttyUSB0"
 ARDUINO_BAUD = 9600
@@ -71,8 +71,8 @@ MAX_PUMP_CAPACITY = 1.1  # max capacity of pump in mL
 # defaults
 DEFAULT_TEMP_REF_RESISTANCE = 4300.0
 DEFAULT_TEMP_NOMINAL_RESISTANCE = 1000.0
-DEFAULT_PH_REF_VOLTAGE = -96.6
-DEFAULT_PH_REF_PH = 8.339
+DEFAULT_PH_REF_VOLTAGE = -.012
+DEFAULT_PH_REF_PH = 7.0
 # data paths
 DATA_PATH = ''
 volume_in_pump = 0  # keep track of solution in pump
