@@ -32,12 +32,40 @@ def run_routine(selection):
         edit_settings()
     elif selection == '5':
         # testing mode
-        constants.IS_TEST = not constants.IS_TEST
-        interfaces.lcd_out("Testing: {}".format(constants.IS_TEST))
+        test()
     else:
         # exit
         pass
+    
 
+def test():
+    """Function for running specific tests for the program"""
+    while True:
+        user_choice = input("1 - Read values\n2 - Pump\n3 - Set volume in pump\n4 - Enter Test Mode\n5 - Exit")
+        if user_choice == '1':
+            for i in range(10):
+                temp, res = interfaces.read_temperature()
+                pH_reading, pH_volts = interfaces.read_pH()
+                print('Temperature: {0:0.3f}C'.format(temp))
+                print('Resistance: {0:0.3f} Ohms'.format(res))
+                interfaces.lcd_out("pH: {}".format(pH_reading))
+                interfaces.lcd_out("pH volt: {}".format(pH_volts))
+                time.sleep(1)
+        elif user_choice == '2':
+            interfaces.lcd_out("Volume: ")
+            p_volume = interfaces.read_user_input()
+            interfaces.lcd_out("Direction: ")
+            p_direction = interfaces.read_user_input()
+            if p_direction == '0' or p_direction == '1':
+                interfaces.pump_volume(float(p_volume), int(p_direction))
+        elif user_choice == '3':
+            constants.volume_in_pump = float(input("Volume in pump: "))
+        elif user_choice == '4':
+            constants.IS_TEST = not constants.IS_TEST
+            interfaces.lcd_out("Testing: {}".format(constants.IS_TEST))
+        elif user_choice == '5':
+            break
+        
 
 def _test_temp():
     """Tests the temperature probe"""
@@ -97,7 +125,9 @@ def _calibrate_temperature():
 def total_alkalinity_titration():
     """Runs through the full titration routine to find total alkalinity"""
     # pull in 1 ml of solution into pump for use in titration
-    interfaces.pump_volume(1, 0)
+    interfaces.lcd_out("Volume: ")
+    p_volume = interfaces.read_user_input()
+    interfaces.pump_volume(float(p_volume), 0)
     # data object to hold recorded data
     data = [('temperature', 'pH V', 'solution volume')]
 
@@ -118,19 +148,21 @@ def total_alkalinity_titration():
     if user_choice == '1':
         # Manual
         while user_choice == '1':
-            p_volume = interfaces.read_user_input("Volume: ")
-            p_direction = interfaces.read_user_input("Direction: ")
-            if p_direction == '1':
+            p_volume = input("Volume: ")
+            p_direction = input("Direction: ")
+            p_volume = float(p_volume)
+            p_direction = int(p_direction)
+            if p_direction == 1:
                 total_sol += p_volume
-            if p_direction == '0' or p_direction == '1':
-                interfaces.pump_volume(float(p_volume), int(p_direction))
+            if p_direction == 0 or p_direction == 1:
+                interfaces.pump_volume(p_volume, p_direction)
             current_pH = wait_pH_stable(total_sol, data)
             interfaces.lcd_out("Current pH: {}".format(current_pH))
-            interfaces.lcd_out("Continue adding solution? (0 - No, 1 - Yes")
+            interfaces.lcd_out("Continue adding solution? (0 - No, 1 - Yes)")
             user_choice = interfaces.read_user_input()
     else:
         # Automatic
-        total_sol = titration(constants.INITIAL_TARGET_PH, constants.INCREMENT_AMOUNT, data, 0, 3*60)
+        total_sol = titration(constants.INITIAL_TARGET_PH, constants.INCREMENT_AMOUNT, data, 0, 5)
 
     # 3.5 -> 3.0
     # todo set stir speed fast
@@ -158,6 +190,9 @@ def titration(pH_target, solution_increment_amount, data, total_sol_added, degas
 
     while current_pH - pH_target > constants.PH_ACCURACY:
         interfaces.pump_volume(solution_increment_amount, 1)
+        if constants.volume_in_pump < .05:
+            # pump in 1 mL
+            interfaces.pump_volume(1.0, 0)
         total_sol += solution_increment_amount
         current_pH = wait_pH_stable(total_sol, data)
     interfaces.lcd_out("pH value {} reached".format(current_pH))
@@ -185,6 +220,7 @@ def wait_pH_stable(total_sol, data):
         pH_reading, pH_volts = interfaces.read_pH()
         temp_reading = interfaces.read_temperature()[0]
         interfaces.lcd_out("pH: {}".format(pH_reading))
+        interfaces.lcd_out("pH volts: {}".format(pH_volts))
         interfaces.lcd_out("temp: {0:0.3f}C".format(temp_reading))
         pH_values[pH_list_counter] = pH_reading
 
@@ -193,15 +229,16 @@ def wait_pH_stable(total_sol, data):
 
         # Check that the temperature of the solution is within bounds
         if abs(temp_reading - constants.TARGET_TEMP) > constants.TEMPERATURE_ACCURACY:
-            interfaces.lcd_out("TEMPERATURE OUT OF BOUNDS")
+            # interfaces.lcd_out("TEMPERATURE OUT OF BOUNDS")
             # TODO output to error log
+            pass
 
         # Record data point (temp, pH volts, total HCl)
         data.append((temp_reading, pH_volts, total_sol))
         pH_list_counter = 0 if pH_list_counter >= 9 else pH_list_counter + 1
 
         if valid_num_values_tested and analysis.std_deviation(pH_values) < constants.TARGET_STD_DEVIATION:
-            return analysis.calculate_mean(pH_values)
+            return pH_reading
 
         time.sleep(constants.TITRATION_WAIT_TIME)
 
@@ -215,17 +252,23 @@ def edit_settings():
         analysis.save_calibration_data()
         interfaces.lcd_out("Default constants restored")
 
+    interfaces.lcd_out("Set volume in pump? (Y/n)")
+    selection = interfaces.read_user_input()
+    if selection != 'n' or selection != 'N':
+        interfaces.lcd_out("Volume in pump: ")
+        vol_in_pump = interfaces.read_user_input()
+        vol_in_pump = float(vol_in_pump)
+        constants.volume_in_pump = vol_in_pump
+        analysis.save_calibration_data()
+        interfaces.lcd_out("Volume in pump set")
+
 
 def prime_pump():
     """Primes pump by pulling in and pushing out solution"""
     selection = '1'
     while selection == '1':
-        p_volume = interfaces.read_user_input("Volume: ")
-        interfaces.pump_volume(float(p_volume), 0)
+        interfaces.lcd_out("Volume: ")
+        p_volume = interfaces.read_user_input()
         interfaces.pump_volume(float(p_volume), 1)
-
-
-    # # draw in solution
-    # interfaces.pump_volume(1, 0)
-    # # push out solution
-    # interfaces.pump_volume(1, 1)
+        interfaces.lcd_out("Continue (1)")
+        selection = interfaces.read_user_input()

@@ -2,6 +2,7 @@ import interfaces
 import routines
 import constants
 import analysis
+import time
 
 
 def test():
@@ -9,9 +10,12 @@ def test():
     initialize_components()
     while True:
         temp, res = interfaces.read_temperature()
+        pH_reading, pH_volts = interfaces.read_pH()
         print('Temperature: {0:0.3f}C'.format(temp))
         print('Resistance: {0:0.3f} Ohms'.format(res))
-        # time.sleep(constants.TITRATION_WAIT_TIME)
+        interfaces.lcd_out("pH: {}".format(pH_reading))
+        interfaces.lcd_out("pH volt: {}".format(pH_volts))
+        time.sleep(constants.TITRATION_WAIT_TIME)
 
 
 def run():
