@@ -150,13 +150,10 @@ def pump_volume(volume, direction):
     # pull in solution
     if direction == 0:
         # if volume_to_add is greater than space in the pump
-        if volume_to_add > (constants.MAX_PUMP_CAPACITY - constants.volume_in_pump):
-            lcd_out("Need more volume")
+        space_in_pump = constants.MAX_PUMP_CAPACITY - constants.volume_in_pump
+        if volume_to_add > space_in_pump:
             volume_to_add = constants.MAX_PUMP_CAPACITY - constants.volume_in_pump
-        lcd_out("Drawing in {} mL HCl".format(volume_to_add))
-        cycles = analysis.determine_pump_cycles(volume_to_add)
-        drive_step_stick(cycles, 0)
-        constants.volume_in_pump += volume_to_add
+        drive_pump(volume_to_add, direction)
 
     # pump out solution
     elif direction == 1:
@@ -165,50 +162,59 @@ def pump_volume(volume, direction):
             # volume greater than max capacity of pump
 
             # add all current volume in pump
-            cycles = analysis.determine_pump_cycles(constants.volume_in_pump)
-            lcd_out("Adding {} mL".format(constants.volume_in_pump))
-            drive_step_stick(cycles, 1)
+            drive_pump(constants.volume_in_pump, 1)
+
+            # recalculate volume to add
             volume_to_add = volume_to_add - constants.volume_in_pump
-            constants.volume_in_pump -= constants.volume_in_pump
 
             while volume_to_add > 0:
                 # pump in and out more solution
                 next_volume = min(volume_to_add, constants.MAX_PUMP_CAPACITY)
-                cycles = analysis.determine_pump_cycles(next_volume)
-                lcd_out("Taking in {} mL".format(next_volume))
-                drive_step_stick(cycles, 0)
-                constants.volume_in_pump += next_volume
-                lcd_out("Adding {} mL".format(next_volume))
-                drive_step_stick(cycles, 1)
-                constants.volume_in_pump -= next_volume
+                drive_pump(next_volume, 0)
+                drive_pump(next_volume, 1)
                 volume_to_add = volume_to_add - next_volume
 
         elif volume_to_add > constants.volume_in_pump:
             # volume greater than volume in pump
-            cycles = analysis.determine_pump_cycles(constants.volume_in_pump)
-            drive_step_stick(cycles, 1)
-            volume_to_add = volume_to_add - constants.volume_in_pump
-            lcd_out("Adding {} mL".format(constants.volume_in_pump))
-            constants.volume_in_pump -= constants.volume_in_pump
+            drive_pump(constants.volume_in_pump, 1)
 
-            cycles = analysis.determine_pump_cycles(volume_to_add)
-            lcd_out("Taking in {} mL".format(volume_to_add))
-            drive_step_stick(cycles, 0)
-            constants.volume_in_pump += volume_to_add
-            lcd_out("Adding {} mL".format(volume_to_add))
-            drive_step_stick(cycles, 1)
-            constants.volume_in_pump -= volume_to_add
+            # calculate rest of volume to add
+            volume_to_add = volume_to_add - constants.volume_in_pump
+
+            drive_pump(volume_to_add, 0)
+            drive_pump(volume_to_add, 1)
 
         else:
             # volume less than volume in pump
-            lcd_out("Adding {} mL".format(volume_to_add))
-            cycles = analysis.determine_pump_cycles(volume_to_add)
-            drive_step_stick(cycles, direction)
+            drive_pump(volume_to_add, direction)
 
 
 def _test_add_HCl():
     constants.hcl_call_iter += 1  # value only used for testing while reading pH doesn't work
     constants.pH_call_iter = -1
+
+
+def drive_pump(volume, direction):
+    """Converts volume to cycles and ensures and checks pump level and values"""
+    if direction == 0:
+        space_in_pump = constants.MAX_PUMP_CAPACITY - constants.volume_in_pump
+        if volume > space_in_pump:
+            lcd_out("Error taking in titrant")
+        else:
+            lcd_out("Taking in {} ml titrant".format(volume))
+            cycles = analysis.determine_pump_cycles(volume)
+            drive_step_stick(cycles, direction)
+            constants.volume_in_pump += volume
+    elif direction == 1:
+        if volume > constants.volume_in_pump:
+            lcd_out("Error pumping out titrant")
+        else:
+            lcd_out("Pumping out {} ml titrant".format(volume))
+            cycles = analysis.determine_pump_cycles(volume)
+            drive_step_stick(cycles, direction)
+            constants.volume_in_pump -= volume
+
+    lcd_out("Volume in pump".format(constants.volume_in_pump))
 
 
 def drive_step_stick(cycles, direction):
@@ -217,9 +223,6 @@ def drive_step_stick(cycles, direction):
     :param cycles: number of rising edges for the pump
     :param direction: direction of pump
     """
-    lcd_out("Driving pump")
-    time.sleep(1)
-    lcd_out("New volume in pump: {}".format(constants.volume_in_pump))
     time.sleep(1)
     #time.sleep(.01)
     #if arduino.writable():

@@ -89,7 +89,6 @@ def reset_calibration():
     """Reset calibraiton settings to default"""
     constants.TEMP_REF_RESISTANCE = constants.DEFAULT_TEMP_REF_RESISTANCE
     constants.TEMP_NOMINAL_RESISTANCE = constants.DEFAULT_TEMP_NOMINAL_RESISTANCE
-    # constants.PH_SLOPE = constants.DEFAULT_PH_SLOPE
     constants.PH_REF_VOLTAGE = constants.DEFAULT_PH_REF_VOLTAGE
     constants.PH_REF_PH = constants.DEFAULT_PH_REF_PH
 
@@ -174,4 +173,4 @@ if __name__ == "__main__":
             save_calibration_data()
             setup_calibration()
         if option == '2':
-            _write_csv('test_data', [(1,2,3),(4,5,6)])
+            _write_csv('test_data', [(1, 2, 3), (4, 5, 6)])

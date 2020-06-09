@@ -27,8 +27,7 @@ KEY_9 = 19
 calibration_data_format = {
     'pH': {
         'ref_voltage': 200,
-        'ref_pH': 7,
-        'slope': 0.03
+        'ref_pH': 7
     },
     'temp': {
         'ref_resistance': 4300.0,
@@ -46,7 +45,6 @@ UNIVERSAL_GAS_CONST = 8.31447215
 FARADAY_CONST = 96485.33212
 CELSIUS_TO_KELVIN = 273.15
 # pH calibration values
-# PH_SLOPE = 59  # note: not sure we need or care about this with how we're currently calculating pH
 PH_REF_VOLTAGE = -.012
 PH_REF_PH = 7.0
 # titration routine
