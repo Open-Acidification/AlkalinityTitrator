@@ -32,9 +32,7 @@ def run_routine(selection):
         edit_settings()
     elif selection == '5':
         # testing mode
-        constants.IS_TEST = not constants.IS_TEST
-        interfaces.lcd_out("Testing: {}".format(constants.IS_TEST))
-        #test()
+        test()
     else:
         # exit
         pass
@@ -43,7 +41,7 @@ def run_routine(selection):
 def test():
     """Function for running specific tests for the program"""
     while True:
-        user_choice = input("1 - Read values\n2 - Pump")
+        user_choice = input("1 - Read values\n2 - Pump\n3 - Set volume in pump\n4 - Enter Test Mode")
         if user_choice == '1':
             for i in range(10):
                 temp, res = interfaces.read_temperature()
@@ -62,6 +60,9 @@ def test():
                 interfaces.pump_volume(float(p_volume), int(p_direction))
         elif user_choice == '3':
             interfaces.volume_in_pump = float(input("Volume in pump: "))
+        elif user_choice == '4':
+            constants.IS_TEST = not constants.IS_TEST
+            interfaces.lcd_out("Testing: {}".format(constants.IS_TEST))
         
 
 def _test_temp():
