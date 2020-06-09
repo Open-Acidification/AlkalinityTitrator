@@ -216,7 +216,7 @@ def drive_pump(volume, direction):
             drive_step_stick(cycles, direction)
             constants.volume_in_pump -= volume
 
-    lcd_out("Volume in pump".format(constants.volume_in_pump))
+    lcd_out("Volume in pump: {}".format(constants.volume_in_pump))
 
 
 def drive_step_stick(cycles, direction):
