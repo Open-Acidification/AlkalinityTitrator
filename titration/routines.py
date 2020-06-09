@@ -268,9 +268,3 @@ def prime_pump():
         interfaces.pump_volume(float(p_volume), 1)
         interfaces.lcd_out("Continue (1)")
         selection = interfaces.read_user_input()
-
-
-    # # draw in solution
-    # interfaces.pump_volume(1, 0)
-    # # push out solution
-    # interfaces.pump_volume(1, 1)

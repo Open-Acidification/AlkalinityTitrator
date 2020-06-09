@@ -49,15 +49,12 @@ def setup_interfaces():
                                              ref_resistor=constants.TEMP_REF_RESISTANCE)
 
     # pump setup (through Arduino)
-    try:
-       # arduino = serial.Serial(port=constants.ARDUINO_PORT,
-       #                         baudrate=constants.ARDUINO_BAUD,
-       #                         timeout=constants.ARDUINO_TIMEOUT)
-       # arduino.reset_output_buffer()
-       # arduino.reset_input_buffer()
-        pass
-    except FileNotFoundError:
-        lcd_out("Port file not found")
+    if not constants.IS_TEST:
+        arduino = serial.Serial(port=constants.ARDUINO_PORT,
+                                baudrate=constants.ARDUINO_BAUD,
+                                timeout=constants.ARDUINO_TIMEOUT)
+        arduino.reset_output_buffer()
+        arduino.reset_input_buffer()
 
 
 def lcd_out(info):
@@ -226,19 +223,22 @@ def drive_step_stick(cycles, direction):
     :param direction: direction of pump
     """
     time.sleep(1)
-    #time.sleep(.01)
-    #if arduino.writable():
-    #    arduino.write(cycles.to_bytes(4, 'little'))
-    #    arduino.write(direction.to_bytes(1, 'little'))
-    #    arduino.flush()
-    #    wait_time = cycles/1000 + .5
-    #    time.sleep(wait_time)
-    #    temp = arduino.readline()
-    #    if temp != b'DONE\r\n':
-    #        lcd_out("Error writing to Arduino")
-    #        print(temp)
-    #else:
-    #    lcd_out("Arduino not available.")
+    if constants.IS_TEST:
+        return _test_add_HCl()
+
+    time.sleep(.01)
+    if arduino.writable():
+       arduino.write(cycles.to_bytes(4, 'little'))
+       arduino.write(direction.to_bytes(1, 'little'))
+       arduino.flush()
+       wait_time = cycles/1000 + .5
+       time.sleep(wait_time)
+       temp = arduino.readline()
+       if temp != b'DONE\r\n':
+           lcd_out("Error writing to Arduino")
+           print(temp)
+    else:
+       lcd_out("Arduino not available.")
 
 
 if __name__ == "__main__":
