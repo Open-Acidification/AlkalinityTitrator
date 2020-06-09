@@ -226,15 +226,16 @@ def wait_pH_stable(total_sol, data):
 
         # Check that the temperature of the solution is within bounds
         if abs(temp_reading - constants.TARGET_TEMP) > constants.TEMPERATURE_ACCURACY:
-            interfaces.lcd_out("TEMPERATURE OUT OF BOUNDS")
+            # interfaces.lcd_out("TEMPERATURE OUT OF BOUNDS")
             # TODO output to error log
+            pass
 
         # Record data point (temp, pH volts, total HCl)
         data.append((temp_reading, pH_volts, total_sol))
         pH_list_counter = 0 if pH_list_counter >= 9 else pH_list_counter + 1
 
         if valid_num_values_tested and analysis.std_deviation(pH_values) < constants.TARGET_STD_DEVIATION:
-            return analysis.calculate_mean(pH_values)
+            return pH_reading
 
         time.sleep(constants.TITRATION_WAIT_TIME)
 
