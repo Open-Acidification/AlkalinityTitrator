@@ -48,11 +48,10 @@ CELSIUS_TO_KELVIN = 273.15
 PH_REF_VOLTAGE = -0.012
 PH_REF_PH = 7.0
 # titration routine
-TARGET_TEMP = 25.0  # degrees C
+TARGET_TEMP = 30.0  # degrees C
 INITIAL_TARGET_PH = 3.5
 FINAL_TARGET_PH = 3.0
 TEMPERATURE_ACCURACY = 0.25
-STABILIZATION_CONSTANT = 0.1  # how much the pH is allowed to change between measurements to ensure the value is stable
 PH_ACCURACY = 0.1
 TITRATION_WAIT_TIME = 1
 INCREMENT_AMOUNT = 0.05
