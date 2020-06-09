@@ -96,7 +96,7 @@ def reset_calibration():
 # pH
 def calculate_pH(voltage, temp):
     """
-    Calculates pH value from pH probe voltage. The pH probes read values of mV, so to get the actual pH value, mV needs
+    Calculates pH value from pH probe voltage. The pH probes read values of V, so to get the actual pH value, V needs
     to be converted.
     :param voltage: voltage reading from pH probe
     :param temp: temperature of solution

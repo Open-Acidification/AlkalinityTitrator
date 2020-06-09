@@ -94,7 +94,7 @@ def read_user_input(valid_inputs=None):
 def read_pH():
     """
     Reads calibration-adjusted value for pH
-    :returns: adjusted pH value in units of pH, raw mV reading from probe
+    :returns: adjusted pH value in units of pH, raw V reading from probe
     """
     if constants.IS_TEST:
         return _test_read_pH()
@@ -112,8 +112,8 @@ def _test_read_pH():
 
 def read_raw_pH():
     """
-    Reads and pH value pH probe in mV
-    :return: raw mV reading from probe
+    Reads and pH value pH probe in V
+    :return: raw V reading from probe
     """
     # Read pH registers; pH_val is raw value from pH probe
     volts = ph_input_channel.voltage

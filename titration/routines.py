@@ -126,7 +126,7 @@ def total_alkalinity_titration():
     p_volume = interfaces.read_user_input()
     interfaces.pump_volume(float(p_volume), 0)
     # data object to hold recorded data
-    data = [('temperature', 'pH mV', 'solution volume')]
+    data = [('temperature', 'pH V', 'solution volume')]
 
     # query user for initial solution weight
     interfaces.lcd_out("Initial solution weight (g): ")
