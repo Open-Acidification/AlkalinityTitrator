@@ -162,24 +162,26 @@ def pump_volume(volume, direction):
             # volume greater than max capacity of pump
 
             # add all current volume in pump
-            drive_pump(constants.volume_in_pump, 1)
+            next_volume = constants.volume_in_pump
+            drive_pump(next_volume, 1)
 
             # recalculate volume to add
-            volume_to_add = volume_to_add - constants.volume_in_pump
+            volume_to_add = volume_to_add - next_volume
 
             while volume_to_add > 0:
                 # pump in and out more solution
                 next_volume = min(volume_to_add, constants.MAX_PUMP_CAPACITY)
                 drive_pump(next_volume, 0)
                 drive_pump(next_volume, 1)
-                volume_to_add = volume_to_add - next_volume
+                volume_to_add -= next_volume
 
         elif volume_to_add > constants.volume_in_pump:
             # volume greater than volume in pump
-            drive_pump(constants.volume_in_pump, 1)
+            next_volume = constants.volume_in_pump
+            drive_pump(next_volume, 1)
 
             # calculate rest of volume to add
-            volume_to_add = volume_to_add - constants.volume_in_pump
+            volume_to_add -= next_volume
 
             drive_pump(volume_to_add, 0)
             drive_pump(volume_to_add, 1)
