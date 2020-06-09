@@ -22,7 +22,7 @@ temp_sensor = None
 arduino = None
 
 # keep track of solution in pump
-volume_in_pump = 0
+# volume_in_pump = 0
 
 
 def setup_interfaces():
@@ -41,7 +41,7 @@ def setup_interfaces():
 
     # temperature probe setup
     spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
-    cs = digitalio.DigitalInOut(board.D5)
+    cs = digitalio.DigitalInOut(board.D6)
     temp_sensor = adafruit_max31865.MAX31865(spi=spi,
                                              cs=cs,
                                              wires=3,
@@ -49,15 +49,12 @@ def setup_interfaces():
                                              ref_resistor=constants.TEMP_REF_RESISTANCE)
 
     # pump setup (through Arduino)
-    try:
+    if not constants.IS_TEST:
         arduino = serial.Serial(port=constants.ARDUINO_PORT,
                                 baudrate=constants.ARDUINO_BAUD,
                                 timeout=constants.ARDUINO_TIMEOUT)
         arduino.reset_output_buffer()
         arduino.reset_input_buffer()
-        pass
-    except FileNotFoundError:
-        lcd_out("Port file not found")
 
 
 def lcd_out(info):
@@ -97,7 +94,7 @@ def read_user_input(valid_inputs=None):
 def read_pH():
     """
     Reads calibration-adjusted value for pH
-    :returns: adjusted pH value in units of pH, raw mV reading from probe
+    :returns: adjusted pH value in units of pH, raw V reading from probe
     """
     if constants.IS_TEST:
         return _test_read_pH()
@@ -115,8 +112,8 @@ def _test_read_pH():
 
 def read_raw_pH():
     """
-    Reads and pH value pH probe in mV
-    :return: raw mV reading from probe
+    Reads and pH value pH probe in V
+    :return: raw V reading from probe
     """
     # Read pH registers; pH_val is raw value from pH probe
     volts = ph_input_channel.voltage
@@ -145,36 +142,78 @@ def pump_volume(volume, direction):
     :param volume: amount of volume to move (float)
     :param direction: 0 to pull solution in, 1 to pump out
     """
-    global volume_in_pump
+    volume_to_add = volume
 
-    if constants.IS_TEST:
-        return _test_add_HCl()
-
-    # determine new volume in pump
-    new_volume_in_pump = volume_in_pump + volume * ((-1) ** direction)
-
-    if new_volume_in_pump < 0:
-        # Pull in solution before pushing out
-        volume_to_pull_in = volume - volume_in_pump
-        cycles = analysis.determine_pump_cycles(volume_to_pull_in)
-        drive_step_stick(cycles, 0)
-    elif new_volume_in_pump > constants.MAX_PUMP_CAPACITY:
-        lcd_out("Error - addition amount is more than pump capacity\nWill fill pump to capacity")
-        volume = constants.MAX_PUMP_CAPACITY - volume_in_pump
-
+    # pull in solution
     if direction == 0:
-        lcd_out("Drawing in {} mL HCl".format(volume))
-    elif direction == 1:
-        lcd_out("Adding {} mL HCl".format(volume))
+        # if volume_to_add is greater than space in the pump
+        space_in_pump = constants.MAX_PUMP_CAPACITY - constants.volume_in_pump
+        if volume_to_add > space_in_pump:
+            volume_to_add = constants.MAX_PUMP_CAPACITY - constants.volume_in_pump
+        drive_pump(volume_to_add, direction)
 
-    cycles = analysis.determine_pump_cycles(volume)
-    drive_step_stick(cycles, direction)
-    volume_in_pump = new_volume_in_pump
+    # pump out solution
+    elif direction == 1:
+        if volume_to_add > constants.MAX_PUMP_CAPACITY:
+            lcd_out("Volume greater than pumpable")
+            # volume greater than max capacity of pump
+
+            # add all current volume in pump
+            next_volume = constants.volume_in_pump
+            drive_pump(next_volume, 1)
+
+            # recalculate volume to add
+            volume_to_add = volume_to_add - next_volume
+
+            while volume_to_add > 0:
+                # pump in and out more solution
+                next_volume = min(volume_to_add, constants.MAX_PUMP_CAPACITY)
+                drive_pump(next_volume, 0)
+                drive_pump(next_volume, 1)
+                volume_to_add -= next_volume
+
+        elif volume_to_add > constants.volume_in_pump:
+            # volume greater than volume in pump
+            next_volume = constants.volume_in_pump
+            drive_pump(next_volume, 1)
+
+            # calculate rest of volume to add
+            volume_to_add -= next_volume
+
+            drive_pump(volume_to_add, 0)
+            drive_pump(volume_to_add, 1)
+
+        else:
+            # volume less than volume in pump
+            drive_pump(volume_to_add, direction)
 
 
 def _test_add_HCl():
     constants.hcl_call_iter += 1  # value only used for testing while reading pH doesn't work
     constants.pH_call_iter = -1
+
+
+def drive_pump(volume, direction):
+    """Converts volume to cycles and ensures and checks pump level and values"""
+    if direction == 0:
+        space_in_pump = constants.MAX_PUMP_CAPACITY - constants.volume_in_pump
+        if volume > space_in_pump:
+            lcd_out("Error taking in titrant")
+        else:
+            lcd_out("Taking in {} ml titrant".format(volume))
+            cycles = analysis.determine_pump_cycles(volume)
+            drive_step_stick(cycles, direction)
+            constants.volume_in_pump += volume
+    elif direction == 1:
+        if volume > constants.volume_in_pump:
+            lcd_out("Error pumping out titrant")
+        else:
+            lcd_out("Pumping out {} ml titrant".format(volume))
+            cycles = analysis.determine_pump_cycles(volume)
+            drive_step_stick(cycles, direction)
+            constants.volume_in_pump -= volume
+
+    lcd_out("Volume in pump: {}".format(constants.volume_in_pump))
 
 
 def drive_step_stick(cycles, direction):
@@ -183,6 +222,10 @@ def drive_step_stick(cycles, direction):
     :param cycles: number of rising edges for the pump
     :param direction: direction of pump
     """
+    if constants.IS_TEST:
+        time.sleep(1)
+        return _test_add_HCl()
+
     time.sleep(.01)
     if arduino.writable():
         arduino.write(cycles.to_bytes(4, 'little'))
@@ -203,7 +246,9 @@ if __name__ == "__main__":
     setup_interfaces()
     analysis.setup_calibration()
     while True:
-        p_volume = read_user_input("Volume: ")
-        p_direction = read_user_input("Direction: ")
+        lcd_out("Volume: ")
+        p_volume = read_user_input()
+        lcd_out("Direction: ")
+        p_direction = read_user_input()
         if p_direction == '0' or p_direction == '1':
             pump_volume(float(p_volume), int(p_direction))

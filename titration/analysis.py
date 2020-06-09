@@ -47,11 +47,11 @@ def setup_calibration():
     """Sets calibration constants from persistent storage"""
     data = _read_json(constants.CALIBRATION_FILENAME)
     if data:
-        # constants.PH_SLOPE = data['pH']['slope']
         constants.PH_REF_VOLTAGE = data['pH']['ref_voltage']
         constants.PH_REF_PH = data['pH']['ref_pH']
         constants.TEMP_REF_RESISTANCE = data['temp']['ref_resistance']
         constants.TEMP_NOMINAL_RESISTANCE = data['temp']['nominal_resistance']
+        constants.volume_in_pump = data['vol_pump']
     else:
         save_calibration_data()
 
@@ -61,9 +61,9 @@ def save_calibration_data():
     calibration_data = constants.calibration_data_format
     calibration_data['pH']['ref_voltage'] = constants.PH_REF_VOLTAGE
     calibration_data['pH']['ref_pH'] = constants.PH_REF_PH
-    # calibration_data['pH']['slope'] = constants.PH_SLOPE
     calibration_data['temp']['ref_resistance'] = constants.TEMP_REF_RESISTANCE
     calibration_data['temp']['nominal_resistance'] = constants.TEMP_NOMINAL_RESISTANCE
+    calibration_data['vol_pump'] = constants.volume_in_pump
     write_json(constants.CALIBRATION_FILENAME, calibration_data)
 
 
@@ -89,7 +89,6 @@ def reset_calibration():
     """Reset calibraiton settings to default"""
     constants.TEMP_REF_RESISTANCE = constants.DEFAULT_TEMP_REF_RESISTANCE
     constants.TEMP_NOMINAL_RESISTANCE = constants.DEFAULT_TEMP_NOMINAL_RESISTANCE
-    # constants.PH_SLOPE = constants.DEFAULT_PH_SLOPE
     constants.PH_REF_VOLTAGE = constants.DEFAULT_PH_REF_VOLTAGE
     constants.PH_REF_PH = constants.DEFAULT_PH_REF_PH
 
@@ -97,7 +96,7 @@ def reset_calibration():
 # pH
 def calculate_pH(voltage, temp):
     """
-    Calculates pH value from pH probe voltage. The pH probes read values of mV, so to get the actual pH value, mV needs
+    Calculates pH value from pH probe voltage. The pH probes read values of V, so to get the actual pH value, V needs
     to be converted.
     :param voltage: voltage reading from pH probe
     :param temp: temperature of solution
@@ -106,8 +105,8 @@ def calculate_pH(voltage, temp):
     temp_k = temp + constants.CELSIUS_TO_KELVIN
     ref_voltage = constants.PH_REF_VOLTAGE
     ref_pH = constants.PH_REF_PH
-    return ref_pH + (ref_voltage/1000 - voltage/1000) / \
-           (constants.UNIVERSAL_GAS_CONST * temp_k * math.log10(10)/constants.FARADAY_CONST)
+    return ref_pH + (ref_voltage - voltage) / \
+           (constants.UNIVERSAL_GAS_CONST * temp_k * math.log(10)/constants.FARADAY_CONST)
 
 
 # titration
@@ -152,6 +151,8 @@ def determine_pump_cycles(volume_to_add):
     """
     if volume_to_add in constants.NUM_CYCLES:
         return constants.NUM_CYCLES[volume_to_add]
+    if volume_to_add > constants.MAX_PUMP_CAPACITY:
+        return 0
     pump_cycles = constants.CYCLES_VOLUME_RATIO * volume_to_add
     # NOTE rounds down
     return int(pump_cycles)
@@ -166,4 +167,10 @@ def determine_total_alkalinity(S=35, temp=25, C=0.1, d=1, pHTris=None, ETris=Non
 # testing
 if __name__ == "__main__":
     # print("Expected res = ", calculate_expected_resistance(0))
-    write_json('calibration_data.json')
+    while True:
+        option = input("1 - Save Calibration data\n2 - Write csv")
+        if option == '1':
+            save_calibration_data()
+            setup_calibration()
+        if option == '2':
+            _write_csv('test_data', [(1, 2, 3), (4, 5, 6)])
