@@ -50,11 +50,11 @@ def setup_interfaces():
 
     # pump setup (through Arduino)
     try:
-        arduino = serial.Serial(port=constants.ARDUINO_PORT,
-                                baudrate=constants.ARDUINO_BAUD,
-                                timeout=constants.ARDUINO_TIMEOUT)
-        arduino.reset_output_buffer()
-        arduino.reset_input_buffer()
+       # arduino = serial.Serial(port=constants.ARDUINO_PORT,
+       #                         baudrate=constants.ARDUINO_BAUD,
+       #                         timeout=constants.ARDUINO_TIMEOUT)
+       # arduino.reset_output_buffer()
+       # arduino.reset_input_buffer()
         pass
     except FileNotFoundError:
         lcd_out("Port file not found")
@@ -100,8 +100,7 @@ def read_pH():
     :returns: adjusted pH value in units of pH, raw mV reading from probe
     """
     if constants.IS_TEST:
-        pass
-        #return _test_read_pH()
+        return _test_read_pH()
     volts = read_raw_pH()
     temp = read_temperature()[0]
     pH_val = analysis.calculate_pH(volts, temp)
@@ -146,15 +145,13 @@ def pump_volume(volume, direction):
     :param volume: amount of volume to move (float)
     :param direction: 0 to pull solution in, 1 to pump out
     """
-    if constants.IS_TEST:
-        return _test_add_HCl()
-
     volume_to_add = volume
 
     # pull in solution
     if direction == 0:
         # if volume_to_add is greater than space in the pump
         if volume_to_add > (constants.MAX_PUMP_CAPACITY - constants.volume_in_pump):
+            lcd_out("Need more volume")
             volume_to_add = constants.MAX_PUMP_CAPACITY - constants.volume_in_pump
         lcd_out("Drawing in {} mL HCl".format(volume_to_add))
         cycles = analysis.determine_pump_cycles(volume_to_add)
@@ -163,12 +160,13 @@ def pump_volume(volume, direction):
 
     # pump out solution
     elif direction == 1:
-        lcd_out("Adding {} mL HCl".format(volume_to_add))
         if volume_to_add > constants.MAX_PUMP_CAPACITY:
+            lcd_out("Volume greater than pumpable")
             # volume greater than max capacity of pump
 
             # add all current volume in pump
             cycles = analysis.determine_pump_cycles(constants.volume_in_pump)
+            lcd_out("Adding {} mL".format(constants.volume_in_pump))
             drive_step_stick(cycles, 1)
             volume_to_add = volume_to_add - constants.volume_in_pump
             constants.volume_in_pump -= constants.volume_in_pump
@@ -177,8 +175,10 @@ def pump_volume(volume, direction):
                 # pump in and out more solution
                 next_volume = min(volume_to_add, constants.MAX_PUMP_CAPACITY)
                 cycles = analysis.determine_pump_cycles(next_volume)
+                lcd_out("Taking in {} mL".format(next_volume))
                 drive_step_stick(cycles, 0)
                 constants.volume_in_pump += next_volume
+                lcd_out("Adding {} mL".format(next_volume))
                 drive_step_stick(cycles, 1)
                 constants.volume_in_pump -= next_volume
                 volume_to_add = volume_to_add - next_volume
@@ -188,16 +188,20 @@ def pump_volume(volume, direction):
             cycles = analysis.determine_pump_cycles(constants.volume_in_pump)
             drive_step_stick(cycles, 1)
             volume_to_add = volume_to_add - constants.volume_in_pump
+            lcd_out("Adding {} mL".format(constants.volume_in_pump))
             constants.volume_in_pump -= constants.volume_in_pump
 
             cycles = analysis.determine_pump_cycles(volume_to_add)
+            lcd_out("Taking in {} mL".format(volume_to_add))
             drive_step_stick(cycles, 0)
             constants.volume_in_pump += volume_to_add
+            lcd_out("Adding {} mL".format(volume_to_add))
             drive_step_stick(cycles, 1)
             constants.volume_in_pump -= volume_to_add
 
         else:
             # volume less than volume in pump
+            lcd_out("Adding {} mL".format(volume_to_add))
             cycles = analysis.determine_pump_cycles(volume_to_add)
             drive_step_stick(cycles, direction)
 
@@ -213,19 +217,23 @@ def drive_step_stick(cycles, direction):
     :param cycles: number of rising edges for the pump
     :param direction: direction of pump
     """
-    time.sleep(.01)
-    if arduino.writable():
-        arduino.write(cycles.to_bytes(4, 'little'))
-        arduino.write(direction.to_bytes(1, 'little'))
-        arduino.flush()
-        wait_time = cycles/1000 + .5
-        time.sleep(wait_time)
-        temp = arduino.readline()
-        if temp != b'DONE\r\n':
-            lcd_out("Error writing to Arduino")
-            print(temp)
-    else:
-        lcd_out("Arduino not available.")
+    lcd_out("Driving pump")
+    time.sleep(1)
+    lcd_out("New volume in pump: {}".format(constants.volume_in_pump))
+    time.sleep(1)
+    #time.sleep(.01)
+    #if arduino.writable():
+    #    arduino.write(cycles.to_bytes(4, 'little'))
+    #    arduino.write(direction.to_bytes(1, 'little'))
+    #    arduino.flush()
+    #    wait_time = cycles/1000 + .5
+    #    time.sleep(wait_time)
+    #    temp = arduino.readline()
+    #    if temp != b'DONE\r\n':
+    #        lcd_out("Error writing to Arduino")
+    #        print(temp)
+    #else:
+    #    lcd_out("Arduino not available.")
 
 
 if __name__ == "__main__":

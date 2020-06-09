@@ -32,9 +32,9 @@ def run_routine(selection):
         edit_settings()
     elif selection == '5':
         # testing mode
-        #constants.IS_TEST = not constants.IS_TEST
-        #interfaces.lcd_out("Testing: {}".format(constants.IS_TEST))
-        test()
+        constants.IS_TEST = not constants.IS_TEST
+        interfaces.lcd_out("Testing: {}".format(constants.IS_TEST))
+        #test()
     else:
         # exit
         pass
