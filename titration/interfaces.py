@@ -222,23 +222,23 @@ def drive_step_stick(cycles, direction):
     :param cycles: number of rising edges for the pump
     :param direction: direction of pump
     """
-    time.sleep(1)
     if constants.IS_TEST:
+        time.sleep(1)
         return _test_add_HCl()
 
     time.sleep(.01)
     if arduino.writable():
-       arduino.write(cycles.to_bytes(4, 'little'))
-       arduino.write(direction.to_bytes(1, 'little'))
-       arduino.flush()
-       wait_time = cycles/1000 + .5
-       time.sleep(wait_time)
-       temp = arduino.readline()
-       if temp != b'DONE\r\n':
-           lcd_out("Error writing to Arduino")
-           print(temp)
+        arduino.write(cycles.to_bytes(4, 'little'))
+        arduino.write(direction.to_bytes(1, 'little'))
+        arduino.flush()
+        wait_time = cycles/1000 + .5
+        time.sleep(wait_time)
+        temp = arduino.readline()
+        if temp != b'DONE\r\n':
+            lcd_out("Error writing to Arduino")
+            print(temp)
     else:
-       lcd_out("Arduino not available.")
+        lcd_out("Arduino not available.")
 
 
 if __name__ == "__main__":
