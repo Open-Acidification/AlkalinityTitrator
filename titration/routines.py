@@ -41,7 +41,7 @@ def run_routine(selection):
 def test():
     """Function for running specific tests for the program"""
     while True:
-        user_choice = input("1 - Read values\n2 - Pump\n3 - Set volume in pump\n4 - Enter Test Mode")
+        user_choice = input("1 - Read values\n2 - Pump\n3 - Set volume in pump\n4 - Enter Test Mode\n5 - Exit")
         if user_choice == '1':
             for i in range(10):
                 temp, res = interfaces.read_temperature()
@@ -59,10 +59,12 @@ def test():
             if p_direction == '0' or p_direction == '1':
                 interfaces.pump_volume(float(p_volume), int(p_direction))
         elif user_choice == '3':
-            interfaces.volume_in_pump = float(input("Volume in pump: "))
+            constants.volume_in_pump = float(input("Volume in pump: "))
         elif user_choice == '4':
             constants.IS_TEST = not constants.IS_TEST
             interfaces.lcd_out("Testing: {}".format(constants.IS_TEST))
+        elif user_choice == '5':
+            break
         
 
 def _test_temp():
@@ -267,7 +269,6 @@ def prime_pump():
     while selection == '1':
         interfaces.lcd_out("Volume: ")
         p_volume = interfaces.read_user_input()
-        interfaces.pump_volume(float(p_volume), 0)
         interfaces.pump_volume(float(p_volume), 1)
         interfaces.lcd_out("Continue (1)")
         selection = interfaces.read_user_input()
