@@ -148,17 +148,18 @@ def total_alkalinity_titration():
             p_volume = input("Volume: ")
             p_direction = input("Direction: ")
             p_volume = float(p_volume)
-            if p_direction == '1':
+            p_direction = int(p_direction)
+            if p_direction == 1:
                 total_sol += p_volume
-            if p_direction == '0' or p_direction == '1':
-                interfaces.pump_volume(p_volume, int(p_direction))
+            if p_direction == 0 or p_direction == 1:
+                interfaces.pump_volume(p_volume, p_direction)
             current_pH = wait_pH_stable(total_sol, data)
             interfaces.lcd_out("Current pH: {}".format(current_pH))
-            interfaces.lcd_out("Continue adding solution? (0 - No, 1 - Yes")
+            interfaces.lcd_out("Continue adding solution? (0 - No, 1 - Yes)")
             user_choice = interfaces.read_user_input()
     else:
         # Automatic
-        total_sol = titration(constants.INITIAL_TARGET_PH, constants.INCREMENT_AMOUNT, data, 0, 3*60)
+        total_sol = titration(constants.INITIAL_TARGET_PH, constants.INCREMENT_AMOUNT, data, 0, 5)
 
     # 3.5 -> 3.0
     # todo set stir speed fast
