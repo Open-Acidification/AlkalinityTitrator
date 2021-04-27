@@ -57,7 +57,8 @@ TITRATION_WAIT_TIME = 1
 INCREMENT_AMOUNT = 0.05
 TARGET_STD_DEVIATION = 0.15
 # pump settings
-ARDUINO_PORT = "/dev/ttyUSB0"
+#ARDUINO_PORT = "/dev/ttyUSB0"
+ARDUINO_PORT = "/dev/ttyACM0"
 ARDUINO_BAUD = 9600
 ARDUINO_TIMEOUT = 5
 # maps vol to number of pulses needed

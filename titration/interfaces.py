@@ -33,7 +33,7 @@ def setup_interfaces():
         i2c = busio.I2C(board.SCL, board.SDA)
         ads = ADS.ADS1115(i2c)
         ph_input_channel = analog_in.AnalogIn(ads, ADS.P0, ADS.P1)
-        ads.gain = 2
+        ads.gain = 8
         constants.IS_TEST = False
     except ValueError:
         lcd_out("Error initializing pH probe; will use test functions instead.")
@@ -41,7 +41,7 @@ def setup_interfaces():
 
     # temperature probe setup
     spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
-    cs = digitalio.DigitalInOut(board.D6)
+    cs = digitalio.DigitalInOut(board.D4)
     temp_sensor = adafruit_max31865.MAX31865(spi=spi,
                                              cs=cs,
                                              wires=3,
@@ -116,9 +116,15 @@ def read_raw_pH():
     :return: raw V reading from probe
     """
     # Read pH registers; pH_val is raw value from pH probe
+    #volts = ph_input_channel.voltage - 2.557
     volts = ph_input_channel.voltage
-    diff = volts / 9.7
-    volts = volts / 10
+    
+    # DEBUG
+    print("    RAW VOLTAGE: ", ph_input_channel.voltage)
+    print("    RAW VALUE: ", ph_input_channel.value)
+    
+    #diff = volts / 9.7 # isn't doing anything
+    #volts = volts / 10 # why???
     return volts
 
 

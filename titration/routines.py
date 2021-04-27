@@ -3,6 +3,10 @@ import constants
 import analysis
 import time
 
+#debugging/testing
+import matplotlib.pyplot as plt
+import numpy as np
+
 ROUTINE_OPTIONS = {
     1: 'Run titration',
     2: 'Calibrate sensors',
@@ -43,14 +47,41 @@ def test():
     while True:
         user_choice = input("1 - Read values\n2 - Pump\n3 - Set volume in pump\n4 - Enter Test Mode\n5 - Exit")
         if user_choice == '1':
-            for i in range(10):
+            numVals = 60
+            timestep = 1
+            timeVals = np.zeros(numVals)
+            tempVals = np.zeros(numVals)
+            resVals = np.zeros(numVals)
+            pHVals = np.zeros(numVals)
+            voltVals = np.zeros(numVals)
+            
+            for i in range(numVals):
                 temp, res = interfaces.read_temperature()
                 pH_reading, pH_volts = interfaces.read_pH()
                 print('Temperature: {0:0.3f}C'.format(temp))
                 print('Resistance: {0:0.3f} Ohms'.format(res))
                 interfaces.lcd_out("pH: {}".format(pH_reading))
                 interfaces.lcd_out("pH volt: {}".format(pH_volts))
-                time.sleep(1)
+                print('Reading: ',i,'\n')
+                timeVals[i] = timestep*i
+                tempVals[i] = temp;
+                resVals[i] = res;
+                pHVals[i] = pH_reading;
+                voltVals[i] = pH_volts;
+                time.sleep(timestep)
+            
+            fig, axs = plt.subplots(2,2)
+            axs[0,0].plot(timeVals,tempVals) 
+            #axs[0,0].set_ylim([20,25])
+            axs[0,1].plot(timeVals,resVals) 
+            #axs[0,1].set_ylim([900,1100])
+            axs[1,0].plot(timeVals,pHVals)
+            #axs[1,0].set_ylim([6,7])
+            axs[1,1].plot(timeVals,voltVals)
+            #axs[1,1].set_ylim([-0.2,0.2])
+            plt.show()
+            
+            
         elif user_choice == '2':
             interfaces.lcd_out("Volume: ")
             p_volume = interfaces.read_user_input()
