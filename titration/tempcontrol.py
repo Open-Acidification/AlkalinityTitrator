@@ -201,12 +201,12 @@ if __name__ == "__main__":
 
 	# 10min time
 	timeCurr = time.time()
-	timeEnd = timeCurr + 1200
+	timeEnd = timeCurr + 3600
 	print ("Time Start: ", time.ctime(timeCurr), "\nTime End: ", time.ctime(timeEnd))
 	while (timeEnd > time.time()):
 		tempControl.update()
 
-	filename = "data/TempTest_" + time.ctime() + ".csv"
+	filename = "data/TempCtrl_" + time.ctime() + ".csv"
 	filename = filename.replace(':','-')
 	filename = filename.replace(' ','_')
 
