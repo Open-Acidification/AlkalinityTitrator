@@ -63,7 +63,8 @@ def lcd_out(info):
     :param info: string to be displayed on LCD screen
     """
     # TODO output to actual LCD screen
-    print(info)
+    if (constants.LCD_CONSOLE):
+        print(info)
 
 
 def display_list(list_to_display):
