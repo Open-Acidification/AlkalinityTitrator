@@ -53,7 +53,7 @@ class TempControl():
 	timeLog = []
 
 	# Data Fame of Measurements
-	df = pd.DataFrame([[time, temp, k]], columns = ['time (s)','temp (C)','gain'])
+	df = pd.DataFrame(columns = ['time (s)','temp (C)','gain']);
 
 	# Target temperature
 	setPoint = 30
@@ -88,13 +88,13 @@ class TempControl():
 				#timelog.append(timeNow.tm_sec)
 
 				#anti-windup
-				if (stepCnt < 250):
+				if (self.stepCnt < 250):
 					self.__set_integral_zero()
-				elif (stepCnt == 250):
+				elif (self.stepCnt == 250):
 					self.__set_controlparam_antiwindup()
 
 				# Update PID Gain
-				self.__update_gains()
+				self.__update_gains(temp)
 
 				# Check if relay needs to be turned on
 				if (temp < self.setPoint):
@@ -116,10 +116,11 @@ class TempControl():
 					self.__update_timeNext(time.time()+self.timeStep)
 					self.__update_priors()
 
-			# Add data to df
-			self.df.append({'time (s)':time.ctime(timeNow),'temp (C)':temp,'gain':self.k}, ignore_index=True)
-			if (self.printData):
-				print(self.df)
+				# Add data to df
+				dfnew = pd.DataFrame([[time.ctime(timeNow),temp,self.k]], columns=['time (s)','temp (C)','gain']);
+				self.df = self.df.append(dfnew,ignore_index=True);
+				if (self.printData == True):
+					print(self.df)
 
 		else:
 			# pass until next update is called
@@ -156,8 +157,8 @@ class TempControl():
 		self.Ti = PID_DEFAULT_TI
 		self.Td = PID_DEFAULT_TD
 
-	def __update_gains(self):
-		self.error = self.setpoint - temp
+	def __update_gains(self, temp):
+		self.error = self.setPoint - temp
 		self.integral = self.integral_prior + self.error * self.timeStep
 		self.derivative = (self.error - self.error_prior) / self.timeStep
 		self.k = self.kp * (self.error + self.Ti * self.integral + self.Td * self.derivative)
@@ -199,7 +200,9 @@ if __name__ == "__main__":
 	tempControl.enable_print()
 
 	# 10min time
-	timeEnd = time.time() + 300
+	timeCurr = time.time()
+	timeEnd = timeCurr + 1200
+	print ("Time Start: ", time.ctime(timeCurr), "\nTime End: ", time.ctime(timeEnd))
 	while (timeEnd > time.time()):
 		tempControl.update()
 
