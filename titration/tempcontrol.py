@@ -207,8 +207,8 @@ if __name__ == "__main__":
 		tempControl.update()
 
 	filename = "TempTest_" + time.ctime()
-	filename.replace(':','-')
-	filename.replace(' ','_')
+	filename = filename.replace(':','-')
+	filename = filename.replace(' ','_')
 
 	tempControl.output_csv(filename)
 
