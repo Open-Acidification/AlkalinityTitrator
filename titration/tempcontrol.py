@@ -206,7 +206,7 @@ if __name__ == "__main__":
 	while (timeEnd > time.time()):
 		tempControl.update()
 
-	filename = "TempTest_" + time.ctime() + ".csv"
+	filename = "data/TempTest_" + time.ctime() + ".csv"
 	filename = filename.replace(':','-')
 	filename = filename.replace(' ','_')
 
