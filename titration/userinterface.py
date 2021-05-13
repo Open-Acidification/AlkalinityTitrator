@@ -2,7 +2,7 @@
 import digitalio
 import time
 from board import *
-from constants
+import constants
 
 class LCD():
   """Sunfire LCD 2x16 Char Display Module"""
@@ -23,20 +23,21 @@ class LCD():
     self.pin_D6.direction = digitalio.Direction.OUTPUT
     self.pin_D7.direction = digitalio.Direction.OUTPUT
     self.pin_ON.direction = digitalio.Direction.OUTPUT
-
-    self.reg_line_1 = None
-    self.reg_line_2 = None
-    self.reg_line_3 = None
-    self.reg_line_4 = None
+    
+    # Initialize line registers with splash screen
+    self.reg_line_1 = "Open".center(constants.LCD_WIDTH," ")
+    self.reg_line_2 = "Acidification".center(constants.LCD_WIDTH," ")
+    self.reg_line_3 = "Project".center(constants.LCD_WIDTH," ")
+    self.reg_line_4 = "Alkaninity Titrator".center(constants.LCD_WIDTH," ")
     
      # Initialise display
-    self.__lcd_byte(0x33,LCD_CMD) # 110011 Initialise
-    self.__lcd_byte(0x32,LCD_CMD) # 110010 Initialise
-    self.__lcd_byte(0x06,LCD_CMD) # 000110 Cursor move direction
-    self.__lcd_byte(0x0C,LCD_CMD) # 001100 Display On,Cursor Off, Blink Off
-    self.__lcd_byte(0x28,LCD_CMD) # 101000 Data length, number of lines, font size
-    self.__lcd_byte(0x01,LCD_CMD) # 000001 Clear display
-    time.sleep(E_DELAY)
+    self.__lcd_byte(0x33,constants.LCD_CMD) # 110011 Initialise
+    self.__lcd_byte(0x32,constants.LCD_CMD) # 110010 Initialise
+    self.__lcd_byte(0x06,constants.LCD_CMD) # 000110 Cursor move direction
+    self.__lcd_byte(0x0C,constants.LCD_CMD) # 001100 Display On,Cursor Off, Blink Off
+    self.__lcd_byte(0x28,constants.LCD_CMD) # 101000 Data length, number of lines, font size
+    self.__lcd_byte(0x01,constants.LCD_CMD) # 000001 Clear display
+    time.sleep(constants.E_DELAY)
     
     # Toggle backlight on-off-on
     self.lcd_backlight(True)
@@ -45,6 +46,13 @@ class LCD():
     time.sleep(0.5)
     self.lcd_backlight(True)
     time.sleep(0.5)
+    
+    self.out_line(self.reg_line_1, constants.LCD_LINE_1,constants.LCD_CENT_JUST)
+    self.out_line(self.reg_line_2, constants.LCD_LINE_2,constants.LCD_CENT_JUST)
+    self.out_line(self.reg_line_3, constants.LCD_LINE_3,constants.LCD_CENT_JUST)
+    self.out_line(self.reg_line_4, constants.LCD_LINE_4,constants.LCD_CENT_JUST)
+    
+    time.sleep(1)
 
 
   def __lcd_byte(self,bits, mode):
@@ -110,15 +118,19 @@ class LCD():
       message = message.rjust(constants.LCD_WIDTH," ")
 
     # Increment lines upward
-    reg_line_1 = reg_line_2
-    reg_line_2 = reg_line_3
-    reg_line_3 = reg_line_4
-    reg_line_4 = message
+    self.reg_line_1 = self.reg_line_2
+    self.reg_line_2 = self.reg_line_3
+    self.reg_line_3 = self.reg_line_4
+    self.reg_line_4 = message
 
-    self.__write_message(reg_line_1,1)
-    self.__write_message(reg_line_2,2)
-    self.__write_message(reg_line_3,3)
-    self.__write_message(reg_line_4,1)
+    self.__write_message(self.reg_line_1,constants.LCD_LINE_1)
+    #time.sleep(0.5)
+    self.__write_message(self.reg_line_2,constants.LCD_LINE_2)
+    #time.sleep(0.5)
+    self.__write_message(self.reg_line_3,constants.LCD_LINE_3)
+    #time.sleep(0.5)
+    self.__write_message(self.reg_line_4,constants.LCD_LINE_4)
+    #time.sleep(0.5)
 
   def out_line(self,message,line,style=1):
     """
@@ -134,20 +146,21 @@ class LCD():
     elif style==3:
       message = message.rjust(constants.LCD_WIDTH," ")
    
-    if line==1:
+    if line==constants.LCD_LINE_1:
       self.reg_line_1 = message
-    elif line == 2:
+    elif line == constants.LCD_LINE_2:
       self.reg_line_2 = message
-    elif line == 3:
+    elif line == constants.LCD_LINE_3:
       self.reg_line_3 = message
-    else:
+    elif line == constants.LCD_LINE_4:
       self.reg_line_4 = message
 
     self.__write_message(message,line)
  
   def __write_message(self,message,line):
+    #print(message, line)
     self.__lcd_byte(line, constants.LCD_CMD)
-
+    
     for i in range(constants.LCD_WIDTH):
       self.__lcd_byte(ord(message[i]),constants.LCD_CHR)
 
@@ -159,10 +172,16 @@ class LCD():
     # Clear the screen
     blank = ""
     blank = blank.ljust(constants.LCD_WIDTH," ")
-    self.__write_message(blank,LCD_LINE_1)
-    self.__write_message(blank,LCD_LINE_2)
-    self.__write_message(blank,LCD_LINE_3)
-    self.__write_message(blank,LCD_LINE_4)
+    
+    self.reg_line_1 = blank
+    self.reg_line_2 = blank
+    self.reg_line_3 = blank
+    self.reg_line_4 = blank
+    
+    self.__write_message(blank,constants.LCD_LINE_1)
+    self.__write_message(blank,constants.LCD_LINE_2)
+    self.__write_message(blank,constants.LCD_LINE_3)
+    self.__write_message(blank,constants.LCD_LINE_4)
 
 
 class Keypad():
@@ -213,7 +232,7 @@ class Keypad():
       for col in range(len(self.cols)):
         if self.cols[col].value:
           self.rows[row].value = False
-          print("Button: ", row, " ", col)
+          #print("Button: ", row, " ", col)
           return constants.KEY_VALUES[row][col]
       self.rows[row].value = False
 

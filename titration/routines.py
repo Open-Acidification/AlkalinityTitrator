@@ -24,37 +24,49 @@ def run_routine(selection):
     Selects which routine to run
     :param selection: user input used to determine which routine to run
     """
-    if selection == '1':
+    if selection == '1' or selection == constants.KEY_1:
         # run titration
         total_alkalinity_titration()
-    elif selection == '2':
+    elif selection == '2' or selection == constants.KEY_2:
         # calibrate sensors
         calibration()
-    elif selection == '3':
+    elif selection == '3' or selection == constants.KEY_3:
         # prime pump
         prime_pump()
-    elif selection == '4':
+    elif selection == '4' or selection == constants.KEY_4:
         # edit settings
         edit_settings()
-    elif selection == '5':
+    elif selection == '5' or selection == constants.KEY_5:
         # testing mode
         test()
     else:
-        # exit
+        #exit
         pass
     
 
 def test():
     """Function for running specific tests for the program"""
+    page = 1
+    user_choice = None
     while True:
-        user_choice = input("1 - Read values\n2 - Pump\n3 - Set volume in pump\n4 - Enter Test Mode\n5 - Exit")
-        lcd_out("1. Read Values")
-        lcd_out("2. Pump")
-        lcd_out("3. Set Volume")
-        lcd_out("4. Toggle Test Mode")
-        if user_choice == '1':
+        # Swap page display if user chooses *
+        if (user_choice is constants.KEY_STAR):
+            if (page is 1):
+                page = 2
+            else:
+                page = 1
+        # Display the proper page
+        if (page is 1):
+            interfaces.display_list(constants.TEST_OPTIONS_1)
+        else:
+            interfaces.display_list(constants.TEST_OPTIONS_2)
+            
+        
+        user_choice = interfaces.read_user_input()
+        
+        if user_choice == '1' or user_choice == constants.KEY_1:
             numVals = 60
-            timestep = 1
+            timestep = 0.5
             timeVals = np.zeros(numVals)
             tempVals = np.zeros(numVals)
             resVals = np.zeros(numVals)
@@ -64,11 +76,11 @@ def test():
             for i in range(numVals):
                 temp, res = interfaces.read_temperature()
                 pH_reading, pH_volts = interfaces.read_pH()
-                interfaces.lcd_out('Temperature: {0:0.3f}C'.format(temp))
-                interfaces.lcd_out('Resistance: {0:0.3f} Ohms'.format(res))
-                interfaces.lcd_out("pH: {}".format(pH_reading))
-                interfaces.lcd_out("pH volt: {}".format(pH_volts))
-                interfaces.lcd_out('Reading: ',i,'\n', console=True)
+                interfaces.lcd_out('Temp: {0:>4.3f} C'.format(temp), line=constants.LCD_LINE_1)
+                interfaces.lcd_out('Res:  {0:>4.3f} Ohms'.format(res), line=constants.LCD_LINE_2)
+                interfaces.lcd_out("pH:   {0:>4.5f} pH".format(pH_reading),line=constants.LCD_LINE_3)
+                interfaces.lcd_out("pH V: {0:>3.4f} mV".format(pH_volts*1000), line=constants.LCD_LINE_4)
+                interfaces.lcd_out('Reading: {}'.format(i), console=True)
                 timeVals[i] = timestep*i
                 tempVals[i] = temp;
                 resVals[i] = res;
@@ -88,19 +100,25 @@ def test():
             #plt.show()
             
             
-        elif user_choice == '2':
-            interfaces.lcd_out("Volume: ")
-            p_volume = interfaces.read_user_input()
-            interfaces.lcd_out("Direction: ")
-            p_direction = interfaces.read_user_input()
-            if p_direction == '0' or p_direction == '1':
-                interfaces.pump_volume(float(p_volume), int(p_direction))
-        elif user_choice == '3':
-            constants.volume_in_pump = float(input("Volume in pump: "))
-        elif user_choice == '4':
+        elif user_choice == '2' or user_choice == constants.KEY_2:
+            p_volume = interfaces.read_user_value("Volume: ")
+            
+            while True:
+                p_direction = interfaces.read_user_value("Direction (0/1):")
+                if p_direction == 0 or p_direction == 1:
+                    interfaces.lcd_clear()
+                    interfaces.pump_volume(float(p_volume), int(p_direction))
+                    break
+        
+        elif user_choice == '3' or user_choice == constants.KEY_3:
+            #constants.volume_in_pump = float(input("Volume in pump: "))
+            constants.volume_in_pump = interfaces.read_user_value("Volume in pump: ")
+        
+        elif user_choice == '4' or user_choice == constants.KEY_4:
             constants.IS_TEST = not constants.IS_TEST
             interfaces.lcd_out("Testing: {}".format(constants.IS_TEST))
-        elif user_choice == '5':
+        
+        elif user_choice == '5' or user_choice == constants.KEY_5:
             break
         
 
@@ -116,10 +134,10 @@ def _test_temp():
 def calibration():
     """Routine for letting the user pick the sensor to calibrate. Call another routine to calibrate the sensor"""
     interfaces.display_list(constants.SENSOR_OPTIONS)
-    sensor_selection = interfaces.read_user_input(['1', '2'])
-    if sensor_selection == '1':
+    sensor_selection = interfaces.read_user_input()
+    if sensor_selection is '1' or sensor_selection is constants.KEY_1:
         _calibrate_pH()
-    elif sensor_selection == '2':
+    elif sensor_selection == '2' or sensor_selection is constants.KEY_2:
         _calibrate_temperature()
     analysis.save_calibration_data()
 
@@ -127,8 +145,7 @@ def calibration():
 def _calibrate_pH():
     """Routine for calibrating pH sensor."""
     # get first buffer pH
-    interfaces.lcd_out('Enter buffer pH')
-    buffer1_actual_pH = float(interfaces.read_user_input())
+    buffer1_actual_pH = interfaces.read_user_value("Enter buffer pH:")
     interfaces.lcd_out('Put sensor in buffer', style=LCD_CENT_JUST)
     interfaces.lcd_out("")
     interfaces.lcd_out('Press 1 to', style=LCD_CENT_JUST)
@@ -243,7 +260,7 @@ def titration(pH_target, solution_increment_amount, data, total_sol_added, degas
             interfaces.pump_volume(1.0, 0)
         total_sol += solution_increment_amount
         current_pH = wait_pH_stable(total_sol, data)
-        interfaces.tempcontrol.update()
+        interfaces.tempcontroller.update()
 
     interfaces.lcd_out("pH value {} reached".format(current_pH))
     interfaces.lcd_out("Degassing " + str(degas_time) + " seconds")
@@ -251,7 +268,7 @@ def titration(pH_target, solution_increment_amount, data, total_sol_added, degas
     # time.sleep(degas_time) # would disrupt temp control
     timeEnd = time.time() + degas_time
     while timeEnd > time.time():
-        interfaces.tempcontrol.update()
+        interfaces.tempcontroller.update()
     return total_sol
 
 

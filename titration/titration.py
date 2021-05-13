@@ -24,11 +24,21 @@ def run():
     initialize_components()
     # output prompt to LCD screen
     routine_selection = '0'
-    options = [str(key) for key in constants.ROUTINE_OPTIONS]
+    #options = [str(key) for key in constants.ROUTINE_OPTIONS]
+    page = 1
     while routine_selection != '6':
-        interfaces.display_list(constants.ROUTINE_OPTIONS)
+        if (routine_selection is constants.KEY_STAR):
+            if (page is 1):
+                page = 2
+            else:
+                page = 1
+        if (page is 1):
+            interfaces.display_list(constants.ROUTINE_OPTIONS_1)
+        else:
+            interfaces.display_list(constants.ROUTINE_OPTIONS_2)
+            
         # wait for user input to select which routine (polling should be fine here)
-        routine_selection = interfaces.read_user_input(options)
+        routine_selection = interfaces.read_user_input()
         routines.run_routine(routine_selection)
 
 

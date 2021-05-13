@@ -28,7 +28,7 @@ temp_sensor = None
 arduino = None
 lcd = None
 keypad = None
-tempcontrol = None
+tempcontroller = None
 
 
 # keep track of solution in pump
@@ -37,7 +37,7 @@ tempcontrol = None
 
 def setup_interfaces():
 	"""Initializes components for interfacing with pH probe, temperature probe, and stepper motor/syringe pump"""
-	global ph_input_channel, temp_sensor, arduino
+	global ph_input_channel, temp_sensor, arduino, lcd, keypad, tempcontroller
 	# pH probe setup
 	try:
 		i2c = busio.I2C(board.SCL, board.SDA)
@@ -47,8 +47,8 @@ def setup_interfaces():
 		constants.IS_TEST = False
 	except ValueError:
 		lcd_out("Error initializing pH probe; will use test functions instead.", console=True)
-		lcd_out("ERROR: ADS1115", style=LCD_CENT_JUST)
-		lcd_out("TEST MODE ON", style=LCD_CENT_JUST)
+		lcd_out("ERROR: ADS1115", style=constants.LCD_CENT_JUST)
+		lcd_out("TEST MODE ON", style=constants.LCD_CENT_JUST)
 		constants.IS_TEST = True
 
 	# temperature probe setup
@@ -69,18 +69,17 @@ def setup_interfaces():
 		arduino.reset_input_buffer()
 
 	# LCD and keypad setup
-	lcd = LCD()
-	keypad = Keypad()
+	lcd = userinterface.LCD()
+	keypad = userinterface.Keypad()
 
 	# Temp Control Setup
-	tempcontrol = TempControl()
+	tempcontroller = tempcontrol.TempControl(temp_sensor,constants.RELAY_PIN)
 
-def lcd_out(message, style=LCD_LEFT_JUST, console=False, line=None):
+def lcd_out(message, style=constants.LCD_LEFT_JUST, console=False, line=None):
 	"""
 	Outputs given string to LCD screen
 	:param info: string to be displayed on LCD screen
 	"""
-	# TODO output to actual LCD screen
 	if (constants.LCD_CONSOLE or console):
 		print(message)
 	else:
@@ -93,13 +92,29 @@ def lcd_clear():
 	lcd.clear_screen();
 
 
-def display_list(list_to_display):
+def display_list(dict_to_display):
 	"""
-	Display a list of options
+	Display a list of options from a dictionary. Only the first four 
+	options will be displayed due to only four screen rows.
 	:param list_to_display: list to be displayed on LCD screen
 	"""
-	for key, value in list_to_display.items():
-		lcd_out(str(key) + '. ' + value)
+	lcd_clear()
+	keys = list(dict_to_display.keys())
+	values = list(dict_to_display.values())
+	lines = [
+		constants.LCD_LINE_1,
+		constants.LCD_LINE_2,
+		constants.LCD_LINE_3,
+		constants.LCD_LINE_4]
+		
+	for i in range(min(len(keys),4)):	
+		lcd.out_line(str(keys[i]) + '. ' + values[i], lines[i])
+
+		
+	
+	# Original method, slow due to screen scrolling
+	#for key, value in list_to_display.items():
+	#	lcd_out(str(key) + '. ' + value)
 
 
 def read_user_input(valid_inputs=None, console=False):
@@ -110,16 +125,106 @@ def read_user_input(valid_inputs=None, console=False):
 	"""
 	# TODO interface with keypad
 	# Temporarily query user input from terminal
+	user_input = None
+	
 	while True:
 		if console:
 			user_input = input()
 		else:
 			user_input = keypad.keypad_poll()
-		if valid_inputs is None or user_input != None or user_input in valid_inputs:
+		
+		if user_input == None:
+			pass
+		elif valid_inputs is None or user_input in valid_inputs:
+			print("Input: ",user_input)
 			break
-		#lcd_out(constants.VALID_INPUT_WARNING, LCD_LINE_1, LCD_LEFT_JUST)
+		else:
+			print("Input: ",user_input)
+			lcd_out(constants.VALID_INPUT_WARNING, constants.LCD_LINE_1, constants.LCD_LEFT_JUST)
+	
+	while True:
+		if keypad.keypad_poll() == None:
+			break
 	return user_input
 
+def read_user_value(message):
+	"""Prompts the user to enter a value using the keypad"""
+	instructions_1 = "* = .       D = back"
+	instructions_2 = "# = confirm"
+	inputs = []
+	
+	lcd_out(message, line=constants.LCD_LINE_1)
+	lcd_out("_", style=constants.LCD_CENT_JUST, line=constants.LCD_LINE_2)
+	lcd_out(instructions_1, line=constants.LCD_LINE_3)
+	lcd_out(instructions_2, line=constants.LCD_LINE_4)
+	
+	
+	# Take inputs until # is pressed
+	user_input = None
+	string = ""
+	
+	# Flag for preventing multiple decimals
+	decimal = False
+	while True:
+		user_input = read_user_input()
+		
+		# Hash is confirm, if entered, end loop
+		if (user_input is '#'):
+			break
+		
+		# D is backspace, pop a value
+		elif (user_input is 'D'):
+			if (len(inputs) > 0):
+				popped = inputs.pop()
+				if (popped is '*'):
+					decimal = False
+				string = string[:-1]
+			pass
+			
+		# Else, the value will be '.' or a number
+		else:
+					
+			# Check for decimal. If there is already one, do nothing
+			if (user_input is '*'):
+				if (decimal is False):
+					inputs.append(user_input)
+					string = string + '.'
+					decimal = True
+			# Otherwise, add number to input list
+			else:
+				string = string + str(user_input)
+				inputs.append(user_input)
+		
+		# Display updated input
+		lcd_out(string, style=constants.LCD_CENT_JUST, line=constants.LCD_LINE_2)
+		
+		# DEBUG
+		# print("Inputs: ", inputs)
+		# print("String: ", string)
+		# print("Decimal: ", decimal)
+	
+	value = 0.0
+	decimal = False
+	decimal_div = 10
+	for i in range(len(inputs)):
+		if (not decimal):
+			if (inputs[i] is '*'):
+				decimal = True
+				pass
+			else:
+				value = value*10 + inputs[i]
+		else:
+			value = value + inputs[i]/decimal_div
+			decimal_div = decimal_div*10
+		# DEBUG
+		# print("Value: ", value)
+	
+	# DEBUG
+	# print("Final: ", value)
+	
+	return value
+	
+	
 
 def read_pH():
 	"""
@@ -191,7 +296,7 @@ def pump_volume(volume, direction):
 	# pump out solution
 	elif direction == 1:
 		if volume_to_add > constants.MAX_PUMP_CAPACITY:
-			lcd_out("Volume > pumpable", style=LCD_CENT_JUST)
+			lcd_out("Volume > pumpable", style=constants.LCD_CENT_JUST)
 			# volume greater than max capacity of pump
 
 			# add all current volume in pump
@@ -236,7 +341,7 @@ def drive_pump(volume, direction):
 		if volume > space_in_pump:
 			lcd_out("Pulling Error")
 		else:
-			lcd_out("Pulling {} ml titrant".format(volume))
+			lcd_out("Pulling {0:1.2f} ml".format(volume))
 			cycles = analysis.determine_pump_cycles(volume)
 			drive_step_stick(cycles, direction)
 			constants.volume_in_pump += volume
@@ -244,12 +349,12 @@ def drive_pump(volume, direction):
 		if volume > constants.volume_in_pump:
 			lcd_out("Pumping Error")
 		else:
-			lcd_out("Pumping {} ml titrant".format(volume))
+			lcd_out("Pumping {0:1.2f} ml".format(volume))
 			cycles = analysis.determine_pump_cycles(volume)
 			drive_step_stick(cycles, direction)
 			constants.volume_in_pump -= volume
 
-	lcd_out("Pump Vol: {}".format(constants.volume_in_pump))
+	lcd_out("Pump Vol: {0:1.2f}".format(constants.volume_in_pump))
 
 
 def drive_step_stick(cycles, direction):
@@ -268,13 +373,13 @@ def drive_step_stick(cycles, direction):
 		arduino.write(direction.to_bytes(1, 'little'))
 		arduino.flush()
 		wait_time = cycles/1000 + .5
-		time.sleep(wait_time)
+		time.sleep(wait_time) # TODO: This will be a problem for the temp control
 		temp = arduino.readline()
 		if temp != b'DONE\r\n':
-			lcd_out("Error writing to Arduino")
+			lcd_out("Arduino Error")
 			print(temp)
 	else:
-		lcd_out("Arduino not available.")
+		lcd_out("Arduino Unavailable")
 
 
 if __name__ == "__main__":

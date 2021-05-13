@@ -1,38 +1,57 @@
-# user choice options
-ROUTINE_OPTIONS = {
-    1: 'Run titration',
-    2: 'Calibrate sensors',
-    3: 'Prime Pump',
-    4: 'Update settings',
-    5: 'Test Mode',
-    6: 'Exit'
-}
-SENSOR_OPTIONS = {
-    1: 'pH',
-    2: 'Temperature'
-}
-
 # Display
 LCD_CONSOLE = False
 
 VALID_INPUT_WARNING = 'Input Invalid'
 # keypad
-KEY_0 = 10
-KEY_1 = 11
-KEY_2 = 12
-KEY_3 = 13
-KEY_4 = 14
-KEY_5 = 15
-KEY_6 = 16
-KEY_7 = 17
-KEY_8 = 18
-KEY_9 = 19
-KEY_A = 20
-KEY_B = 21
-KEY_C = 22
-KEY_D = 23
-KEY_STAR = 24
-KEY_HASH = 25
+KEY_0 = 0
+KEY_1 = 1
+KEY_2 = 2
+KEY_3 = 3
+KEY_4 = 4
+KEY_5 = 5
+KEY_6 = 6
+KEY_7 = 7
+KEY_8 = 8
+KEY_9 = 9
+KEY_A = 'A'
+KEY_B = 'B'
+KEY_C = 'C'
+KEY_D = 'D'
+KEY_STAR = '*'
+KEY_HASH = '#'
+
+# user choice options
+ROUTINE_OPTIONS_1 = {
+    KEY_1: 'Run titration',
+    KEY_2: 'Calibrate sensors',
+    KEY_3: 'Prime Pump',
+    KEY_STAR: 'Page 2'
+}
+
+ROUTINE_OPTIONS_2 = {
+    KEY_4: 'Update settings',
+    KEY_5: 'Test Mode',
+    KEY_6: 'Exit',
+    KEY_STAR: 'Page 1'
+}
+
+TEST_OPTIONS_1 = {
+    KEY_1: "Read Values",
+    KEY_2: "Pump",
+    KEY_3: "Set Volume",
+    KEY_STAR: "Page 2"
+}
+
+TEST_OPTIONS_2 = {
+    KEY_4: "Toggle Test Mode",
+    KEY_5: "Exit",
+    KEY_STAR: "Page 1"
+}
+
+SENSOR_OPTIONS = {
+    KEY_1: 'pH',
+    KEY_2: 'Temperature'
+}
 
 KEY_VALUES = {
   0: {
@@ -115,6 +134,10 @@ PH_ACCURACY = 0.1
 TITRATION_WAIT_TIME = 1
 INCREMENT_AMOUNT = 0.05
 TARGET_STD_DEVIATION = 0.15
+
+# Temp Control
+RELAY_PIN = 12
+
 # pump settings
 #ARDUINO_PORT = "/dev/ttyUSB0"
 ARDUINO_PORT = "/dev/ttyACM0"
