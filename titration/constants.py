@@ -11,7 +11,11 @@ SENSOR_OPTIONS = {
     1: 'pH',
     2: 'Temperature'
 }
-VALID_INPUT_WARNING = 'Please enter a valid input'
+
+# Display
+LCD_CONSOLE = False
+
+VALID_INPUT_WARNING = 'Input Invalid'
 # keypad
 KEY_0 = 10
 KEY_1 = 11
@@ -23,6 +27,61 @@ KEY_6 = 16
 KEY_7 = 17
 KEY_8 = 18
 KEY_9 = 19
+KEY_A = 20
+KEY_B = 21
+KEY_C = 22
+KEY_D = 23
+KEY_STAR = 24
+KEY_HASH = 25
+
+KEY_VALUES = {
+  0: {
+    0: KEY_1,
+    1: KEY_2,
+    2: KEY_3,
+    3: KEY_A,
+  },
+
+  1: {
+    0: KEY_4,
+    1: KEY_5,
+    2: KEY_6,
+    3: KEY_B,
+  },
+
+  2: {
+    0: KEY_7,
+    1: KEY_8,
+    2: KEY_9,
+    3: KEY_C,
+  },
+
+  3: {
+    0: KEY_STAR,
+    1: KEY_0,
+    2: KEY_HASH,
+    3: KEY_D,
+  }
+}
+
+# LCD Device Constants
+LCD_WIDTH = 20    # Maximum characters per line
+LCD_CHR = True
+LCD_CMD = False
+
+LCD_LEFT_JUST = 1
+LCD_CENT_JUST = 2
+LCD_RIGHT_JUST = 3
+ 
+LCD_LINE_1 = 0x80 # LCD RAM address for the 1st line
+LCD_LINE_2 = 0xC0 # LCD RAM address for the 2nd line
+LCD_LINE_3 = 0x94 # LCD RAM address for the 3rd line
+LCD_LINE_4 = 0xD4 # LCD RAM address for the 4th line
+ 
+# LCD Timing constants
+E_PULSE = 0.0005
+E_DELAY = 0.0005
+
 # for pH calibration constants
 calibration_data_format = {
     'pH': {
