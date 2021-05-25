@@ -38,6 +38,11 @@ tempcontroller = None
 def setup_interfaces():
 	"""Initializes components for interfacing with pH probe, temperature probe, and stepper motor/syringe pump"""
 	global ph_input_channel, temp_sensor, arduino, lcd, keypad, tempcontroller
+	
+	# LCD and keypad setup
+	lcd = userinterface.LCD()
+	keypad = userinterface.Keypad()
+	
 	# pH probe setup
 	try:
 		i2c = busio.I2C(board.SCL, board.SDA)
@@ -67,10 +72,6 @@ def setup_interfaces():
 								timeout=constants.ARDUINO_TIMEOUT)
 		arduino.reset_output_buffer()
 		arduino.reset_input_buffer()
-
-	# LCD and keypad setup
-	lcd = userinterface.LCD()
-	keypad = userinterface.Keypad()
 
 	# Temp Control Setup
 	tempcontroller = tempcontrol.TempControl(temp_sensor,constants.RELAY_PIN)
