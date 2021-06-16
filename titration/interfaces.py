@@ -350,15 +350,45 @@ def drive_pump(volume, direction):
 		if volume > constants.volume_in_pump:
 			lcd_out("Pumping Error")
 		else:
-			lcd_out("Pumping {0:1.2f} ml".format(volume))
+			lcd_out("Pumping {0:1.2f} ml".format(volume),line=LCD_LINE_4)
 			cycles = analysis.determine_pump_cycles(volume)
-			drive_step_stick(cycles, direction)
+			offset = drive_step_stick(cycles, direction)
+			#offset is what is returned from drive_step_stick which originally is returned from the arduino 
+			if offset != 0:
+				drive_step_stick(offset, 0)
+				drive_step_stick(offset, 1)
 			constants.volume_in_pump -= volume
 
 	lcd_out("Pump Vol: {0:1.2f}".format(constants.volume_in_pump))
 
 
 def drive_step_stick(cycles, direction):
+	"""
+	cycles and direction are integers
+	Communicates with arduino to add HCl through pump
+	:param cycles: number of rising edges for the pump
+	:param direction: direction of pump
+	"""
+	if constants.IS_TEST:
+		time.sleep(1)
+		return _test_add_HCl()
+
+	time.sleep(.01)
+	if arduino.writable():
+		arduino.write(cycles.to_bytes(4, 'little'))
+		arduino.write(direction.to_bytes(1, 'little'))
+		arduino.flush()
+		wait_time = cycles/1000 + .5
+		time.sleep(wait_time) # TODO: This will be a problem for the temp control
+		temp = arduino.readline()
+		if temp != b'DONE\r\n':
+			cyc = int(temp)
+			return cyc
+	else:
+		lcd_out("Arduino Unavailable")
+
+
+def prime_the_boi(cycles, direction):
 	"""
 	Communicates with arduino to add HCl through pump
 	:param cycles: number of rising edges for the pump
@@ -377,8 +407,8 @@ def drive_step_stick(cycles, direction):
 		time.sleep(wait_time) # TODO: This will be a problem for the temp control
 		temp = arduino.readline()
 		if temp != b'DONE\r\n':
-			lcd_out("Arduino Error")
 			print(temp)
+			pump_volume(100000, 1)
 	else:
 		lcd_out("Arduino Unavailable")
 
