@@ -17,16 +17,14 @@ def test():
         print('Resistance: {0:0.3f} Ohms'.format(res))
         interfaces.lcd_out("pH: {}".format(pH_reading))
         interfaces.lcd_out("pH volt: {}".format(pH_volts))
-        time.sleep(constants.TITRATION_WAIT_TIME)
+        interfaces.delay(constants.TITRATION_WAIT_TIME)
 
 
 def run():
     """Main driver for the program. Initializes components and queries the user for next steps"""
     # initialize components
     initialize_components()
-    routines.auto_home()
-    interfaces.lcd_out("Konrad: Thank you.")
-    interfaces.lcd_out("Boi: You're welcome.")
+    #routines.auto_home()
     # output prompt to LCD screen
     routine_selection = '0'
     #options = [str(key) for key in constants.ROUTINE_OPTIONS]

@@ -83,6 +83,9 @@ KEY_VALUES = {
   }
 }
 
+# Small times steps (s) in the delay function
+DELAY_STEP = 0.0001
+
 # LCD Device Constants
 LCD_WIDTH = 20    # Maximum characters per line
 LCD_CHR = True

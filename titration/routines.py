@@ -86,7 +86,7 @@ def test():
                 resVals[i] = res;
                 pHVals[i] = pH_reading;
                 voltVals[i] = pH_volts;
-                time.sleep(timestep)
+                interfaces.delay(timestep)
             
             #fig, axs = plt.subplots(2,2)
             #axs[0,0].plot(timeVals,tempVals) 
@@ -128,7 +128,7 @@ def _test_temp():
         temp, res = interfaces.read_temperature()
         lcd_out("Temp: {0:0.3f}C".format(temp))
         lcd_out("Res: {0:0.3f} Ohms".format(res))
-        time.sleep(0.5)
+        interfaces.delay(0.5)
 
 
 def calibration():
@@ -259,8 +259,9 @@ def titration(pH_target, solution_increment_amount, data, total_sol_added, degas
     :param degas_time: optional parameter defining the de-gas time for the solution after the target pH has been reached
     :return: total solution added so far
     '''
-    interfaces.lcd_out("Titrating to", style=LCD_CENT_JUST)
-    interfaces.lcd_out("{} pH".format(str(pH_target)), style=LCD_CENT_JUST)
+    interfaces.lcd_clear()
+    interfaces.lcd_out("Titrating to", style=constants.LCD_CENT_JUST, line=constants.LCD_LINE_1)
+    interfaces.lcd_out("{} pH".format(str(pH_target)), style=constants.LCD_CENT_JUST, line=constants.LCD_LINE_2)
     # total HCl added
     total_sol = total_sol_added
 
@@ -278,10 +279,7 @@ def titration(pH_target, solution_increment_amount, data, total_sol_added, degas
     interfaces.lcd_out("pH value {} reached".format(current_pH))
     interfaces.lcd_out("Degassing " + str(degas_time) + " seconds")
     
-    # time.sleep(degas_time) # would disrupt temp control
-    timeEnd = time.time() + degas_time
-    while timeEnd > time.time():
-        interfaces.tempcontroller.update()
+    interfaces.delay(degas_time) # would disrupt temp control
     return total_sol
 
 
@@ -302,9 +300,11 @@ def wait_pH_stable(total_sol, data):
     while True:
         pH_reading, pH_volts = interfaces.read_pH()
         temp_reading = interfaces.read_temperature()[0]
-        interfaces.lcd_out("pH: {}".format(pH_reading))
-        interfaces.lcd_out("pH volts: {}".format(pH_volts))
-        interfaces.lcd_out("temp: {0:0.3f}C".format(temp_reading))
+        interfaces.lcd_out("pH:   {0:>4.5f} pH".format(pH_reading),line=constants.LCD_LINE_1)
+        interfaces.lcd_out("pH V: {0:>3.4f} mV".format(pH_volts*1000), line=constants.LCD_LINE_2)
+        interfaces.lcd_out('Temp: {0:>4.3f} C'.format(temp_reading), line=constants.LCD_LINE_3)
+        
+        
         pH_values[pH_list_counter] = pH_reading
 
         if pH_list_counter == 9:
@@ -323,7 +323,7 @@ def wait_pH_stable(total_sol, data):
         if valid_num_values_tested and analysis.std_deviation(pH_values) < constants.TARGET_STD_DEVIATION:
             return pH_reading
 
-        time.sleep(constants.TITRATION_WAIT_TIME)
+        interfaces.delay(constants.TITRATION_WAIT_TIME)
 
 
 def edit_settings():

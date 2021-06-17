@@ -1,5 +1,6 @@
 #import
 import digitalio
+import interfaces
 import time
 from board import *
 import constants
@@ -37,22 +38,22 @@ class LCD():
     self.__lcd_byte(0x0C,constants.LCD_CMD) # 001100 Display On,Cursor Off, Blink Off
     self.__lcd_byte(0x28,constants.LCD_CMD) # 101000 Data length, number of lines, font size
     self.__lcd_byte(0x01,constants.LCD_CMD) # 000001 Clear display
-    time.sleep(constants.E_DELAY)
+    interfaces.delay(constants.E_DELAY)
     
     # Toggle backlight on-off-on
     self.lcd_backlight(True)
-    time.sleep(0.5)
+    interfaces.delay(0.5)
     self.lcd_backlight(False)
-    time.sleep(0.5)
+    interfaces.delay(0.5)
     self.lcd_backlight(True)
-    time.sleep(0.5)
+    interfaces.delay(0.5)
     
     self.out_line(self.reg_line_1, constants.LCD_LINE_1,constants.LCD_CENT_JUST)
     self.out_line(self.reg_line_2, constants.LCD_LINE_2,constants.LCD_CENT_JUST)
     self.out_line(self.reg_line_3, constants.LCD_LINE_3,constants.LCD_CENT_JUST)
     self.out_line(self.reg_line_4, constants.LCD_LINE_4,constants.LCD_CENT_JUST)
     
-    time.sleep(1)
+    interfaces.delay(1)
 
 
   def __lcd_byte(self,bits, mode):
@@ -99,11 +100,11 @@ class LCD():
  
   def __lcd_toggle_enable(self):
     # Toggle enable
-    time.sleep(constants.E_DELAY)
+    interfaces.delay(constants.E_DELAY)
     self.pin_E.value = True
-    time.sleep(constants.E_PULSE)
+    interfaces.delay(constants.E_PULSE)
     self.pin_E.value = False
-    time.sleep(constants.E_DELAY)
+    interfaces.delay(constants.E_DELAY)
 
   def out(self,message, style=1):
     """
@@ -124,13 +125,13 @@ class LCD():
     self.reg_line_4 = message
 
     self.__write_message(self.reg_line_1,constants.LCD_LINE_1)
-    #time.sleep(0.5)
+    #interfaces.delay(0.5)
     self.__write_message(self.reg_line_2,constants.LCD_LINE_2)
-    #time.sleep(0.5)
+    #interfaces.delay(0.5)
     self.__write_message(self.reg_line_3,constants.LCD_LINE_3)
-    #time.sleep(0.5)
+    #interfaces.delay(0.5)
     self.__write_message(self.reg_line_4,constants.LCD_LINE_4)
-    #time.sleep(0.5)
+    #interfaces.delay(0.5)
 
   def out_line(self,message,line,style=1):
     """

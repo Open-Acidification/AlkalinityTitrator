@@ -76,9 +76,22 @@ def setup_interfaces():
                                 timeout=constants.ARDUINO_TIMEOUT)
         arduino.reset_output_buffer()
         arduino.reset_input_buffer()
-
+        
     # Temp Control Setup
     tempcontroller = tempcontrol.TempControl(temp_sensor,constants.RELAY_PIN)
+
+
+def delay(seconds):
+	# Use time.sleep() if the temp controller isn't initialized yet
+	if tempcontroller is None:
+		time.sleep(seconds)
+		return
+		
+	time_left = seconds
+	while time_left > 0:
+		time.sleep(constants.DELAY_STEP)
+		tempcontroller.update()
+		time_left = time_left - constants.DELAY_STEP
 
 def lcd_out(message, style=constants.LCD_LEFT_JUST, console=False, line=None):
     """
@@ -394,16 +407,17 @@ def drive_step_stick(cycles, direction):
 		return 0
 	
 	if constants.IS_TEST:
-		time.sleep(1)
+		delay(1)
 		return _test_add_HCl()
 
-	time.sleep(.01)
+	delay(.01)
 	if arduino.writable():
 		arduino.write(cycles.to_bytes(4, 'little'))
 		arduino.write(direction.to_bytes(1, 'little'))
 		arduino.flush()
 		wait_time = cycles/1000 + .5
-		time.sleep(wait_time) # TODO: This will be a problem for the temp control
+		print("wait_time = ", wait_time)
+		delay(wait_time) # TODO: This will be a problem for the temp control
 		temp = arduino.readline()
 		print(temp)
 		if temp == b'DONE\r\n' or temp == b'':
