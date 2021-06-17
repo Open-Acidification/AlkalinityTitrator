@@ -128,8 +128,8 @@ class TempControl():
 					self.__update_priors()
 
 				# Add data to df
-				dfnew = pd.DataFrame([[time.ctime(timeNow),temp,self.k]], columns=['time (s)','temp (C)','gain']);
-				self.df = self.df.append(dfnew,ignore_index=True);
+				dfnew = pd.DataFrame([[time.ctime(timeNow),temp,self.k]], columns=['time (s)','temp (C)','gain'])
+				self.df = self.df.append(dfnew,ignore_index=True)
 				if (self.printData == True):
 					print(self.df)
 

@@ -81,17 +81,20 @@ def setup_interfaces():
     tempcontroller = tempcontrol.TempControl(temp_sensor,constants.RELAY_PIN)
 
 
-def delay(seconds):
-	# Use time.sleep() if the temp controller isn't initialized yet
-	if tempcontroller is None:
-		time.sleep(seconds)
-		return
-		
-	time_left = seconds
-	while time_left > 0:
-		time.sleep(constants.DELAY_STEP)
-		tempcontroller.update()
-		time_left = time_left - constants.DELAY_STEP
+def delay(seconds, countdown=False):
+    # Use time.sleep() if the temp controller isn't initialized yet
+    if tempcontroller is None:
+        time.sleep(seconds)
+        return
+    
+    timeEnd = time.time()+seconds
+    timeNow = time.time()
+    while timeEnd > timeNow:
+        tempcontroller.update()
+        timeLeft = timeEnd-timeNow
+        if (int(timeLeft) % 5 == 0):
+            lcd_out("Time Left: {}".format(int(timeLeft)), line=constants.LCD_LINE_4)
+        timeNow = time.time()
 
 def lcd_out(message, style=constants.LCD_LEFT_JUST, console=False, line=None):
     """
@@ -107,7 +110,7 @@ def lcd_out(message, style=constants.LCD_LEFT_JUST, console=False, line=None):
             lcd.out_line(message, line, style)
 
 def lcd_clear():
-    lcd.clear_screen();
+    lcd.clear_screen()
 
 
 def display_list(dict_to_display):
@@ -331,7 +334,7 @@ def pump_volume(volume, direction):
     # pump out solution
     elif direction == 1:
         if volume_to_add > constants.MAX_PUMP_CAPACITY:
-            lcd_out("Volume > pumpable", style=constants.LCD_CENT_JUST)
+            lcd_out("Volume > pumpable", style=constants.LCD_CENT_JUST, line=constants.LCD_LINE_4)
             # volume greater than max capacity of pump
 
             # add all current volume in pump
@@ -374,15 +377,15 @@ def drive_pump(volume, direction):
     if direction == 0:
         space_in_pump = constants.MAX_PUMP_CAPACITY - constants.volume_in_pump
         if volume > space_in_pump:
-            lcd_out("Filling Error")
+            lcd_out("Filling Error", line=constants.LCD_LINE_4)
         else:
-            lcd_out("Filling {0:1.2f} ml".format(volume))
+            lcd_out("Filling {0:1.2f} ml".format(volume),line=constants.LCD_LINE_4)
             cycles = analysis.determine_pump_cycles(volume)
             drive_step_stick(cycles, direction)
             constants.volume_in_pump += volume
     elif direction == 1:
         if volume > constants.volume_in_pump:
-            lcd_out("Pumping Error")
+            lcd_out("Pumping Error", line=constants.LCD_LINE_4)
         else:
             lcd_out("Pumping {0:1.2f} ml".format(volume),line=constants.LCD_LINE_4)
             cycles = analysis.determine_pump_cycles(volume)
@@ -393,36 +396,37 @@ def drive_pump(volume, direction):
                 drive_step_stick(offset, 1)
             constants.volume_in_pump -= volume
 
-    lcd_out("Pump Vol: {0:1.2f}".format(constants.volume_in_pump))
+    lcd_out("Pump Vol: {0:1.2f}".format(constants.volume_in_pump), line=constants.LCD_LINE_4)
 
 
 def drive_step_stick(cycles, direction):
-	"""
-	cycles and direction are integers
-	Communicates with arduino to add HCl through pump
-	:param cycles: number of rising edges for the pump
-	:param direction: direction of pump
-	"""
-	if cycles is 0:
-		return 0
-	
-	if constants.IS_TEST:
-		delay(1)
-		return _test_add_HCl()
+    """
+    cycles and direction are integers
+    Communicates with arduino to add HCl through pump
+    :param cycles: number of rising edges for the pump
+    :param direction: direction of pump
+    """
+    if cycles is 0:
+        return 0
+    
+    if constants.IS_TEST:
+        delay(1)
+        return _test_add_HCl()
 
-	delay(.01)
-	if arduino.writable():
-		arduino.write(cycles.to_bytes(4, 'little'))
-		arduino.write(direction.to_bytes(1, 'little'))
-		arduino.flush()
-		wait_time = cycles/1000 + .5
-		print("wait_time = ", wait_time)
-		delay(wait_time) # TODO: This will be a problem for the temp control
-		temp = arduino.readline()
-		print(temp)
-		if temp == b'DONE\r\n' or temp == b'':
-			return 0
-		else: 
-			return int(temp)
-	else:
-		lcd_out("Arduino Unavailable")
+    delay(.01)
+    if arduino.writable():
+        arduino.write(cycles.to_bytes(4, 'little'))
+        arduino.write(direction.to_bytes(1, 'little'))
+        arduino.flush()
+        wait_time = cycles/1000 + .5
+        print(time.ctime())
+        print("wait_time = ", wait_time)
+        print(time.ctime())
+        delay(wait_time) # TODO: This will be a problem for the temp control
+        temp = arduino.readline()
+        if temp == b'DONE\r\n' or temp == b'':
+            return 0
+        else: 
+            return int(temp)
+    else:
+        lcd_out("Arduino Unavailable")
