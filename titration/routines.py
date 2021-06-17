@@ -119,6 +119,12 @@ def test():
             interfaces.lcd_out("Testing: {}".format(constants.IS_TEST))
         
         elif user_choice == '5' or user_choice == constants.KEY_5:
+            interfaces.lcd_clear()    
+            lcd_out("Pump Vol: ", line=constants.LCD_LINE_1)
+            lcd_out("{0:1.2f}".format(constants.volume_in_pump), style=constants.LCD_CENT_JUST, line=constants.LCD_LINE_2)
+            lcd_out("Press any to cont.", line=constants.LCD_LINE_3)
+            interfaces.read_user_input()
+        elif user_choice == '6' or user_choice == constants.KEY_6:
             break
         
 
