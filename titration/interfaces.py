@@ -156,8 +156,8 @@ def read_user_input(valid_inputs=None, console=False):
 
 def read_user_value(message):
     """Prompts the user to enter a value using the keypad"""
-    instructions_1 = "* = .       D = back"
-    instructions_2 = "# = confirm"
+    instructions_1 = "* = .       B = BS"
+    instructions_2 = "A = accept  C = Clr"
     inputs = []
     
     lcd_out(message, line=constants.LCD_LINE_1)

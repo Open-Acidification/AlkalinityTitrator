@@ -218,8 +218,10 @@ def total_alkalinity_titration():
     if user_choice == '1':
         # Manual
         while user_choice == '1':
-            p_volume = input("Volume: ")
-            p_direction = input("Direction: ")
+            p_volume = interfaces.read_user_value("Volume: ")
+            interfaces.lcd_clear()
+            interfaces.lcd_out("Direction (0/1): ", line=constants.LCD_LINE_1)
+            p_direction = interfaces.read_user_input()
             p_volume = float(p_volume)
             p_direction = int(p_direction)
             if p_direction == 1:
@@ -227,8 +229,11 @@ def total_alkalinity_titration():
             if p_direction == 0 or p_direction == 1:
                 interfaces.pump_volume(p_volume, p_direction)
             current_pH = wait_pH_stable(total_sol, data)
-            interfaces.lcd_out("Current pH: {}".format(current_pH))
-            interfaces.lcd_out("Continue adding solution? (0 - No, 1 - Yes)")
+            interfaces.lcd_out("Current pH: {0:>4.5f}".format(current_pH), line=constants.LCD_LINE_1)
+            interfaces.lcd_out("Continue adding solution?", line=constants.LCD_LINE_2)
+            interfaces.lcd_out("(0 - No, 1 - Yes)", line=constants.LCD_LINE_3)
+            interfaces.lcd_out("", line=constants.LCD_LINE_4)
+
             user_choice = interfaces.read_user_input()
     else:
         # Automatic
