@@ -22,6 +22,9 @@ def run():
     """Main driver for the program. Initializes components and queries the user for next steps"""
     # initialize components
     initialize_components()
+    routines.auto_home()
+    interfaces.lcd_out("Konrad: Thank you.")
+    interfaces.lcd_out("Boi: You're welcome.")
     # output prompt to LCD screen
     routine_selection = '0'
     #options = [str(key) for key in constants.ROUTINE_OPTIONS]

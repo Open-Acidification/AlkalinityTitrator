@@ -352,9 +352,14 @@ def prime_pump():
     sel = int(selection)
     while sel > 0:
         while sel > 0:
-            drive_step_stick(10000,0)
-            drive_step_stick(10000,1)
+            interfaces.drive_step_stick(10000,0)
+            interfaces.drive_step_stick(10000,1)
             sel = sel - 1
         interfaces.lcd_out("How many more?")
         selection = interfaces.read_user_input()
         sel = int(selection)
+
+
+def auto_home():
+    """Homes syringe to 0 mL upon calling"""
+    interfaces.drive_step_stick(10000,1)
