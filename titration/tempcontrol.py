@@ -23,6 +23,9 @@ class TempControl():
 	# Flag - print data to console or not
 	printData = False
 
+	# Flag - if False, update() does not toggle relay
+	controlActive = False
+
 	# PID Parameters
 	kp = PID_DEFAULT_KP
 	Ti = PID_DEFAULT_TI
@@ -64,6 +67,10 @@ class TempControl():
 	update the PID control and relay status as necessary
 	"""
 	def update(self):
+		# If 
+		if not self.controlActive:
+			return
+
 		timeNow = time.time() # not localtime() since we need fractional seconds
 
 		# TODO: Add logging of timeNow-timeNext results (how late?)
@@ -196,6 +203,14 @@ class TempControl():
 			return True
 		else:
 			return False
+
+	def activate():
+		self.controlActive = True
+		self.__set_controlparam_default()
+		timeNext = time.time()
+
+	def deactivate():
+		self.controlActive = False
 
 if __name__ == "__main__":
 	spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
