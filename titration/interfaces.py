@@ -384,65 +384,26 @@ def drive_pump(volume, direction):
 
 
 def drive_step_stick(cycles, direction):
-    """
-    cycles and direction are integers
-    Communicates with arduino to add HCl through pump
-    :param cycles: number of rising edges for the pump
-    :param direction: direction of pump
-    """
-    if constants.IS_TEST:
-        time.sleep(1)
-        return _test_add_HCl()
+	"""
+	cycles and direction are integers
+	Communicates with arduino to add HCl through pump
+	:param cycles: number of rising edges for the pump
+	:param direction: direction of pump
+	"""
+	if constants.IS_TEST:
+		time.sleep(1)
+		return _test_add_HCl()
 
-    time.sleep(.01)
-    if arduino.writable():
-        arduino.write(cycles.to_bytes(4, 'little'))
-        arduino.write(direction.to_bytes(1, 'little'))
-        arduino.flush()
-        wait_time = cycles/1000 + .5
-        time.sleep(wait_time) # TODO: This will be a problem for the temp control
-        temp = arduino.readline()
-        if temp != b'DONE\r\n':
-            cyc = int(temp)
-            return cyc
-    else:
-        lcd_out("Arduino Unavailable")
-
-
-def prime_the_boi(cycles, direction):
-    """
-    Communicates with arduino to add HCl through pump
-    :param cycles: number of rising edges for the pump
-    :param direction: direction of pump
-    """
-    if constants.IS_TEST:
-        time.sleep(1)
-        return _test_add_HCl()
-
-    time.sleep(.01)
-    if arduino.writable():
-        arduino.write(cycles.to_bytes(4, 'little'))
-        arduino.write(direction.to_bytes(1, 'little'))
-        arduino.flush()
-        wait_time = cycles/1000 + .5
-        time.sleep(wait_time) # TODO: This will be a problem for the temp control
-        temp = arduino.readline()
-        if temp != b'DONE\r\n':
-            print(temp)
-            pump_volume(100000, 1)
-    else:
-        lcd_out("Arduino Unavailable")
-
-
-if __name__ == "__main__":
-    """Variable pump priming"""
-    setup_interfaces()
-    analysis.setup_calibration()
-    while True:
-        lcd_clear()
-        lcd_out("Volume: ")
-        p_volume = read_user_input()
-        lcd_out("Direction: ")
-        p_direction = read_user_input()
-        if p_direction == '0' or p_direction == '1':
-            pump_volume(float(p_volume), int(p_direction))
+	time.sleep(.01)
+	if arduino.writable():
+		arduino.write(cycles.to_bytes(4, 'little'))
+		arduino.write(direction.to_bytes(1, 'little'))
+		arduino.flush()
+		wait_time = cycles/1000 + .5
+		time.sleep(wait_time) # TODO: This will be a problem for the temp control
+		temp = arduino.readline()
+		if temp != b'DONE\r\n':
+			cyc = int(temp)
+			return cyc
+	else:
+		lcd_out("Arduino Unavailable")

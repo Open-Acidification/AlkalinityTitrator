@@ -342,25 +342,14 @@ def edit_settings():
 
 def prime_pump():
     """Primes pump by pulling in and pushing out solution"""
-    selection = '1'
-    while selection == '1':
-        interfaces.lcd_out("Volume: ")
-        p_volume = interfaces.read_user_input()
-        interfaces.pump_volume(float(p_volume), 1)
-        interfaces.lcd_out("Continue (1)")
-        selection = interfaces.read_user_input()
-
-
-def prime_bois_pump():
-    """Primes pump by pulling in and pushing out solution"""
     interfaces.lcd_out("How many pumps?")
     selection = interfaces.read_user_input()
     sel = int(selection)
     while sel > 0:
-        interfaces.lcd_out("Volume: ")
-        p_volume = interfaces.read_user_input()
-        interfaces.pump_volume(float(p_volume), 1)
-        sel = sel - 1
+        while sel > 0:
+            drive_step_stick(10000,0)
+            drive_step_stick(10000,1)
+            sel = sel - 1
         interfaces.lcd_out("How many more?")
         selection = interfaces.read_user_input()
         sel = int(selection)
