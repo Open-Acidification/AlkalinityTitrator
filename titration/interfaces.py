@@ -176,30 +176,30 @@ def read_user_value(message):
         user_input = read_user_input()
         
         # A is accept, if entered, end loop
-        if (user_input is 'A'):
+        if (user_input == 'A'):
             break
         
         # B is backspace, pop a value
-        elif (user_input is 'B'):
+        elif (user_input == 'B'):
             if (len(inputs) > 0):
                 popped = inputs.pop()
-                if (popped is '*'):
+                if (popped == '*'):
                     decimal = False
                 string = string[:-1]
 
         # C is clear, pop all values
-        elif (user_input is 'C'):
+        elif (user_input == 'C'):
             inputs.clear()
             decimal = False
             string = '_'
 
         # D would be "decline", going back to the previous screen
-        elif (user_input is 'D'):
+        elif (user_input == 'D'):
             # We would LIKE to go back to the previous routine,
             # but we can't currently support that easily
             pass
 
-        elif (user_input is '#'):
+        elif (user_input == '#'):
             # Currently no implementation planned for this
             pass
             
@@ -207,8 +207,8 @@ def read_user_value(message):
         else:
                     
             # Check for decimal. If there is already one, do nothing
-            if (user_input is '*'):
-                if (decimal is False):
+            if (user_input == '*'):
+                if (decimal == False):
                     inputs.append(user_input)
                     string = string + '.'
                     decimal = True
@@ -230,7 +230,7 @@ def read_user_value(message):
     decimal_div = 10
     for i in range(len(inputs)):
         if (not decimal):
-            if (inputs[i] is '*'):
+            if (inputs[i] == '*'):
                 decimal = True
                 pass
             else:
@@ -390,6 +390,9 @@ def drive_step_stick(cycles, direction):
 	:param cycles: number of rising edges for the pump
 	:param direction: direction of pump
 	"""
+	if cycles is 0:
+		return 0
+	
 	if constants.IS_TEST:
 		time.sleep(1)
 		return _test_add_HCl()
@@ -402,9 +405,10 @@ def drive_step_stick(cycles, direction):
 		wait_time = cycles/1000 + .5
 		time.sleep(wait_time) # TODO: This will be a problem for the temp control
 		temp = arduino.readline()
-		if temp != b'DONE\r\n':
-			return int(temp)
-		else: 
+		print(temp)
+		if temp == b'DONE\r\n' or temp == b'':
 			return 0
+		else: 
+			return int(temp)
 	else:
 		lcd_out("Arduino Unavailable")

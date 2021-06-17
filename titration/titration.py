@@ -3,6 +3,8 @@ import routines
 import constants
 import analysis
 import time
+import sys       # exception info
+import traceback # exception info
 
 
 def test():
@@ -49,4 +51,13 @@ def initialize_components():
 
 
 if __name__ == "__main__":
-    run()
+    try:
+        run()
+    except:
+        # Deactivate the SSR if any crash occurs
+        interfaces.tempcontroller.deactivate()
+        print("\nDeactivated SSR")
+        
+        print(sys.exc_info()[0])
+        traceback.print_exc()
+        

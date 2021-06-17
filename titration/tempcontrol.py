@@ -48,6 +48,9 @@ class TempControl():
 	# The time the next step nets to be taken
 	# not localtime() since we need fractional seconds
 	timeNext = time.time()
+	
+	# last temperature read
+	tempLast = 0
 
 	# What state is the relay currently in
 	relayOn = False
@@ -92,6 +95,7 @@ class TempControl():
 			else:
 				#Get data values
 				temp=self.sensor.temperature
+				self.lastTemp = temp
 				#timelog.append(timeNow.tm_sec)
 
 				#anti-windup
@@ -198,19 +202,23 @@ class TempControl():
 	def output_csv(self, filename):
 		self.df.to_csv(filename,index_label='step',header=True)
 
-	def at_temp():
+	def at_temp(self):
 		if self.sensor.temperature >= 29 and self.sensor.temperature <= 30:
 			return True
 		else:
 			return False
+	
+	def get_last_temp(self):
+		return self.lastTemp
 
-	def activate():
+	def activate(self):
 		self.controlActive = True
 		self.__set_controlparam_default()
 		timeNext = time.time()
 
-	def deactivate():
+	def deactivate(self):
 		self.controlActive = False
+		self.__set_relayState(False)
 
 if __name__ == "__main__":
 	spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)

@@ -50,13 +50,13 @@ def test():
     user_choice = None
     while True:
         # Swap page display if user chooses *
-        if (user_choice is constants.KEY_STAR):
-            if (page is 1):
+        if (user_choice == constants.KEY_STAR):
+            if (page == 1):
                 page = 2
             else:
                 page = 1
         # Display the proper page
-        if (page is 1):
+        if (page == 1):
             interfaces.display_list(constants.TEST_OPTIONS_1)
         else:
             interfaces.display_list(constants.TEST_OPTIONS_2)
@@ -135,9 +135,9 @@ def calibration():
     """Routine for letting the user pick the sensor to calibrate. Call another routine to calibrate the sensor"""
     interfaces.display_list(constants.SENSOR_OPTIONS)
     sensor_selection = interfaces.read_user_input()
-    if sensor_selection is '1' or sensor_selection is constants.KEY_1:
+    if sensor_selection == '1' or sensor_selection == constants.KEY_1:
         _calibrate_pH()
-    elif sensor_selection == '2' or sensor_selection is constants.KEY_2:
+    elif sensor_selection == '2' or sensor_selection == constants.KEY_2:
         _calibrate_temperature()
     analysis.save_calibration_data()
 
@@ -187,24 +187,25 @@ def _calibrate_temperature():
 def total_alkalinity_titration():
     """Runs through the full titration routine to find total alkalinity"""
     # pull in 1 ml of solution into pump for use in titration
-    interfaces.lcd_out("Volume: ")
-    p_volume = interfaces.read_user_input()
+    p_volume = 1.0 - constants.volume_in_pump
     interfaces.pump_volume(float(p_volume), 0)
     # data object to hold recorded data
     data = [('temperature', 'pH V', 'solution volume')]
 
     # query user for initial solution weight
-    interfaces.lcd_out("Solution weight (g):")
-    initial_weight = interfaces.read_user_input()
-    while not initial_weight.replace('.', '').isdigit():
-        interfaces.lcd_out("Please enter a numeric value.", console=True)
-        initial_weight = interfaces.read_user_input()
+    initial_weight = interfaces.read_user_value("Solution weight (g):")
+    # while not initial_weight.replace('.', '').isdigit():
+        # interfaces.lcd_out("Please enter a numeric value.", console=True)
+        # initial_weight = interfaces.read_user_input()
 
-    # TODO wait until solution is up to temperature
+    # wait until solution is up to temperature
     interfaces.tempcontroller.activate()
-    interfaces.lcd_out("Heating to 30 C...", line=constants.LCD_LINE_4)
+    interfaces.lcd_clear()
+    interfaces.lcd_out("Heating to 30 C...", line=constants.LCD_LINE_1)
     while not interfaces.tempcontroller.at_temp():
-        tempcontroller.update()
+        interfaces.tempcontroller.update()
+        temp = interfaces.tempcontroller.get_last_temp()
+        interfaces.lcd_out("Temp: {0:>4.3f} C".format(temp), line=constants.LCD_LINE_2)
 
     # initial titration (bring solution close to 3.5)
     # todo set stir speed slow
