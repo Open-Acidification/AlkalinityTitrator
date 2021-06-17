@@ -201,12 +201,18 @@ def total_alkalinity_titration():
         initial_weight = interfaces.read_user_input()
 
     # TODO wait until solution is up to temperature
+    interfaces.tempcontroller.activate()
+    interfaces.lcd_out("Heating to 30 C...", line=constants.LCD_LINE_4)
+    while not interfaces.tempcontroller.at_temp():
+        tempcontroller.update()
 
     # initial titration (bring solution close to 3.5)
     # todo set stir speed slow
     total_sol = 0
-    interfaces.lcd_out("Stir speed: slow")
-    interfaces.lcd_out("Manual Mode: 1 or automatically bring pH to 3.5?\n(Manual - 1, Automatic - 2)")
+    interfaces.lcd_out("Stir speed: slow", line=constants.LCD_LINE_4)
+    interfaces.lcd_out("Bring pH to 3.5:", line=constants.LCD_LINE_1)
+    interfaces.lcd_out("Manual: 1", line=constants.LCD_LINE_2)
+    interfaces.lcd_out("Automatic: 2", line=constants.LCD_LINE_3)
     user_choice = interfaces.read_user_input()
 
     if user_choice == '1':
@@ -231,7 +237,7 @@ def total_alkalinity_titration():
 
     # 3.5 -> 3.0
     # todo set stir speed fast
-    interfaces.lcd_out("Stir speed: fast", line=LCD_LINE_4)
+    interfaces.lcd_out("Stir speed: fast", line=constants.LCD_LINE_4)
     titration(constants.TARGET_PH_FINAL, constants.INCREMENT_AMOUNT_FINAL, data, total_sol)
     # save data to csv
     analysis.write_titration_data(data)
