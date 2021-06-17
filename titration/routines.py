@@ -226,12 +226,13 @@ def total_alkalinity_titration():
             user_choice = interfaces.read_user_input()
     else:
         # Automatic
-        total_sol = titration(constants.INITIAL_TARGET_PH, constants.INCREMENT_AMOUNT, data, 0, 5)
+        total_sol = titration(constants.TARGET_PH_INIT, constants.INCREMENT_AMOUNT_INIT, data, 0, 0)
+        total_sol = total_sol + titration(constants.TARGET_PH_MID, constants.INCREMENT_AMOUNT_MID, data, total_sol, 600)
 
     # 3.5 -> 3.0
     # todo set stir speed fast
-    interfaces.lcd_out("Stir speed: fast")
-    titration(constants.FINAL_TARGET_PH, constants.INCREMENT_AMOUNT, data, total_sol)
+    interfaces.lcd_out("Stir speed: fast", line=LCD_LINE_4)
+    titration(constants.TARGET_PH_FINAL, constants.INCREMENT_AMOUNT_FINAL, data, total_sol)
     # save data to csv
     analysis.write_titration_data(data)
 

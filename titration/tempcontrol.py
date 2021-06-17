@@ -183,13 +183,19 @@ class TempControl():
 			self.relay.off()
 
 	def enable_print(self):
-		self.printData = True;
+		self.printData = True
 
 	def disable_print(self):
-		self.printData = False;
+		self.printData = False
 
 	def output_csv(self, filename):
 		self.df.to_csv(filename,index_label='step',header=True)
+
+	def at_temp():
+		if self.sensor.temperature >= 29 and self.sensor.temperature <= 30:
+			return True
+		else:
+			return False
 
 if __name__ == "__main__":
 	spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)

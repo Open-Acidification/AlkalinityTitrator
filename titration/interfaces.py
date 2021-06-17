@@ -6,7 +6,7 @@ import analysis
 import adafruit_ads1x15.ads1115 as ADS
 import adafruit_ads1x15.analog_in as analog_in
 
-# for max31865 temp sensor
+# for max31865 temp sensorf
 import board
 import busio
 import digitalio
@@ -340,9 +340,9 @@ def drive_pump(volume, direction):
 	if direction == 0:
 		space_in_pump = constants.MAX_PUMP_CAPACITY - constants.volume_in_pump
 		if volume > space_in_pump:
-			lcd_out("Pulling Error")
+			lcd_out("Filling Error")
 		else:
-			lcd_out("Pulling {0:1.2f} ml".format(volume))
+			lcd_out("Filling {0:1.2f} ml".format(volume))
 			cycles = analysis.determine_pump_cycles(volume)
 			drive_step_stick(cycles, direction)
 			constants.volume_in_pump += volume
