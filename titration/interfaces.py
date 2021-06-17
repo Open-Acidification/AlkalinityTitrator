@@ -384,5 +384,6 @@ def drive_step_stick(cycles, direction):
 		if temp != b'DONE\r\n':
 			cyc = int(temp)
 			return cyc
+		else return 0
 	else:
 		lcd_out("Arduino Unavailable")
