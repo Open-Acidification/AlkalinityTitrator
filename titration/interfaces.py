@@ -403,7 +403,8 @@ def drive_step_stick(cycles, direction):
 		time.sleep(wait_time) # TODO: This will be a problem for the temp control
 		temp = arduino.readline()
 		if temp != b'DONE\r\n':
-			cyc = int(temp)
-			return cyc
+			return int(temp)
+		else: 
+			return 0
 	else:
 		lcd_out("Arduino Unavailable")

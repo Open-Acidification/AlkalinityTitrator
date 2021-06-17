@@ -68,7 +68,7 @@ class TempControl():
 	"""
 	def update(self):
 		# If 
-		if not controlActive:
+		if not self.controlActive:
 			return
 
 		timeNow = time.time() # not localtime() since we need fractional seconds
