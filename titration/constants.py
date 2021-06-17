@@ -45,7 +45,7 @@ TEST_OPTIONS_1 = {
 TEST_OPTIONS_2 = {
     KEY_4: "Toggle Test Mode",
     KEY_5: "Read Volume",
-    KEY_6: "Exit"
+    KEY_6: "Exit",
     KEY_STAR: "Page 1"
 }
 
