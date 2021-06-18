@@ -197,8 +197,9 @@ def _calibrate_temperature():
 def total_alkalinity_titration():
     """Runs through the full titration routine to find total alkalinity"""
     # pull in 1 ml of solution into pump for use in titration
-    p_volume = 1.0 - constants.volume_in_pump
-    interfaces.pump_volume(float(p_volume), 0)
+    if (constants.volume_in_pump < 1.0):
+        p_volume = 1.0 - constants.volume_in_pump
+        interfaces.pump_volume(float(p_volume), 0)
     # data object to hold recorded data
     data = [('temperature', 'pH V', 'solution volume', 'weight', 'salinity', 'Buffer pH', 'Buffer pH V')]
 
