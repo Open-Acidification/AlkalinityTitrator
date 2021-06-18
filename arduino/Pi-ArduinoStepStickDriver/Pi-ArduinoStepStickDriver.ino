@@ -1,4 +1,4 @@
-#define T_ON      500
+define T_ON      500
 #define STEP      6           // Pins D6 and D5 for STEP and Dir respectively
 #define DIR       5           
 #define LIM_1     4           // Pins D4 and D3 for LIM_F and LIM_E respectively
