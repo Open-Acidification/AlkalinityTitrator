@@ -27,9 +27,9 @@ def run():
     #routines.auto_home()
     # output prompt to LCD screen
     routine_selection = '0'
-    #options = [str(key) for key in constants.ROUTINE_OPTIONS]
+
     page = 1
-    while routine_selection != '6':
+    while routine_selection != '6' or routine_selection != constants.KEY_6:
         if (routine_selection is constants.KEY_STAR):
             if (page is 1):
                 page = 2
@@ -43,6 +43,11 @@ def run():
         # wait for user input to select which routine (polling should be fine here)
         routine_selection = interfaces.read_user_input()
         routines.run_routine(routine_selection)
+
+    analysis.save_calibration_data()
+    interfaces.tempcontroller.deactivate()
+    interfaces.lcd_clear()
+    interfaces.lcd.lcd_backlight(False)
 
 
 def initialize_components():

@@ -92,8 +92,8 @@ def delay(seconds, countdown=False):
     while timeEnd > timeNow:
         tempcontroller.update()
         timeLeft = timeEnd-timeNow
-        if (int(timeLeft) % 5 == 0):
-            lcd_out("Time Left: {}".format(int(timeLeft)), line=constants.LCD_LINE_4)
+        if (countdown == True and int(timeLeft) % 5 == 0):
+            lcd_out("Time Left: {}".format(int(timeLeft)), line=4)
         timeNow = time.time()
 
 def lcd_out(message, style=constants.LCD_LEFT_JUST, console=False, line=None):
@@ -101,13 +101,25 @@ def lcd_out(message, style=constants.LCD_LEFT_JUST, console=False, line=None):
     Outputs given string to LCD screen
     :param info: string to be displayed on LCD screen
     """
+
+    # Set the lcd line for easier 
+    lcd_line = line
+    if (line == 1):
+        lcd_line = constants.LCD_LINE_1
+    elif (line == 2):
+        lcd_line = constants.LCD_LINE_2
+    elif (line == 3):
+        lcd_line = constants.LCD_LINE_3
+    elif (line == 4):
+        lcd_line = constants.LCD_LINE_4
+
     if (constants.LCD_CONSOLE or console):
         print(message)
     else:
         if (line is None):
             lcd.out(message, style)
         else:
-            lcd.out_line(message, line, style)
+            lcd.out_line(message, lcd_line, style)
 
 def lcd_clear():
     lcd.clear_screen()
@@ -176,10 +188,10 @@ def read_user_value(message):
     instructions_2 = "A = accept  C = Clr"
     inputs = []
     
-    lcd_out(message, line=constants.LCD_LINE_1)
-    lcd_out("_", style=constants.LCD_CENT_JUST, line=constants.LCD_LINE_2)
-    lcd_out(instructions_1, line=constants.LCD_LINE_3)
-    lcd_out(instructions_2, line=constants.LCD_LINE_4)
+    lcd_out(message, line=1)
+    lcd_out("_", style=constants.LCD_CENT_JUST, line=2)
+    lcd_out(instructions_1, line=3)
+    lcd_out(instructions_2, line=4)
     
     
     # Take inputs until # is pressed
@@ -234,7 +246,7 @@ def read_user_value(message):
                 inputs.append(user_input)
         
         # Display updated input
-        lcd_out(string, style=constants.LCD_CENT_JUST, line=constants.LCD_LINE_2)
+        lcd_out(string, style=constants.LCD_CENT_JUST, line=2)
         
         # DEBUG
         # print("Inputs: ", inputs)
@@ -334,7 +346,7 @@ def pump_volume(volume, direction):
     # pump out solution
     elif direction == 1:
         if volume_to_add > constants.MAX_PUMP_CAPACITY:
-            lcd_out("Volume > pumpable", style=constants.LCD_CENT_JUST, line=constants.LCD_LINE_4)
+            lcd_out("Volume > pumpable", style=constants.LCD_CENT_JUST, line=4)
             # volume greater than max capacity of pump
 
             # add all current volume in pump
@@ -377,17 +389,17 @@ def drive_pump(volume, direction):
     if direction == 0:
         space_in_pump = constants.MAX_PUMP_CAPACITY - constants.volume_in_pump
         if volume > space_in_pump:
-            lcd_out("Filling Error", line=constants.LCD_LINE_4)
+            lcd_out("Filling Error", line=4)
         else:
-            lcd_out("Filling {0:1.2f} ml".format(volume),line=constants.LCD_LINE_4)
+            lcd_out("Filling {0:1.2f} ml".format(volume),line=4)
             cycles = analysis.determine_pump_cycles(volume)
             drive_step_stick(cycles, direction)
             constants.volume_in_pump += volume
     elif direction == 1:
         if volume > constants.volume_in_pump:
-            lcd_out("Pumping Error", line=constants.LCD_LINE_4)
+            lcd_out("Pumping Error", line=4)
         else:
-            lcd_out("Pumping {0:1.2f} ml".format(volume),line=constants.LCD_LINE_4)
+            lcd_out("Pumping {0:1.2f} ml".format(volume),line=4)
             cycles = analysis.determine_pump_cycles(volume)
             offset = drive_step_stick(cycles, direction)
             #offset is what is returned from drive_step_stick which originally is returned from the arduino 
@@ -396,7 +408,7 @@ def drive_pump(volume, direction):
                 drive_step_stick(offset, 1)
             constants.volume_in_pump -= volume
 
-    lcd_out("Pump Vol: {0:1.2f}".format(constants.volume_in_pump), line=constants.LCD_LINE_4)
+    lcd_out("Pump Vol: {0:1.2f}".format(constants.volume_in_pump), line=4)
 
 
 def drive_step_stick(cycles, direction):
@@ -421,8 +433,8 @@ def drive_step_stick(cycles, direction):
         wait_time = cycles/1000 + .5
         print(time.ctime())
         print("wait_time = ", wait_time)
-        print(time.ctime())
-        delay(wait_time) # TODO: This will be a problem for the temp control
+        delay(wait_time) 
+        print(time.ctime(), "\n\n")
         temp = arduino.readline()
         if temp == b'DONE\r\n' or temp == b'':
             return 0

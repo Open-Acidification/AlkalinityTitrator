@@ -38,22 +38,22 @@ class LCD():
     self.__lcd_byte(0x0C,constants.LCD_CMD) # 001100 Display On,Cursor Off, Blink Off
     self.__lcd_byte(0x28,constants.LCD_CMD) # 101000 Data length, number of lines, font size
     self.__lcd_byte(0x01,constants.LCD_CMD) # 000001 Clear display
-    interfaces.delay(constants.E_DELAY)
+    time.sleep(constants.E_DELAY)
     
     # Toggle backlight on-off-on
     self.lcd_backlight(True)
-    interfaces.delay(0.5)
+    time.sleep(0.5)
     self.lcd_backlight(False)
-    interfaces.delay(0.5)
+    time.sleep(0.5)
     self.lcd_backlight(True)
-    interfaces.delay(0.5)
+    time.sleep(0.5)
     
     self.out_line(self.reg_line_1, constants.LCD_LINE_1,constants.LCD_CENT_JUST)
     self.out_line(self.reg_line_2, constants.LCD_LINE_2,constants.LCD_CENT_JUST)
     self.out_line(self.reg_line_3, constants.LCD_LINE_3,constants.LCD_CENT_JUST)
     self.out_line(self.reg_line_4, constants.LCD_LINE_4,constants.LCD_CENT_JUST)
     
-    interfaces.delay(1)
+    time.sleep(1)
 
 
   def __lcd_byte(self,bits, mode):
@@ -100,11 +100,11 @@ class LCD():
  
   def __lcd_toggle_enable(self):
     # Toggle enable
-    interfaces.delay(constants.E_DELAY)
+    time.sleep(constants.E_DELAY)
     self.pin_E.value = True
-    interfaces.delay(constants.E_PULSE)
+    time.sleep(constants.E_PULSE)
     self.pin_E.value = False
-    interfaces.delay(constants.E_DELAY)
+    time.sleep(constants.E_DELAY)
 
   def out(self,message, style=1):
     """
@@ -125,13 +125,13 @@ class LCD():
     self.reg_line_4 = message
 
     self.__write_message(self.reg_line_1,constants.LCD_LINE_1)
-    #interfaces.delay(0.5)
+    #time.sleep(0.5)
     self.__write_message(self.reg_line_2,constants.LCD_LINE_2)
-    #interfaces.delay(0.5)
+    #time.sleep(0.5)
     self.__write_message(self.reg_line_3,constants.LCD_LINE_3)
-    #interfaces.delay(0.5)
+    #time.sleep(0.5)
     self.__write_message(self.reg_line_4,constants.LCD_LINE_4)
-    #interfaces.delay(0.5)
+    #time.sleep(0.5)
 
   def out_line(self,message,line,style=1):
     """
@@ -265,16 +265,16 @@ class Keypad():
     """
     self.rows[line].value = True
 
-    if (KEY_COL_0.value==1):
+    if (constants.KEY_COL_0.value==1):
       lcd.out(str(characters[0]),constants.LCD_LINE_1,1)
       print(characters[0])
-    if (KEY_COL_1.value==1):
+    if (constants.KEY_COL_1.value==1):
       lcd.out(str(characters[1]),constants.LCD_LINE_1,1)
       print(characters[0])
-    if (KEY_COL_2.value==1):
+    if (constants.KEY_COL_2.value==1):
       lcd.out(str(characters[2]),constants.LCD_LINE_1,1)
       print(characters[0])
-    if (KEY_COL_3.value==1):
+    if (constants.KEY_COL_3.value==1):
       lcd.out(str(characters[3]),constants.LCD_LINE_1,1)
       print(characters[0])
       
@@ -289,7 +289,7 @@ if __name__ == '__main__':
     key = Keypad()
 
     # test_lcd(lcd, key)
-    test_keypad(lcd, key)
+    #test_keypad(lcd, key)
   except KeyboardInterrupt:
     pass
 
