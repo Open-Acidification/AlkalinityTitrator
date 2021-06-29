@@ -68,7 +68,8 @@ Follow the user prompts and you're good to go!
 ## Libraries
 1. Circuit Python - https://github.com/adafruit/Adafruit_CircuitPython_MAX31865 
 <br>
-Used for communicating with the PT1000 
+Used for communicating with the PT1000
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
