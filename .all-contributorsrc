@@ -1,0 +1,26 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "kadensu",
+      "name": "Kaden Sukachevin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26241731?v=4",
+      "profile": "https://www.linkedin.com/in/kadensukachevin/",
+      "contributions": [
+        "code",
+        "doc",
+        "bug"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "AlkalinityTitrator",
+  "projectOwner": "Open-Acidification",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
