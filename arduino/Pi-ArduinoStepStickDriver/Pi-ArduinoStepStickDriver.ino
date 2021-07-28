@@ -1,4 +1,4 @@
-define T_ON      500
+#define T_ON      500
 #define STEP      6           // Pins D6 and D5 for STEP and Dir respectively
 #define DIR       5           
 #define LIM_1     4           // Pins D4 and D3 for LIM_F and LIM_E respectively
@@ -28,7 +28,7 @@ void loop() {
   N_b[3] = 0;
   int i = 0;
   if(Serial.available()) {
-    digitalWrite(EN, LOW)
+    digitalWrite(EN, LOW);
     //digitalWrite(STEP, HIGH);
     Serial.readBytes(N_b, 4);
     Serial.readBytes(io, 1);
@@ -64,6 +64,6 @@ void loop() {
         Serial.println("DONE");
       }
     } 
-    digitalWrite(EN, HIGH)   
+    digitalWrite(EN, HIGH); 
   }
 }
