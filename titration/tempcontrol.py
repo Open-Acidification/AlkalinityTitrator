@@ -27,6 +27,9 @@ class TempControl():
 	# Flag - print data to console or not
 	printData = False
 
+	# Flag - if False, update() does not toggle relay
+	controlActive = False
+
 	# PID Parameters
 	kp = PID_DEFAULT_KP
 	Ti = PID_DEFAULT_TI
@@ -49,6 +52,9 @@ class TempControl():
 	# The time the next step nets to be taken
 	# not localtime() since we need fractional seconds
 	timeNext = time.time()
+	
+	# last temperature read
+	tempLast = 0
 
 	# What state is the relay currently in
 	relayOn = False
@@ -68,6 +74,10 @@ class TempControl():
 	update the PID control and relay status as necessary
 	"""
 	def update(self):
+		# If 
+		if not self.controlActive:
+			return
+
 		timeNow = time.time() # not localtime() since we need fractional seconds
 
 		# TODO: Add logging of timeNow-timeNext results (how late?)
@@ -89,6 +99,7 @@ class TempControl():
 			else:
 				#Get data values
 				temp=self.sensor.temperature
+				self.lastTemp = temp
 				#timelog.append(timeNow.tm_sec)
 
 				#anti-windup
@@ -121,8 +132,8 @@ class TempControl():
 					self.__update_priors()
 
 				# Add data to df
-				dfnew = pd.DataFrame([[time.ctime(timeNow),temp,self.k]], columns=['time (s)','temp (C)','gain']);
-				self.df = self.df.append(dfnew,ignore_index=True);
+				dfnew = pd.DataFrame([[time.ctime(timeNow),temp,self.k]], columns=['time (s)','temp (C)','gain'])
+				self.df = self.df.append(dfnew,ignore_index=True)
 				if (self.printData == True):
 					print(self.df)
 
@@ -187,13 +198,31 @@ class TempControl():
 			self.relay.off()
 
 	def enable_print(self):
-		self.printData = True;
+		self.printData = True
 
 	def disable_print(self):
-		self.printData = False;
+		self.printData = False
 
 	def output_csv(self, filename):
 		self.df.to_csv(filename,index_label='step',header=True)
+
+	def at_temp(self):
+		if self.sensor.temperature >= 29 and self.sensor.temperature <= 30:
+			return True
+		else:
+			return False
+	
+	def get_last_temp(self):
+		return self.lastTemp
+
+	def activate(self):
+		self.controlActive = True
+		self.__set_controlparam_default()
+		timeNext = time.time()
+
+	def deactivate(self):
+		self.controlActive = False
+		self.__set_relayState(False)
 
 if __name__ == "__main__":
 	spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)

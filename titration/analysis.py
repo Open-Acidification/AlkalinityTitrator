@@ -138,7 +138,7 @@ def write_titration_data(data):
     Data in form of ('temperature', 'pH', 'pH volts', 'solution volume')
     :param data: titration data to write out
     """
-    file_name = constants.DATA_PATH + dt.datetime.strftime(dt.datetime.now(), '%m-%d-%Y %H:%M:%S:%f') + '.csv'
+    file_name = constants.DATA_PATH + dt.datetime.strftime(dt.datetime.now(), '%m-%d-%Y %H_%M_%S_%f') + '.csv'
     _write_csv(file_name, data)
 
 

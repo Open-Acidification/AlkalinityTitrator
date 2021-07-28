@@ -3,6 +3,8 @@ import routines
 import constants
 import analysis
 import time
+import sys       # exception info
+import traceback # exception info
 
 
 def test():
@@ -15,18 +17,19 @@ def test():
         print('Resistance: {0:0.3f} Ohms'.format(res))
         interfaces.lcd_out("pH: {}".format(pH_reading))
         interfaces.lcd_out("pH volt: {}".format(pH_volts))
-        time.sleep(constants.TITRATION_WAIT_TIME)
+        interfaces.delay(constants.TITRATION_WAIT_TIME)
 
 
 def run():
     """Main driver for the program. Initializes components and queries the user for next steps"""
     # initialize components
     initialize_components()
+    #routines.auto_home()
     # output prompt to LCD screen
     routine_selection = '0'
-    #options = [str(key) for key in constants.ROUTINE_OPTIONS]
+
     page = 1
-    while routine_selection != '6':
+    while routine_selection != '6' or routine_selection != constants.KEY_6:
         if (routine_selection is constants.KEY_STAR):
             if (page is 1):
                 page = 2
@@ -41,6 +44,11 @@ def run():
         routine_selection = interfaces.read_user_input()
         routines.run_routine(routine_selection)
 
+    analysis.save_calibration_data()
+    interfaces.tempcontroller.deactivate()
+    interfaces.lcd_clear()
+    interfaces.lcd.lcd_backlight(False)
+
 
 def initialize_components():
     """Initializes external interfaces and saved calibration data"""
@@ -49,4 +57,13 @@ def initialize_components():
 
 
 if __name__ == "__main__":
-    run()
+    try:
+        run()
+    except:
+        # Deactivate the SSR if any crash occurs
+        interfaces.tempcontroller.deactivate()
+        print("\nDeactivated SSR")
+        
+        print(sys.exc_info()[0])
+        traceback.print_exc()
+        

@@ -1,5 +1,6 @@
 #import
 import digitalio
+import interfaces
 import time
 from board import *
 import constants
@@ -264,16 +265,16 @@ class Keypad():
     """
     self.rows[line].value = True
 
-    if (KEY_COL_0.value==1):
+    if (constants.KEY_COL_0.value==1):
       lcd.out(str(characters[0]),constants.LCD_LINE_1,1)
       print(characters[0])
-    if (KEY_COL_1.value==1):
+    if (constants.KEY_COL_1.value==1):
       lcd.out(str(characters[1]),constants.LCD_LINE_1,1)
       print(characters[0])
-    if (KEY_COL_2.value==1):
+    if (constants.KEY_COL_2.value==1):
       lcd.out(str(characters[2]),constants.LCD_LINE_1,1)
       print(characters[0])
-    if (KEY_COL_3.value==1):
+    if (constants.KEY_COL_3.value==1):
       lcd.out(str(characters[3]),constants.LCD_LINE_1,1)
       print(characters[0])
       
@@ -288,7 +289,7 @@ if __name__ == '__main__':
     key = Keypad()
 
     # test_lcd(lcd, key)
-    test_keypad(lcd, key)
+    #test_keypad(lcd, key)
   except KeyboardInterrupt:
     pass
 

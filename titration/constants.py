@@ -44,7 +44,8 @@ TEST_OPTIONS_1 = {
 
 TEST_OPTIONS_2 = {
     KEY_4: "Toggle Test Mode",
-    KEY_5: "Exit",
+    KEY_5: "Read Volume",
+    KEY_6: "Exit Test Mode",
     KEY_STAR: "Page 1"
 }
 
@@ -82,6 +83,9 @@ KEY_VALUES = {
     3: KEY_D,
   }
 }
+
+# Small times steps (s) in the delay function
+DELAY_STEP = 0.0001
 
 # LCD Device Constants
 LCD_WIDTH = 20    # Maximum characters per line
@@ -127,12 +131,15 @@ PH_REF_VOLTAGE = -0.012
 PH_REF_PH = 7.0
 # titration routine
 TARGET_TEMP = 30.0  # degrees C
-INITIAL_TARGET_PH = 3.5
-FINAL_TARGET_PH = 3.0
+TARGET_PH_INIT = 5.5
+TARGET_PH_MID = 3.5
+TARGET_PH_FINAL = 3.0
 TEMPERATURE_ACCURACY = 0.25
 PH_ACCURACY = 0.1
 TITRATION_WAIT_TIME = 1
-INCREMENT_AMOUNT = 0.05
+INCREMENT_AMOUNT_INIT = 0.5
+INCREMENT_AMOUNT_MID = 0.1
+INCREMENT_AMOUNT_FINAL = 0.05
 TARGET_STD_DEVIATION = 0.15
 
 # Temp Control

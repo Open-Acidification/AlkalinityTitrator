@@ -1,8 +1,9 @@
-#define T_ON      500
+define T_ON      500
 #define STEP      6           // Pins D6 and D5 for STEP and Dir respectively
 #define DIR       5           
 #define LIM_1     4           // Pins D4 and D3 for LIM_F and LIM_E respectively
-#define LIM_0     3           
+#define LIM_0     3      
+#define EN        2         // disable stepper when not stepping (enable low)     
 
 byte N_b[4];      // Number turns
 byte io[1];     // In - 0 / Out - 1
@@ -27,6 +28,7 @@ void loop() {
   N_b[3] = 0;
   int i = 0;
   if(Serial.available()) {
+    digitalWrite(EN, LOW)
     //digitalWrite(STEP, HIGH);
     Serial.readBytes(N_b, 4);
     Serial.readBytes(io, 1);
@@ -61,6 +63,7 @@ void loop() {
       else {
         Serial.println("DONE");
       }
-    }    
+    } 
+    digitalWrite(EN, HIGH)   
   }
 }

@@ -3,3 +3,5 @@ notes.md
 titration/data
 *.pyc
 .idea
+*.csv
+*.xlsx
