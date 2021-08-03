@@ -29,7 +29,7 @@ class LCD():
     self.reg_line_1 = "Open".center(constants.LCD_WIDTH," ")
     self.reg_line_2 = "Acidification".center(constants.LCD_WIDTH," ")
     self.reg_line_3 = "Project".center(constants.LCD_WIDTH," ")
-    self.reg_line_4 = "Alkaninity Titrator".center(constants.LCD_WIDTH," ")
+    self.reg_line_4 = "Alkalinity Titrator".center(constants.LCD_WIDTH," ")
     
      # Initialise display
     self.__lcd_byte(0x33,constants.LCD_CMD) # 110011 Initialise

@@ -5,3 +5,5 @@ titration/data
 .idea
 *.csv
 *.xlsx
+.pytest_cache
+__pycache__

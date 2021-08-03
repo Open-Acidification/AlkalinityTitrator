@@ -7,7 +7,6 @@ import time
 
 
 #debugging/testing
-import matplotlib.pyplot as plt
 import numpy as np
 
 ROUTINE_OPTIONS = {
@@ -88,17 +87,6 @@ def test():
                 pHVals[i] = pH_reading;
                 voltVals[i] = pH_volts;
                 interfaces.delay(timestep)
-            
-            #fig, axs = plt.subplots(2,2)
-            #axs[0,0].plot(timeVals,tempVals) 
-            #axs[0,0].set_ylim([20,25])
-            #axs[0,1].plot(timeVals,resVals) 
-            #axs[0,1].set_ylim([900,1100])
-            #axs[1,0].plot(timeVals,pHVals)
-            #axs[1,0].set_ylim([6,7])
-            #axs[1,1].plot(timeVals,voltVals)
-            #axs[1,1].set_ylim([-0.2,0.2])
-            #plt.show()
             
             
         elif user_choice == '2' or user_choice == constants.KEY_2:
