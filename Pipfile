@@ -5,6 +5,8 @@ verify_ssl = true
 
 [dev-packages]
 pycodestyle = "*"
+pytest = "*"
+pylint = "*"
 
 [packages]
 gpiozero = "*"
@@ -19,4 +21,4 @@ pep8 = "*"
 pyserial = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
