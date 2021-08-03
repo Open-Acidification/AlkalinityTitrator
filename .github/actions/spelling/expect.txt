@@ -18,6 +18,7 @@ controlparam
 csv
 ctime
 datetime
+desertbot
 digitalio
 elif
 emoji
@@ -61,6 +62,7 @@ pyftdi
 pypi
 pyplot
 pyserial
+pytest
 pyusb
 quotechar
 Raspbian
