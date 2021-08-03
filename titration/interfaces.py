@@ -18,7 +18,8 @@ import adafruit_max31865
 
 
 # for user interface
-import userinterface
+import lcd
+import keypad
 
 # for temp control
 import tempcontrol
