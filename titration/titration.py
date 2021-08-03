@@ -2,7 +2,6 @@ import interfaces
 import routines
 import constants
 import analysis
-import time
 import sys       # exception info
 import traceback # exception info
 
@@ -31,11 +30,11 @@ def run():
     page = 1
     while routine_selection != '6' or routine_selection != constants.KEY_6:
         if (routine_selection is constants.KEY_STAR):
-            if (page is 1):
+            if (page == 1):
                 page = 2
             else:
                 page = 1
-        if (page is 1):
+        if (page == 1):
             interfaces.display_list(constants.ROUTINE_OPTIONS_1)
         else:
             interfaces.display_list(constants.ROUTINE_OPTIONS_2)
@@ -47,7 +46,7 @@ def run():
     analysis.save_calibration_data()
     interfaces.tempcontroller.deactivate()
     interfaces.lcd_clear()
-    interfaces.lcd.lcd_backlight(False)
+    interfaces.ui_lcd.lcd_backlight(False)
 
 
 def initialize_components():
@@ -58,12 +57,21 @@ def initialize_components():
 
 if __name__ == "__main__":
     try:
-        run()
+      # Parse opcodes for testing mode
+      opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
+      if opts:
+        if "-test" in opts:
+          print("Starting in Test Mode")
+          constants.IS_TEST = True
+        else:
+          raise SystemExit(f"Usage: {sys.argv[0]} (-test)")
+      run()
     except:
-        # Deactivate the SSR if any crash occurs
+      # Deactivate the SSR if any crash occurs
+      if interfaces.tempcontroller != None:
         interfaces.tempcontroller.deactivate()
-        print("\nDeactivated SSR")
-        
-        print(sys.exc_info()[0])
-        traceback.print_exc()
+      print("\nDeactivated SSR")
+      
+      print(sys.exc_info()[0])
+      traceback.print_exc()
         

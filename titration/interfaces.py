@@ -10,76 +10,108 @@ import serial
 import adafruit_ads1x15.ads1115 as ADS
 import adafruit_ads1x15.analog_in as analog_in
 
-# for max31865 temp sensorf
-import board
+# Attempt to import the board module, this will fail
+# on non-raspberry pi machines.
+try:
+  import board
+except NotImplementedError:
+  pass
+
 import busio
 import digitalio
 import adafruit_max31865
 
 
 # for user interface
-import userinterface
+import lcd
+import keypad
 
 # for temp control
 import tempcontrol
+
+# for mock user interface
+import test_lcd
+import test_keypad
 
 # global, pH, lcd, and temperature probes
 ph_input_channel = None
 temp_sensor = None
 arduino = None
-lcd = None
-keypad = None
+ui_lcd = None
+ui_keypad = None
 tempcontroller = None
-
-
-# keep track of solution in pump
-# volume_in_pump = 0
-
 
 def setup_interfaces():
     """
     Initializes components for interfacing with pH probe, 
     temperature probe, and stepper motor/syringe pump
     """
-    global ph_input_channel, temp_sensor, arduino, lcd, keypad, tempcontroller
+    global ph_input_channel, temp_sensor, arduino, ui_lcd, ui_keypad, tempcontroller
 
-    # LCD and keypad setup
-    lcd = userinterface.LCD()
-    keypad = userinterface.Keypad()
+    # LCD and ui_keypad setup
+    ui_lcd = setup_lcd()
+    ui_keypad = setup_keypad()
 
     # pH probe setup
-    try:
-        i2c = busio.I2C(board.SCL, board.SDA)
-        ads = ADS.ADS1115(i2c)
-        ph_input_channel = analog_in.AnalogIn(ads, ADS.P0, ADS.P1)
-        ads.gain = 8
-        constants.IS_TEST = False
-    except ValueError:
-        lcd_out("Error initializing pH probe; will use test functions instead.", console=True)
-        lcd_out("ERROR: ADS1115", style=constants.LCD_CENT_JUST)
-        lcd_out("TEST MODE ON", style=constants.LCD_CENT_JUST)
-        constants.IS_TEST = True
+    if constants.IS_TEST:
+      pass
+    else:
+      try:
+          i2c = busio.I2C(board.SCL, board.SDA)
+          ads = ADS.ADS1115(i2c)
+          ph_input_channel = analog_in.AnalogIn(ads, ADS.P0, ADS.P1)
+          ads.gain = 8
+          constants.IS_TEST = False
+      except ValueError:
+          lcd_out("Error initializing pH probe; will use test functions instead.", console=True)
+          lcd_out("ERROR: ADS1115", style=constants.LCD_CENT_JUST)
+          lcd_out("TEST MODE ON", style=constants.LCD_CENT_JUST)
+          constants.IS_TEST = True
 
-    # temperature probe setup
-    spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
-    cs = digitalio.DigitalInOut(board.D4)
-    temp_sensor = adafruit_max31865.MAX31865(spi=spi,
-                                             cs=cs,
-                                             wires=3,
-                                             rtd_nominal=constants.TEMP_NOMINAL_RESISTANCE,
-                                             ref_resistor=constants.TEMP_REF_RESISTANCE)
+      # temperature probe setup
+      spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
+      cs = digitalio.DigitalInOut(board.D4)
+      temp_sensor = adafruit_max31865.MAX31865(spi=spi,
+                                              cs=cs,
+                                              wires=3,
+                                              rtd_nominal=constants.TEMP_NOMINAL_RESISTANCE,
+                                              ref_resistor=constants.TEMP_REF_RESISTANCE)
 
-    # pump setup (through Arduino)
-    if not constants.IS_TEST:
-        arduino = serial.Serial(port=constants.ARDUINO_PORT,
-                                baudrate=constants.ARDUINO_BAUD,
-                                timeout=constants.ARDUINO_TIMEOUT)
-        arduino.reset_output_buffer()
-        arduino.reset_input_buffer()
+      # pump setup (through Arduino)
+      if not constants.IS_TEST:
+          arduino = serial.Serial(port=constants.ARDUINO_PORT,
+                                  baudrate=constants.ARDUINO_BAUD,
+                                  timeout=constants.ARDUINO_TIMEOUT)
+          arduino.reset_output_buffer()
+          arduino.reset_input_buffer()
         
-    # Temp Control Setup
-    tempcontroller = tempcontrol.TempControl(temp_sensor,constants.RELAY_PIN)
+      # Temp Control Setup
+      tempcontroller = tempcontrol.TempControl(temp_sensor,constants.RELAY_PIN)
 
+def setup_lcd():
+  temp_lcd = None
+  
+  if constants.IS_TEST:
+    temp_lcd =  test_lcd.test_LCD()
+    temp_lcd.begin(constants.LCD_WIDTH, constants.LCD_HEIGHT)
+  else:
+    temp_lcd = lcd.LCD(rs=board.D27, backlight=board.D15, enable=board.D22, 
+                   d4=board.D18, d5=board.D23, d6=board.D24, d7=board.D25)
+
+    temp_lcd.begin(constants.LCD_WIDTH, constants.LCD_HEIGHT)
+
+  return temp_lcd
+
+def setup_keypad():
+  temp_keypad = None
+
+  if constants.IS_TEST:
+    temp_keypad = test_keypad.test_Keypad()
+  else:
+    temp_keypad = keypad.Keypad(r0=board.D1, r1=board.D6, r2=board.D5, r3=board.D19, 
+                                c0=board.D16, c1=board.D26, c2=board.D20, c3=board.D21)
+
+  return temp_keypad
 
 def delay(seconds, countdown=False):
     # Use time.sleep() if the temp controller isn't initialized yet
@@ -96,13 +128,13 @@ def delay(seconds, countdown=False):
             lcd_out("Time Left: {}".format(int(timeLeft)), line=4)
         timeNow = time.time()
 
-def lcd_out(message, style=constants.LCD_LEFT_JUST, console=False, line=None):
+def lcd_out(message, line, style=constants.LCD_LEFT_JUST,  console=False,):
     """
     Outputs given string to LCD screen
     :param info: string to be displayed on LCD screen
     """
 
-    # Set the lcd line for easier 
+    # Set the lcd line control code
     lcd_line = line
     if (line == 1):
         lcd_line = constants.LCD_LINE_1
@@ -116,13 +148,10 @@ def lcd_out(message, style=constants.LCD_LEFT_JUST, console=False, line=None):
     if (constants.LCD_CONSOLE or console):
         print(message)
     else:
-        if (line is None):
-            lcd.out(message, style)
-        else:
-            lcd.out_line(message, lcd_line, style)
+        ui_lcd.print(message, lcd_line, style)
 
 def lcd_clear():
-    lcd.clear_screen()
+    ui_lcd.clear()
 
 
 def display_list(dict_to_display):
@@ -134,14 +163,10 @@ def display_list(dict_to_display):
     lcd_clear()
     keys = list(dict_to_display.keys())
     values = list(dict_to_display.values())
-    lines = [
-        constants.LCD_LINE_1,
-        constants.LCD_LINE_2,
-        constants.LCD_LINE_3,
-        constants.LCD_LINE_4]
+    lines = [1,2,3,4]
         
     for i in range(min(len(keys),4)):   
-        lcd.out_line(str(keys[i]) + '. ' + values[i], lines[i])
+        ui_lcd.print(str(keys[i]) + '. ' + values[i], lines[i])
 
         
     
@@ -166,7 +191,7 @@ def read_user_input(valid_inputs=None, console=False):
         if console:
             user_input = input()
         else:
-            user_input = keypad.keypad_poll()
+            user_input = ui_keypad.keypad_poll()
         
         if user_input == None:
             pass
@@ -178,7 +203,7 @@ def read_user_input(valid_inputs=None, console=False):
             lcd_out(constants.VALID_INPUT_WARNING, constants.LCD_LINE_1, constants.LCD_LEFT_JUST)
     
     while True:
-        if keypad.keypad_poll() == None:
+        if ui_keypad.keypad_poll() == None:
             break
     return user_input
 
@@ -418,7 +443,7 @@ def drive_step_stick(cycles, direction):
     :param cycles: number of rising edges for the pump
     :param direction: direction of pump
     """
-    if cycles is 0:
+    if cycles == 0:
         return 0
     
     if constants.IS_TEST:
