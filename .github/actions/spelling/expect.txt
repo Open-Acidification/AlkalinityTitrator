@@ -59,6 +59,7 @@ println
 pureio
 pycodestyle
 pyftdi
+pylint
 pypi
 pyplot
 pyserial
