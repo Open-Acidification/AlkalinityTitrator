@@ -23,4 +23,4 @@ jobs:
           pip install pipenv
           pipenv install --dev
       - name: Test with pytest
-        run: pytest -vv titration/
+        run: pipenv run pytest -vv titration/
