@@ -1,0 +1,11 @@
+^\.github/linters/
+^\.github/actions/spelling/
+^\.github/workflows/
+^TEMPLATES/\.\S*
+\.pdf$
+\.png$
+\.xslx?$
+LICENSE
+.all-contributorsrc
+.gitignore
+Pipfile.lock

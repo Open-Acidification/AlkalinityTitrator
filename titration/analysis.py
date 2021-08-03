@@ -86,7 +86,7 @@ def calculate_expected_resistance(temp):
 
 
 def reset_calibration():
-    """Reset calibraiton settings to default"""
+    """Reset calibration settings to default"""
     constants.TEMP_REF_RESISTANCE = constants.DEFAULT_TEMP_REF_RESISTANCE
     constants.TEMP_NOMINAL_RESISTANCE = constants.DEFAULT_TEMP_NOMINAL_RESISTANCE
     constants.PH_REF_VOLTAGE = constants.DEFAULT_PH_REF_VOLTAGE
