@@ -44,7 +44,7 @@ class TempControl():
 	error_prior = 0
 
 	# Step Count - How many cycles have we done?
-	stepCnt = 0
+	stepCount = 0
 
 	# Time between steps (seconds) - how long to wait until next step
 	timeStep = 1
@@ -88,7 +88,7 @@ class TempControl():
 				self.__set_relayState(False)
 
 				# count a step
-				self.stepCnt += 1
+				self.stepCount += 1
 
 				# update error/integral_priors
 				self.__update_priors()
@@ -103,9 +103,9 @@ class TempControl():
 				#timelog.append(timeNow.tm_sec)
 
 				#anti-windup
-				if (self.stepCnt < 250):
+				if (self.stepCount < 250):
 					self.__set_integral_zero()
-				elif (self.stepCnt == 250):
+				elif (self.stepCount == 250):
 					self.__set_controlparam_antiwindup()
 
 				# Update PID Gain
