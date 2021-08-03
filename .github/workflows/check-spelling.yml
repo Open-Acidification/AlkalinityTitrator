@@ -11,7 +11,7 @@ jobs:
       # Clone the repo using the `checkout` action
       - uses: actions/checkout@v2
       # Run check spelling action
-      - uses: check-spelling/check-spelling@0.0.19
+      - uses: check-spelling/check-spelling@v0.0.19
         with:
           bucket: .github/actions
           project: spelling
