@@ -2,6 +2,7 @@
 Module for mocking the lcd.py class for testing purposes
 """
 # import pytest
+from os import system, name
 
 
 class test_LCD:
@@ -46,6 +47,11 @@ class test_LCD:
         """
         Draws the mock display
         """
+        if name == "nt":
+            _ = system("cls")
+        else:
+            _ = system("clear")
+
         for i in range(-1, self.rows + 1):
             if i == -1 or i == self.rows:
                 print("*", "".ljust(self.cols, "="), "*", sep="")

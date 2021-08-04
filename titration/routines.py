@@ -209,8 +209,8 @@ def total_alkalinity_titration():
     ]
 
     # query user for initial solution weight
-    initial_weight = interfaces.read_user_value("Solution weight (g):")
-    salinity = interfaces.read_user_value("Solution salinity (ppt):")
+    initial_weight = interfaces.read_user_value("Sol. weight (g):")
+    salinity = interfaces.read_user_value("Sol. salinity (ppt):")
     buffer_ph = constants.PH_REF_PH
     buffer_v = constants.PH_REF_VOLTAGE
 
