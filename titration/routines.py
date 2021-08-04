@@ -1,10 +1,8 @@
-from micropython import const
 import interfaces
 import constants
 import analysis
 import tempcontrol
 import time
-
 
 #debugging/testing
 import numpy as np

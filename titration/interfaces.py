@@ -29,9 +29,10 @@ import keypad
 # for temp control
 import tempcontrol
 
-# for mock user interface
+# for mock components
 import test_lcd
 import test_keypad
+import test_tempcontrol
 
 # global, pH, lcd, and temperature probes
 ph_input_channel = None
@@ -51,6 +52,9 @@ def setup_interfaces():
     # LCD and ui_keypad setup
     ui_lcd = setup_lcd()
     ui_keypad = setup_keypad()
+    
+    # Temp Control Setup
+    tempcontroller = setup_tempcontrol()
 
     # pH probe setup
     if constants.IS_TEST:
@@ -85,8 +89,6 @@ def setup_interfaces():
           arduino.reset_output_buffer()
           arduino.reset_input_buffer()
         
-      # Temp Control Setup
-      tempcontroller = tempcontrol.TempControl(temp_sensor,constants.RELAY_PIN)
 
 def setup_lcd():
   temp_lcd = None
@@ -113,6 +115,16 @@ def setup_keypad():
 
   return temp_keypad
 
+def setup_tempcontrol():
+    temp_tempcontrol = None
+
+    if constants.IS_TEST:
+        temp_tempcontrol = test_tempcontrol.test_TempControl()
+    else:
+        temp_tempcontrol = tempcontrol.TempControl(temp_sensor,constants.RELAY_PIN)
+    
+    return temp_tempcontrol
+
 def delay(seconds, countdown=False):
     # Use time.sleep() if the temp controller isn't initialized yet
     if tempcontroller is None:
@@ -133,22 +145,10 @@ def lcd_out(message, line, style=constants.LCD_LEFT_JUST,  console=False,):
     Outputs given string to LCD screen
     :param info: string to be displayed on LCD screen
     """
-
-    # Set the lcd line control code
-    lcd_line = line
-    if (line == 1):
-        lcd_line = constants.LCD_LINE_1
-    elif (line == 2):
-        lcd_line = constants.LCD_LINE_2
-    elif (line == 3):
-        lcd_line = constants.LCD_LINE_3
-    elif (line == 4):
-        lcd_line = constants.LCD_LINE_4
-
     if (constants.LCD_CONSOLE or console):
         print(message)
     else:
-        ui_lcd.print(message, lcd_line, style)
+        ui_lcd.print(message, line, style)
 
 def lcd_clear():
     ui_lcd.clear()
@@ -268,7 +268,7 @@ def read_user_value(message):
             # Otherwise, add number to input list
             else:
                 string = string + str(user_input)
-                inputs.append(user_input)
+                inputs.append(int(user_input))
         
         # Display updated input
         lcd_out(string, style=constants.LCD_CENT_JUST, line=2)
@@ -298,8 +298,6 @@ def read_user_value(message):
     # print("Final: ", value)
     
     return value
-    
-    
 
 def read_pH():
     """
