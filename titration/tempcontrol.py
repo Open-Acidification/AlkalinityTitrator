@@ -1,6 +1,9 @@
 import time
 from gpiozero import LED
-import board
+try:
+  import board
+except NotImplementedError:
+  pass
 import busio
 import digitalio
 import pandas as pd

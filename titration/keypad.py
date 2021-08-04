@@ -1,20 +1,19 @@
 #import
 import digitalio
 import interfaces
-from board import *
 import constants
 
 class Keypad():
-  def __init__(self):
+  def __init__(self,r0, r1, r2, r3, c0, c1, c2, c3):
     
-    self.pin_R0 = digitalio.DigitalInOut(D1) # Top Row
-    self.pin_R1 = digitalio.DigitalInOut(D6)
-    self.pin_R2 = digitalio.DigitalInOut(D5)
-    self.pin_R3 = digitalio.DigitalInOut(D19) # Bottom Row
-    self.pin_C0 = digitalio.DigitalInOut(D16) # Leftmost Column
-    self.pin_C1 = digitalio.DigitalInOut(D26)
-    self.pin_C2 = digitalio.DigitalInOut(D20)
-    self.pin_C3 = digitalio.DigitalInOut(D21) # Rightmost Column
+    self.pin_R0 = digitalio.DigitalInOut(r0) # Top Row
+    self.pin_R1 = digitalio.DigitalInOut(r1)
+    self.pin_R2 = digitalio.DigitalInOut(r2)
+    self.pin_R3 = digitalio.DigitalInOut(r3) # Bottom Row
+    self.pin_C0 = digitalio.DigitalInOut(c0) # Leftmost Column
+    self.pin_C1 = digitalio.DigitalInOut(c1)
+    self.pin_C2 = digitalio.DigitalInOut(c2)
+    self.pin_C3 = digitalio.DigitalInOut(c3) # Rightmost Column
     
     self.rows = [
       self.pin_R0,
@@ -85,16 +84,16 @@ class Keypad():
     self.rows[line].value = True
 
     if (constants.KEY_COL_0.value==1):
-      ui_lcd.out(str(characters[0]),constants.LCD_LINE_1,1)
+      interfaces.lcd_out(str(characters[0]),constants.LCD_LINE_1,1)
       print(characters[0])
     if (constants.KEY_COL_1.value==1):
-      ui_lcd.out(str(characters[1]),constants.LCD_LINE_1,1)
+      interfaces.lcd_out(str(characters[1]),constants.LCD_LINE_1,1)
       print(characters[0])
     if (constants.KEY_COL_2.value==1):
-      ui_lcd.out(str(characters[2]),constants.LCD_LINE_1,1)
+      interfaces.lcd_out(str(characters[2]),constants.LCD_LINE_1,1)
       print(characters[0])
     if (constants.KEY_COL_3.value==1):
-      ui_lcd.out(str(characters[3]),constants.LCD_LINE_1,1)
+      interfaces.lcd_out(str(characters[3]),constants.LCD_LINE_1,1)
       print(characters[0])
       
     self.rows[line].value = False

@@ -89,6 +89,7 @@ DELAY_STEP = 0.0001
 
 # LCD Device Constants
 LCD_WIDTH = 20    # Maximum characters per line
+LCD_HEIGHT = 4
 LCD_CHR = True
 LCD_CMD = False
 
