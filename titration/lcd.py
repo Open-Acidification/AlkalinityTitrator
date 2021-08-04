@@ -1,6 +1,9 @@
-import digitalio
 import time
+
+import digitalio
+
 import constants
+
 
 class LCD():
   """Sunfire LCD 20x04 Char Display Module"""

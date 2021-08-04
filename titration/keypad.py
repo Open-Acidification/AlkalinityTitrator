@@ -1,7 +1,9 @@
 #import
 import digitalio
-import interfaces
+
 import constants
+import interfaces
+
 
 class Keypad():
   def __init__(self,r0, r1, r2, r3, c0, c1, c2, c3):
@@ -100,12 +102,5 @@ class Keypad():
     
       
 if __name__ == '__main__':
- 
-  try:
-      # Main program block
-    key = Keypad()
+  pass
 
-  except KeyboardInterrupt:
-    pass
-
-# WAIT STOP DON'T PUT A FUNCTION DOWN HERE

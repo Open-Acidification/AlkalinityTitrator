@@ -1,7 +1,7 @@
 """
 Module for mocking the lcd.py class for testing purposes
 """
-import pytest
+#import pytest
 
 class test_LCD:
   def __init__(self):

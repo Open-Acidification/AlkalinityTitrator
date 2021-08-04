@@ -1,14 +1,16 @@
 import time
+from array import *
+
+import adafruit_max31865
+import busio
+import digitalio
+import pandas as pd
 from gpiozero import LED
+
 try:
   import board
 except NotImplementedError:
   pass
-import busio
-import digitalio
-import pandas as pd
-import adafruit_max31865
-from array import*
 
 PID_DEFAULT_KP = 0.09
 PID_DEFAULT_TI = 0.000001
@@ -63,7 +65,7 @@ class TempControl():
   relayOn = False
 
   # Log of times measurements were taken
-  timeLog = []
+  # timeLog = []
 
   # Data Fame of Measurements
   df = pd.DataFrame(columns = ['time (s)','temp (C)','gain']);

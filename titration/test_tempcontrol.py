@@ -1,6 +1,7 @@
 import time
+from array import *
+
 import pandas as pd
-from array import*
 
 PID_DEFAULT_KP = 0.09
 PID_DEFAULT_TI = 0.000001
@@ -54,7 +55,7 @@ class test_TempControl():
   relayOn = False
 
   # Log of times measurements were taken
-  timeLog = []
+  #timeLog = []
 
   # Data Fame of Measurements
   df = pd.DataFrame(columns = ['time (s)','temp (C)','gain']);

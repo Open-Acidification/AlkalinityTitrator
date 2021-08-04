@@ -1,14 +1,14 @@
 """Functions to interface with sensors and peripherals"""
-import constants
-import analysis
-
 # for pump
 import time
-import serial
 
 # for pH sensor
 import adafruit_ads1x15.ads1115 as ADS
 import adafruit_ads1x15.analog_in as analog_in
+import serial
+
+import analysis
+import constants
 
 # Attempt to import the board module, this will fail
 # on non-raspberry pi machines.
@@ -17,21 +17,18 @@ try:
 except NotImplementedError:
   pass
 
+import adafruit_max31865
 import busio
 import digitalio
-import adafruit_max31865
 
-
+import keypad
 # for user interface
 import lcd
-import keypad
-
 # for temp control
 import tempcontrol
-
+import test_keypad
 # for mock components
 import test_lcd
-import test_keypad
 import test_tempcontrol
 
 # global, pH, lcd, and temperature probes
