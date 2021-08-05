@@ -1,12 +1,11 @@
 """
 Module for mocking the lcd.py class for testing purposes
 """
-# import pytest
-from os import system, name
+from os import name, system
 
 
-class test_LCD:
-    def __init__(self):
+class LCD:
+    def __init__(self, rs, backlight, enable, d4, d5, d6, d7):
         self.cols = -1
         self.rows = -1
 
@@ -15,6 +14,9 @@ class test_LCD:
     def begin(self, cols, rows):
         self.cols = cols
         self.rows = rows
+
+        # Clear any existing rows
+        self.strings.clear()
 
         # Create empty arrays for strings
         for i in range(0, rows):
@@ -61,7 +63,7 @@ class test_LCD:
 
 if __name__ == "__main__":
     try:
-        lcd = test_LCD()
+        lcd = LCD()
         lcd.begin(20, 4)
         lcd.print("Open Acidification", 1, 2)
         lcd.print("Project", 2, 2)

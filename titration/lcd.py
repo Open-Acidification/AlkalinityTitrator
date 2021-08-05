@@ -1,8 +1,7 @@
 import time
 
-import digitalio
-
 import constants
+import digitalio
 
 
 class LCD:
@@ -25,12 +24,6 @@ class LCD:
         self.pin_D6.direction = digitalio.Direction.OUTPUT
         self.pin_D7.direction = digitalio.Direction.OUTPUT
         self.pin_ON.direction = digitalio.Direction.OUTPUT
-
-        # Initialize line registers with splash screen
-        self.reg_line_1 = ""
-        self.reg_line_2 = ""
-        self.reg_line_3 = ""
-        self.reg_line_4 = ""
 
         self.cols = -1
         self.rows = -1
@@ -56,11 +49,6 @@ class LCD:
         self.lcd_backlight(True)
         time.sleep(0.5)
 
-        # self.out_line(self.reg_line_1, constants.LCD_LINE_1,constants.LCD_CENT_JUST)
-        # self.out_line(self.reg_line_2, constants.LCD_LINE_2,constants.LCD_CENT_JUST)
-        # self.out_line(self.reg_line_3, constants.LCD_LINE_3,constants.LCD_CENT_JUST)
-        # self.out_line(self.reg_line_4, constants.LCD_LINE_4,constants.LCD_CENT_JUST)
-
     def begin(self, cols, rows):
         self.cols = cols
         self.rows = rows
@@ -69,11 +57,6 @@ class LCD:
         # Clear the screen
         blank = ""
         blank = blank.ljust(constants.LCD_WIDTH, " ")
-
-        self.reg_line_1 = blank
-        self.reg_line_2 = blank
-        self.reg_line_3 = blank
-        self.reg_line_4 = blank
 
         self.__write(blank, constants.LCD_LINE_1)
         self.__write(blank, constants.LCD_LINE_2)
@@ -95,16 +78,12 @@ class LCD:
             message = message.rjust(constants.LCD_WIDTH, " ")
 
         if line == 1:
-            self.reg_line_1 = message
             line = constants.LCD_LINE_1
         elif line == 2:
-            self.reg_line_2 = message
             line = constants.LCD_LINE_2
         elif line == 3:
-            self.reg_line_3 = message
             line = constants.LCD_LINE_3
         elif line == 4:
-            self.reg_line_4 = message
             line = constants.LCD_LINE_4
 
         self.__write(message, line)

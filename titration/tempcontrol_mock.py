@@ -11,14 +11,14 @@ PID_ANTIWINDUP_TI = 0.004
 PID_ANTIWINDUP_TD = 9
 
 
-class test_TempControl:
+class TempControl:
     """
     Temp Control class for running the PID control on the Alkalinity
     Titrator using a SSR and Heated Beaker Jacket
 
     """
 
-    def __init__(self):
+    def __init__(self, sensor, relay_pin):
         pass
 
     # Flag - print data to console or not
@@ -215,7 +215,7 @@ class test_TempControl:
 
 
 if __name__ == "__main__":
-    tempControl = test_TempControl()
+    tempControl = TempControl()
     tempControl.enable_print()
     tempControl.activate()
 
