@@ -1,8 +1,21 @@
+
 import sys  # exception info
 import traceback  # exception info
 
 import analysis
 import constants
+
+# Parse opcodes for testing mode
+# Must be checked before "import interfaces"
+opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
+if opts:
+    if "-test" in opts:
+        print("Starting in Test Mode")
+        constants.IS_TEST = True
+    else:
+        raise SystemExit(f"Usage: {sys.argv[0]} (-test)")
+
+
 import interfaces
 import routines
 
@@ -18,7 +31,6 @@ def test():
         interfaces.lcd_out("pH: {}".format(pH_reading))
         interfaces.lcd_out("pH volt: {}".format(pH_volts))
         interfaces.delay(constants.TITRATION_WAIT_TIME)
-
 
 def run():
     """Main driver for the program. Initializes components and queries the user for next steps"""
@@ -58,14 +70,6 @@ def initialize_components():
 
 if __name__ == "__main__":
     try:
-        # Parse opcodes for testing mode
-        opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
-        if opts:
-            if "-test" in opts:
-                print("Starting in Test Mode")
-                constants.IS_TEST = True
-            else:
-                raise SystemExit(f"Usage: {sys.argv[0]} (-test)")
         run()
     except:
         # Deactivate the SSR if any crash occurs
