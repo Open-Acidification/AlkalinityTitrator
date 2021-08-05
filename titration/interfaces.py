@@ -1,38 +1,40 @@
 """Functions to interface with sensors and peripherals"""
-# for pump
-import time
 
-# for pH sensor
-import adafruit_ads1x15.ads1115 as ADS
-import adafruit_ads1x15.analog_in as analog_in
-import serial
+import time  # time.sleep()
 
 import analysis
 import constants
 
-# Attempt to import the board module, this will fail
-# on non-raspberry pi machines.
-try:
-    import board
-except NotImplementedError:
-    pass
+if constants.IS_TEST:
+    import board_mock
+    import keypad_mock
+    # for mock components
+    import lcd_mock
+    import tempcontrol_mock
 
-import adafruit_max31865
-import busio
-import digitalio
+    board_class = board_mock
+    lcd_class = lcd_mock
+    keypad_class = keypad_mock
+    tempcontrol_class = tempcontrol_mock
+else:
+    # NOTE: The board module can only be imported if
+    # running on specific hardware (i.e. Raspberry Pi)
+    # It will fail on regular Windows/Linux computers
+    import adafruit_ads1x15.ads1115 as ADS  # pH
+    import adafruit_ads1x15.analog_in as analog_in  # pH
+    import adafruit_max31865  # Temp
+    import board  # All hardware (see above note)
+    import busio  # pH, Temp
+    import digitalio  # Temp
+    import keypad  # UI
+    import lcd  # UI
+    import serial  # Pump
+    import tempcontrol  # Temp                   
 
-import keypad
-
-# for user interface
-import lcd
-
-# for temp control
-import tempcontrol
-import test_keypad
-
-# for mock components
-import test_lcd
-import test_tempcontrol
+    board_class = board
+    lcd_class = lcd
+    keypad_class = keypad
+    tempcontrol_class = tempcontrol
 
 # global, pH, lcd, and temperature probes
 ph_input_channel = None
@@ -57,12 +59,12 @@ def setup_interfaces():
     # Temp Control Setup
     tempcontroller = setup_tempcontrol()
 
-    # pH probe setup
     if constants.IS_TEST:
         pass
     else:
+        # pH probe setup
         try:
-            i2c = busio.I2C(board.SCL, board.SDA)
+            i2c = busio.I2C(board_class.SCL, board_class.SDA)
             ads = ADS.ADS1115(i2c)
             ph_input_channel = analog_in.AnalogIn(ads, ADS.P0, ADS.P1)
             ads.gain = 8
@@ -77,8 +79,8 @@ def setup_interfaces():
             constants.IS_TEST = True
 
         # temperature probe setup
-        spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
-        cs = digitalio.DigitalInOut(board.D4)
+        spi = busio.SPI(board_class.SCK, MOSI=board_class.MOSI, MISO=board_class.MISO)
+        cs = digitalio.DigitalInOut(board_class.D4)
         temp_sensor = adafruit_max31865.MAX31865(
             spi=spi,
             cs=cs,
@@ -99,56 +101,38 @@ def setup_interfaces():
 
 
 def setup_lcd():
-    temp_lcd = None
+    temp_lcd = lcd_class.LCD(
+        rs=board_class.D27,
+        backlight=board_class.D15,
+        enable=board_class.D22,
+        d4=board_class.D18,
+        d5=board_class.D23,
+        d6=board_class.D24,
+        d7=board_class.D25,
+    )
 
-    if constants.IS_TEST:
-        temp_lcd = test_lcd.test_LCD()
-        temp_lcd.begin(constants.LCD_WIDTH, constants.LCD_HEIGHT)
-    else:
-        temp_lcd = lcd.LCD(
-            rs=board.D27,
-            backlight=board.D15,
-            enable=board.D22,
-            d4=board.D18,
-            d5=board.D23,
-            d6=board.D24,
-            d7=board.D25,
-        )
-
-        temp_lcd.begin(constants.LCD_WIDTH, constants.LCD_HEIGHT)
+    temp_lcd.begin(constants.LCD_WIDTH, constants.LCD_HEIGHT)
 
     return temp_lcd
 
 
 def setup_keypad():
-    temp_keypad = None
-
-    if constants.IS_TEST:
-        temp_keypad = test_keypad.test_Keypad()
-    else:
-        temp_keypad = keypad.Keypad(
-            r0=board.D1,
-            r1=board.D6,
-            r2=board.D5,
-            r3=board.D19,
-            c0=board.D16,
-            c1=board.D26,
-            c2=board.D20,
-            c3=board.D21,
-        )
+    temp_keypad = keypad_class.Keypad(
+        r0=board_class.D1,
+        r1=board_class.D6,
+        r2=board_class.D5,
+        r3=board_class.D19,
+        c0=board_class.D16,
+        c1=board_class.D26,
+        c2=board_class.D20,
+        c3=board_class.D21,
+    )
 
     return temp_keypad
 
 
 def setup_tempcontrol():
-    temp_tempcontrol = None
-
-    if constants.IS_TEST:
-        temp_tempcontrol = test_tempcontrol.test_TempControl()
-    else:
-        temp_tempcontrol = tempcontrol.TempControl(temp_sensor, constants.RELAY_PIN)
-
-    return temp_tempcontrol
+    return tempcontrol_class.TempControl(temp_sensor, constants.RELAY_PIN)
 
 
 def delay(seconds, countdown=False):
@@ -292,7 +276,7 @@ def read_user_value(message):
             pass
 
         # Else, the value will be '.' or a number
-        else:
+        elif user_input.isnumeric() or user_input == "*":
 
             # Check for decimal. If there is already one, do nothing
             if user_input == "*":
@@ -304,9 +288,15 @@ def read_user_value(message):
             else:
                 string = string + str(user_input)
                 inputs.append(int(user_input))
+        else:
+          # ignore the input
+          pass
 
         # Display updated input
-        lcd_out(string, style=constants.LCD_CENT_JUST, line=2)
+        if len(inputs) == 0:
+          lcd_out("_", style=constants.LCD_CENT_JUST, line=2)
+        else:
+          lcd_out(string, style=constants.LCD_CENT_JUST, line=2)
 
         # DEBUG
         # print("Inputs: ", inputs)
