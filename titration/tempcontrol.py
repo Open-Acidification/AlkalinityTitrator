@@ -106,7 +106,7 @@ class TempControl:
 
             else:
                 # Get data values
-                temp = self.sensor.temperature
+                temp = self.sensor.temperature()
                 self.lastTemp = temp
                 # timelog.append(timeNow.tm_sec)
 
@@ -162,7 +162,7 @@ class TempControl:
         self.df.to_csv(filename, index_label="step", header=True)
 
     def at_temp(self):
-        if self.sensor.temperature >= 29 and self.sensor.temperature <= 30:
+        if self.sensor.temperature() >= 29 and self.sensor.temperature() <= 30:
             return True
         else:
             return False
