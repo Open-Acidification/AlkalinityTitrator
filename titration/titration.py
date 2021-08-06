@@ -1,4 +1,3 @@
-
 import sys  # exception info
 import traceback  # exception info
 
@@ -31,6 +30,7 @@ def test():
         interfaces.lcd_out("pH: {}".format(pH_reading))
         interfaces.lcd_out("pH volt: {}".format(pH_volts))
         interfaces.delay(constants.TITRATION_WAIT_TIME)
+
 
 def run():
     """Main driver for the program. Initializes components and queries the user for next steps"""

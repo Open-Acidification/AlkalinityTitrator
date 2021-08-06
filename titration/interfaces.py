@@ -2,11 +2,6 @@
 
 import time  # time.sleep()
 
-import adafruit_ads1x15.ads1115 as ADS  # pH
-import adafruit_ads1x15.analog_in as analog_in  # pH
-import adafruit_max31865  # Temp
-import busio  # pH, Temp
-import digitalio  # Temp
 import serial  # Pump
 
 import analysis
@@ -18,8 +13,14 @@ import lcd  # UI
 import lcd_mock
 import tempcontrol  # Temp
 import tempcontrol_mock
+import ph_probe  # pH
+import ph_probe_mock
+import temp_probe
+import temp_probe_mock
 
 if constants.IS_TEST:
+    ph_class = ph_probe_mock
+    temp_class = temp_probe_mock
     board_class = board_mock
     lcd_class = lcd_mock
     keypad_class = keypad_mock
@@ -28,15 +29,17 @@ else:
     # NOTE: The board module can only be imported if
     # running on specific hardware (i.e. Raspberry Pi)
     # It will fail on regular Windows/Linux computers
-    import board  # All hardware (see above note)   
+    import board  # All hardware (see above note)
 
+    ph_class = ph_probe
+    temp_class = temp_probe
     board_class = board
     lcd_class = lcd
     keypad_class = keypad
     tempcontrol_class = tempcontrol
 
 # global, pH, lcd, and temperature probes
-ph_input_channel = None
+ph_sensor = None
 temp_sensor = None
 arduino = None
 ui_lcd = None
@@ -49,45 +52,19 @@ def setup_interfaces():
     Initializes components for interfacing with pH probe,
     temperature probe, and stepper motor/syringe pump
     """
-    global ph_input_channel, temp_sensor, arduino, ui_lcd, ui_keypad, tempcontroller
+    global ph_sensor, temp_sensor, arduino, ui_lcd, ui_keypad, tempcontroller
 
     # LCD and ui_keypad setup
     ui_lcd = setup_lcd()
     ui_keypad = setup_keypad()
 
     # Temp Control Setup
+    temp_sensor = setup_temp_probe()
     tempcontroller = setup_tempcontrol()
-
+    ph_sensor = setup_ph_probe()
     if constants.IS_TEST:
         pass
     else:
-        # pH probe setup
-        try:
-            i2c = busio.I2C(board_class.SCL, board_class.SDA)
-            ads = ADS.ADS1115(i2c)
-            ph_input_channel = analog_in.AnalogIn(ads, ADS.P0, ADS.P1)
-            ads.gain = 8
-            constants.IS_TEST = False
-        except ValueError:
-            lcd_out(
-                "Error initializing pH probe; will use test functions instead.",
-                console=True,
-            )
-            lcd_out("ERROR: ADS1115", style=constants.LCD_CENT_JUST)
-            lcd_out("TEST MODE ON", style=constants.LCD_CENT_JUST)
-            constants.IS_TEST = True
-
-        # temperature probe setup
-        spi = busio.SPI(board_class.SCK, MOSI=board_class.MOSI, MISO=board_class.MISO)
-        cs = digitalio.DigitalInOut(board_class.D4)
-        temp_sensor = adafruit_max31865.MAX31865(
-            spi=spi,
-            cs=cs,
-            wires=3,
-            rtd_nominal=constants.TEMP_NOMINAL_RESISTANCE,
-            ref_resistor=constants.TEMP_REF_RESISTANCE,
-        )
-
         # pump setup (through Arduino)
         if not constants.IS_TEST:
             arduino = serial.Serial(
@@ -130,8 +107,18 @@ def setup_keypad():
     return temp_keypad
 
 
+def setup_temp_probe():
+    return temp_class.Temp_Probe(
+        board_class.SPI, board_class.MOSI, board_class.MISO, board_class.D4, wires=3
+    )
+
+
 def setup_tempcontrol():
     return tempcontrol_class.TempControl(temp_sensor, constants.RELAY_PIN)
+
+
+def setup_ph_probe():
+    return ph_class.pH_Probe(board_class.SCL, board_class.SDA, gain=8)
 
 
 def delay(seconds, countdown=False):
@@ -288,14 +275,14 @@ def read_user_value(message):
                 string = string + str(user_input)
                 inputs.append(int(user_input))
         else:
-          # ignore the input
-          pass
+            # ignore the input
+            pass
 
         # Display updated input
         if len(inputs) == 0:
-          lcd_out("_", style=constants.LCD_CENT_JUST, line=2)
+            lcd_out("_", style=constants.LCD_CENT_JUST, line=2)
         else:
-          lcd_out(string, style=constants.LCD_CENT_JUST, line=2)
+            lcd_out(string, style=constants.LCD_CENT_JUST, line=2)
 
         # DEBUG
         # print("Inputs: ", inputs)
@@ -349,15 +336,8 @@ def read_raw_pH():
     :return: raw V reading from probe
     """
     # Read pH registers; pH_val is raw value from pH probe
-    # volts = ph_input_channel.voltage - 2.557
-    volts = ph_input_channel.voltage
+    volts = ph_sensor.voltage()
 
-    # DEBUG
-    # print("    RAW VOLTAGE: ", ph_input_channel.voltage)
-    # print("    RAW VALUE: ", ph_input_channel.value)
-
-    # diff = volts / 9.7 # isn't doing anything
-    # volts = volts / 10 # why???
     return volts
 
 
@@ -368,7 +348,7 @@ def read_temperature():
     """
     if constants.IS_TEST:
         return _test_read_temperature()
-    return temp_sensor.temperature, temp_sensor.resistance
+    return temp_sensor.temperature(), temp_sensor.resistance()
 
 
 def _test_read_temperature():
