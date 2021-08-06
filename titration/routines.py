@@ -1,10 +1,11 @@
 import time
 
+# debugging/testing
+import numpy as np
+
 import analysis
 import constants
 import interfaces
-# debugging/testing
-import numpy as np
 import tempcontrol
 
 ROUTINE_OPTIONS = {

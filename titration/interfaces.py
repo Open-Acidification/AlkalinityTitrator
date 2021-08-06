@@ -2,16 +2,24 @@
 
 import time  # time.sleep()
 
+import adafruit_ads1x15.ads1115 as ADS  # pH
+import adafruit_ads1x15.analog_in as analog_in  # pH
+import adafruit_max31865  # Temp
+import busio  # pH, Temp
+import digitalio  # Temp
+import serial  # Pump
+
 import analysis
+import board_mock
 import constants
+import keypad  # UI
+import keypad_mock
+import lcd  # UI
+import lcd_mock
+import tempcontrol  # Temp
+import tempcontrol_mock
 
 if constants.IS_TEST:
-    import board_mock
-    import keypad_mock
-    # for mock components
-    import lcd_mock
-    import tempcontrol_mock
-
     board_class = board_mock
     lcd_class = lcd_mock
     keypad_class = keypad_mock
@@ -20,16 +28,7 @@ else:
     # NOTE: The board module can only be imported if
     # running on specific hardware (i.e. Raspberry Pi)
     # It will fail on regular Windows/Linux computers
-    import adafruit_ads1x15.ads1115 as ADS  # pH
-    import adafruit_ads1x15.analog_in as analog_in  # pH
-    import adafruit_max31865  # Temp
-    import board  # All hardware (see above note)
-    import busio  # pH, Temp
-    import digitalio  # Temp
-    import keypad  # UI
-    import lcd  # UI
-    import serial  # Pump
-    import tempcontrol  # Temp                   
+    import board  # All hardware (see above note)   
 
     board_class = board
     lcd_class = lcd

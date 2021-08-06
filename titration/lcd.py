@@ -1,8 +1,11 @@
 import time
 
-import constants
 import digitalio
 
+import constants
+
+class UninitializedLCDError(Exception):
+  pass
 
 class LCD:
     """Sunfire LCD 20x04 Char Display Module"""
@@ -69,6 +72,9 @@ class LCD:
         Lines: LCD_LINE_X (1,2,3,4)
         styles (justification): X (1=left, 2=center, 3=right)
         """
+        # Check if begin() has been run
+        if self.cols == -1 or self.rows == -1:
+          raise UninitializedLCDError("The LCD has not be initialized with begin()")
 
         if style == 1:
             message = message.ljust(constants.LCD_WIDTH, " ")

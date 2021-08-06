@@ -3,6 +3,8 @@ Module for mocking the lcd.py class for testing purposes
 """
 from os import name, system
 
+class UninitializedLCDError(Exception):
+  pass
 
 class LCD:
     def __init__(self, rs, backlight, enable, d4, d5, d6, d7):
@@ -31,16 +33,20 @@ class LCD:
         self.__draw()
 
     def print(self, message, line, style=1):
-        if style == 1:
-            message = message.ljust(self.cols, " ")
-        elif style == 2:
-            message = message.center(self.cols, " ")
-        elif style == 3:
-            message = message.rjust(self.cols, " ")
+      # Check if begin() has been run
+      if self.cols == -1 or self.rows == -1:
+        raise UninitializedLCDError("The LCD has not be initialized with begin()")
 
-        self.strings[line - 1] = message
+      if style == 1:
+          message = message.ljust(self.cols, " ")
+      elif style == 2:
+          message = message.center(self.cols, " ")
+      elif style == 3:
+          message = message.rjust(self.cols, " ")
 
-        self.__draw()
+      self.strings[line - 1] = message
+
+      self.__draw()
 
     def lcd_backlight(self, flag):
         pass
@@ -59,6 +65,7 @@ class LCD:
                 print("*", "".ljust(self.cols, "="), "*", sep="")
             else:
                 print("|", self.strings[i], "|", sep="")
+
 
 
 if __name__ == "__main__":

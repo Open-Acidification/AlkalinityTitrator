@@ -10,8 +10,10 @@ blog
 bplus
 busdevice
 busio
+capsys
 CHR
 circuitpython
+cls
 Clure
 colorzero
 config
@@ -36,10 +38,12 @@ HVals
 img
 ipc
 isdigit
+isnumeric
 json
 kadensukachevin
 len
 linkedin
+Linux
 ljust
 localtime
 markdownlint
@@ -72,11 +76,14 @@ Raspbian
 raspi
 readline
 README
+readouterr
 rjust
 rpi
 rtd
+RXD
 SCK
 SCL
+SCLK
 screenshots
 sensorf
 setpoint
@@ -99,6 +106,7 @@ tempcontroller
 timelog
 timestep
 todo
+TXD
 uint
 url
 userinterface

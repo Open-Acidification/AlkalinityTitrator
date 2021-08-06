@@ -1,6 +1,7 @@
 # import
-import constants
 import digitalio
+
+import constants
 import interfaces
 
 
