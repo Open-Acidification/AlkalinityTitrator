@@ -107,7 +107,7 @@ class TempControl:
             else:
                 # Get data values
                 temp = self.sensor.temperature()
-                self.lastTemp = temp
+                self.tempLast = temp
                 # timelog.append(timeNow.tm_sec)
 
                 # anti-windup
@@ -168,7 +168,7 @@ class TempControl:
             return False
 
     def get_last_temp(self):
-        return self.lastTemp
+        return self.tempLast
 
     def activate(self):
         self.controlActive = True

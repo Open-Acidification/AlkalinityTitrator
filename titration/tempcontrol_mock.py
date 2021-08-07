@@ -19,7 +19,7 @@ class TempControl:
     """
 
     def __init__(self, sensor, relay_pin):
-        pass
+        self.sensor = sensor
 
     # Flag - print data to console or not
     printData = False
@@ -138,13 +138,13 @@ class TempControl:
         self.df.to_csv(filename, index_label="step", header=True)
 
     def at_temp(self):
-        if self.sensor.temperature >= 29 and self.sensor.temperature <= 30:
+        if self.sensor.temperature() >= 29 and self.sensor.temperature() <= 30:
             return True
         else:
             return False
 
     def get_last_temp(self):
-        return self.lastTemp
+        return self.tempLast
 
     def activate(self):
         self.controlActive = True

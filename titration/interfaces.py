@@ -109,7 +109,7 @@ def setup_keypad():
 
 def setup_temp_probe():
     return temp_class.Temp_Probe(
-        board_class.SPI, board_class.MOSI, board_class.MISO, board_class.D4, wires=3
+        board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D4, wires=3
     )
 
 
