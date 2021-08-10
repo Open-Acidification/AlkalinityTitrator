@@ -12,8 +12,10 @@ def _write_csv(file_name, data_to_write):
     :param file_name: file path to write to
     :param data_to_write: data to write; expects an iterable
     """
-    with open(file_name, mode='w') as open_file:
-        data_writer = csv.writer(open_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    with open(file_name, mode="w") as open_file:
+        data_writer = csv.writer(
+            open_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
+        )
         for data in data_to_write:
             data_writer.writerow(data)
 
@@ -24,7 +26,7 @@ def write_json(file_name, data):
     :param file_name: file path to write to
     :param data: dictionary data to dump to json format
     """
-    with open(file_name, 'w') as outfile:
+    with open(file_name, "w") as outfile:
         json.dump(data, outfile)
 
 
@@ -47,11 +49,11 @@ def setup_calibration():
     """Sets calibration constants from persistent storage"""
     data = _read_json(constants.CALIBRATION_FILENAME)
     if data:
-        constants.PH_REF_VOLTAGE = data['pH']['ref_voltage']
-        constants.PH_REF_PH = data['pH']['ref_pH']
-        constants.TEMP_REF_RESISTANCE = data['temp']['ref_resistance']
-        constants.TEMP_NOMINAL_RESISTANCE = data['temp']['nominal_resistance']
-        constants.volume_in_pump = data['vol_pump']
+        constants.PH_REF_VOLTAGE = data["pH"]["ref_voltage"]
+        constants.PH_REF_PH = data["pH"]["ref_pH"]
+        constants.TEMP_REF_RESISTANCE = data["temp"]["ref_resistance"]
+        constants.TEMP_NOMINAL_RESISTANCE = data["temp"]["nominal_resistance"]
+        constants.volume_in_pump = data["vol_pump"]
     else:
         save_calibration_data()
 
@@ -59,11 +61,11 @@ def setup_calibration():
 def save_calibration_data():
     """Saves calibration data to json file"""
     calibration_data = constants.calibration_data_format
-    calibration_data['pH']['ref_voltage'] = constants.PH_REF_VOLTAGE
-    calibration_data['pH']['ref_pH'] = constants.PH_REF_PH
-    calibration_data['temp']['ref_resistance'] = constants.TEMP_REF_RESISTANCE
-    calibration_data['temp']['nominal_resistance'] = constants.TEMP_NOMINAL_RESISTANCE
-    calibration_data['vol_pump'] = constants.volume_in_pump
+    calibration_data["pH"]["ref_voltage"] = constants.PH_REF_VOLTAGE
+    calibration_data["pH"]["ref_pH"] = constants.PH_REF_PH
+    calibration_data["temp"]["ref_resistance"] = constants.TEMP_REF_RESISTANCE
+    calibration_data["temp"]["nominal_resistance"] = constants.TEMP_NOMINAL_RESISTANCE
+    calibration_data["vol_pump"] = constants.volume_in_pump
     write_json(constants.CALIBRATION_FILENAME, calibration_data)
 
 
@@ -82,7 +84,9 @@ def calculate_expected_resistance(temp):
         return constants.TEMP_NOMINAL_RESISTANCE * (1 + A * temp + B * temp ** 2)
 
     # for temps below 0 celsius
-    return constants.TEMP_NOMINAL_RESISTANCE * (1 + A * temp + B * temp ** 2 + C * (temp - 100) * temp ** 3)
+    return constants.TEMP_NOMINAL_RESISTANCE * (
+        1 + A * temp + B * temp ** 2 + C * (temp - 100) * temp ** 3
+    )
 
 
 def reset_calibration():
@@ -105,8 +109,9 @@ def calculate_pH(voltage, temp):
     temp_k = temp + constants.CELSIUS_TO_KELVIN
     ref_voltage = constants.PH_REF_VOLTAGE
     ref_pH = constants.PH_REF_PH
-    return ref_pH + (ref_voltage - voltage) / \
-           (constants.UNIVERSAL_GAS_CONST * temp_k * math.log(10)/constants.FARADAY_CONST)
+    return ref_pH + (ref_voltage - voltage) / (
+        constants.UNIVERSAL_GAS_CONST * temp_k * math.log(10) / constants.FARADAY_CONST
+    )
 
 
 # titration
@@ -116,7 +121,7 @@ def calculate_mean(values):
     :param values: values to calculate mean of
     :return: mean of values
     """
-    return sum(values)/len(values)
+    return sum(values) / len(values)
 
 
 def std_deviation(values):
@@ -128,8 +133,8 @@ def std_deviation(values):
     mean = calculate_mean(values)
     running_sum = 0
     for val in values:
-        running_sum += (val - mean)**2
-    return math.sqrt(running_sum/(len(values)-1))
+        running_sum += (val - mean) ** 2
+    return math.sqrt(running_sum / (len(values) - 1))
 
 
 def write_titration_data(data):
@@ -138,7 +143,11 @@ def write_titration_data(data):
     Data in form of ('temperature', 'pH', 'pH volts', 'solution volume')
     :param data: titration data to write out
     """
-    file_name = constants.DATA_PATH + dt.datetime.strftime(dt.datetime.now(), '%m-%d-%Y %H_%M_%S_%f') + '.csv'
+    file_name = (
+        constants.DATA_PATH
+        + dt.datetime.strftime(dt.datetime.now(), "%m-%d-%Y %H_%M_%S_%f")
+        + ".csv"
+    )
     _write_csv(file_name, data)
 
 
@@ -159,7 +168,18 @@ def determine_pump_cycles(volume_to_add):
 
 
 # alkalinity
-def determine_total_alkalinity(S=35, temp=25, C=0.1, d=1, pHTris=None, ETris=None, weight=None, E=None, volume=None, csv_file=None):
+def determine_total_alkalinity(
+    S=35,
+    temp=25,
+    C=0.1,
+    d=1,
+    pHTris=None,
+    ETris=None,
+    weight=None,
+    E=None,
+    volume=None,
+    csv_file=None,
+):
     """Calculates the total alkalinity of the solution"""
     pass
 
@@ -169,8 +189,8 @@ if __name__ == "__main__":
     # print("Expected res = ", calculate_expected_resistance(0))
     while True:
         option = input("1 - Save Calibration data\n2 - Write csv")
-        if option == '1':
+        if option == "1":
             save_calibration_data()
             setup_calibration()
-        if option == '2':
-            _write_csv('test_data', [(1, 2, 3), (4, 5, 6)])
+        if option == "2":
+            _write_csv("test_data", [(1, 2, 3), (4, 5, 6)])
