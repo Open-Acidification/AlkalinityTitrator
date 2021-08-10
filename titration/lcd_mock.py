@@ -62,17 +62,3 @@ class LCD:
                 print("*", "".ljust(self.cols, "="), "*", sep="")
             else:
                 print("|", self.strings[i], "|", sep="")
-
-
-if __name__ == "__main__":
-    try:
-        lcd = LCD()
-        lcd.begin(20, 4)
-        lcd.print("Open Acidification", 1, 2)
-        lcd.print("Project", 2, 2)
-        lcd.print("Alkalinity", 3, 2)
-        lcd.print("Titrator", 4, 2)
-        lcd.clear()
-
-    except:
-        pass

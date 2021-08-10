@@ -6,16 +6,22 @@ def test_ph_create():
     ph = ph_probe_mock.pH_Probe(board_mock.SCL, board_mock.SDA)
     assert ph != None
 
-def test_ph_create_none():
+def test_ph_create_null():
     ph = ph_probe_mock.pH_Probe(None, None)
     assert ph != None
 
 def test_ph_voltage():
-    ph_1 = ph_probe_mock.pH_Probe(board_mock.SCL, board_mock.SDA)
-    ph_2 = ph_probe_mock.pH_Probe(None, None)
+    ph = ph_probe_mock.pH_Probe(board_mock.SCL, board_mock.SDA)
+    assert ph.voltage() == 0
 
-    assert ph_1.voltage() == 3.14159
-    assert ph_2.voltage() == 3.14159
+def test_ph_voltage_null():
+    ph = ph_probe_mock.pH_Probe(None, None)
+    assert ph.voltage() == 0
+
+def test_ph_voltage_set():
+    ph = ph_probe_mock.pH_Probe(board_mock.SCL, board_mock.SDA)
+    ph.mock_set_voltage(3.0)
+    assert ph.voltage() == 3.0
 
 def test_ph_set_gain():
     ph = ph_probe_mock.pH_Probe(board_mock.SCL, board_mock.SDA)

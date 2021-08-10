@@ -1,8 +1,6 @@
-# import
 import digitalio
 
 import constants
-import interfaces
 
 
 class Keypad:
@@ -51,49 +49,3 @@ class Keypad:
 
         # No buttons were pressed
         return None
-
-    # Following functions were just used for testing
-
-    # def keypad_poll_all(self):
-    #     """
-    #     polls the keypad and returns the button label (1,2,A,B,*,#, etc)
-    #     of the button pressed.
-    #     """
-    #     results = []
-    #     # Set each row high and check if a column went high as well
-    #     for row in range(len(self.rows)):
-    #         self.rows[row].value = True
-    #         for col in range(len(self.cols)):
-    #             if self.cols[col].value:
-    #                 results.append("1")
-    #             else:
-    #                 results.append("0")
-    #         self.rows[row].value = False
-
-    #     # No buttons were pressed
-    #     return results
-
-    # def readRow(self, lcd, line, characters):
-    #     """
-    #     Reads a row and prints any pressed characters to the screen
-    #     """
-    #     self.rows[line].value = True
-
-    #     if constants.KEY_COL_0.value == 1:
-    #         interfaces.lcd_out(str(characters[0]), constants.LCD_LINE_1, 1)
-    #         print(characters[0])
-    #     if constants.KEY_COL_1.value == 1:
-    #         interfaces.lcd_out(str(characters[1]), constants.LCD_LINE_1, 1)
-    #         print(characters[0])
-    #     if constants.KEY_COL_2.value == 1:
-    #         interfaces.lcd_out(str(characters[2]), constants.LCD_LINE_1, 1)
-    #         print(characters[0])
-    #     if constants.KEY_COL_3.value == 1:
-    #         interfaces.lcd_out(str(characters[3]), constants.LCD_LINE_1, 1)
-    #         print(characters[0])
-
-    #     self.rows[line].value = False
-
-
-if __name__ == "__main__":
-    pass

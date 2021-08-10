@@ -9,8 +9,10 @@ class pH_Probe:
 
         self.gain_options = [2 / 3, 1, 2, 4, 8, 16]
 
+        self.volt = 0
+
     def voltage(self):
-        return 3.14159
+        return self.volt
 
     def set_gain(self, gain):
         if gain not in self.gain_options:
@@ -20,3 +22,6 @@ class pH_Probe:
 
     def get_gain(self):
         return self.gain
+    
+    def mock_set_voltage(self, voltage):
+        self.volt = voltage
