@@ -1,10 +1,11 @@
+import sys  # exception info
+import time
+import traceback  # exception info
+
+import analysis
+import constants
 import interfaces
 import routines
-import constants
-import analysis
-import time
-import sys  # exception info
-import traceback  # exception info
 
 
 def test():

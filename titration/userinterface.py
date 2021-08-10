@@ -1,9 +1,10 @@
 # import
+import time
+
+import constants
 import digitalio
 import interfaces
-import time
 from board import *
-import constants
 
 
 class LCD:

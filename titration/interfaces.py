@@ -1,27 +1,17 @@
 """Functions to interface with sensors and peripherals"""
-import constants
+import time  # for pump
+
+import adafruit_ads1x15.ads1115 as ADS  # for pH sensor
+import adafruit_ads1x15.analog_in as analog_in  # for pH sensor
+import adafruit_max31865  # for max31865 temp sensorf
 import analysis
-
-# for pump
-import time
-import serial
-
-# for pH sensor
-import adafruit_ads1x15.ads1115 as ADS
-import adafruit_ads1x15.analog_in as analog_in
-
-# for max31865 temp sensorf
-import board
-import busio
-import digitalio
-import adafruit_max31865
-
-
-# for user interface
-import userinterface
-
-# for temp control
-import tempcontrol
+import board  # for max31865 temp sensorf
+import busio  # for max31865 temp sensorf
+import constants
+import digitalio  # for max31865 temp sensorf
+import serial  # for pump
+import tempcontrol  # for temp control
+import userinterface  # for user interface
 
 # global, pH, lcd, and temperature probes
 ph_input_channel = None

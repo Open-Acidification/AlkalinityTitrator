@@ -1,11 +1,12 @@
 import time
-from gpiozero import LED
+from array import *
+
+import adafruit_max31865
 import board
 import busio
 import digitalio
 import pandas as pd
-import adafruit_max31865
-from array import *
+from gpiozero import LED
 
 PID_DEFAULT_KP = 0.09
 PID_DEFAULT_TI = 0.000001
