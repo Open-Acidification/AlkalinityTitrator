@@ -156,6 +156,7 @@ def lcd_out(
         ui_lcd.print(message, line, style)
 
 
+
 def lcd_clear():
     ui_lcd.clear()
 
