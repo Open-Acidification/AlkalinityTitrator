@@ -99,7 +99,7 @@ def delay(seconds, countdown=False):
     while timeEnd > timeNow:
         tempcontroller.update()
         timeLeft = timeEnd - timeNow
-        if countdown == True and int(timeLeft) % 5 == 0:
+        if countdown is True and int(timeLeft) % 5 == 0:
             lcd_out("Time Left: {}".format(int(timeLeft)), line=4)
         timeNow = time.time()
 
@@ -176,7 +176,7 @@ def read_user_input(valid_inputs=None, console=False):
         else:
             user_input = keypad.keypad_poll()
 
-        if user_input == None:
+        if user_input is None:
             pass
         elif valid_inputs is None or user_input in valid_inputs:
             print("Input: ", user_input)
@@ -248,7 +248,7 @@ def read_user_value(message):
 
             # Check for decimal. If there is already one, do nothing
             if user_input == "*":
-                if decimal == False:
+                if decimal is False:
                     inputs.append(user_input)
                     string = string + "."
                     decimal = True
@@ -431,7 +431,7 @@ def drive_step_stick(cycles, direction):
     :param cycles: number of rising edges for the pump
     :param direction: direction of pump
     """
-    if cycles is 0:
+    if cycles == 0:
         return 0
 
     if constants.IS_TEST:

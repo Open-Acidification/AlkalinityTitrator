@@ -71,10 +71,10 @@ class TempControl:
     setPoint = 30
 
     """
-	Primary function run during the titration. update() will
-	check if it is time to change the state of the relay and
-	update the PID control and relay status as necessary
-	"""
+    Primary function run during the titration. update() will
+    check if it is time to change the state of the relay and
+    update the PID control and relay status as necessary
+    """
 
     def update(self):
         # If
@@ -140,7 +140,7 @@ class TempControl:
                     columns=["time (s)", "temp (C)", "gain"],
                 )
                 self.df = self.df.append(data_frame_new, ignore_index=True)
-                if self.printData == True:
+                if self.printData is True:
                     print(self.df)
 
         else:
@@ -148,24 +148,24 @@ class TempControl:
             return
 
     """
-	Update the time of the last step taken with the time of the 
-	step just taken with time.time()
-	"""
+    Update the time of the last step taken with the time of the
+    step just taken with time.time()
+    """
 
     def __update_timeLast(self, stepTime):
         self.timeLast = stepTime
 
     """
-	Update the time that the next relay action should be taken
-	"""
+    Update the time that the next relay action should be taken
+    """
 
     def __update_timeNext(self, stepTime):
         self.timeNext = stepTime
 
     """
-	After 250 cycles, the PID control parameters should
-	be changed to new values
-	"""
+    After 250 cycles, the PID control parameters should
+    be changed to new values
+    """
 
     def __set_controlparam_antiwindup(self):
         self.kp = PID_ANTIWINDUP_KP
@@ -173,9 +173,9 @@ class TempControl:
         self.Td = PID_ANTIWINDUP_TD
 
     """
-	For the first 250 cycles, the PID parameters should
-	be set to their default values. 
-	"""
+    For the first 250 cycles, the PID parameters should
+    be set to their default values.
+    """
 
     def __set_controlparam_default(self):
         self.kp = PID_DEFAULT_KP
@@ -195,16 +195,16 @@ class TempControl:
         self.integral_prior = self.integral
 
     """
-	For the first 250 cycles, the integral value should
-	be zeroed to prevent windup 
-	"""
+    For the first 250 cycles, the integral value should
+    be zeroed to prevent windup
+    """
 
     def __set_integral_zero(self):
         self.integral = 0
 
     def __set_relayState(self, boolean):
         self.relayOn = boolean
-        if boolean == True:
+        if boolean is True:
             self.relay.on()
         else:
             self.relay.off()
