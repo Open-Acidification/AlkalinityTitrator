@@ -15,6 +15,8 @@ def test_tempcontrol_update():
     tempcontroller = tempcontrol.TempControl(temp_sensor, board.D1)
 
     tempcontroller.update()
+    time.sleep(1)
+    tempcontroller.update()
 
 def test_tempcontrol_enable_print():
     temp_sensor = temp_probe.Temp_Probe(board.SCK, board.MOSI, board.MISO, board.D4, wires=3)

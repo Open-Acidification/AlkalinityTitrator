@@ -96,6 +96,7 @@ class TempControl:
 
                 # increase the temperature by k (0-1)
                 self.tempLast = self.tempLast + self.k
+                self.sensor.mock_set_temperature(self.tempLast)
 
             else:
                 # Get data values
@@ -138,7 +139,7 @@ class TempControl:
         self.df.to_csv(filename, index_label="step", header=True)
 
     def at_temp(self):
-        if self.tempLast >= 29 and self.tempLast <= 30:
+        if self.sensor.temperature() >= 29 and self.sensor.temperature() <= 30:
             return True
         else:
             return False

@@ -8,8 +8,7 @@ board_class = board_mock
 
 def test_lcd_create():
     # the mock LCD doesn't use it's inputs, real or None inputs should work
-    lcd_1 = lcd_mock.LCD(None, None, None, None, None, None, None)
-    lcd_2 = lcd_mock.LCD(
+    lcd = lcd_mock.LCD(
         rs=board_class.D27,
         backlight=board_class.D15,
         enable=board_class.D22,
@@ -19,15 +18,25 @@ def test_lcd_create():
         d7=board_class.D25,
     )
 
-    assert lcd_1 != None
-    assert lcd_2 != None
+    assert lcd != None
+
+def test_lcd_create_null():
+    lcd = lcd_mock.LCD(None, None, None, None, None, None, None)
+    assert lcd != None
 
 
-def test_lcd_begin(capsys):
-    lcd_1 = lcd_mock.LCD(None, None, None, None, None, None, None)
-    lcd_2 = lcd_mock.LCD(None, None, None, None, None, None, None)
+def test_lcd_begin_large(capsys):
+    lcd = lcd_mock.LCD(
+        rs=board_class.D27,
+        backlight=board_class.D15,
+        enable=board_class.D22,
+        d4=board_class.D18,
+        d5=board_class.D23,
+        d6=board_class.D24,
+        d7=board_class.D25,
+    )
 
-    lcd_1.begin(20, 4)
+    lcd.begin(20, 4)
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -38,29 +47,98 @@ def test_lcd_begin(capsys):
         + "*====================*\n"
     )
 
-    lcd_2.begin(10, 2)
+    assert lcd.cols == 20
+    assert lcd.rows == 4
+
+def test_lcd_begin_large_null(capsys):
+    lcd = lcd_mock.LCD(None, None, None, None, None, None, None)
+
+    lcd.begin(20, 4)
     captured = capsys.readouterr()
     assert captured.out == (
-        "*==========*\n" + "|          |\n" + "|          |\n" + "*==========*\n"
+        "*====================*\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "*====================*\n"
     )
 
-    assert lcd_1.cols == 20
-    assert lcd_2.cols == 10
-    assert lcd_1.rows == 4
-    assert lcd_2.rows == 2
+    assert lcd.cols == 20
+    assert lcd.rows == 4
 
+def test_lcd_begin_small(capsys):
+    lcd = lcd_mock.LCD(
+        rs=board_class.D27,
+        backlight=board_class.D15,
+        enable=board_class.D22,
+        d4=board_class.D18,
+        d5=board_class.D23,
+        d6=board_class.D24,
+        d7=board_class.D25,
+    )
+
+    lcd.begin(10, 2)
+    captured = capsys.readouterr()
+    assert captured.out == (
+        "*==========*\n" + 
+        "|          |\n" + 
+        "|          |\n" + 
+        "*==========*\n"
+    )
+
+    assert lcd.cols == 10
+    assert lcd.rows == 2
+
+def test_lcd_begin_small_null(capsys):
+    lcd = lcd_mock.LCD(None,None,None,None,None,None,None)
+
+    lcd.begin(10, 2)
+    captured = capsys.readouterr()
+    assert captured.out == (
+        "*==========*\n" + 
+        "|          |\n" + 
+        "|          |\n" + 
+        "*==========*\n"
+    )
+
+    assert lcd.cols == 10
+    assert lcd.rows == 2
 
 def test_lcd_no_begin():
+    lcd = lcd_mock.LCD(
+        rs=board_class.D27,
+        backlight=board_class.D15,
+        enable=board_class.D22,
+        d4=board_class.D18,
+        d5=board_class.D23,
+        d6=board_class.D24,
+        d7=board_class.D25,
+    )
+
+    # print without using begin() first
+    with pytest.raises(ValueError):
+        lcd.print("This should fail", 1, 1)
+
+def test_lcd_no_begin_null():
     lcd = lcd_mock.LCD(None, None, None, None, None, None, None)
 
     # print without using begin() first
     with pytest.raises(ValueError):
         lcd.print("This should fail", 1, 1)
 
+def test_lcd_print_left(capsys):
+    lcd = lcd_mock.LCD(
+        rs=board_class.D27,
+        backlight=board_class.D15,
+        enable=board_class.D22,
+        d4=board_class.D18,
+        d5=board_class.D23,
+        d6=board_class.D24,
+        d7=board_class.D25,
+    )
 
-def test_lcd_print(capsys):
-    lcd = lcd_mock.LCD(None, None, None, None, None, None, None)
-    lcd.begin(20, 4)
+    lcd.begin(20,4)
 
     # Flush the current stdout buffer from begin() output
     _ = capsys.readouterr()
@@ -78,11 +156,87 @@ def test_lcd_print(capsys):
     )
 
     # print into the first line again
-    lcd.print("test string 1", 1, 1)
+    lcd.print("test string 1 (2)", 1, 1)
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
-        + "|test string 1       |\n"
+        + "|test string 1 (2)   |\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "*====================*\n"
+    )
+
+    # print into the second line
+    lcd.print("test string 2", 2, 1)
+    captured = capsys.readouterr()
+    assert captured.out == (
+        "*====================*\n"
+        + "|test string 1 (2)   |\n"
+        + "|test string 2       |\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "*====================*\n"
+    )
+
+    # print into the third line
+    lcd.print("test string 3", 3, 1)
+    captured = capsys.readouterr()
+    assert captured.out == (
+        "*====================*\n"
+        + "|test string 1 (2)   |\n"
+        + "|test string 2       |\n"
+        + "|test string 3       |\n"
+        + "|                    |\n"
+        + "*====================*\n"
+    )
+
+    # print into the fourth line, too long
+    lcd.print("test string 4", 4, 1)
+    captured = capsys.readouterr()
+    assert captured.out == (
+        "*====================*\n"
+        + "|test string 1 (2)   |\n"
+        + "|test string 2       |\n"
+        + "|test string 3       |\n"
+        + "|test string 4       |\n"
+        + "*====================*\n"
+    )
+
+def test_lcd_print_center(capsys):
+    lcd = lcd_mock.LCD(
+        rs=board_class.D27,
+        backlight=board_class.D15,
+        enable=board_class.D22,
+        d4=board_class.D18,
+        d5=board_class.D23,
+        d6=board_class.D24,
+        d7=board_class.D25,
+    )
+
+    lcd.begin(20,4)
+
+    # Flush the current stdout buffer from begin() output
+    _ = capsys.readouterr()
+
+    # print into the first line
+    lcd.print("test string 1", 1, 2)
+    captured = capsys.readouterr()
+    assert captured.out == (
+        "*====================*\n"
+        + "|   test string 1    |\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "*====================*\n"
+    )
+
+    # print into the first line again
+    lcd.print("test string 1 (2)", 1, 2)
+    captured = capsys.readouterr()
+    assert captured.out == (
+        "*====================*\n"
+        + "| test string 1 (2)  |\n"
         + "|                    |\n"
         + "|                    |\n"
         + "|                    |\n"
@@ -94,8 +248,84 @@ def test_lcd_print(capsys):
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
-        + "|test string 1       |\n"
+        + "| test string 1 (2)  |\n"
         + "|   test string 2    |\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "*====================*\n"
+    )
+
+    # print into the third line
+    lcd.print("test string 3", 3, 2)
+    captured = capsys.readouterr()
+    assert captured.out == (
+        "*====================*\n"
+        + "| test string 1 (2)  |\n"
+        + "|   test string 2    |\n"
+        + "|   test string 3    |\n"
+        + "|                    |\n"
+        + "*====================*\n"
+    )
+
+    # print into the fourth line, too long
+    lcd.print("test string 4", 4, 2)
+    captured = capsys.readouterr()
+    assert captured.out == (
+        "*====================*\n"
+        + "| test string 1 (2)  |\n"
+        + "|   test string 2    |\n"
+        + "|   test string 3    |\n"
+        + "|   test string 4    |\n"
+        + "*====================*\n"
+    )
+
+def test_lcd_print_right(capsys):
+    lcd = lcd_mock.LCD(
+        rs=board_class.D27,
+        backlight=board_class.D15,
+        enable=board_class.D22,
+        d4=board_class.D18,
+        d5=board_class.D23,
+        d6=board_class.D24,
+        d7=board_class.D25,
+    )
+
+    lcd.begin(20,4)
+
+    # Flush the current stdout buffer from begin() output
+    _ = capsys.readouterr()
+
+    # print into the first line
+    lcd.print("test string 1", 1, 3)
+    captured = capsys.readouterr()
+    assert captured.out == (
+        "*====================*\n"
+        + "|       test string 1|\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "*====================*\n"
+    )
+
+    # print into the first line again
+    lcd.print("test string 1 (2)", 1, 3)
+    captured = capsys.readouterr()
+    assert captured.out == (
+        "*====================*\n"
+        + "|   test string 1 (2)|\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "*====================*\n"
+    )
+
+    # print into the second line
+    lcd.print("test string 2", 2, 3)
+    captured = capsys.readouterr()
+    assert captured.out == (
+        "*====================*\n"
+        + "|   test string 1 (2)|\n"
+        + "|       test string 2|\n"
         + "|                    |\n"
         + "|                    |\n"
         + "*====================*\n"
@@ -106,22 +336,50 @@ def test_lcd_print(capsys):
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
-        + "|test string 1       |\n"
-        + "|   test string 2    |\n"
+        + "|   test string 1 (2)|\n"
+        + "|       test string 2|\n"
         + "|       test string 3|\n"
         + "|                    |\n"
         + "*====================*\n"
     )
 
     # print into the fourth line, too long
-    lcd.print("test string 4 oh no this one's too long", 4, 1)
+    lcd.print("test string 4", 4, 3)
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
-        + "|test string 1       |\n"
-        + "|   test string 2    |\n"
+        + "|   test string 1 (2)|\n"
+        + "|       test string 2|\n"
         + "|       test string 3|\n"
-        + "|test string 4 oh no this one's too long|\n"
+        + "|       test string 4|\n"
+        + "*====================*\n"
+    )
+
+def test_lcd_print_long(capsys):
+    lcd = lcd_mock.LCD(
+        rs=board_class.D27,
+        backlight=board_class.D15,
+        enable=board_class.D22,
+        d4=board_class.D18,
+        d5=board_class.D23,
+        d6=board_class.D24,
+        d7=board_class.D25,
+    )
+
+    lcd.begin(20, 4)
+
+    # Flush the current stdout buffer from begin() and prints
+    _ = capsys.readouterr()
+
+    # print into the first line, too long
+    lcd.print("test string that's too long", 1, 1)
+    captured = capsys.readouterr()
+    assert captured.out == (
+        "*====================*\n"
+        + "|test string that's too long|\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "|                    |\n"
         + "*====================*\n"
     )
 
@@ -136,8 +394,21 @@ def test_lcd_clear(capsys):
     lcd.print("test string", 3, 2)
     lcd.print("test string", 4, 2)
 
+
     # Flush the current stdout buffer from begin() and prints
     _ = capsys.readouterr()
+
+    # clear the LCD
+    lcd.clear()
+    captured = capsys.readouterr()
+    assert captured.out == (
+        "*====================*\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "*====================*\n"
+    )
 
     # clear the LCD again
     lcd.clear()

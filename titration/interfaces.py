@@ -135,7 +135,7 @@ def delay(seconds, countdown=False):
     while timeEnd > timeNow:
         tempcontroller.update()
         timeLeft = timeEnd - timeNow
-        if countdown == True and int(timeLeft) % 5 == 0:
+        if countdown and int(timeLeft) % 5 == 0:
             lcd_out("Time Left: {}".format(int(timeLeft)), line=4)
         timeNow = time.time()
 
@@ -198,7 +198,7 @@ def read_user_input(valid_inputs=None, console=False):
         else:
             user_input = ui_keypad.keypad_poll()
 
-        if user_input == None:
+        if user_input is None:
             pass
         elif valid_inputs is None or user_input in valid_inputs:
             print("Input: ", user_input)
@@ -212,7 +212,7 @@ def read_user_input(valid_inputs=None, console=False):
             )
 
     while True:
-        if ui_keypad.keypad_poll() == None:
+        if ui_keypad.keypad_poll() is None:
             break
     return user_input
 
@@ -270,7 +270,7 @@ def read_user_value(message):
 
             # Check for decimal. If there is already one, do nothing
             if user_input == "*":
-                if decimal == False:
+                if not decimal:
                     inputs.append(user_input)
                     string = string + "."
                     decimal = True
