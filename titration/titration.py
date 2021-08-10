@@ -1,10 +1,11 @@
+import sys  # exception info
+import time
+import traceback  # exception info
+
+import analysis
+import constants
 import interfaces
 import routines
-import constants
-import analysis
-import time
-import sys  # exception info
-import traceback  # exception info
 
 
 def test():
@@ -31,11 +32,11 @@ def run():
     page = 1
     while routine_selection != "6" or routine_selection != constants.KEY_6:
         if routine_selection is constants.KEY_STAR:
-            if page is 1:
+            if page == 1:
                 page = 2
             else:
                 page = 1
-        if page is 1:
+        if page == 1:
             interfaces.display_list(constants.ROUTINE_OPTIONS_1)
         else:
             interfaces.display_list(constants.ROUTINE_OPTIONS_2)

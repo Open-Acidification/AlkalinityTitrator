@@ -1,27 +1,17 @@
 """Functions to interface with sensors and peripherals"""
-import constants
+import time  # for pump
+
+import adafruit_ads1x15.ads1115 as ADS  # for pH sensor
+import adafruit_ads1x15.analog_in as analog_in  # for pH sensor
+import adafruit_max31865  # for max31865 temp sensorf
 import analysis
-
-# for pump
-import time
-import serial
-
-# for pH sensor
-import adafruit_ads1x15.ads1115 as ADS
-import adafruit_ads1x15.analog_in as analog_in
-
-# for max31865 temp sensorf
-import board
-import busio
-import digitalio
-import adafruit_max31865
-
-
-# for user interface
-import userinterface
-
-# for temp control
-import tempcontrol
+import board  # for max31865 temp sensorf
+import busio  # for max31865 temp sensorf
+import constants
+import digitalio  # for max31865 temp sensorf
+import serial  # for pump
+import tempcontrol  # for temp control
+import userinterface  # for user interface
 
 # global, pH, lcd, and temperature probes
 ph_input_channel = None
@@ -99,7 +89,7 @@ def delay(seconds, countdown=False):
     while timeEnd > timeNow:
         tempcontroller.update()
         timeLeft = timeEnd - timeNow
-        if countdown == True and int(timeLeft) % 5 == 0:
+        if countdown is True and int(timeLeft) % 5 == 0:
             lcd_out("Time Left: {}".format(int(timeLeft)), line=4)
         timeNow = time.time()
 
@@ -176,7 +166,7 @@ def read_user_input(valid_inputs=None, console=False):
         else:
             user_input = keypad.keypad_poll()
 
-        if user_input == None:
+        if user_input is None:
             pass
         elif valid_inputs is None or user_input in valid_inputs:
             print("Input: ", user_input)
@@ -248,7 +238,7 @@ def read_user_value(message):
 
             # Check for decimal. If there is already one, do nothing
             if user_input == "*":
-                if decimal == False:
+                if decimal is False:
                     inputs.append(user_input)
                     string = string + "."
                     decimal = True
@@ -431,7 +421,7 @@ def drive_step_stick(cycles, direction):
     :param cycles: number of rising edges for the pump
     :param direction: direction of pump
     """
-    if cycles is 0:
+    if cycles == 0:
         return 0
 
     if constants.IS_TEST:

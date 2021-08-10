@@ -1,13 +1,11 @@
-from micropython import const
-import interfaces
-import constants
-import analysis
-import tempcontrol
 import time
 
-
-# debugging/testing
-import numpy as np
+import analysis
+import constants
+import interfaces
+import numpy as np  # debugging/testing
+import tempcontrol
+from micropython import const
 
 ROUTINE_OPTIONS = {
     1: "Run titration",
