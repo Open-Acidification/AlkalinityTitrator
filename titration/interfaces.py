@@ -17,6 +17,7 @@ import ph_probe  # pH
 import ph_probe_mock
 import temp_probe
 import temp_probe_mock
+import serial_mock
 
 if constants.IS_TEST:
     ph_class = ph_probe_mock
@@ -25,6 +26,7 @@ if constants.IS_TEST:
     lcd_class = lcd_mock
     keypad_class = keypad_mock
     tempcontrol_class = tempcontrol_mock
+    serial_class = serial_mock
 else:
     # NOTE: The board module can only be imported if
     # running on specific hardware (i.e. Raspberry Pi)
@@ -37,6 +39,7 @@ else:
     lcd_class = lcd
     keypad_class = keypad
     tempcontrol_class = tempcontrol
+    serial_class = serial
 
 # global, pH, lcd, and temperature probes
 ph_sensor = None
@@ -62,18 +65,8 @@ def setup_interfaces():
     temp_sensor = setup_temp_probe()
     tempcontroller = setup_tempcontrol()
     ph_sensor = setup_ph_probe()
-    if constants.IS_TEST:
-        pass
-    else:
-        # pump setup (through Arduino)
-        if not constants.IS_TEST:
-            arduino = serial.Serial(
-                port=constants.ARDUINO_PORT,
-                baudrate=constants.ARDUINO_BAUD,
-                timeout=constants.ARDUINO_TIMEOUT,
-            )
-            arduino.reset_output_buffer()
-            arduino.reset_input_buffer()
+    arduino = setup_arduino()
+
 
 
 def setup_lcd():
@@ -120,6 +113,16 @@ def setup_tempcontrol():
 def setup_ph_probe():
     return ph_class.pH_Probe(board_class.SCL, board_class.SDA, gain=8)
 
+def setup_arduino():
+    temp_arduino = serial_class.Serial(
+                port=constants.ARDUINO_PORT,
+                baudrate=constants.ARDUINO_BAUD,
+                timeout=constants.ARDUINO_TIMEOUT,
+            )
+    temp_arduino.reset_input_buffer()
+    temp_arduino.reset_output_buffer()
+    
+    return temp_arduino
 
 def delay(seconds, countdown=False):
     # Use time.sleep() if the temp controller isn't initialized yet

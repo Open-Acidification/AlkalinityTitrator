@@ -138,7 +138,7 @@ class TempControl:
         self.df.to_csv(filename, index_label="step", header=True)
 
     def at_temp(self):
-        if self.sensor.temperature() >= 29 and self.sensor.temperature() <= 30:
+        if self.tempLast >= 29 and self.tempLast <= 30:
             return True
         else:
             return False
