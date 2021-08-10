@@ -1,11 +1,12 @@
 import time
-from gpiozero import LED
+from array import *
+
+import adafruit_max31865
 import board
 import busio
 import digitalio
 import pandas as pd
-import adafruit_max31865
-from array import*
+from gpiozero import LED
 
 PID_DEFAULT_KP = 0.09
 PID_DEFAULT_TI = 0.000001
@@ -14,234 +15,248 @@ PID_ANTIWINDUP_KP = 0.04
 PID_ANTIWINDUP_TI = 0.004
 PID_ANTIWINDUP_TD = 9
 
-class TempControl():
-	"""
-	Temp Control class for running the PID control on the Alkalinity
-	Titrator using a SSR and Heated Beaker Jacket
 
-	"""
-	def __init__(self, sensor, relay_pin):
-		self.sensor = sensor
-		self.relay = LED(relay_pin)
+class TempControl:
+    """
+    Temp Control class for running the PID control on the Alkalinity
+    Titrator using a SSR and Heated Beaker Jacket
 
-	# Flag - print data to console or not
-	printData = False
+    """
 
-	# Flag - if False, update() does not toggle relay
-	controlActive = False
+    def __init__(self, sensor, relay_pin):
+        self.sensor = sensor
+        self.relay = LED(relay_pin)
 
-	# PID Parameters
-	kp = PID_DEFAULT_KP
-	Ti = PID_DEFAULT_TI
-	Td = PID_DEFAULT_TD
+    # Flag - print data to console or not
+    printData = False
 
-	# PID Gain
-	k = 0
-	integral = 0
-	integral_prior = 0
-	derivative = 0
-	error = 0
-	error_prior = 0
+    # Flag - if False, update() does not toggle relay
+    controlActive = False
 
-	# Step Count - How many cycles have we done?
-	stepCount = 0
+    # PID Parameters
+    kp = PID_DEFAULT_KP
+    Ti = PID_DEFAULT_TI
+    Td = PID_DEFAULT_TD
 
-	# Time between steps (seconds) - how long to wait until next step
-	timeStep = 1
+    # PID Gain
+    k = 0
+    integral = 0
+    integral_prior = 0
+    derivative = 0
+    error = 0
+    error_prior = 0
 
-	# The time the next step nets to be taken
-	# not localtime() since we need fractional seconds
-	timeNext = time.time()
-	
-	# last temperature read
-	tempLast = 0
+    # Step Count - How many cycles have we done?
+    stepCount = 0
 
-	# What state is the relay currently in
-	relayOn = False
+    # Time between steps (seconds) - how long to wait until next step
+    timeStep = 1
 
-	# Log of times measurements were taken
-	timeLog = []
+    # The time the next step nets to be taken
+    # not localtime() since we need fractional seconds
+    timeNext = time.time()
 
-	# Data Fame of Measurements
-	df = pd.DataFrame(columns = ['time (s)','temp (C)','gain']);
+    # last temperature read
+    tempLast = 0
 
-	# Target temperature
-	setPoint = 30
+    # What state is the relay currently in
+    relayOn = False
 
-	"""
-	Primary function run during the titration. update() will
-	check if it is time to change the state of the relay and
-	update the PID control and relay status as necessary
-	"""
-	def update(self):
-		# If 
-		if not self.controlActive:
-			return
+    # Log of times measurements were taken
+    timeLog = []
 
-		timeNow = time.time() # not localtime() since we need fractional seconds
+    # Data Fame of Measurements
+    df = pd.DataFrame(columns=["time (s)", "temp (C)", "gain"])
 
-		# TODO: Add logging of timeNow-timeNext results (how late?)
-		if (timeNow >= self.timeNext):
-			if (self.relayOn):
-				# we'll turn it off
-				# turn off
-				self.__set_relayState(False)
+    # Target temperature
+    setPoint = 30
 
-				# count a step
-				self.stepCount += 1
+    """
+    Primary function run during the titration. update() will
+    check if it is time to change the state of the relay and
+    update the PID control and relay status as necessary
+    """
 
-				# update error/integral_priors
-				self.__update_priors()
+    def update(self):
+        # If
+        if not self.controlActive:
+            return
 
-				# set off time based on k
-				self.__update_timeNext(time.time()+self.timeStep*(1-self.k))
-			
-			else:
-				#Get data values
-				temp=self.sensor.temperature
-				self.lastTemp = temp
-				#timelog.append(timeNow.tm_sec)
+        timeNow = time.time()  # not localtime() since we need fractional seconds
 
-				#anti-windup
-				if (self.stepCount < 250):
-					self.__set_integral_zero()
-				elif (self.stepCount == 250):
-					self.__set_controlparam_antiwindup()
+        # TODO: Add logging of timeNow-timeNext results (how late?)
+        if timeNow >= self.timeNext:
+            if self.relayOn:
+                # we'll turn it off
+                # turn off
+                self.__set_relayState(False)
 
-				# Update PID Gain
-				self.__update_gains(temp)
+                # count a step
+                self.stepCount += 1
 
-				# Check if relay needs to be turned on
-				if (temp < self.setPoint):
-					if self.k <= 0:
-						self.k = 0
-						self.__update_timeNext(time.time()+self.timeStep)
-					elif self.k < 1:
-						self.__set_relayState(True)
-						self.__update_timeNext(time.time()+self.timeStep*self.k)
-					else:
-						self.k = 1
-						self.__set_relayState(True)
-						self.__update_timeNext(time.time()+self.timeStep)
-					
-				# temp above setpoint
-				else: 
-					self.k=0
-					self.__set_relayState(False)
-					self.__update_timeNext(time.time()+self.timeStep)
-					self.__update_priors()
+                # update error/integral_priors
+                self.__update_priors()
 
-				# Add data to df
-				data_frame_new = pd.DataFrame([[time.ctime(timeNow),temp,self.k]], columns=['time (s)','temp (C)','gain'])
-				self.df = self.df.append(data_frame_new,ignore_index=True)
-				if (self.printData == True):
-					print(self.df)
+                # set off time based on k
+                self.__update_timeNext(time.time() + self.timeStep * (1 - self.k))
 
-		else:
-			# pass until next update is called
-			return
+            else:
+                # Get data values
+                temp = self.sensor.temperature
+                self.lastTemp = temp
+                # timelog.append(timeNow.tm_sec)
 
-	"""
-	Update the time of the last step taken with the time of the 
-	step just taken with time.time()
-	"""
-	def __update_timeLast(self, stepTime):
-		self.timeLast = stepTime
+                # anti-windup
+                if self.stepCount < 250:
+                    self.__set_integral_zero()
+                elif self.stepCount == 250:
+                    self.__set_controlparam_antiwindup()
 
-	"""
-	Update the time that the next relay action should be taken
-	"""
-	def __update_timeNext(self, stepTime):
-		self.timeNext = stepTime
+                # Update PID Gain
+                self.__update_gains(temp)
 
-	"""
-	After 250 cycles, the PID control parameters should
-	be changed to new values
-	"""
-	def __set_controlparam_antiwindup(self):
-		self.kp = PID_ANTIWINDUP_KP
-		self.Ti = PID_ANTIWINDUP_TI
-		self.Td = PID_ANTIWINDUP_TD
+                # Check if relay needs to be turned on
+                if temp < self.setPoint:
+                    if self.k <= 0:
+                        self.k = 0
+                        self.__update_timeNext(time.time() + self.timeStep)
+                    elif self.k < 1:
+                        self.__set_relayState(True)
+                        self.__update_timeNext(time.time() + self.timeStep * self.k)
+                    else:
+                        self.k = 1
+                        self.__set_relayState(True)
+                        self.__update_timeNext(time.time() + self.timeStep)
 
-	"""
-	For the first 250 cycles, the PID parameters should
-	be set to their default values. 
-	"""
-	def __set_controlparam_default(self):
-		self.kp = PID_DEFAULT_KP
-		self.Ti = PID_DEFAULT_TI
-		self.Td = PID_DEFAULT_TD
+                # temp above setpoint
+                else:
+                    self.k = 0
+                    self.__set_relayState(False)
+                    self.__update_timeNext(time.time() + self.timeStep)
+                    self.__update_priors()
 
-	def __update_gains(self, temp):
-		self.error = self.setPoint - temp
-		self.integral = self.integral_prior + self.error * self.timeStep
-		self.derivative = (self.error - self.error_prior) / self.timeStep
-		self.k = self.kp * (self.error + self.Ti * self.integral + self.Td * self.derivative)
+                # Add data to df
+                data_frame_new = pd.DataFrame(
+                    [[time.ctime(timeNow), temp, self.k]],
+                    columns=["time (s)", "temp (C)", "gain"],
+                )
+                self.df = self.df.append(data_frame_new, ignore_index=True)
+                if self.printData is True:
+                    print(self.df)
 
+        else:
+            # pass until next update is called
+            return
 
-	def __update_priors(self):
-		self.error_prior = self.error
-		self.integral_prior = self.integral
+    """
+    Update the time of the last step taken with the time of the
+    step just taken with time.time()
+    """
 
-	"""
-	For the first 250 cycles, the integral value should
-	be zeroed to prevent windup 
-	"""
-	def __set_integral_zero(self):
-		self.integral = 0
+    def __update_timeLast(self, stepTime):
+        self.timeLast = stepTime
 
-	def __set_relayState(self, boolean):
-		self.relayOn = boolean
-		if (boolean == True):
-			self.relay.on()
-		else:
-			self.relay.off()
+    """
+    Update the time that the next relay action should be taken
+    """
 
-	def enable_print(self):
-		self.printData = True
+    def __update_timeNext(self, stepTime):
+        self.timeNext = stepTime
 
-	def disable_print(self):
-		self.printData = False
+    """
+    After 250 cycles, the PID control parameters should
+    be changed to new values
+    """
 
-	def output_csv(self, filename):
-		self.df.to_csv(filename,index_label='step',header=True)
+    def __set_controlparam_antiwindup(self):
+        self.kp = PID_ANTIWINDUP_KP
+        self.Ti = PID_ANTIWINDUP_TI
+        self.Td = PID_ANTIWINDUP_TD
 
-	def at_temp(self):
-		if self.sensor.temperature >= 29 and self.sensor.temperature <= 30:
-			return True
-		else:
-			return False
-	
-	def get_last_temp(self):
-		return self.lastTemp
+    """
+    For the first 250 cycles, the PID parameters should
+    be set to their default values.
+    """
 
-	def activate(self):
-		self.controlActive = True
-		self.__set_controlparam_default()
-		timeNext = time.time()
+    def __set_controlparam_default(self):
+        self.kp = PID_DEFAULT_KP
+        self.Ti = PID_DEFAULT_TI
+        self.Td = PID_DEFAULT_TD
 
-	def deactivate(self):
-		self.controlActive = False
-		self.__set_relayState(False)
+    def __update_gains(self, temp):
+        self.error = self.setPoint - temp
+        self.integral = self.integral_prior + self.error * self.timeStep
+        self.derivative = (self.error - self.error_prior) / self.timeStep
+        self.k = self.kp * (
+            self.error + self.Ti * self.integral + self.Td * self.derivative
+        )
+
+    def __update_priors(self):
+        self.error_prior = self.error
+        self.integral_prior = self.integral
+
+    """
+    For the first 250 cycles, the integral value should
+    be zeroed to prevent windup
+    """
+
+    def __set_integral_zero(self):
+        self.integral = 0
+
+    def __set_relayState(self, boolean):
+        self.relayOn = boolean
+        if boolean is True:
+            self.relay.on()
+        else:
+            self.relay.off()
+
+    def enable_print(self):
+        self.printData = True
+
+    def disable_print(self):
+        self.printData = False
+
+    def output_csv(self, filename):
+        self.df.to_csv(filename, index_label="step", header=True)
+
+    def at_temp(self):
+        if self.sensor.temperature >= 29 and self.sensor.temperature <= 30:
+            return True
+        else:
+            return False
+
+    def get_last_temp(self):
+        return self.lastTemp
+
+    def activate(self):
+        self.controlActive = True
+        self.__set_controlparam_default()
+        timeNext = time.time()
+
+    def deactivate(self):
+        self.controlActive = False
+        self.__set_relayState(False)
+
 
 if __name__ == "__main__":
-	spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
-	cs = digitalio.DigitalInOut(board.CE1)  # Chip select of the MAX31865 board.
-	sensor = adafruit_max31865.MAX31865(spi, cs, rtd_nominal=1000, ref_resistor=4300, wires=3)
-	
-	tempControl = TempControl(sensor, 12)
-	tempControl.enable_print()
+    spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
+    cs = digitalio.DigitalInOut(board.CE1)  # Chip select of the MAX31865 board.
+    sensor = adafruit_max31865.MAX31865(
+        spi, cs, rtd_nominal=1000, ref_resistor=4300, wires=3
+    )
 
-	# 10min time
-	timeCurr = time.time()
-	timeEnd = timeCurr + 3600
-	print ("Time Start: ", time.ctime(timeCurr), "\nTime End: ", time.ctime(timeEnd))
-	while (timeEnd > time.time()):
-		tempControl.update()
+    tempControl = TempControl(sensor, 12)
+    tempControl.enable_print()
 
-	filename = "data/TempCtrl_" + time.ctime() + ".csv"
-	filename = filename.replace(':','-')
-	filename = filename.replace(' ','_')
+    # 10min time
+    timeCurr = time.time()
+    timeEnd = timeCurr + 3600
+    print("Time Start: ", time.ctime(timeCurr), "\nTime End: ", time.ctime(timeEnd))
+    while timeEnd > time.time():
+        tempControl.update()
 
-	tempControl.output_csv(filename)
+    filename = "data/TempCtrl_" + time.ctime() + ".csv"
+    filename = filename.replace(":", "-")
+    filename = filename.replace(" ", "_")
 
+    tempControl.output_csv(filename)
