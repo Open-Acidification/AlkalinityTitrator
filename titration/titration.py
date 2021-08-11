@@ -1,9 +1,19 @@
 import sys  # exception info
-import time
 import traceback  # exception info
 
 import analysis
 import constants
+
+# Parse opcodes for testing mode
+# Must be checked before "import interfaces"
+opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
+if opts:
+    if "-test" in opts:
+        print("Starting in Test Mode")
+        constants.IS_TEST = True
+    else:
+        raise SystemExit(f"Usage: {sys.argv[0]} (-test)")
+
 import interfaces
 import routines
 
@@ -48,7 +58,7 @@ def run():
     analysis.save_calibration_data()
     interfaces.tempcontroller.deactivate()
     interfaces.lcd_clear()
-    interfaces.lcd.lcd_backlight(False)
+    interfaces.ui_lcd.lcd_backlight(False)
 
 
 def initialize_components():
@@ -62,7 +72,8 @@ if __name__ == "__main__":
         run()
     except:
         # Deactivate the SSR if any crash occurs
-        interfaces.tempcontroller.deactivate()
+        if interfaces.tempcontroller is not None:
+            interfaces.tempcontroller.deactivate()
         print("\nDeactivated SSR")
 
         print(sys.exc_info()[0])
