@@ -31,4 +31,4 @@ def test_serial_flush():
 
 def test_serial_readline():
     arduino = serial.Serial(port=c.ARDUINO_PORT, baudrate=c.ARDUINO_BAUD, timeout=c.ARDUINO_TIMEOUT)
-    assert arduino.readline() == "DONE\r\n"
+    assert arduino.readline() == b"DONE\r\n"

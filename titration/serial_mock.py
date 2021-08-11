@@ -19,4 +19,4 @@ class Serial():
         pass
     
     def readline(self):
-        return "DONE\r\n"
+        return b"DONE\r\n"

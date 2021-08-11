@@ -320,8 +320,6 @@ def read_pH():
     Reads calibration-adjusted value for pH
     :returns: adjusted pH value in units of pH, raw V reading from probe
     """
-    if constants.IS_TEST:
-        return _test_read_pH()
     volts = read_raw_pH()
     temp = read_temperature()[0]
     pH_val = analysis.calculate_pH(volts, temp)
@@ -350,8 +348,6 @@ def read_temperature():
     Reads and returns the temperature from GPIO
     :returns: temperature in celsius, resistance in ohms
     """
-    if constants.IS_TEST:
-        return _test_read_temperature()
     return temp_sensor.temperature(), temp_sensor.resistance()
 
 
@@ -454,10 +450,6 @@ def drive_step_stick(cycles, direction):
     """
     if cycles == 0:
         return 0
-
-    if constants.IS_TEST:
-        delay(1)
-        return _test_add_HCl()
 
     delay(0.01)
     if arduino.writable():
