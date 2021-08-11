@@ -1,5 +1,5 @@
-import temp_probe_mock
-import board_mock
+import titration.temp_probe_mock as temp_probe_mock
+import titration.board_mock as board_mock
 
 def test_temp_probe_create():
     temp_sensor = temp_probe_mock.Temp_Probe(board_mock.SCK, board_mock.MOSI, board_mock.MISO, board_mock.D4, wires=2)

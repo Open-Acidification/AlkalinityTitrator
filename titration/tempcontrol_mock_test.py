@@ -1,6 +1,6 @@
-import tempcontrol_mock as tempcontrol
-import temp_probe_mock as temp_probe
-import board_mock as board
+import titration.tempcontrol_mock as tempcontrol
+import titration.temp_probe_mock as temp_probe
+import titration.board_mock as board
 import pytest
 import time
 

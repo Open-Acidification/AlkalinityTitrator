@@ -1,21 +1,19 @@
 import pytest
 
-import board_mock
-import lcd_mock
-
-board_class = board_mock
+import titration.board_mock as board
+import titration.lcd_mock as lcd_mock
 
 
 def test_lcd_create():
     # the mock LCD doesn't use it's inputs, real or None inputs should work
     lcd = lcd_mock.LCD(
-        rs=board_class.D27,
-        backlight=board_class.D15,
-        enable=board_class.D22,
-        d4=board_class.D18,
-        d5=board_class.D23,
-        d6=board_class.D24,
-        d7=board_class.D25,
+        rs=board.D27,
+        backlight=board.D15,
+        enable=board.D22,
+        d4=board.D18,
+        d5=board.D23,
+        d6=board.D24,
+        d7=board.D25,
     )
 
     assert lcd != None
@@ -27,13 +25,13 @@ def test_lcd_create_null():
 
 def test_lcd_begin_large(capsys):
     lcd = lcd_mock.LCD(
-        rs=board_class.D27,
-        backlight=board_class.D15,
-        enable=board_class.D22,
-        d4=board_class.D18,
-        d5=board_class.D23,
-        d6=board_class.D24,
-        d7=board_class.D25,
+        rs=board.D27,
+        backlight=board.D15,
+        enable=board.D22,
+        d4=board.D18,
+        d5=board.D23,
+        d6=board.D24,
+        d7=board.D25,
     )
 
     lcd.begin(20, 4)
@@ -69,13 +67,13 @@ def test_lcd_begin_large_null(capsys):
 
 def test_lcd_begin_small(capsys):
     lcd = lcd_mock.LCD(
-        rs=board_class.D27,
-        backlight=board_class.D15,
-        enable=board_class.D22,
-        d4=board_class.D18,
-        d5=board_class.D23,
-        d6=board_class.D24,
-        d7=board_class.D25,
+        rs=board.D27,
+        backlight=board.D15,
+        enable=board.D22,
+        d4=board.D18,
+        d5=board.D23,
+        d6=board.D24,
+        d7=board.D25,
     )
 
     lcd.begin(10, 2)
@@ -107,13 +105,13 @@ def test_lcd_begin_small_null(capsys):
 
 def test_lcd_no_begin():
     lcd = lcd_mock.LCD(
-        rs=board_class.D27,
-        backlight=board_class.D15,
-        enable=board_class.D22,
-        d4=board_class.D18,
-        d5=board_class.D23,
-        d6=board_class.D24,
-        d7=board_class.D25,
+        rs=board.D27,
+        backlight=board.D15,
+        enable=board.D22,
+        d4=board.D18,
+        d5=board.D23,
+        d6=board.D24,
+        d7=board.D25,
     )
 
     # print without using begin() first
@@ -129,13 +127,13 @@ def test_lcd_no_begin_null():
 
 def test_lcd_print_left(capsys):
     lcd = lcd_mock.LCD(
-        rs=board_class.D27,
-        backlight=board_class.D15,
-        enable=board_class.D22,
-        d4=board_class.D18,
-        d5=board_class.D23,
-        d6=board_class.D24,
-        d7=board_class.D25,
+        rs=board.D27,
+        backlight=board.D15,
+        enable=board.D22,
+        d4=board.D18,
+        d5=board.D23,
+        d6=board.D24,
+        d7=board.D25,
     )
 
     lcd.begin(20,4)
@@ -205,13 +203,13 @@ def test_lcd_print_left(capsys):
 
 def test_lcd_print_center(capsys):
     lcd = lcd_mock.LCD(
-        rs=board_class.D27,
-        backlight=board_class.D15,
-        enable=board_class.D22,
-        d4=board_class.D18,
-        d5=board_class.D23,
-        d6=board_class.D24,
-        d7=board_class.D25,
+        rs=board.D27,
+        backlight=board.D15,
+        enable=board.D22,
+        d4=board.D18,
+        d5=board.D23,
+        d6=board.D24,
+        d7=board.D25,
     )
 
     lcd.begin(20,4)
@@ -281,13 +279,13 @@ def test_lcd_print_center(capsys):
 
 def test_lcd_print_right(capsys):
     lcd = lcd_mock.LCD(
-        rs=board_class.D27,
-        backlight=board_class.D15,
-        enable=board_class.D22,
-        d4=board_class.D18,
-        d5=board_class.D23,
-        d6=board_class.D24,
-        d7=board_class.D25,
+        rs=board.D27,
+        backlight=board.D15,
+        enable=board.D22,
+        d4=board.D18,
+        d5=board.D23,
+        d6=board.D24,
+        d7=board.D25,
     )
 
     lcd.begin(20,4)
@@ -357,13 +355,13 @@ def test_lcd_print_right(capsys):
 
 def test_lcd_print_long(capsys):
     lcd = lcd_mock.LCD(
-        rs=board_class.D27,
-        backlight=board_class.D15,
-        enable=board_class.D22,
-        d4=board_class.D18,
-        d5=board_class.D23,
-        d6=board_class.D24,
-        d7=board_class.D25,
+        rs=board.D27,
+        backlight=board.D15,
+        enable=board.D22,
+        d4=board.D18,
+        d5=board.D23,
+        d6=board.D24,
+        d7=board.D25,
     )
 
     lcd.begin(20, 4)

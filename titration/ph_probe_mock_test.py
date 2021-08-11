@@ -1,5 +1,5 @@
-import ph_probe_mock
-import board_mock
+import titration.ph_probe_mock as ph_probe_mock
+import titration.board_mock as board_mock
 import pytest
 
 def test_ph_create():
