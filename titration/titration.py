@@ -14,7 +14,6 @@ if opts:
     else:
         raise SystemExit(f"Usage: {sys.argv[0]} (-test)")
 
-
 import interfaces
 import routines
 
@@ -73,7 +72,7 @@ if __name__ == "__main__":
         run()
     except:
         # Deactivate the SSR if any crash occurs
-        if interfaces.tempcontroller != None:
+        if interfaces.tempcontroller is not None:
             interfaces.tempcontroller.deactivate()
         print("\nDeactivated SSR")
 

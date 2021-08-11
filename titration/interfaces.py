@@ -2,8 +2,6 @@
 
 import time  # time.sleep()
 
-import serial  # Pump
-
 import analysis
 import board_mock
 import constants
@@ -11,13 +9,14 @@ import keypad  # UI
 import keypad_mock
 import lcd  # UI
 import lcd_mock
-import tempcontrol  # Temp
-import tempcontrol_mock
 import ph_probe  # pH
 import ph_probe_mock
+import serial  # Pump
+import serial_mock
 import temp_probe
 import temp_probe_mock
-import serial_mock
+import tempcontrol  # Temp
+import tempcontrol_mock
 
 if constants.IS_TEST:
     ph_class = ph_probe_mock
@@ -68,7 +67,6 @@ def setup_interfaces():
     arduino = setup_arduino()
 
 
-
 def setup_lcd():
     temp_lcd = lcd_class.LCD(
         rs=board_class.D27,
@@ -113,16 +111,18 @@ def setup_tempcontrol():
 def setup_ph_probe():
     return ph_class.pH_Probe(board_class.SCL, board_class.SDA, gain=8)
 
+
 def setup_arduino():
     temp_arduino = serial_class.Serial(
-                port=constants.ARDUINO_PORT,
-                baudrate=constants.ARDUINO_BAUD,
-                timeout=constants.ARDUINO_TIMEOUT,
-            )
+        port=constants.ARDUINO_PORT,
+        baudrate=constants.ARDUINO_BAUD,
+        timeout=constants.ARDUINO_TIMEOUT,
+    )
     temp_arduino.reset_input_buffer()
     temp_arduino.reset_output_buffer()
-    
+
     return temp_arduino
+
 
 def delay(seconds, countdown=False):
     # Use time.sleep() if the temp controller isn't initialized yet
@@ -154,7 +154,6 @@ def lcd_out(
         print(message)
     else:
         ui_lcd.print(message, line, style)
-
 
 
 def lcd_clear():

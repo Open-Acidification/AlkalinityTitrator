@@ -13,9 +13,9 @@ class Temp_Probe:
 
     def resistance(self):
         return self.res
-    
+
     def mock_set_temperature(self, temp):
         self.temp = temp
-    
-    def mock_set_resistance(self,res):
+
+    def mock_set_resistance(self, res):
         self.res = res

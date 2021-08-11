@@ -122,7 +122,7 @@ class TempControl:
                     columns=["time (s)", "temp (C)", "gain"],
                 )
                 self.df = self.df.append(data_frame_new, ignore_index=True)
-                if self.printData == True:
+                if self.printData:
                     print(self.df)
 
         else:

@@ -140,7 +140,7 @@ class TempControl:
                     columns=["time (s)", "temp (C)", "gain"],
                 )
                 self.df = self.df.append(data_frame_new, ignore_index=True)
-                if self.printData == True:
+                if self.printData:
                     print(self.df)
 
         else:
@@ -231,10 +231,11 @@ class TempControl:
 
     def __set_relayState(self, boolean):
         self.relayOn = boolean
-        if boolean == True:
+        if boolean:
             self.relay.on()
         else:
             self.relay.off()
+
 
 """
 TODO: add comment

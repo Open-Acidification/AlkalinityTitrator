@@ -1,7 +1,7 @@
-import busio
-import digitalio
 import adafruit_max31865
+import busio
 import constants
+import digitalio
 
 
 class Temp_Probe:

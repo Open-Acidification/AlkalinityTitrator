@@ -1,5 +1,4 @@
-
-class Serial():
+class Serial:
     def __init__(self, port=None, baudrate=None, timeout=None):
         pass
 
@@ -17,6 +16,6 @@ class Serial():
 
     def flush(self):
         pass
-    
+
     def readline(self):
         return b"DONE\r\n"

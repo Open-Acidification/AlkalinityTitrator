@@ -1,8 +1,7 @@
 import time
 
-import digitalio
-
 import constants
+import digitalio
 
 
 class LCD:

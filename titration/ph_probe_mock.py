@@ -22,6 +22,6 @@ class pH_Probe:
 
     def get_gain(self):
         return self.gain
-    
+
     def mock_set_voltage(self, voltage):
         self.volt = voltage

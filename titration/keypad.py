@@ -1,6 +1,5 @@
-import digitalio
-
 import constants
+import digitalio
 
 
 class Keypad:

@@ -18,6 +18,7 @@ def test_lcd_create():
 
     assert lcd != None
 
+
 def test_lcd_create_null():
     lcd = lcd_mock.LCD(None, None, None, None, None, None, None)
     assert lcd != None
@@ -48,6 +49,7 @@ def test_lcd_begin_large(capsys):
     assert lcd.cols == 20
     assert lcd.rows == 4
 
+
 def test_lcd_begin_large_null(capsys):
     lcd = lcd_mock.LCD(None, None, None, None, None, None, None)
 
@@ -65,6 +67,7 @@ def test_lcd_begin_large_null(capsys):
     assert lcd.cols == 20
     assert lcd.rows == 4
 
+
 def test_lcd_begin_small(capsys):
     lcd = lcd_mock.LCD(
         rs=board.D27,
@@ -79,29 +82,25 @@ def test_lcd_begin_small(capsys):
     lcd.begin(10, 2)
     captured = capsys.readouterr()
     assert captured.out == (
-        "*==========*\n" + 
-        "|          |\n" + 
-        "|          |\n" + 
-        "*==========*\n"
+        "*==========*\n" + "|          |\n" + "|          |\n" + "*==========*\n"
     )
 
     assert lcd.cols == 10
     assert lcd.rows == 2
 
+
 def test_lcd_begin_small_null(capsys):
-    lcd = lcd_mock.LCD(None,None,None,None,None,None,None)
+    lcd = lcd_mock.LCD(None, None, None, None, None, None, None)
 
     lcd.begin(10, 2)
     captured = capsys.readouterr()
     assert captured.out == (
-        "*==========*\n" + 
-        "|          |\n" + 
-        "|          |\n" + 
-        "*==========*\n"
+        "*==========*\n" + "|          |\n" + "|          |\n" + "*==========*\n"
     )
 
     assert lcd.cols == 10
     assert lcd.rows == 2
+
 
 def test_lcd_no_begin():
     lcd = lcd_mock.LCD(
@@ -118,12 +117,14 @@ def test_lcd_no_begin():
     with pytest.raises(ValueError):
         lcd.print("This should fail", 1, 1)
 
+
 def test_lcd_no_begin_null():
     lcd = lcd_mock.LCD(None, None, None, None, None, None, None)
 
     # print without using begin() first
     with pytest.raises(ValueError):
         lcd.print("This should fail", 1, 1)
+
 
 def test_lcd_print_left(capsys):
     lcd = lcd_mock.LCD(
@@ -136,7 +137,7 @@ def test_lcd_print_left(capsys):
         d7=board.D25,
     )
 
-    lcd.begin(20,4)
+    lcd.begin(20, 4)
 
     # Flush the current stdout buffer from begin() output
     _ = capsys.readouterr()
@@ -201,6 +202,7 @@ def test_lcd_print_left(capsys):
         + "*====================*\n"
     )
 
+
 def test_lcd_print_center(capsys):
     lcd = lcd_mock.LCD(
         rs=board.D27,
@@ -212,7 +214,7 @@ def test_lcd_print_center(capsys):
         d7=board.D25,
     )
 
-    lcd.begin(20,4)
+    lcd.begin(20, 4)
 
     # Flush the current stdout buffer from begin() output
     _ = capsys.readouterr()
@@ -277,6 +279,7 @@ def test_lcd_print_center(capsys):
         + "*====================*\n"
     )
 
+
 def test_lcd_print_right(capsys):
     lcd = lcd_mock.LCD(
         rs=board.D27,
@@ -288,7 +291,7 @@ def test_lcd_print_right(capsys):
         d7=board.D25,
     )
 
-    lcd.begin(20,4)
+    lcd.begin(20, 4)
 
     # Flush the current stdout buffer from begin() output
     _ = capsys.readouterr()
@@ -353,6 +356,7 @@ def test_lcd_print_right(capsys):
         + "*====================*\n"
     )
 
+
 def test_lcd_print_long(capsys):
     lcd = lcd_mock.LCD(
         rs=board.D27,
@@ -391,7 +395,6 @@ def test_lcd_clear(capsys):
     lcd.print("test string", 2, 2)
     lcd.print("test string", 3, 2)
     lcd.print("test string", 4, 2)
-
 
     # Flush the current stdout buffer from begin() and prints
     _ = capsys.readouterr()
