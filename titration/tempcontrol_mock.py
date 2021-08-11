@@ -213,24 +213,3 @@ class TempControl:
 
     def __set_relayState(self, boolean):
         self.relayOn = boolean
-
-
-if __name__ == "__main__":
-    tempControl = TempControl()
-    tempControl.enable_print()
-    tempControl.activate()
-
-    # 10min time
-    timeCurr = time.time()
-    timeEnd = timeCurr + 60
-    print("Time Start: ", time.ctime(timeCurr), "\nTime End: ", time.ctime(timeEnd))
-    while timeEnd > time.time():
-        tempControl.update()
-
-    filename = "data/TempCtrl_" + time.ctime() + ".csv"
-    filename = filename.replace(":", "-")
-    filename = filename.replace(" ", "_")
-
-    tempControl.output_csv(filename)
-
-    tempControl.deactivate()

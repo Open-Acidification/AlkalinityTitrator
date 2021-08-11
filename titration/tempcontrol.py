@@ -7,11 +7,6 @@ import digitalio
 import pandas as pd
 from gpiozero import LED
 
-try:
-    import board
-except NotImplementedError:
-    pass
-
 PID_DEFAULT_KP = 0.09
 PID_DEFAULT_TI = 0.000001
 PID_DEFAULT_TD = 9
@@ -241,8 +236,12 @@ class TempControl:
         else:
             self.relay.off()
 
-
+"""
+TODO: add comment
+"""
 if __name__ == "__main__":
+    import board
+
     spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
     cs = digitalio.DigitalInOut(board.CE1)  # Chip select of the MAX31865 board.
     sensor = adafruit_max31865.MAX31865(

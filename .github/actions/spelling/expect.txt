@@ -50,6 +50,7 @@ markdownlint
 matplotlib
 micropython
 MOSI
+mosi
 Mozilla
 numpy
 Onthank
@@ -82,9 +83,12 @@ rpi
 rtd
 RXD
 SCK
+sck
+scl
 SCL
 SCLK
 screenshots
+sda
 sensorf
 setpoint
 smbus
@@ -93,6 +97,7 @@ src
 ssh
 ssl
 startswith
+stdout
 strftime
 sudo
 Sukachevin
