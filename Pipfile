@@ -6,7 +6,6 @@ verify_ssl = true
 [dev-packages]
 flake8 = "*"
 isort = "*"
-mypy = "*"
 pycodestyle = "*"
 pytest = "*"
 pylint = "*"
