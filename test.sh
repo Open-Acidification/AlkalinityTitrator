@@ -1,5 +1,5 @@
 #!/bin/sh
-cd ".\titration"
+cd ./titration
 python -m pytest -vv
 
 $SHELL
