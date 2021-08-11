@@ -1,11 +1,7 @@
 import time
 from array import *
 
-import adafruit_max31865
-import busio
-import digitalio
 import pandas as pd
-from gpiozero import LED
 
 PID_DEFAULT_KP = 0.09
 PID_DEFAULT_TI = 0.000001
@@ -14,7 +10,7 @@ PID_ANTIWINDUP_KP = 0.04
 PID_ANTIWINDUP_TI = 0.004
 PID_ANTIWINDUP_TD = 9
 
-
+# tempcontrol
 class TempControl:
     """
     Temp Control class for running the PID control on the Alkalinity
@@ -24,7 +20,6 @@ class TempControl:
 
     def __init__(self, sensor, relay_pin):
         self.sensor = sensor
-        self.relay = LED(relay_pin)
 
     # Flag - print data to console or not
     printData = False
@@ -56,7 +51,7 @@ class TempControl:
     timeNext = time.time()
 
     # last temperature read
-    tempLast = 0
+    tempLast = 20
 
     # What state is the relay currently in
     relayOn = False
@@ -99,39 +94,26 @@ class TempControl:
                 # set off time based on k
                 self.__update_timeNext(time.time() + self.timeStep * (1 - self.k))
 
+                # increase the temperature by k (0-1)
+                self.tempLast = self.tempLast + self.k
+                self.sensor.mock_set_temperature(self.tempLast)
+
             else:
                 # Get data values
-                temp = self.sensor.temperature()
-                self.tempLast = temp
-                # timelog.append(timeNow.tm_sec)
-
-                # anti-windup
-                if self.stepCount < 250:
-                    self.__set_integral_zero()
-                elif self.stepCount == 250:
-                    self.__set_controlparam_antiwindup()
-
-                # Update PID Gain
-                self.__update_gains(temp)
+                temp = self.tempLast
 
                 # Check if relay needs to be turned on
-                if temp < self.setPoint:
-                    if self.k <= 0:
-                        self.k = 0
-                        self.__update_timeNext(time.time() + self.timeStep)
-                    elif self.k < 1:
-                        self.__set_relayState(True)
-                        self.__update_timeNext(time.time() + self.timeStep * self.k)
-                    else:
-                        self.k = 1
-                        self.__set_relayState(True)
-                        self.__update_timeNext(time.time() + self.timeStep)
+                if temp < self.setPoint - 0.5:
+                    self.k = 1
+                    self.__set_relayState(True)
+                    self.__update_timeNext(time.time() + self.timeStep)
 
                 # temp above setpoint
                 else:
                     self.k = 0
                     self.__set_relayState(False)
                     self.__update_timeNext(time.time() + self.timeStep)
+                    self.tempLast = self.tempLast - 0.1
                     self.__update_priors()
 
                 # Add data to df
@@ -231,36 +213,3 @@ class TempControl:
 
     def __set_relayState(self, boolean):
         self.relayOn = boolean
-        if boolean:
-            self.relay.on()
-        else:
-            self.relay.off()
-
-
-"""
-TODO: add comment
-"""
-if __name__ == "__main__":
-    import board
-
-    spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
-    cs = digitalio.DigitalInOut(board.CE1)  # Chip select of the MAX31865 board.
-    sensor = adafruit_max31865.MAX31865(
-        spi, cs, rtd_nominal=1000, ref_resistor=4300, wires=3
-    )
-
-    tempControl = TempControl(sensor, 12)
-    tempControl.enable_print()
-
-    # 10min time
-    timeCurr = time.time()
-    timeEnd = timeCurr + 3600
-    print("Time Start: ", time.ctime(timeCurr), "\nTime End: ", time.ctime(timeEnd))
-    while timeEnd > time.time():
-        tempControl.update()
-
-    filename = "data/TempCtrl_" + time.ctime() + ".csv"
-    filename = filename.replace(":", "-")
-    filename = filename.replace(" ", "_")
-
-    tempControl.output_csv(filename)

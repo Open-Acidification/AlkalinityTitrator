@@ -4,7 +4,7 @@ import time
 import constants
 import digitalio
 import interfaces
-from board import *
+from board import board
 
 
 class LCD:
@@ -12,13 +12,13 @@ class LCD:
 
     def __init__(self):
         # Set up pins
-        self.pin_RS = digitalio.DigitalInOut(D27)  # RS
-        self.pin_E = digitalio.DigitalInOut(D22)  # E
-        self.pin_D4 = digitalio.DigitalInOut(D18)  # DB4
-        self.pin_D5 = digitalio.DigitalInOut(D23)  # DB5
-        self.pin_D6 = digitalio.DigitalInOut(D24)  # DB6
-        self.pin_D7 = digitalio.DigitalInOut(D25)  # DB7
-        self.pin_ON = digitalio.DigitalInOut(D15)  # Backlight enable
+        self.pin_RS = digitalio.DigitalInOut(board.D27)  # RS
+        self.pin_E = digitalio.DigitalInOut(board.D22)  # E
+        self.pin_D4 = digitalio.DigitalInOut(board.D18)  # DB4
+        self.pin_D5 = digitalio.DigitalInOut(board.D23)  # DB5
+        self.pin_D6 = digitalio.DigitalInOut(board.D24)  # DB6
+        self.pin_D7 = digitalio.DigitalInOut(board.D25)  # DB7
+        self.pin_ON = digitalio.DigitalInOut(board.D15)  # Backlight enable
 
         self.pin_E.direction = digitalio.Direction.OUTPUT
         self.pin_RS.direction = digitalio.Direction.OUTPUT
@@ -194,14 +194,14 @@ class LCD:
 class Keypad:
     def __init__(self):
 
-        self.pin_R0 = digitalio.DigitalInOut(D1)  # Top Row
-        self.pin_R1 = digitalio.DigitalInOut(D6)
-        self.pin_R2 = digitalio.DigitalInOut(D5)
-        self.pin_R3 = digitalio.DigitalInOut(D19)  # Bottom Row
-        self.pin_C0 = digitalio.DigitalInOut(D16)  # Leftmost Column
-        self.pin_C1 = digitalio.DigitalInOut(D26)
-        self.pin_C2 = digitalio.DigitalInOut(D20)
-        self.pin_C3 = digitalio.DigitalInOut(D21)  # Rightmost Column
+        self.pin_R0 = digitalio.DigitalInOut(board.D1)  # Top Row
+        self.pin_R1 = digitalio.DigitalInOut(board.D6)
+        self.pin_R2 = digitalio.DigitalInOut(board.D5)
+        self.pin_R3 = digitalio.DigitalInOut(board.D19)  # Bottom Row
+        self.pin_C0 = digitalio.DigitalInOut(board.D16)  # Leftmost Column
+        self.pin_C1 = digitalio.DigitalInOut(board.D26)
+        self.pin_C2 = digitalio.DigitalInOut(board.D20)
+        self.pin_C3 = digitalio.DigitalInOut(board.D21)  # Rightmost Column
 
         self.rows = [self.pin_R0, self.pin_R1, self.pin_R2, self.pin_R3]
         self.cols = [self.pin_C0, self.pin_C1, self.pin_C2, self.pin_C3]

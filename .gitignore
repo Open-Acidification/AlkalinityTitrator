@@ -2,6 +2,7 @@
 notes.md
 titration/data
 *.pyc
+*.pdf
 .idea
 *.csv
 *.xlsx

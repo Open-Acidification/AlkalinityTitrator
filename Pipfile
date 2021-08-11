@@ -4,21 +4,24 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+flake8 = "*"
+isort = "*"
 pycodestyle = "*"
 pytest = "*"
 pylint = "*"
 
 [packages]
-gpiozero = "*"
-adafruit-circuitpython-max31865 = "*"
-smbus2 = "*"
-adafruit-circuitpython-lis3dh = "*"
-"rpi.gpio" = "*"
 adafruit-blinka = "*"
 adafruit-circuitpython-ads1x15 = "*"
+adafruit-circuitpython-lis3dh = "*"
+adafruit-circuitpython-max31865 = "*"
+gpiozero = "*"
 pad4pi = "*"
+pandas = "*"
 pep8 = "*"
 pyserial = "*"
+"rpi.gpio" = "*"
+smbus2 = "*"
 
 [requires]
 python_version = "3.8"

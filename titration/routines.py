@@ -3,9 +3,8 @@ import time
 import analysis
 import constants
 import interfaces
-import numpy as np  # debugging/testing
+import numpy as np # debugging/testing
 import tempcontrol
-from micropython import const
 
 ROUTINE_OPTIONS = {
     1: "Run titration",
@@ -208,8 +207,8 @@ def total_alkalinity_titration():
     ]
 
     # query user for initial solution weight
-    initial_weight = interfaces.read_user_value("Solution weight (g):")
-    salinity = interfaces.read_user_value("Solution salinity (ppt):")
+    initial_weight = interfaces.read_user_value("Sol. weight (g):")
+    salinity = interfaces.read_user_value("Sol. salinity (ppt):")
     buffer_ph = constants.PH_REF_PH
     buffer_v = constants.PH_REF_VOLTAGE
 
