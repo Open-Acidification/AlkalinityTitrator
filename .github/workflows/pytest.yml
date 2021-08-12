@@ -22,4 +22,4 @@ jobs:
           pipenv install --dev
       - name: Test with pytest
         run: |
-          pipenv run pytest -vv
+          pipenv run python -m pytest -vv
