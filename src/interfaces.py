@@ -106,7 +106,7 @@ def setup_temp_probe():
 
 
 def setup_tempcontrol():
-    return tempcontrol_class.TempControl(temp_sensor, constants.RELAY_PIN)
+    return tempcontrol_class.TempControl(constants.RELAY_PIN, board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D0, wires=3)
 
 
 def setup_ph_probe():

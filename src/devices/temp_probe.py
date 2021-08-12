@@ -2,7 +2,7 @@ import adafruit_max31865
 import busio
 import digitalio
 
-import constants
+import src.constants as constants
 
 
 class Temp_Probe:

@@ -1,5 +1,6 @@
 import time
 
+import src.devices.temp_probe_mock as temp_probe_mock
 import pandas as pd
 
 PID_DEFAULT_KP = 0.09
@@ -16,8 +17,8 @@ class TempControl:
     Titrator using a SSR and Heated Beaker Jacket
     """
 
-    def __init__(self, sensor, relay_pin):
-        self.sensor = sensor
+    def __init__(self, relay_pin, sck, mosi, miso, cs, wires=2):
+        self.sensor = temp_probe_mock.Temp_Probe(sck, mosi, miso, cs, wires=wires)
 
     # Flag - print data to console or not
     printData = False
