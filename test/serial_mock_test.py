@@ -1,7 +1,7 @@
 import pytest
 
-import titration.constants as c
-import titration.serial_mock as serial
+import src.constants as c
+import src.devices.serial_mock as serial
 
 
 def test_serial_create():

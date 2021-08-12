@@ -1,5 +1,5 @@
-import titration.board_mock as board_mock
-import titration.temp_probe_mock as temp_probe_mock
+import src.devices.board_mock as board_mock
+import src.devices.temp_probe_mock as temp_probe_mock
 
 
 def test_temp_probe_create():

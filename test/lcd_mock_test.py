@@ -1,7 +1,7 @@
 import pytest
 
-import titration.board_mock as board
-import titration.lcd_mock as lcd_mock
+import src.devices.board_mock as board
+import src.devices.lcd_mock as lcd_mock
 
 
 def test_lcd_create():
