@@ -8,3 +8,4 @@ titration/data
 *.xlsx
 .pytest_cache
 __pycache__
+super-linter.log

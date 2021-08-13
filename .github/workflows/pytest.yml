@@ -2,8 +2,6 @@
 name: Python Tests
 on:
   push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
@@ -24,4 +22,4 @@ jobs:
           pipenv install --dev
       - name: Test with pytest
         run: |
-          pipenv run pytest -vv titration/
+          pipenv run python -m pytest -vv

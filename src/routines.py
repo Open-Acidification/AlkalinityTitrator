@@ -1,10 +1,8 @@
-import time
+import numpy as np  # debugging/testing
 
 import analysis
 import constants
 import interfaces
-import numpy as np # debugging/testing
-import tempcontrol
 
 ROUTINE_OPTIONS = {
     1: "Run titration",

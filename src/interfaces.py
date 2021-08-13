@@ -2,21 +2,22 @@
 
 import time  # time.sleep()
 
-import analysis
-import board_mock
-import constants
-import keypad  # UI
-import keypad_mock
-import lcd  # UI
-import lcd_mock
-import ph_probe  # pH
-import ph_probe_mock
 import serial  # Pump
-import serial_mock
-import temp_probe
-import temp_probe_mock
-import tempcontrol  # Temp
-import tempcontrol_mock
+
+import analysis
+import constants
+import devices.board_mock as board_mock
+import devices.keypad as keypad  # UI
+import devices.keypad_mock as keypad_mock
+import devices.lcd as lcd  # UI
+import devices.lcd_mock as lcd_mock
+import devices.ph_probe as ph_probe  # pH
+import devices.ph_probe_mock as ph_probe_mock
+import devices.serial_mock as serial_mock
+import devices.temp_probe as temp_probe
+import devices.temp_probe_mock as temp_probe_mock
+import devices.tempcontrol as tempcontrol  # Temp
+import devices.tempcontrol_mock as tempcontrol_mock
 
 if constants.IS_TEST:
     ph_class = ph_probe_mock
@@ -466,4 +467,4 @@ def drive_step_stick(cycles, direction):
         else:
             return int(temp)
     else:
-        lcd_out("Arduino Unavailable")
+        lcd_out("Arduino Unavailable", 4, constants.LCD_CENT_JUST)

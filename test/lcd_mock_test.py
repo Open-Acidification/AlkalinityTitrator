@@ -1,7 +1,7 @@
 import pytest
 
-import titration.board_mock as board
-import titration.lcd_mock as lcd_mock
+import src.devices.board_mock as board
+import src.devices.lcd_mock as lcd_mock
 
 
 def test_lcd_create():
@@ -16,12 +16,12 @@ def test_lcd_create():
         d7=board.D25,
     )
 
-    assert lcd != None
+    assert lcd is not None
 
 
 def test_lcd_create_null():
     lcd = lcd_mock.LCD(None, None, None, None, None, None, None)
-    assert lcd != None
+    assert lcd is not None
 
 
 def test_lcd_begin_large(capsys):

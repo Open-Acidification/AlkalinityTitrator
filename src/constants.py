@@ -107,7 +107,7 @@ calibration_data_format = {
     "vol_pump": 0,
 }
 
-CALIBRATION_FILENAME = "titration/calibration.json"
+CALIBRATION_FILENAME = "src/calibration.json"
 # temp calibration values
 TEMP_REF_RESISTANCE = 4300.0
 TEMP_NOMINAL_RESISTANCE = 1000.0

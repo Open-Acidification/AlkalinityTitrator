@@ -1,14 +1,12 @@
-import pytest
-
-import titration.constants as c
-import titration.serial_mock as serial
+import src.constants as c
+import src.devices.serial_mock as serial
 
 
 def test_serial_create():
     arduino = serial.Serial(
         port=c.ARDUINO_PORT, baudrate=c.ARDUINO_BAUD, timeout=c.ARDUINO_TIMEOUT
     )
-    assert arduino != None
+    assert arduino is not None
 
 
 def test_serial_output_buffer():
@@ -29,7 +27,7 @@ def test_serial_writable():
     arduino = serial.Serial(
         port=c.ARDUINO_PORT, baudrate=c.ARDUINO_BAUD, timeout=c.ARDUINO_TIMEOUT
     )
-    assert arduino.writable() == True
+    assert arduino.writable()
 
 
 def test_serial_write(capsys):

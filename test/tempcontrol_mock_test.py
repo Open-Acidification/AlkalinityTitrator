@@ -1,10 +1,8 @@
 import time
 
-import pytest
-
-import titration.board_mock as board
-import titration.temp_probe_mock as temp_probe
-import titration.tempcontrol_mock as tempcontrol
+import src.devices.board_mock as board
+import src.devices.temp_probe_mock as temp_probe
+import src.devices.tempcontrol_mock as tempcontrol
 
 
 def test_tempcontrol_create():

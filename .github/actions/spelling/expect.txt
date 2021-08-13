@@ -52,6 +52,7 @@ micropython
 MOSI
 mosi
 Mozilla
+noqa
 numpy
 Onthank
 opcodes
