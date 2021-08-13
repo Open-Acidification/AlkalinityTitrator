@@ -122,7 +122,7 @@ def _test_temp():
     for i in range(5):
         temp, res = interfaces.read_temperature()
         interfaces.lcd_out("Temp: {0:0.3f}C".format(temp), 1)
-        interfaces.lcd_out("Res: {0:0.3f} Ohms".format(res), 1)
+        interfaces.lcd_out("Res: {0:0.3f} Ohms".format(res), 2)
         interfaces.delay(0.5)
 
 
