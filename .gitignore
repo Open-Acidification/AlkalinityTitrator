@@ -9,3 +9,4 @@ titration/data
 .pytest_cache
 __pycache__
 super-linter.log
+.mypy_cache

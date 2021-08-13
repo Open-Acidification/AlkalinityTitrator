@@ -1,6 +1,7 @@
 """Functions to interface with sensors and peripherals"""
 
 import time  # time.sleep()
+import types
 
 import serial  # Pump
 
@@ -18,6 +19,14 @@ import devices.temp_probe as temp_probe
 import devices.temp_probe_mock as temp_probe_mock
 import devices.tempcontrol as tempcontrol  # Temp
 import devices.tempcontrol_mock as tempcontrol_mock
+
+ph_class: types.ModuleType
+temp_class: types.ModuleType
+board_class: types.ModuleType
+lcd_class: types.ModuleType
+keypad_class: types.ModuleType
+tempcontrol_class: types.ModuleType
+serial_class: types.ModuleType
 
 if constants.IS_TEST:
     ph_class = ph_probe_mock
