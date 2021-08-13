@@ -6,13 +6,15 @@ import src.devices.tempcontrol_mock as tempcontrol
 
 
 def test_tempcontrol_create():
-    tempcontroller = tempcontrol.TempControl(board.D1, board.SCK, board.MOSI, board.MISO, board.D4, wires=3)
+    sensor = temp_probe.Temp_Probe(board.SCK, board.MOSI, board.MISO, board.D0, wires=3)
+    tempcontroller = tempcontrol.TempControl(board.D1,sensor)
 
     assert tempcontroller is not None
 
 
 def test_tempcontrol_update():
-    tempcontroller = tempcontrol.TempControl(board.D1, board.SCK, board.MOSI, board.MISO, board.D4, wires=3)
+    sensor = temp_probe.Temp_Probe(board.SCK, board.MOSI, board.MISO, board.D0, wires=3)
+    tempcontroller = tempcontrol.TempControl(board.D1,sensor)
 
     tempcontroller.update()
     time.sleep(1)
@@ -20,36 +22,42 @@ def test_tempcontrol_update():
 
 
 def test_tempcontrol_enable_print():
-    tempcontroller = tempcontrol.TempControl(board.D1, board.SCK, board.MOSI, board.MISO, board.D4, wires=3)
+    sensor = temp_probe.Temp_Probe(board.SCK, board.MOSI, board.MISO, board.D0, wires=3)
+    tempcontroller = tempcontrol.TempControl(board.D1,sensor)
 
     tempcontroller.enable_print()
 
 
 def test_tempcontrol_disable_print():
-    tempcontroller = tempcontrol.TempControl(board.D1, board.SCK, board.MOSI, board.MISO, board.D4, wires=3)
+    sensor = temp_probe.Temp_Probe(board.SCK, board.MOSI, board.MISO, board.D0, wires=3)
+    tempcontroller = tempcontrol.TempControl(board.D1,sensor)
 
     tempcontroller.disable_print()
 
 
 def test_tempcontrol_at_temp():
-    tempcontroller = tempcontrol.TempControl(board.D1, board.SCK, board.MOSI, board.MISO, board.D4, wires=3)
+    sensor = temp_probe.Temp_Probe(board.SCK, board.MOSI, board.MISO, board.D0, wires=3)
+    tempcontroller = tempcontrol.TempControl(board.D1,sensor)
 
     tempcontroller.at_temp()
 
 
 def test_tempcontrol_last_temp():
-    tempcontroller = tempcontrol.TempControl(board.D1, board.SCK, board.MOSI, board.MISO, board.D4, wires=3)
+    sensor = temp_probe.Temp_Probe(board.SCK, board.MOSI, board.MISO, board.D0, wires=3)
+    tempcontroller = tempcontrol.TempControl(board.D1,sensor)
 
     tempcontroller.get_last_temp()
 
 
 def test_tempcontrol_activate():
-    tempcontroller = tempcontrol.TempControl(board.D1, board.SCK, board.MOSI, board.MISO, board.D4, wires=3)
+    sensor = temp_probe.Temp_Probe(board.SCK, board.MOSI, board.MISO, board.D0, wires=3)
+    tempcontroller = tempcontrol.TempControl(board.D1,sensor)
 
     tempcontroller.activate()
 
 
 def test_tempcontrol_deactivate():
-    tempcontroller = tempcontrol.TempControl(board.D1, board.SCK, board.MOSI, board.MISO, board.D4, wires=3)
+    sensor = temp_probe.Temp_Probe(board.SCK, board.MOSI, board.MISO, board.D0, wires=3)
+    tempcontroller = tempcontrol.TempControl(board.D1,sensor)
 
     tempcontroller.deactivate()

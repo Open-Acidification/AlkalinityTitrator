@@ -1,6 +1,5 @@
 import time
 
-import src.devices.temp_probe_mock as temp_probe_mock
 import pandas as pd
 
 PID_DEFAULT_KP = 0.09
@@ -17,8 +16,8 @@ class TempControl:
     Titrator using a SSR and Heated Beaker Jacket
     """
 
-    def __init__(self, relay_pin, sck, mosi, miso, cs, wires=2):
-        self.sensor = temp_probe_mock.Temp_Probe(sck, mosi, miso, cs, wires=wires)
+    def __init__(self, relay_pin, sensor):
+        self.sensor = sensor
 
     # Flag - print data to console or not
     printData = False
@@ -138,7 +137,7 @@ class TempControl:
         self.df.to_csv(filename, index_label="step", header=True)
 
     def at_temp(self):
-        if self.sensor.temperature() >= 29 and self.sensor.temperature() <= 30:
+        if self.sensor.get_temperature() >= 29 and self.sensor.get_temperature() <= 30:
             return True
         else:
             return False

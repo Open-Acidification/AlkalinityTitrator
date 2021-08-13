@@ -106,7 +106,9 @@ def setup_temp_probe():
 
 
 def setup_tempcontrol():
-    return tempcontrol_class.TempControl(constants.RELAY_PIN, board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D0, wires=3)
+    # Create a new sensor attached to the 2nd probe (D0) for the temperature controller alone
+    sensor = temp_class.Temp_Probe(board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D0, wires=3)
+    return tempcontrol_class.TempControl(constants.RELAY_PIN,sensor)
 
 
 def setup_ph_probe():

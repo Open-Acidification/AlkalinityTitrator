@@ -2,7 +2,7 @@ import time
 
 import digitalio
 
-import src.constants as constants
+import constants
 
 
 class LCD:
