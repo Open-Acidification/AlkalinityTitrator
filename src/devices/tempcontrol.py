@@ -21,7 +21,7 @@ class TempControl:
 
     """
 
-    def __init__(self, sensor, relay_pin):
+    def __init__(self, relay_pin, sensor):
         self.sensor = sensor
         self.relay = LED(relay_pin)
 
@@ -100,7 +100,7 @@ class TempControl:
 
             else:
                 # Get data values
-                temp = self.sensor.temperature()
+                temp = self.sensor.get_temperature()
                 self.tempLast = temp
                 # timelog.append(timeNow.tm_sec)
 
@@ -156,7 +156,7 @@ class TempControl:
         self.df.to_csv(filename, index_label="step", header=True)
 
     def at_temp(self):
-        if self.sensor.temperature() >= 29 and self.sensor.temperature() <= 30:
+        if self.sensor.get_temperature() >= 29 and self.sensor.get_temperature() <= 30:
             return True
         else:
             return False

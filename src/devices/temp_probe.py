@@ -17,8 +17,8 @@ class Temp_Probe:
             ref_resistor=constants.TEMP_REF_RESISTANCE,
         )
 
-    def temperature(self):
+    def get_temperature(self):
         return self.sensor.temperature
 
-    def resistance(self):
+    def get_resistance(self):
         return self.sensor.resistance

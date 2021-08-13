@@ -24,10 +24,18 @@ def test():
     while True:
         temp, res = interfaces.read_temperature()
         pH_reading, pH_volts = interfaces.read_pH()
-        print("Temperature: {0:0.3f}C".format(temp))
-        print("Resistance: {0:0.3f} Ohms".format(res))
-        interfaces.lcd_out("pH: {}".format(pH_reading))
-        interfaces.lcd_out("pH volt: {}".format(pH_volts))
+        interfaces.lcd_out(
+            "Temperature: {0:0.3f}C".format(temp), 1, style=constants.LCD_CENT_JUST
+        )
+        interfaces.lcd_out(
+            "Resistance: {0:0.3f} Ohms".format(res), 2, style=constants.LCD_CENT_JUST
+        )
+        interfaces.lcd_out(
+            "pH: {}".format(pH_reading), 3, style=constants.LCD_CENT_JUST
+        )
+        interfaces.lcd_out(
+            "pH volt: {}".format(pH_volts), 4, style=constants.LCD_CENT_JUST
+        )
         interfaces.delay(constants.TITRATION_WAIT_TIME)
 
 

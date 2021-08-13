@@ -74,7 +74,7 @@ def test():
                 interfaces.lcd_out("Res:  {0:>4.3f} Ohms".format(res), line=2)
                 interfaces.lcd_out("pH:   {0:>4.5f} pH".format(pH_reading), line=3)
                 interfaces.lcd_out("pH V: {0:>3.4f} mV".format(pH_volts * 1000), line=4)
-                interfaces.lcd_out("Reading: {}".format(i), console=True)
+                interfaces.lcd_out("Reading: {}".format(i), 1, console=True)
                 timeVals[i] = timestep * i
                 tempVals[i] = temp
                 resVals[i] = res
@@ -98,7 +98,10 @@ def test():
 
         elif user_choice == "4" or user_choice == constants.KEY_4:
             constants.IS_TEST = not constants.IS_TEST
-            interfaces.lcd_out("Testing: {}".format(constants.IS_TEST))
+            interfaces.lcd_clear()
+            interfaces.lcd_out("Testing: {}".format(constants.IS_TEST), line=1)
+            interfaces.lcd_out("Press any to cont.", line=3)
+            interfaces.read_user_input()
 
         elif user_choice == "5" or user_choice == constants.KEY_5:
             interfaces.lcd_clear()
@@ -118,8 +121,8 @@ def _test_temp():
     """Tests the temperature probe"""
     for i in range(5):
         temp, res = interfaces.read_temperature()
-        interfaces.lcd_out("Temp: {0:0.3f}C".format(temp))
-        interfaces.lcd_out("Res: {0:0.3f} Ohms".format(res))
+        interfaces.lcd_out("Temp: {0:0.3f}C".format(temp), 1)
+        interfaces.lcd_out("Res: {0:0.3f} Ohms".format(res), 2)
         interfaces.delay(0.5)
 
 
@@ -394,17 +397,20 @@ def edit_settings():
     if selection != "n" or selection != "N":
         analysis.reset_calibration()
         analysis.save_calibration_data()
-        interfaces.lcd_out("Default constants restored")
+        interfaces.lcd_clear()
+        interfaces.lcd_out("Default constants restored", 1)
+        interfaces.lcd_out("Press any to cont.", 3)
+        interfaces.read_user_input()
 
-    interfaces.lcd_out("Set volume in pump? (Y/n)")
+    interfaces.lcd_out("Set volume in pump? (Y/n)", 1)
     selection = interfaces.read_user_input()
     if selection != "n" or selection != "N":
-        interfaces.lcd_out("Volume in pump: ")
-        vol_in_pump = interfaces.read_user_input()
-        vol_in_pump = float(vol_in_pump)
+        vol_in_pump = interfaces.read_user_value("Volume in pump: ")
         constants.volume_in_pump = vol_in_pump
         analysis.save_calibration_data()
-        interfaces.lcd_out("Volume in pump set")
+        interfaces.lcd_out("Volume in pump set", 1)
+        interfaces.lcd_out("Press any to cont.", 3)
+        interfaces.read_user_input()
 
 
 def prime_pump():
@@ -412,7 +418,7 @@ def prime_pump():
     Primes pump by drawing in and pushing out solution.
     Depends on limit switches installed
     """
-    interfaces.lcd_out("How many pumps?")
+    interfaces.lcd_out("How many pumps?", 1)
     selection = interfaces.read_user_input()
     sel = int(selection)
     while sel > 0:
@@ -420,7 +426,7 @@ def prime_pump():
             interfaces.drive_step_stick(10000, 0)
             interfaces.drive_step_stick(10000, 1)
             sel = sel - 1
-        interfaces.lcd_out("How many more?")
+        interfaces.lcd_out("How many more?", 1)
         selection = interfaces.read_user_input()
         sel = int(selection)
 
