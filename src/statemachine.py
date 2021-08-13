@@ -37,5 +37,4 @@ class MenuStateMachine:
 
 
 class InitializationError(Exception):
-    def __init__():
-        pass
+    pass

@@ -1,5 +1,3 @@
-import pytest
-
 import src.constants as c
 import src.devices.serial_mock as serial
 
