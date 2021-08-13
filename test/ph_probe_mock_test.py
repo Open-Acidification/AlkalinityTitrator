@@ -6,12 +6,12 @@ import src.devices.ph_probe_mock as ph_probe_mock
 
 def test_ph_create():
     ph = ph_probe_mock.pH_Probe(board_mock.SCL, board_mock.SDA)
-    assert ph != None
+    assert ph is not None
 
 
 def test_ph_create_null():
     ph = ph_probe_mock.pH_Probe(None, None)
-    assert ph != None
+    assert ph is not None
 
 
 def test_ph_voltage():

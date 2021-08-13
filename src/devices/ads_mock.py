@@ -1,5 +1,3 @@
-import board_mock
-
 P0 = None
 P1 = None
 P2 = None

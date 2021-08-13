@@ -467,4 +467,4 @@ def drive_step_stick(cycles, direction):
         else:
             return int(temp)
     else:
-        lcd_out("Arduino Unavailable")
+        lcd_out("Arduino Unavailable", 4, constants.LCD_CENT_JUST)

@@ -1,7 +1,5 @@
 import time
 
-import pytest
-
 import src.devices.board_mock as board
 import src.devices.temp_probe_mock as temp_probe
 import src.devices.tempcontrol_mock as tempcontrol

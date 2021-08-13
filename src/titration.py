@@ -14,8 +14,8 @@ if opts:
     else:
         raise SystemExit(f"Usage: {sys.argv[0]} (-test)")
 
-import interfaces
-import routines
+import interfaces  # noqa: E402
+import routines  # noqa: E402
 
 
 def test():
@@ -70,7 +70,7 @@ def initialize_components():
 if __name__ == "__main__":
     try:
         run()
-    except:
+    except Exception:
         # Deactivate the SSR if any crash occurs
         if interfaces.tempcontroller is not None:
             interfaces.tempcontroller.deactivate()

@@ -21,7 +21,7 @@ class MenuStateMachine:
     def run(self, cargo):
         try:
             handler = self.handlers[self.startState]
-        except:
+        except Exception:
             raise InitializationError("Must call .set_start() before .run()")
 
         if not self.endStates:
@@ -34,3 +34,8 @@ class MenuStateMachine:
                 break
             else:
                 handler = self.handlers[newState.upper()]
+
+
+class InitializationError(Exception):
+    def __init__():
+        pass

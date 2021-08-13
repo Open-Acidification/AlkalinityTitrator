@@ -1,5 +1,4 @@
 import time
-from array import *
 
 import adafruit_max31865
 import busio
@@ -168,43 +167,39 @@ class TempControl:
     def activate(self):
         self.controlActive = True
         self.__set_controlparam_default()
-        timeNext = time.time()
+        self.timeNext = time.time()
 
     def deactivate(self):
         self.controlActive = False
         self.__set_relayState(False)
 
-    """
-  Update the time of the last step taken with the time of the 
-  step just taken with time.time()
-  """
-
     def __update_timeLast(self, stepTime):
+        """
+        Update the time of the last step taken with the time of the
+        step just taken with time.time()
+        """
         self.timeLast = stepTime
 
-    """
-  Update the time that the next relay action should be taken
-  """
-
     def __update_timeNext(self, stepTime):
+        """
+        Update the time that the next relay action should be taken
+        """
         self.timeNext = stepTime
 
-    """
-  After 250 cycles, the PID control parameters should
-  be changed to new values
-  """
-
     def __set_controlparam_antiwindup(self):
+        """
+        After 250 cycles, the PID control parameters should
+        be changed to new values
+        """
         self.kp = PID_ANTIWINDUP_KP
         self.Ti = PID_ANTIWINDUP_TI
         self.Td = PID_ANTIWINDUP_TD
 
-    """
-  For the first 250 cycles, the PID parameters should
-  be set to their default values. 
-  """
-
     def __set_controlparam_default(self):
+        """
+        For the first 250 cycles, the PID parameters should
+        be set to their default values.
+        """
         self.kp = PID_DEFAULT_KP
         self.Ti = PID_DEFAULT_TI
         self.Td = PID_DEFAULT_TD
@@ -221,12 +216,11 @@ class TempControl:
         self.error_prior = self.error
         self.integral_prior = self.integral
 
-    """
-  For the first 250 cycles, the integral value should
-  be zeroed to prevent windup 
-  """
-
     def __set_integral_zero(self):
+        """
+        For the first 250 cycles, the integral value should
+        be zeroed to prevent windup
+        """
         self.integral = 0
 
     def __set_relayState(self, boolean):
