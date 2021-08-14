@@ -52,8 +52,8 @@ def setup_calibration():
     if data:
         constants.PH_REF_VOLTAGE = data["pH"]["ref_voltage"]
         constants.PH_REF_PH = data["pH"]["ref_pH"]
-        constants.TEMP_REF_RESISTANCE = data["temp"]["ref_resistance"]
-        constants.TEMP_NOMINAL_RESISTANCE = data["temp"]["nominal_resistance"]
+        constants.TEMPERATURE_REF_RESISTANCE = data["temperature"]["ref_resistance"]
+        constants.TEMPERATURE_NOMINAL_RESISTANCE = data["temperature"]["nominal_resistance"]
         constants.volume_in_pump = data["vol_pump"]
     else:
         save_calibration_data()
@@ -64,54 +64,54 @@ def save_calibration_data():
     calibration_data = constants.calibration_data_format
     calibration_data["pH"]["ref_voltage"] = constants.PH_REF_VOLTAGE
     calibration_data["pH"]["ref_pH"] = constants.PH_REF_PH
-    calibration_data["temp"]["ref_resistance"] = constants.TEMP_REF_RESISTANCE
-    calibration_data["temp"]["nominal_resistance"] = constants.TEMP_NOMINAL_RESISTANCE
+    calibration_data["temperature"]["ref_resistance"] = constants.TEMPERATURE_REF_RESISTANCE
+    calibration_data["temperature"]["nominal_resistance"] = constants.TEMPERATURE_NOMINAL_RESISTANCE
     calibration_data["vol_pump"] = constants.volume_in_pump
     write_json(constants.CALIBRATION_FILENAME, calibration_data)
 
 
-def calculate_expected_resistance(temp):
+def calculate_expected_resistance(temperature):
     """
     Calculates the expected resistance. Used for calibrating temperature probe.
     https://www.analog.com/media/en/technical-documentation/application-notes/AN709_0.pdf
-    :param temp: temperature reading
+    :param temperature: temperature reading
     :return: expected probe resistance for temperature reading
     """
     A = 0.0039083
     B = -0.000000578
     C = -0.000000000004183
 
-    if temp >= 0:
-        return constants.TEMP_NOMINAL_RESISTANCE * (1 + A * temp + B * temp ** 2)
+    if temperature >= 0:
+        return constants.TEMPERATURE_NOMINAL_RESISTANCE * (1 + A * temperature + B * temperature ** 2)
 
-    # for temps below 0 celsius
-    return constants.TEMP_NOMINAL_RESISTANCE * (
-        1 + A * temp + B * temp ** 2 + C * (temp - 100) * temp ** 3
+    # for temperatures below 0 celsius
+    return constants.TEMPERATURE_NOMINAL_RESISTANCE * (
+        1 + A * temperature + B * temperature ** 2 + C * (temperature - 100) * temperature ** 3
     )
 
 
 def reset_calibration():
     """Reset calibration settings to default"""
-    constants.TEMP_REF_RESISTANCE = constants.DEFAULT_TEMP_REF_RESISTANCE
-    constants.TEMP_NOMINAL_RESISTANCE = constants.DEFAULT_TEMP_NOMINAL_RESISTANCE
+    constants.TEMPERATURE_REF_RESISTANCE = constants.DEFAULT_TEMPERATURE_REF_RESISTANCE
+    constants.TEMPERATURE_NOMINAL_RESISTANCE = constants.DEFAULT_TEMPERATURE_NOMINAL_RESISTANCE
     constants.PH_REF_VOLTAGE = constants.DEFAULT_PH_REF_VOLTAGE
     constants.PH_REF_PH = constants.DEFAULT_PH_REF_PH
 
 
 # pH
-def calculate_pH(voltage, temp):
+def calculate_pH(voltage, temperature):
     """
     Calculates pH value from pH probe voltage. The pH probes read values of V, so to get the actual pH value, V needs
     to be converted.
     :param voltage: voltage reading from pH probe
-    :param temp: temperature of solution
+    :param temperature: temperature of solution
     :return: actual pH value in units of pH
     """
-    temp_k = temp + constants.CELSIUS_TO_KELVIN
+    temperature_k = temperature + constants.CELSIUS_TO_KELVIN
     ref_voltage = constants.PH_REF_VOLTAGE
     ref_pH = constants.PH_REF_PH
     return ref_pH + (ref_voltage - voltage) / (
-        constants.UNIVERSAL_GAS_CONST * temp_k * math.log(10) / constants.FARADAY_CONST
+        constants.UNIVERSAL_GAS_CONST * temperature_k * math.log(10) / constants.FARADAY_CONST
     )
 
 
@@ -171,7 +171,7 @@ def determine_pump_cycles(volume_to_add):
 # alkalinity
 def determine_total_alkalinity(
     S=35,
-    temp=25,
+    temperature=25,
     C=0.1,
     d=1,
     pHTris=None,
