@@ -103,14 +103,14 @@ E_DELAY = 0.0005
 # for pH calibration constants
 calibration_data_format = {
     "pH": {"ref_voltage": 200, "ref_pH": 7},
-    "temp": {"ref_resistance": 4300.0, "nominal_resistance": 1000.0},
+    "temperature": {"ref_resistance": 4300.0, "nominal_resistance": 1000.0},
     "vol_pump": 0,
 }
 
 CALIBRATION_FILENAME = "src/calibration.json"
-# temp calibration values
-TEMP_REF_RESISTANCE = 4300.0
-TEMP_NOMINAL_RESISTANCE = 1000.0
+# temperature calibration values
+TEMPERATURE_REF_RESISTANCE = 4300.0
+TEMPERATURE_NOMINAL_RESISTANCE = 1000.0
 # pH
 UNIVERSAL_GAS_CONST = 8.31447215
 FARADAY_CONST = 96485.33212
@@ -119,7 +119,7 @@ CELSIUS_TO_KELVIN = 273.15
 PH_REF_VOLTAGE = -0.012
 PH_REF_PH = 7.0
 # titration routine
-TARGET_TEMP = 30.0  # degrees C
+TARGET_TEMPERATURE = 30.0  # degrees C
 TARGET_PH_INIT = 5.5
 TARGET_PH_MID = 3.5
 TARGET_PH_FINAL = 3.0
@@ -131,7 +131,7 @@ INCREMENT_AMOUNT_MID = 0.1
 INCREMENT_AMOUNT_FINAL = 0.05
 TARGET_STD_DEVIATION = 0.15
 
-# Temp Control
+# Temperature Control
 RELAY_PIN = 12
 
 # pump settings
@@ -144,8 +144,8 @@ NUM_CYCLES = {0.05: 470, 1: 9550}
 CYCLES_VOLUME_RATIO = 9550  # 1 mL is 9550 pump cycles
 MAX_PUMP_CAPACITY = 1.1  # max capacity of pump in mL
 # defaults
-DEFAULT_TEMP_REF_RESISTANCE = 4300.0
-DEFAULT_TEMP_NOMINAL_RESISTANCE = 1000.0
+DEFAULT_TEMPERATURE_REF_RESISTANCE = 4300.0
+DEFAULT_TEMPERATURE_NOMINAL_RESISTANCE = 1000.0
 DEFAULT_PH_REF_VOLTAGE = -0.012
 DEFAULT_PH_REF_PH = 7.0
 # data paths
