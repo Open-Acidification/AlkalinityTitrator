@@ -238,7 +238,7 @@ def total_alkalinity_titration():
     user_choice = interfaces.read_user_input()
 
     # wait until solution is up to temperature
-    interfaces.temperaturecontroller.activate()
+    interfaces.temperature_controller.activate()
     interfaces.lcd_clear()
     interfaces.lcd_out("Heating to 30 C...", line=1)
     interfaces.lcd_out("Please wait...", style=constants.LCD_CENT_JUST, line=3)
@@ -246,9 +246,9 @@ def total_alkalinity_titration():
         interfaces.lcd_out("MANUAL SELECTED", style=constants.LCD_CENT_JUST, line=4)
     else:
         interfaces.lcd_out("AUTO SELECTED", style=constants.LCD_CENT_JUST, line=4)
-    while not interfaces.temperaturecontroller.at_temperature():
-        interfaces.temperaturecontroller.update()
-        temperature = interfaces.temperaturecontroller.get_last_temperature()
+    while not interfaces.temperature_controller.at_temperature():
+        interfaces.temperature_controller.update()
+        temperature = interfaces.temperature_controller.get_last_temperature()
         interfaces.lcd_out(
             "Temperature: {0:>4.3f} C".format(temperature), style=constants.LCD_CENT_JUST, line=2
         )
@@ -294,7 +294,7 @@ def total_alkalinity_titration():
     )
     # save data to csv
     analysis.write_titration_data(data)
-    interfaces.temperaturecontroller.deactivate()
+    interfaces.temperature_controller.deactivate()
 
 
 def titration(
@@ -331,7 +331,7 @@ def titration(
         interfaces.delay(10)  # allow it to mix before taking measurements
 
         current_pH = wait_pH_stable(total_sol, data)
-        interfaces.temperaturecontroller.update()
+        interfaces.temperature_controller.update()
 
     interfaces.lcd_clear()
     interfaces.lcd_out("pH value {} reached".format(current_pH), line=1)
