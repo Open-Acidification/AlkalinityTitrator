@@ -64,7 +64,7 @@ def run():
         routines.run_routine(routine_selection)
 
     analysis.save_calibration_data()
-    interfaces.temperaturecontroller.deactivate()
+    interfaces.temperature_controller.deactivate()
     interfaces.lcd_clear()
     interfaces.ui_lcd.lcd_backlight(False)
 
@@ -80,8 +80,8 @@ if __name__ == "__main__":
         run()
     except Exception:
         # Deactivate the SSR if any crash occurs
-        if interfaces.temperaturecontroller is not None:
-            interfaces.temperaturecontroller.deactivate()
+        if interfaces.temperature_controller is not None:
+            interfaces.temperature_controller.deactivate()
         print("\nDeactivated SSR")
 
         print(sys.exc_info()[0])
