@@ -56,7 +56,7 @@ temperature_sensor = None
 arduino = None
 ui_lcd = None
 ui_keypad = None
-temperaturecontroller = None
+temperature_controller = None
 
 
 def setup_interfaces():
@@ -64,7 +64,7 @@ def setup_interfaces():
     Initializes components for interfacing with pH probe,
     temperature probe, and stepper motor/syringe pump
     """
-    global ph_sensor, temperature_sensor, arduino, ui_lcd, ui_keypad, temperaturecontroller
+    global ph_sensor, temperature_sensor, arduino, ui_lcd, ui_keypad, temperature_controller
 
     # LCD and ui_keypad setup
     ui_lcd = setup_lcd()
@@ -72,7 +72,7 @@ def setup_interfaces():
 
     # Temperature Control Setup
     temperature_sensor = setup_temperature_probe()
-    temperaturecontroller = setup_temperaturecontrol()
+    temperature_controller = setup_temperaturecontrol()
     ph_sensor = setup_ph_probe()
     arduino = setup_arduino()
 
@@ -140,14 +140,14 @@ def setup_arduino():
 
 def delay(seconds, countdown=False):
     # Use time.sleep() if the temperature controller isn't initialized yet
-    if temperaturecontroller is None:
+    if temperature_controller is None:
         time.sleep(seconds)
         return
 
     timeEnd = time.time() + seconds
     timeNow = time.time()
     while timeEnd > timeNow:
-        temperaturecontroller.update()
+        temperature_controller.update()
         timeLeft = timeEnd - timeNow
         if countdown and int(timeLeft) % 5 == 0:
             lcd_out("Time Left: {}".format(int(timeLeft)), line=4)
@@ -204,7 +204,7 @@ def read_user_input(valid_inputs=None, console=False):
     user_input = None
 
     while True:
-        temperaturecontroller.update()
+        temperature_controller.update()
 
         if console:
             user_input = input()
