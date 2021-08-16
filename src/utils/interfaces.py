@@ -5,8 +5,7 @@ import types
 
 import serial  # Pump
 
-from . import analysis
-from . import constants
+from . import analysis, constants
 from .devices import board_mock as board_mock
 from .devices import keypad as keypad  # UI
 from .devices import keypad_mock as keypad_mock
@@ -361,7 +360,7 @@ def read_temperature():
     Reads and returns the temperature from GPIO
     :returns: temperature in celsius, resistance in ohms
     """
-    return temperature_sensor.temperature(), temperature_sensor.resistance()
+    return temperature_sensor.temperature, temperature_sensor.resistance
 
 
 def _test_read_temperature():

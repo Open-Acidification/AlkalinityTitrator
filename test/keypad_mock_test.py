@@ -1,5 +1,5 @@
-import src.devices.board_mock as board
-import src.devices.keypad_mock as keypad
+import src.utils.devices.board_mock as board
+import src.utils.devices.keypad_mock as keypad
 
 
 def test_keypad_create():

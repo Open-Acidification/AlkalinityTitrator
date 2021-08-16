@@ -1,8 +1,8 @@
 import time
 
-import src.devices.board_mock as board
-import src.devices.temperature_control_mock as temperature_control
-import src.devices.temperature_probe_mock as temperature_probe
+import src.utils.devices.board_mock as board
+import src.utils.devices.temperature_control_mock as temperature_control
+import src.utils.devices.temperature_probe_mock as temperature_probe
 
 
 def test_temperature_control_create():

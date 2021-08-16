@@ -1,8 +1,6 @@
 import numpy as np  # debugging/testing
 
-from . import analysis
-from . import constants
-from . import interfaces
+from . import analysis, constants, interfaces
 
 ROUTINE_OPTIONS = {
     1: "Run titration",
@@ -63,7 +61,6 @@ def test_mode():
         else:
             test_mode_selection(user_choice)
 
-        
 
 def test_mode_selection(user_choice):
     if user_choice == "1" or user_choice == constants.KEY_1:
@@ -106,6 +103,7 @@ def test_mode_read_values():
         voltVals[i] = pH_volts
         interfaces.delay(timestep)
 
+
 def test_mode_pump():
     p_volume = interfaces.read_user_value("Volume: ")
 
@@ -116,8 +114,10 @@ def test_mode_pump():
             interfaces.pump_volume(float(p_volume), int(p_direction))
             break
 
+
 def test_mode_set_volume():
     constants.volume_in_pump = interfaces.read_user_value("Volume in pump: ")
+
 
 def test_mode_toggle_test_mode():
     constants.IS_TEST = not constants.IS_TEST
@@ -125,6 +125,7 @@ def test_mode_toggle_test_mode():
     interfaces.lcd_out("Testing: {}".format(constants.IS_TEST), line=1)
     interfaces.lcd_out("Press any to cont.", line=3)
     interfaces.read_user_input()
+
 
 def test_mode_read_volume():
     interfaces.lcd_clear()
@@ -136,6 +137,7 @@ def test_mode_read_volume():
     )
     interfaces.lcd_out("Press any to cont.", line=3)
     interfaces.read_user_input()
+
 
 def _test_temperature():
     """Tests the temperature probe"""
@@ -272,7 +274,7 @@ def total_alkalinity_titration():
         interfaces.temperature_controller.update()
         temperature = interfaces.temperature_controller.get_last_temperature()
         interfaces.lcd_out(
-            "Temperature: {0:>4.3f} C".format(temperature),
+            "Temp: {0:>4.3f} C".format(temperature),
             style=constants.LCD_CENT_JUST,
             line=2,
         )
@@ -384,9 +386,7 @@ def wait_pH_stable(total_sol, data):
         temperature_reading = interfaces.read_temperature()[0]
         interfaces.lcd_out("pH:   {0:>4.5f} pH".format(pH_reading), line=1)
         interfaces.lcd_out("pH V: {0:>3.4f} mV".format(pH_volts * 1000), line=2)
-        interfaces.lcd_out(
-            "Temperature: {0:>4.3f} C".format(temperature_reading), line=3
-        )
+        interfaces.lcd_out("Temp: {0:>4.3f} C".format(temperature_reading), line=3)
 
         pH_values[pH_list_counter] = pH_reading
 

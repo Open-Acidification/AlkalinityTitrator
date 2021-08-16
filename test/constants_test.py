@@ -3,22 +3,26 @@ This test file is primarily to test the ability to import from the
 src module
 """
 
-from .context import src
+from .context import titration_module
+
 
 def test_can_we_import():
-    assert src.constants.IS_TEST == True
+    assert titration_module.constants.IS_TEST is True
+
 
 def test_import_interfaces(capsys):
-    src.interfaces.setup_interfaces()
+    titration_module.interfaces.setup_interfaces()
 
-    #flush stdout
+    # flush stdout
     _ = capsys.readouterr()
 
-    src.interfaces.ui_lcd.print("We did it", 1, src.constants.LCD_LEFT_JUST)
+    titration_module.interfaces.ui_lcd.print(
+        "We did it", 1, titration_module.constants.LCD_LEFT_JUST
+    )
 
     captured = capsys.readouterr()
     assert captured.out == (
-          "*====================*\n"
+        "*====================*\n"
         + "|We did it           |\n"
         + "|                    |\n"
         + "|                    |\n"
