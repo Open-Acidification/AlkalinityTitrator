@@ -25,7 +25,9 @@ def test():
         temperature, res = interfaces.read_temperature()
         pH_reading, pH_volts = interfaces.read_pH()
         interfaces.lcd_out(
-            "Temperature: {0:0.3f}C".format(temperature), 1, style=constants.LCD_CENT_JUST
+            "Temperature: {0:0.3f}C".format(temperature),
+            1,
+            style=constants.LCD_CENT_JUST,
         )
         interfaces.lcd_out(
             "Resistance: {0:0.3f} Ohms".format(res), 2, style=constants.LCD_CENT_JUST

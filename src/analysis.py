@@ -53,7 +53,9 @@ def setup_calibration():
         constants.PH_REF_VOLTAGE = data["pH"]["ref_voltage"]
         constants.PH_REF_PH = data["pH"]["ref_pH"]
         constants.TEMPERATURE_REF_RESISTANCE = data["temperature"]["ref_resistance"]
-        constants.TEMPERATURE_NOMINAL_RESISTANCE = data["temperature"]["nominal_resistance"]
+        constants.TEMPERATURE_NOMINAL_RESISTANCE = data["temperature"][
+            "nominal_resistance"
+        ]
         constants.volume_in_pump = data["vol_pump"]
     else:
         save_calibration_data()
@@ -64,8 +66,12 @@ def save_calibration_data():
     calibration_data = constants.calibration_data_format
     calibration_data["pH"]["ref_voltage"] = constants.PH_REF_VOLTAGE
     calibration_data["pH"]["ref_pH"] = constants.PH_REF_PH
-    calibration_data["temperature"]["ref_resistance"] = constants.TEMPERATURE_REF_RESISTANCE
-    calibration_data["temperature"]["nominal_resistance"] = constants.TEMPERATURE_NOMINAL_RESISTANCE
+    calibration_data["temperature"][
+        "ref_resistance"
+    ] = constants.TEMPERATURE_REF_RESISTANCE
+    calibration_data["temperature"][
+        "nominal_resistance"
+    ] = constants.TEMPERATURE_NOMINAL_RESISTANCE
     calibration_data["vol_pump"] = constants.volume_in_pump
     write_json(constants.CALIBRATION_FILENAME, calibration_data)
 
@@ -82,18 +88,25 @@ def calculate_expected_resistance(temperature):
     C = -0.000000000004183
 
     if temperature >= 0:
-        return constants.TEMPERATURE_NOMINAL_RESISTANCE * (1 + A * temperature + B * temperature ** 2)
+        return constants.TEMPERATURE_NOMINAL_RESISTANCE * (
+            1 + A * temperature + B * temperature ** 2
+        )
 
     # for temperatures below 0 celsius
     return constants.TEMPERATURE_NOMINAL_RESISTANCE * (
-        1 + A * temperature + B * temperature ** 2 + C * (temperature - 100) * temperature ** 3
+        1
+        + A * temperature
+        + B * temperature ** 2
+        + C * (temperature - 100) * temperature ** 3
     )
 
 
 def reset_calibration():
     """Reset calibration settings to default"""
     constants.TEMPERATURE_REF_RESISTANCE = constants.DEFAULT_TEMPERATURE_REF_RESISTANCE
-    constants.TEMPERATURE_NOMINAL_RESISTANCE = constants.DEFAULT_TEMPERATURE_NOMINAL_RESISTANCE
+    constants.TEMPERATURE_NOMINAL_RESISTANCE = (
+        constants.DEFAULT_TEMPERATURE_NOMINAL_RESISTANCE
+    )
     constants.PH_REF_VOLTAGE = constants.DEFAULT_PH_REF_VOLTAGE
     constants.PH_REF_PH = constants.DEFAULT_PH_REF_PH
 
@@ -111,7 +124,10 @@ def calculate_pH(voltage, temperature):
     ref_voltage = constants.PH_REF_VOLTAGE
     ref_pH = constants.PH_REF_PH
     return ref_pH + (ref_voltage - voltage) / (
-        constants.UNIVERSAL_GAS_CONST * temperature_k * math.log(10) / constants.FARADAY_CONST
+        constants.UNIVERSAL_GAS_CONST
+        * temperature_k
+        * math.log(10)
+        / constants.FARADAY_CONST
     )
 
 

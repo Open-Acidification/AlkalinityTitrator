@@ -70,7 +70,9 @@ def test():
             for i in range(numVals):
                 temperature, res = interfaces.read_temperature()
                 pH_reading, pH_volts = interfaces.read_pH()
-                interfaces.lcd_out("Temperature: {0:>4.3f} C".format(temperature), line=1)
+                interfaces.lcd_out(
+                    "Temperature: {0:>4.3f} C".format(temperature), line=1
+                )
                 interfaces.lcd_out("Res:  {0:>4.3f} Ohms".format(res), line=2)
                 interfaces.lcd_out("pH:   {0:>4.5f} pH".format(pH_reading), line=3)
                 interfaces.lcd_out("pH V: {0:>3.4f} mV".format(pH_volts * 1000), line=4)
@@ -176,7 +178,9 @@ def _calibrate_temperature():
 
     actual_temperature, actual_resistance = interfaces.read_temperature()
     interfaces.lcd_clear()
-    interfaces.lcd_out("Recorded temperature: {0:0.3f}".format(actual_temperature), line=1)
+    interfaces.lcd_out(
+        "Recorded temperature: {0:0.3f}".format(actual_temperature), line=1
+    )
     diff = expected_resistance - actual_resistance
     new_ref_resistance = (
         constants.TEMPERATURE_REF_RESISTANCE
@@ -250,7 +254,9 @@ def total_alkalinity_titration():
         interfaces.temperature_controller.update()
         temperature = interfaces.temperature_controller.get_last_temperature()
         interfaces.lcd_out(
-            "Temperature: {0:>4.3f} C".format(temperature), style=constants.LCD_CENT_JUST, line=2
+            "Temperature: {0:>4.3f} C".format(temperature),
+            style=constants.LCD_CENT_JUST,
+            line=2,
         )
 
     if user_choice == "1":
@@ -360,7 +366,9 @@ def wait_pH_stable(total_sol, data):
         temperature_reading = interfaces.read_temperature()[0]
         interfaces.lcd_out("pH:   {0:>4.5f} pH".format(pH_reading), line=1)
         interfaces.lcd_out("pH V: {0:>3.4f} mV".format(pH_volts * 1000), line=2)
-        interfaces.lcd_out("Temperature: {0:>4.3f} C".format(temperature_reading), line=3)
+        interfaces.lcd_out(
+            "Temperature: {0:>4.3f} C".format(temperature_reading), line=3
+        )
 
         pH_values[pH_list_counter] = pH_reading
 
@@ -368,7 +376,10 @@ def wait_pH_stable(total_sol, data):
             valid_num_values_tested = True
 
         # Check that the temperature of the solution is within bounds
-        if abs(temperature_reading - constants.TARGET_TEMPERATURE) > constants.TEMPERATURE_ACCURACY:
+        if (
+            abs(temperature_reading - constants.TARGET_TEMPERATURE)
+            > constants.TEMPERATURE_ACCURACY
+        ):
             # interfaces.lcd_out("TEMPERATURE OUT OF BOUNDS")
             # TODO output to error log
             pass

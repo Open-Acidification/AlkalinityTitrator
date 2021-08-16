@@ -14,7 +14,7 @@ PID_ANTIWINDUP_TI = 0.004
 PID_ANTIWINDUP_TD = 9
 
 
-class TemperatureControl:
+class Temperature_Control:
     """
     Temperature Control class for running the PID control on the Alkalinity
     Titrator using a SSR and Heated Beaker Jacket
@@ -243,18 +243,18 @@ if __name__ == "__main__":
         spi, cs, rtd_nominal=1000, ref_resistor=4300, wires=3
     )
 
-    temperatureControl = TemperatureControl(sensor, 12)
-    temperatureControl.enable_print()
+    temperature_control = Temperature_Control(sensor, 12)
+    temperature_control.enable_print()
 
     # 10min time
     timeCurr = time.time()
     timeEnd = timeCurr + 3600
     print("Time Start: ", time.ctime(timeCurr), "\nTime End: ", time.ctime(timeEnd))
     while timeEnd > time.time():
-        temperatureControl.update()
+        temperature_control.update()
 
     filename = "data/TemperatureCtrl_" + time.ctime() + ".csv"
     filename = filename.replace(":", "-")
     filename = filename.replace(" ", "_")
 
-    temperatureControl.output_csv(filename)
+    temperature_control.output_csv(filename)
