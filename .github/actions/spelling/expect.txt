@@ -107,8 +107,6 @@ svg
 sys
 sysv
 tbaggery
-tempcontrol
-tempcontroller
 timelog
 timestep
 todo

@@ -10,9 +10,9 @@ PID_ANTIWINDUP_TI = 0.004
 PID_ANTIWINDUP_TD = 9
 
 
-class TempControl:
+class Temperature_Control:
     """
-    Mock of Temp Control class for running the PID control on the Alkalinity
+    Mock of Temperature Control class for running the PID control on the Alkalinity
     Titrator using a SSR and Heated Beaker Jacket
     """
 
@@ -49,7 +49,7 @@ class TempControl:
     timeNext = time.time()
 
     # last temperature read
-    tempLast = 20
+    temperatureLast = 20
 
     # What state is the relay currently in
     relayOn = False
@@ -58,7 +58,7 @@ class TempControl:
     # timeLog = []
 
     # Data Fame of Measurements
-    df = pd.DataFrame(columns=["time (s)", "temp (C)", "gain"])
+    df = pd.DataFrame(columns=["time (s)", "temperature (C)", "gain"])
 
     # Target temperature
     setPoint = 30
@@ -93,31 +93,31 @@ class TempControl:
                 self.__update_timeNext(time.time() + self.timeStep * (1 - self.k))
 
                 # increase the temperature by k (0-1)
-                self.tempLast = self.tempLast + self.k
-                self.sensor.mock_set_temperature(self.tempLast)
+                self.temperatureLast = self.temperatureLast + self.k
+                self.sensor.mock_set_temperature(self.temperatureLast)
 
             else:
                 # Get data values
-                temp = self.tempLast
+                temperature = self.temperatureLast
 
                 # Check if relay needs to be turned on
-                if temp < self.setPoint - 0.5:
+                if temperature < self.setPoint - 0.5:
                     self.k = 1
                     self.__set_relayState(True)
                     self.__update_timeNext(time.time() + self.timeStep)
 
-                # temp above setpoint
+                # temperature above setpoint
                 else:
                     self.k = 0
                     self.__set_relayState(False)
                     self.__update_timeNext(time.time() + self.timeStep)
-                    self.tempLast = self.tempLast - 0.1
+                    self.temperatureLast = self.temperatureLast - 0.1
                     self.__update_priors()
 
                 # Add data to df
                 data_frame_new = pd.DataFrame(
-                    [[time.ctime(timeNow), temp, self.k]],
-                    columns=["time (s)", "temp (C)", "gain"],
+                    [[time.ctime(timeNow), temperature, self.k]],
+                    columns=["time (s)", "temperature (C)", "gain"],
                 )
                 self.df = self.df.append(data_frame_new, ignore_index=True)
                 if self.printData:
@@ -136,14 +136,14 @@ class TempControl:
     def output_csv(self, filename):
         self.df.to_csv(filename, index_label="step", header=True)
 
-    def at_temp(self):
+    def at_temperature(self):
         if self.sensor.get_temperature() >= 29 and self.sensor.get_temperature() <= 30:
             return True
         else:
             return False
 
-    def get_last_temp(self):
-        return self.tempLast
+    def get_last_temperature(self):
+        return self.temperatureLast
 
     def activate(self):
         self.controlActive = True
@@ -185,8 +185,8 @@ class TempControl:
         self.Ti = PID_DEFAULT_TI
         self.Td = PID_DEFAULT_TD
 
-    def __update_gains(self, temp):
-        self.error = self.setPoint - temp
+    def __update_gains(self, temperature):
+        self.error = self.setPoint - temperature
         self.integral = self.integral_prior + self.error * self.timeStep
         self.derivative = (self.error - self.error_prior) / self.timeStep
         self.k = self.kp * (

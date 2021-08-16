@@ -62,21 +62,23 @@ def test():
             numVals = 60
             timestep = 0.5
             timeVals = np.zeros(numVals)
-            tempVals = np.zeros(numVals)
+            temperatureVals = np.zeros(numVals)
             resVals = np.zeros(numVals)
             pHVals = np.zeros(numVals)
             voltVals = np.zeros(numVals)
 
             for i in range(numVals):
-                temp, res = interfaces.read_temperature()
+                temperature, res = interfaces.read_temperature()
                 pH_reading, pH_volts = interfaces.read_pH()
-                interfaces.lcd_out("Temp: {0:>4.3f} C".format(temp), line=1)
+                interfaces.lcd_out(
+                    "Temperature: {0:>4.3f} C".format(temperature), line=1
+                )
                 interfaces.lcd_out("Res:  {0:>4.3f} Ohms".format(res), line=2)
                 interfaces.lcd_out("pH:   {0:>4.5f} pH".format(pH_reading), line=3)
                 interfaces.lcd_out("pH V: {0:>3.4f} mV".format(pH_volts * 1000), line=4)
                 interfaces.lcd_out("Reading: {}".format(i), 1, console=True)
                 timeVals[i] = timestep * i
-                tempVals[i] = temp
+                temperatureVals[i] = temperature
                 resVals[i] = res
                 pHVals[i] = pH_reading
                 voltVals[i] = pH_volts
@@ -117,11 +119,11 @@ def test():
             break
 
 
-def _test_temp():
+def _test_temperature():
     """Tests the temperature probe"""
     for i in range(5):
-        temp, res = interfaces.read_temperature()
-        interfaces.lcd_out("Temp: {0:0.3f}C".format(temp), 1)
+        temperature, res = interfaces.read_temperature()
+        interfaces.lcd_out("Temperature: {0:0.3f}C".format(temperature), 1)
         interfaces.lcd_out("Res: {0:0.3f} Ohms".format(res), 2)
         interfaces.delay(0.5)
 
@@ -165,24 +167,26 @@ def _calibrate_pH():
 
 def _calibrate_temperature():
     """Routine for calibrating the temperature probe."""
-    expected_temp = interfaces.read_user_value("Ref solution temp?")
+    expected_temperature = interfaces.read_user_value("Ref solution temperature?")
     interfaces.lcd_out("Put probe in sol", style=constants.LCD_CENT_JUST, line=1)
     interfaces.lcd_out("", line=2)
     interfaces.lcd_out("Press 1 to", style=constants.LCD_CENT_JUST, line=3)
     interfaces.lcd_out("record value", style=constants.LCD_CENT_JUST, line=4)
     # Waits for user to press enter
     interfaces.read_user_input()
-    expected_resistance = analysis.calculate_expected_resistance(expected_temp)
+    expected_resistance = analysis.calculate_expected_resistance(expected_temperature)
 
     actual_temperature, actual_resistance = interfaces.read_temperature()
     interfaces.lcd_clear()
-    interfaces.lcd_out("Recorded temp: {0:0.3f}".format(actual_temperature), line=1)
+    interfaces.lcd_out(
+        "Recorded temperature: {0:0.3f}".format(actual_temperature), line=1
+    )
     diff = expected_resistance - actual_resistance
     new_ref_resistance = (
-        constants.TEMP_REF_RESISTANCE
-        + diff * constants.TEMP_REF_RESISTANCE / expected_resistance
+        constants.TEMPERATURE_REF_RESISTANCE
+        + diff * constants.TEMPERATURE_REF_RESISTANCE / expected_resistance
     )
-    constants.TEMP_REF_RESISTANCE = float(new_ref_resistance)
+    constants.TEMPERATURE_REF_RESISTANCE = float(new_ref_resistance)
     # reinitialize sensors with calibrated values
     interfaces.lcd_out("{}".format(new_ref_resistance), line=2)
     interfaces.setup_interfaces()
@@ -238,7 +242,7 @@ def total_alkalinity_titration():
     user_choice = interfaces.read_user_input()
 
     # wait until solution is up to temperature
-    interfaces.tempcontroller.activate()
+    interfaces.temperature_controller.activate()
     interfaces.lcd_clear()
     interfaces.lcd_out("Heating to 30 C...", line=1)
     interfaces.lcd_out("Please wait...", style=constants.LCD_CENT_JUST, line=3)
@@ -246,11 +250,13 @@ def total_alkalinity_titration():
         interfaces.lcd_out("MANUAL SELECTED", style=constants.LCD_CENT_JUST, line=4)
     else:
         interfaces.lcd_out("AUTO SELECTED", style=constants.LCD_CENT_JUST, line=4)
-    while not interfaces.tempcontroller.at_temp():
-        interfaces.tempcontroller.update()
-        temp = interfaces.tempcontroller.get_last_temp()
+    while not interfaces.temperature_controller.at_temperature():
+        interfaces.temperature_controller.update()
+        temperature = interfaces.temperature_controller.get_last_temperature()
         interfaces.lcd_out(
-            "Temp: {0:>4.3f} C".format(temp), style=constants.LCD_CENT_JUST, line=2
+            "Temperature: {0:>4.3f} C".format(temperature),
+            style=constants.LCD_CENT_JUST,
+            line=2,
         )
 
     if user_choice == "1":
@@ -294,7 +300,7 @@ def total_alkalinity_titration():
     )
     # save data to csv
     analysis.write_titration_data(data)
-    interfaces.tempcontroller.deactivate()
+    interfaces.temperature_controller.deactivate()
 
 
 def titration(
@@ -331,7 +337,7 @@ def titration(
         interfaces.delay(10)  # allow it to mix before taking measurements
 
         current_pH = wait_pH_stable(total_sol, data)
-        interfaces.tempcontroller.update()
+        interfaces.temperature_controller.update()
 
     interfaces.lcd_clear()
     interfaces.lcd_out("pH value {} reached".format(current_pH), line=1)
@@ -357,10 +363,12 @@ def wait_pH_stable(total_sol, data):
 
     while True:
         pH_reading, pH_volts = interfaces.read_pH()
-        temp_reading = interfaces.read_temperature()[0]
+        temperature_reading = interfaces.read_temperature()[0]
         interfaces.lcd_out("pH:   {0:>4.5f} pH".format(pH_reading), line=1)
         interfaces.lcd_out("pH V: {0:>3.4f} mV".format(pH_volts * 1000), line=2)
-        interfaces.lcd_out("Temp: {0:>4.3f} C".format(temp_reading), line=3)
+        interfaces.lcd_out(
+            "Temperature: {0:>4.3f} C".format(temperature_reading), line=3
+        )
 
         pH_values[pH_list_counter] = pH_reading
 
@@ -368,13 +376,16 @@ def wait_pH_stable(total_sol, data):
             valid_num_values_tested = True
 
         # Check that the temperature of the solution is within bounds
-        if abs(temp_reading - constants.TARGET_TEMP) > constants.TEMPERATURE_ACCURACY:
+        if (
+            abs(temperature_reading - constants.TARGET_TEMPERATURE)
+            > constants.TEMPERATURE_ACCURACY
+        ):
             # interfaces.lcd_out("TEMPERATURE OUT OF BOUNDS")
             # TODO output to error log
             pass
 
-        # Record data point (temp, pH volts, total HCl)
-        data.append((temp_reading, pH_volts, total_sol, None, None, None, None))
+        # Record data point (temperature, pH volts, total HCl)
+        data.append((temperature_reading, pH_volts, total_sol, None, None, None, None))
         pH_list_counter = 0 if pH_list_counter >= 9 else pH_list_counter + 1
 
         if (

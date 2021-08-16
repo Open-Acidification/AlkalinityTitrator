@@ -5,7 +5,7 @@ import digitalio
 import constants
 
 
-class Temp_Probe:
+class Temperature_Probe:
     def __init__(self, sck, mosi, miso, cs, wires=2):
         self.spi = busio.SPI(sck, MOSI=mosi, MISO=miso)
         self.cs = digitalio.DigitalInOut(cs)
@@ -13,8 +13,8 @@ class Temp_Probe:
             self.spi,
             self.cs,
             wires=wires,
-            rtd_nominal=constants.TEMP_NOMINAL_RESISTANCE,
-            ref_resistor=constants.TEMP_REF_RESISTANCE,
+            rtd_nominal=constants.TEMPERATURE_NOMINAL_RESISTANCE,
+            ref_resistor=constants.TEMPERATURE_REF_RESISTANCE,
         )
 
     def get_temperature(self):

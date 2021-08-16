@@ -15,26 +15,26 @@ import devices.lcd_mock as lcd_mock
 import devices.ph_probe as ph_probe  # pH
 import devices.ph_probe_mock as ph_probe_mock
 import devices.serial_mock as serial_mock
-import devices.temp_probe as temp_probe
-import devices.temp_probe_mock as temp_probe_mock
-import devices.tempcontrol as tempcontrol  # Temp
-import devices.tempcontrol_mock as tempcontrol_mock
+import devices.temperature_control as temperature_control  # Temperature
+import devices.temperature_control_mock as temperature_control_mock
+import devices.temperature_probe as temperature_probe
+import devices.temperature_probe_mock as temperature_probe_mock
 
 ph_class: types.ModuleType
-temp_class: types.ModuleType
+temperature_class: types.ModuleType
 board_class: types.ModuleType
 lcd_class: types.ModuleType
 keypad_class: types.ModuleType
-tempcontrol_class: types.ModuleType
+temperature_control_class: types.ModuleType
 serial_class: types.ModuleType
 
 if constants.IS_TEST:
     ph_class = ph_probe_mock
-    temp_class = temp_probe_mock
+    temperature_class = temperature_probe_mock
     board_class = board_mock
     lcd_class = lcd_mock
     keypad_class = keypad_mock
-    tempcontrol_class = tempcontrol_mock
+    temperature_control_class = temperature_control_mock
     serial_class = serial_mock
 else:
     # NOTE: The board module can only be imported if
@@ -43,20 +43,20 @@ else:
     import board  # All hardware (see above note)
 
     ph_class = ph_probe
-    temp_class = temp_probe
+    temperature_class = temperature_probe
     board_class = board
     lcd_class = lcd
     keypad_class = keypad
-    tempcontrol_class = tempcontrol
+    temperature_control_class = temperature_control
     serial_class = serial
 
 # global, pH, lcd, and temperature probes
 ph_sensor = None
-temp_sensor = None
+temperature_sensor = None
 arduino = None
 ui_lcd = None
 ui_keypad = None
-tempcontroller = None
+temperature_controller = None
 
 
 def setup_interfaces():
@@ -64,15 +64,15 @@ def setup_interfaces():
     Initializes components for interfacing with pH probe,
     temperature probe, and stepper motor/syringe pump
     """
-    global ph_sensor, temp_sensor, arduino, ui_lcd, ui_keypad, tempcontroller
+    global ph_sensor, temperature_sensor, arduino, ui_lcd, ui_keypad, temperature_controller
 
     # LCD and ui_keypad setup
     ui_lcd = setup_lcd()
     ui_keypad = setup_keypad()
 
-    # Temp Control Setup
-    temp_sensor = setup_temp_probe()
-    tempcontroller = setup_tempcontrol()
+    # Temperature Control Setup
+    temperature_sensor = setup_temperature_probe()
+    temperature_controller = setup_temperature_control()
     ph_sensor = setup_ph_probe()
     arduino = setup_arduino()
 
@@ -108,18 +108,18 @@ def setup_keypad():
     return temp_keypad
 
 
-def setup_temp_probe():
-    return temp_class.Temp_Probe(
+def setup_temperature_probe():
+    return temperature_class.Temperature_Probe(
         board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D4, wires=3
     )
 
 
-def setup_tempcontrol():
+def setup_temperature_control():
     # Create a new sensor attached to the 2nd probe (D0) for the temperature controller alone
-    sensor = temp_class.Temp_Probe(
+    sensor = temperature_class.Temperature_Probe(
         board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D0, wires=3
     )
-    return tempcontrol_class.TempControl(constants.RELAY_PIN, sensor)
+    return temperature_control_class.Temperature_Control(constants.RELAY_PIN, sensor)
 
 
 def setup_ph_probe():
@@ -139,15 +139,15 @@ def setup_arduino():
 
 
 def delay(seconds, countdown=False):
-    # Use time.sleep() if the temp controller isn't initialized yet
-    if tempcontroller is None:
+    # Use time.sleep() if the temperature controller isn't initialized yet
+    if temperature_controller is None:
         time.sleep(seconds)
         return
 
     timeEnd = time.time() + seconds
     timeNow = time.time()
     while timeEnd > timeNow:
-        tempcontroller.update()
+        temperature_controller.update()
         timeLeft = timeEnd - timeNow
         if countdown and int(timeLeft) % 5 == 0:
             lcd_out("Time Left: {}".format(int(timeLeft)), line=4)
@@ -204,7 +204,7 @@ def read_user_input(valid_inputs=None, console=False):
     user_input = None
 
     while True:
-        tempcontroller.update()
+        temperature_controller.update()
 
         if console:
             user_input = input()
@@ -334,8 +334,8 @@ def read_pH():
     :returns: adjusted pH value in units of pH, raw V reading from probe
     """
     volts = read_raw_pH()
-    temp = read_temperature()[0]
-    pH_val = analysis.calculate_pH(volts, temp)
+    temperature = read_temperature()[0]
+    pH_val = analysis.calculate_pH(volts, temperature)
     return pH_val, volts
 
 
@@ -361,7 +361,7 @@ def read_temperature():
     Reads and returns the temperature from GPIO
     :returns: temperature in celsius, resistance in ohms
     """
-    return temp_sensor.temperature(), temp_sensor.resistance()
+    return temperature_sensor.temperature(), temperature_sensor.resistance()
 
 
 def _test_read_temperature():
