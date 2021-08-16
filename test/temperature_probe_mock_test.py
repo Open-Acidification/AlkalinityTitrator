@@ -10,7 +10,9 @@ def test_temperature_probe_create():
 
 
 def test_temperature_probe_create_null():
-    temperature_sensor = temperature_probe_mock.Temperature_Probe(None, None, None, None)
+    temperature_sensor = temperature_probe_mock.Temperature_Probe(
+        None, None, None, None
+    )
     assert temperature_sensor is not None
 
 
@@ -22,7 +24,9 @@ def test_temperature_probe_get_temperature():
 
 
 def test_temperature_probe_temperature_null():
-    temperature_sensor = temperature_probe_mock.Temperature_Probe(None, None, None, None)
+    temperature_sensor = temperature_probe_mock.Temperature_Probe(
+        None, None, None, None
+    )
     assert temperature_sensor.get_temperature() == 0
 
 
@@ -34,7 +38,9 @@ def test_temperature_probe_resistance():
 
 
 def test_temperature_probe_resistance_null():
-    temperature_sensor = temperature_probe_mock.Temperature_Probe(None, None, None, None)
+    temperature_sensor = temperature_probe_mock.Temperature_Probe(
+        None, None, None, None
+    )
     assert temperature_sensor.get_resistance() == 1000.0
 
 

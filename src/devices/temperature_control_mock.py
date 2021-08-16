@@ -10,7 +10,7 @@ PID_ANTIWINDUP_TI = 0.004
 PID_ANTIWINDUP_TD = 9
 
 
-class TemperatureControl:
+class Temperature_Control:
     """
     Mock of Temperature Control class for running the PID control on the Alkalinity
     Titrator using a SSR and Heated Beaker Jacket

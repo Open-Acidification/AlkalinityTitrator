@@ -15,10 +15,10 @@ import devices.lcd_mock as lcd_mock
 import devices.ph_probe as ph_probe  # pH
 import devices.ph_probe_mock as ph_probe_mock
 import devices.serial_mock as serial_mock
-import devices.temperature_probe as temperature_probe
-import devices.temperature_probe_mock as temperature_probe_mock
 import devices.temperature_control as temperature_control  # Temperature
 import devices.temperature_control_mock as temperature_control_mock
+import devices.temperature_probe as temperature_probe
+import devices.temperature_probe_mock as temperature_probe_mock
 
 ph_class: types.ModuleType
 temperature_class: types.ModuleType
@@ -72,7 +72,7 @@ def setup_interfaces():
 
     # Temperature Control Setup
     temperature_sensor = setup_temperature_probe()
-    temperature_controller = setup_temperaturecontrol()
+    temperature_controller = setup_temperature_control()
     ph_sensor = setup_ph_probe()
     arduino = setup_arduino()
 
@@ -108,7 +108,7 @@ def setup_keypad():
     return temp_keypad
 
 
-def setup_temp_probe():
+def setup_temperature_probe():
     return temperature_class.Temperature_Probe(
         board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D4, wires=3
     )
@@ -119,7 +119,7 @@ def setup_temperature_control():
     sensor = temperature_class.Temperature_Probe(
         board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D0, wires=3
     )
-    return temperature_control_class.TemperatureControl(constants.RELAY_PIN, sensor)
+    return temperature_control_class.Temperature_Control(constants.RELAY_PIN, sensor)
 
 
 def setup_ph_probe():
