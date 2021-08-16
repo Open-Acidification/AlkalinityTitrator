@@ -1,7 +1,7 @@
 import sys
 import traceback
 
-from . import analysis, constants, interfaces, routines
+from titration.utils import analysis, constants, interfaces, routines
 
 
 def test():

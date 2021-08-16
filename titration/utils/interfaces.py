@@ -5,19 +5,19 @@ import types
 
 import serial  # Pump
 
-from . import analysis, constants
-from .devices import board_mock as board_mock
-from .devices import keypad as keypad  # UI
-from .devices import keypad_mock as keypad_mock
-from .devices import lcd as lcd  # UI
-from .devices import lcd_mock as lcd_mock
-from .devices import ph_probe as ph_probe  # pH
-from .devices import ph_probe_mock as ph_probe_mock
-from .devices import serial_mock as serial_mock
-from .devices import temperature_control as temperature_control  # Temperature
-from .devices import temperature_control_mock as temperature_control_mock
-from .devices import temperature_probe as temperature_probe
-from .devices import temperature_probe_mock as temperature_probe_mock
+from titration.utils import analysis, constants
+from titration.utils.devices import board_mock as board_mock
+from titration.utils.devices import keypad as keypad  # UI
+from titration.utils.devices import keypad_mock as keypad_mock
+from titration.utils.devices import lcd as lcd  # UI
+from titration.utils.devices import lcd_mock as lcd_mock
+from titration.utils.devices import ph_probe as ph_probe  # pH
+from titration.utils.devices import ph_probe_mock as ph_probe_mock
+from titration.utils.devices import serial_mock as serial_mock
+from titration.utils.devices import temperature_control as temperature_control  # Temperature
+from titration.utils.devices import temperature_control_mock as temperature_control_mock
+from titration.utils.devices import temperature_probe as temperature_probe
+from titration.utils.devices import temperature_probe_mock as temperature_probe_mock
 
 ph_class: types.ModuleType
 temperature_class: types.ModuleType

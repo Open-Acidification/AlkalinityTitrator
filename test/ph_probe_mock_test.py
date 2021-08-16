@@ -1,7 +1,7 @@
 import pytest
 
-import src.utils.devices.board_mock as board_mock
-import src.utils.devices.ph_probe_mock as ph_probe_mock
+import titration.utils.devices.board_mock as board_mock
+import titration.utils.devices.ph_probe_mock as ph_probe_mock
 
 
 def test_ph_create():

@@ -1,5 +1,5 @@
-import src.utils.constants as c
-import src.utils.devices.serial_mock as serial
+import titration.utils.constants as c
+import titration.utils.devices.serial_mock as serial
 
 
 def test_serial_create():

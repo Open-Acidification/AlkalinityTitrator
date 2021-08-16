@@ -1,5 +1,5 @@
-import src.utils.devices.board_mock as board
-import src.utils.devices.keypad_mock as keypad
+import titration.utils.devices.board_mock as board
+import titration.utils.devices.keypad_mock as keypad
 
 
 def test_keypad_create():

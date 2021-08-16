@@ -1,6 +1,6 @@
 import numpy as np  # debugging/testing
 
-from . import analysis, constants, interfaces
+from titration.utils import analysis, constants, interfaces
 
 ROUTINE_OPTIONS = {
     1: "Run titration",

@@ -3,7 +3,7 @@ import datetime as dt
 import json
 import math
 
-from . import constants
+from titration.utils import constants
 
 
 # data in/out
