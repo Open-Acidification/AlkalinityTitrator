@@ -17,15 +17,15 @@ import devices.ph_probe_mock as ph_probe_mock
 import devices.serial_mock as serial_mock
 import devices.temperature_probe as temperature_probe
 import devices.temperature_probe_mock as temperature_probe_mock
-import devices.temperaturecontrol as temperaturecontrol  # Temperature
-import devices.temperaturecontrol_mock as temperaturecontrol_mock
+import devices.temperature_control as temperature_control  # Temperature
+import devices.temperature_control_mock as temperature_control_mock
 
 ph_class: types.ModuleType
 temperature_class: types.ModuleType
 board_class: types.ModuleType
 lcd_class: types.ModuleType
 keypad_class: types.ModuleType
-temperaturecontrol_class: types.ModuleType
+temperature_control_class: types.ModuleType
 serial_class: types.ModuleType
 
 if constants.IS_TEST:
@@ -34,7 +34,7 @@ if constants.IS_TEST:
     board_class = board_mock
     lcd_class = lcd_mock
     keypad_class = keypad_mock
-    temperaturecontrol_class = temperaturecontrol_mock
+    temperature_control_class = temperature_control_mock
     serial_class = serial_mock
 else:
     # NOTE: The board module can only be imported if
@@ -47,7 +47,7 @@ else:
     board_class = board
     lcd_class = lcd
     keypad_class = keypad
-    temperaturecontrol_class = temperaturecontrol
+    temperature_control_class = temperature_control
     serial_class = serial
 
 # global, pH, lcd, and temperature probes
@@ -114,12 +114,12 @@ def setup_temp_probe():
     )
 
 
-def setup_temperaturecontrol():
+def setup_temperature_control():
     # Create a new sensor attached to the 2nd probe (D0) for the temperature controller alone
     sensor = temperature_class.Temperature_Probe(
         board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D0, wires=3
     )
-    return temperaturecontrol_class.TemperatureControl(constants.RELAY_PIN, sensor)
+    return temperature_control_class.TemperatureControl(constants.RELAY_PIN, sensor)
 
 
 def setup_ph_probe():
