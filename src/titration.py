@@ -1,8 +1,10 @@
-import sys  # exception info
 import traceback  # exception info
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-import analysis
-import constants
+from . import analysis
+from . import constants
 
 # Parse opcodes for testing mode
 # Must be checked before "import interfaces"
@@ -14,8 +16,8 @@ if opts:
     else:
         raise SystemExit(f"Usage: {sys.argv[0]} (-test)")
 
-import interfaces  # noqa: E402
-import routines  # noqa: E402
+from . import interfaces  # noqa: E402
+from . import routines  # noqa: E402
 
 
 def test():
