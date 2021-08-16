@@ -22,10 +22,10 @@ def test():
     """Function for running specific tests for the program"""
     initialize_components()
     while True:
-        temp, res = interfaces.read_temperature()
+        temperature, res = interfaces.read_temperature()
         pH_reading, pH_volts = interfaces.read_pH()
         interfaces.lcd_out(
-            "Temperature: {0:0.3f}C".format(temp), 1, style=constants.LCD_CENT_JUST
+            "Temperature: {0:0.3f}C".format(temperature), 1, style=constants.LCD_CENT_JUST
         )
         interfaces.lcd_out(
             "Resistance: {0:0.3f} Ohms".format(res), 2, style=constants.LCD_CENT_JUST
@@ -64,7 +64,7 @@ def run():
         routines.run_routine(routine_selection)
 
     analysis.save_calibration_data()
-    interfaces.tempcontroller.deactivate()
+    interfaces.temperature_controller.deactivate()
     interfaces.lcd_clear()
     interfaces.ui_lcd.lcd_backlight(False)
 
@@ -80,8 +80,8 @@ if __name__ == "__main__":
         run()
     except Exception:
         # Deactivate the SSR if any crash occurs
-        if interfaces.tempcontroller is not None:
-            interfaces.tempcontroller.deactivate()
+        if interfaces.temperature_controller is not None:
+            interfaces.temperature_controller.deactivate()
         print("\nDeactivated SSR")
 
         print(sys.exc_info()[0])

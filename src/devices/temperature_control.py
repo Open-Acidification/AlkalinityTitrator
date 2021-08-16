@@ -14,9 +14,9 @@ PID_ANTIWINDUP_TI = 0.004
 PID_ANTIWINDUP_TD = 9
 
 
-class TempControl:
+class TemperatureControl:
     """
-    Temp Control class for running the PID control on the Alkalinity
+    Temperature Control class for running the PID control on the Alkalinity
     Titrator using a SSR and Heated Beaker Jacket
 
     """
@@ -55,7 +55,7 @@ class TempControl:
     timeNext = time.time()
 
     # last temperature read
-    tempLast = 0
+    temperatureLast = 0
 
     # What state is the relay currently in
     relayOn = False
@@ -64,7 +64,7 @@ class TempControl:
     # timeLog = []
 
     # Data Fame of Measurements
-    df = pd.DataFrame(columns=["time (s)", "temp (C)", "gain"])
+    df = pd.DataFrame(columns=["time (s)", "temperature (C)", "gain"])
 
     # Target temperature
     setPoint = 30
@@ -100,8 +100,8 @@ class TempControl:
 
             else:
                 # Get data values
-                temp = self.sensor.get_temperature()
-                self.tempLast = temp
+                temperature = self.sensor.get_temperature()
+                self.temperatureLast = temperature
                 # timelog.append(timeNow.tm_sec)
 
                 # anti-windup
@@ -111,10 +111,10 @@ class TempControl:
                     self.__set_controlparam_antiwindup()
 
                 # Update PID Gain
-                self.__update_gains(temp)
+                self.__update_gains(temperature)
 
                 # Check if relay needs to be turned on
-                if temp < self.setPoint:
+                if temperature < self.setPoint:
                     if self.k <= 0:
                         self.k = 0
                         self.__update_timeNext(time.time() + self.timeStep)
@@ -126,7 +126,7 @@ class TempControl:
                         self.__set_relayState(True)
                         self.__update_timeNext(time.time() + self.timeStep)
 
-                # temp above setpoint
+                # temperature above setpoint
                 else:
                     self.k = 0
                     self.__set_relayState(False)
@@ -135,8 +135,8 @@ class TempControl:
 
                 # Add data to df
                 data_frame_new = pd.DataFrame(
-                    [[time.ctime(timeNow), temp, self.k]],
-                    columns=["time (s)", "temp (C)", "gain"],
+                    [[time.ctime(timeNow), temperature, self.k]],
+                    columns=["time (s)", "temperature (C)", "gain"],
                 )
                 self.df = self.df.append(data_frame_new, ignore_index=True)
                 if self.printData:
@@ -155,14 +155,14 @@ class TempControl:
     def output_csv(self, filename):
         self.df.to_csv(filename, index_label="step", header=True)
 
-    def at_temp(self):
+    def at_temperature(self):
         if self.sensor.get_temperature() >= 29 and self.sensor.get_temperature() <= 30:
             return True
         else:
             return False
 
-    def get_last_temp(self):
-        return self.tempLast
+    def get_last_temperature(self):
+        return self.temperatureLast
 
     def activate(self):
         self.controlActive = True
@@ -204,8 +204,8 @@ class TempControl:
         self.Ti = PID_DEFAULT_TI
         self.Td = PID_DEFAULT_TD
 
-    def __update_gains(self, temp):
-        self.error = self.setPoint - temp
+    def __update_gains(self, temperature):
+        self.error = self.setPoint - temperature
         self.integral = self.integral_prior + self.error * self.timeStep
         self.derivative = (self.error - self.error_prior) / self.timeStep
         self.k = self.kp * (
@@ -243,18 +243,18 @@ if __name__ == "__main__":
         spi, cs, rtd_nominal=1000, ref_resistor=4300, wires=3
     )
 
-    tempControl = TempControl(sensor, 12)
-    tempControl.enable_print()
+    temperatureControl = TemperatureControl(sensor, 12)
+    temperatureControl.enable_print()
 
     # 10min time
     timeCurr = time.time()
     timeEnd = timeCurr + 3600
     print("Time Start: ", time.ctime(timeCurr), "\nTime End: ", time.ctime(timeEnd))
     while timeEnd > time.time():
-        tempControl.update()
+        temperatureControl.update()
 
-    filename = "data/TempCtrl_" + time.ctime() + ".csv"
+    filename = "data/TemperatureCtrl_" + time.ctime() + ".csv"
     filename = filename.replace(":", "-")
     filename = filename.replace(" ", "_")
 
-    tempControl.output_csv(filename)
+    temperatureControl.output_csv(filename)
