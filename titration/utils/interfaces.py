@@ -6,26 +6,28 @@ import types
 import serial  # Pump
 
 from titration.utils import analysis, constants
-from titration.utils.devices import board_mock
-from titration.utils.devices import keypad
-from titration.utils.devices import keypad_mock
-from titration.utils.devices import lcd
-from titration.utils.devices import lcd_mock
-from titration.utils.devices import ph_probe
-from titration.utils.devices import ph_probe_mock
-from titration.utils.devices import serial_mock
-from titration.utils.devices import temperature_control
-from titration.utils.devices import temperature_control_mock
-from titration.utils.devices import temperature_probe
-from titration.utils.devices import temperature_probe_mock
+from titration.utils.devices import (
+    board_mock,
+    keypad,
+    keypad_mock,
+    lcd,
+    lcd_mock,
+    ph_probe,
+    ph_probe_mock,
+    serial_mock,
+    temperature_control,
+    temperature_control_mock,
+    temperature_probe,
+    temperature_probe_mock,
+)
 
-ph_class: types.ModuleType
-temperature_class: types.ModuleType
-board_class: types.ModuleType
-lcd_class: types.ModuleType
-keypad_class: types.ModuleType
-temperature_control_class: types.ModuleType
-serial_class: types.ModuleType
+ph_class: types.ModuleType = None
+temperature_class: types.ModuleType = None
+board_class: types.ModuleType = None
+lcd_class: types.ModuleType = None
+keypad_class: types.ModuleType = None
+temperature_control_class: types.ModuleType = None
+serial_class: types.ModuleType = None
 
 # global, pH, lcd, and temperature probes
 ph_sensor = None
@@ -35,12 +37,13 @@ ui_lcd = None
 ui_keypad = None
 temperature_controller = None
 
+
 def setup_module_classes():
     """
     Checks constants.IS_TEST and determines if classes should be
-    mocked or 
+    mocked or
     """
-    global ph_class, temperature_class, board_class, lcd_class, keypad_class, temperature_control_class, serial_class 
+    global ph_class, temperature_class, board_class, lcd_class, keypad_class, temperature_control_class, serial_class
     if constants.IS_TEST:
         ph_class = ph_probe_mock
         temperature_class = temperature_probe_mock
@@ -62,6 +65,7 @@ def setup_module_classes():
         keypad_class = keypad
         temperature_control_class = temperature_control
         serial_class = serial
+
 
 def setup_interfaces():
     """

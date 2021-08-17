@@ -79,7 +79,7 @@ def test_mode_selection(user_choice):
         test_mode_read_volume()
 
 
-def test_mode_read_values(numVals=60,timestep=0.5):
+def test_mode_read_values(numVals=60, timestep=0.5):
     numVals = numVals
     timestep = timestep
     timeVals = np.zeros(numVals)

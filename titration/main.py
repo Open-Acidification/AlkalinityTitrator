@@ -4,7 +4,6 @@ import sys
 import titration.utils.constants as constants
 import titration.utils.titration as titration
 
-
 if __name__ == "__main__":
     opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
     if opts:
