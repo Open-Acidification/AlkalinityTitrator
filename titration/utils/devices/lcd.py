@@ -2,7 +2,7 @@ import time
 
 import digitalio
 
-from .. import constants
+from titration.utils import constants
 
 
 class LCD:

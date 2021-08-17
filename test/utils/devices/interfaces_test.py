@@ -6,7 +6,7 @@ titration package
 from titration.utils import constants, interfaces
 
 
-def test_interfaces_requirements():
+def setup_module(module):
     constants.IS_TEST = True
     interfaces.setup_module_classes()
     interfaces.ui_lcd = interfaces.setup_lcd()

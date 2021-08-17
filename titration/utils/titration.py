@@ -4,29 +4,6 @@ import traceback
 from titration.utils import analysis, constants, interfaces, routines
 
 
-def test():
-    """Function for running specific tests for the program"""
-    initialize_components()
-    while True:
-        temperature, res = interfaces.read_temperature()
-        pH_reading, pH_volts = interfaces.read_pH()
-        interfaces.lcd_out(
-            "Temp: {0:0.3f}C".format(temperature),
-            1,
-            style=constants.LCD_CENT_JUST,
-        )
-        interfaces.lcd_out(
-            "Res: {0:0.3f} Ohms".format(res), 2, style=constants.LCD_CENT_JUST
-        )
-        interfaces.lcd_out(
-            "pH: {}".format(pH_reading), 3, style=constants.LCD_CENT_JUST
-        )
-        interfaces.lcd_out(
-            "pH volt: {}".format(pH_volts), 4, style=constants.LCD_CENT_JUST
-        )
-        interfaces.delay(constants.TITRATION_WAIT_TIME)
-
-
 def run():
     """Main driver for the program. Initializes components and queries the user for next steps"""
 

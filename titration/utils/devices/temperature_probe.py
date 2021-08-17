@@ -2,7 +2,7 @@ import adafruit_max31865
 import busio
 import digitalio
 
-from .. import constants
+from titration.utils import constants
 
 
 class Temperature_Probe:
