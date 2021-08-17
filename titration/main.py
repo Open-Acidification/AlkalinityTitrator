@@ -1,8 +1,8 @@
 # import os
 import sys
 
-import utils.constants as constants
-import utils.titration as titration
+import titration.utils.constants as constants
+import titration.utils.titration as titration
 
 
 if __name__ == "__main__":
@@ -13,4 +13,6 @@ if __name__ == "__main__":
             constants.IS_TEST = True
         else:
             raise SystemExit(f"Usage: {sys.argv[0]} (-test)")
+    else:
+        constants.IS_TEST = False
     titration.run()

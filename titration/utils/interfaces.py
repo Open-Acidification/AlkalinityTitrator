@@ -6,18 +6,18 @@ import types
 import serial  # Pump
 
 from titration.utils import analysis, constants
-from titration.utils.devices import board_mock as board_mock
-from titration.utils.devices import keypad as keypad  # UI
-from titration.utils.devices import keypad_mock as keypad_mock
-from titration.utils.devices import lcd as lcd  # UI
-from titration.utils.devices import lcd_mock as lcd_mock
-from titration.utils.devices import ph_probe as ph_probe  # pH
-from titration.utils.devices import ph_probe_mock as ph_probe_mock
-from titration.utils.devices import serial_mock as serial_mock
-from titration.utils.devices import temperature_control as temperature_control  # Temperature
-from titration.utils.devices import temperature_control_mock as temperature_control_mock
-from titration.utils.devices import temperature_probe as temperature_probe
-from titration.utils.devices import temperature_probe_mock as temperature_probe_mock
+from titration.utils.devices import board_mock
+from titration.utils.devices import keypad
+from titration.utils.devices import keypad_mock
+from titration.utils.devices import lcd
+from titration.utils.devices import lcd_mock
+from titration.utils.devices import ph_probe
+from titration.utils.devices import ph_probe_mock
+from titration.utils.devices import serial_mock
+from titration.utils.devices import temperature_control
+from titration.utils.devices import temperature_control_mock
+from titration.utils.devices import temperature_probe
+from titration.utils.devices import temperature_probe_mock
 
 ph_class: types.ModuleType
 temperature_class: types.ModuleType
@@ -27,28 +27,6 @@ keypad_class: types.ModuleType
 temperature_control_class: types.ModuleType
 serial_class: types.ModuleType
 
-if constants.IS_TEST:
-    ph_class = ph_probe_mock
-    temperature_class = temperature_probe_mock
-    board_class = board_mock
-    lcd_class = lcd_mock
-    keypad_class = keypad_mock
-    temperature_control_class = temperature_control_mock
-    serial_class = serial_mock
-else:
-    # NOTE: The board module can only be imported if
-    # running on specific hardware (i.e. Raspberry Pi)
-    # It will fail on regular Windows/Linux computers
-    import board  # All hardware (see above note)
-
-    ph_class = ph_probe
-    temperature_class = temperature_probe
-    board_class = board
-    lcd_class = lcd
-    keypad_class = keypad
-    temperature_control_class = temperature_control
-    serial_class = serial
-
 # global, pH, lcd, and temperature probes
 ph_sensor = None
 temperature_sensor = None
@@ -57,6 +35,33 @@ ui_lcd = None
 ui_keypad = None
 temperature_controller = None
 
+def setup_module_classes():
+    """
+    Checks constants.IS_TEST and determines if classes should be
+    mocked or 
+    """
+    global ph_class, temperature_class, board_class, lcd_class, keypad_class, temperature_control_class, serial_class 
+    if constants.IS_TEST:
+        ph_class = ph_probe_mock
+        temperature_class = temperature_probe_mock
+        board_class = board_mock
+        lcd_class = lcd_mock
+        keypad_class = keypad_mock
+        temperature_control_class = temperature_control_mock
+        serial_class = serial_mock
+    elif constants.IS_TEST is False:
+        # NOTE: The board module can only be imported if
+        # running on specific hardware (i.e. Raspberry Pi)
+        # It will fail on regular Windows/Linux computers
+        import board  # All hardware (see above note)
+
+        ph_class = ph_probe
+        temperature_class = temperature_probe
+        board_class = board
+        lcd_class = lcd
+        keypad_class = keypad
+        temperature_control_class = temperature_control
+        serial_class = serial
 
 def setup_interfaces():
     """
@@ -64,6 +69,9 @@ def setup_interfaces():
     temperature probe, and stepper motor/syringe pump
     """
     global ph_sensor, temperature_sensor, arduino, ui_lcd, ui_keypad, temperature_controller
+
+    # set module classes
+    setup_module_classes()
 
     # LCD and ui_keypad setup
     ui_lcd = setup_lcd()
@@ -450,7 +458,7 @@ def drive_pump(volume, direction):
                 drive_step_stick(offset, 1)
             constants.volume_in_pump -= volume
 
-    lcd_out("Pump Vol: {0:1.2f}".format(constants.volume_in_pump), line=4)
+    lcd_out("Pump Vol: {0:1.2f} ml".format(constants.volume_in_pump), line=4)
 
 
 def drive_step_stick(cycles, direction):
