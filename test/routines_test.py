@@ -3,7 +3,7 @@ import io
 from titration.utils import constants, interfaces, routines
 
 
-def test_routines_requirements():
+def setup_module(module):
     constants.IS_TEST = True
     interfaces.setup_module_classes()
     interfaces.setup_interfaces()
