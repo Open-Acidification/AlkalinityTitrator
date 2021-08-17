@@ -1,10 +1,12 @@
+from titration.utils import constants, interfaces
 from titration.utils.devices import syringe_pump_mock as syringe
-from titration.utils import interfaces, constants
+
 
 def test_syringe_mock_requirements():
     constants.IS_TEST = True
     interfaces.setup_module_classes()
     interfaces.setup_lcd()
+
 
 def test_syringe_mock_create():
     pump = syringe.Syringe_Pump()
@@ -12,6 +14,7 @@ def test_syringe_mock_create():
     assert pump.volume_in_pump == constants.volume_in_pump
     assert pump.max_pump_capacity == constants.MAX_PUMP_CAPACITY
     assert pump.serial is not None
+
 
 def test_syringe_mock_pump_volume_out_less_than(capsys):
     pump = syringe.Syringe_Pump()
@@ -34,6 +37,7 @@ def test_syringe_mock_pump_volume_out_less_than(capsys):
         + "|Pump Vol: 0.50 ml   |\n"
         + "*====================*\n"
     )
+
 
 def test_syringe_mock_pump_volume_out_greater_than_current(capsys):
     pump = syringe.Syringe_Pump()
@@ -80,6 +84,7 @@ def test_syringe_mock_pump_volume_out_greater_than_current(capsys):
         + "|Pump Vol: 0.00 ml   |\n"
         + "*====================*\n"
     )
+
 
 def test_syringe_mock_pump_volume_out_greater_than_max(capsys):
     pump = syringe.Syringe_Pump()

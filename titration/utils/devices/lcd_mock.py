@@ -66,9 +66,8 @@ class LCD:
             else:
                 print("|", self.strings[i], "|", sep="")
 
-
     def mock_disable_clear(self):
         self.clear_flag = False
-    
+
     def mock_enable_clear(self):
         self.clear_flag = True

@@ -12,12 +12,12 @@ from titration.utils.devices import (
     lcd_mock,
     ph_probe,
     ph_probe_mock,
+    syringe_pump,
+    syringe_pump_mock,
     temperature_control,
     temperature_control_mock,
     temperature_probe,
     temperature_probe_mock,
-    syringe_pump,
-    syringe_pump_mock,
 )
 
 ph_class: types.ModuleType = ph_probe_mock

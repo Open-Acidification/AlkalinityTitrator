@@ -1,7 +1,8 @@
 import serial
+
+import titration.utils.analysis as analysis
 import titration.utils.constants as constants
 import titration.utils.interfaces as interfaces
-import titration.utils.analysis as analysis
 
 
 class Syringe_Pump:
@@ -21,7 +22,7 @@ class Syringe_Pump:
     def set_volume_in_pump(self, volume):
         self.volume_in_pump = volume
         constants.volume_in_pump = volume
-    
+
     def get_volume_in_pump(self):
         return self.volume_in_pump
 
@@ -102,9 +103,7 @@ class Syringe_Pump:
                     self.drive_step_stick(offset, 1)
                 self.set_volume_in_pump(self.volume_in_pump - volume)
 
-        interfaces.lcd_out(
-            "Pump Vol: {0:1.2f} ml".format(self.volume_in_pump), line=4
-        )
+        interfaces.lcd_out("Pump Vol: {0:1.2f} ml".format(self.volume_in_pump), line=4)
 
     def drive_step_stick(self, cycles, direction):
         """
