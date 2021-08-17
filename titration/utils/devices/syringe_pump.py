@@ -18,6 +18,13 @@ class Syringe_Pump:
         self.serial.reset_input_buffer()
         self.serial.reset_output_buffer()
 
+    def set_volume_in_pump(self, volume):
+        self.volume_in_pump = volume
+        constants.volume_in_pump = volume
+    
+    def get_volume_in_pump(self):
+        return self.volume_in_pump
+
     def pump_volume(self, volume, direction):
         """
         Moves volume of solution through pump
@@ -29,9 +36,9 @@ class Syringe_Pump:
         # pull in solution
         if direction == 0:
             # if volume_to_add is greater than space in the pump
-            space_in_pump = self.max_pump_capacity - constants.volume_in_pump
+            space_in_pump = self.max_pump_capacity - self.volume_in_pump
             if volume_to_add > space_in_pump:
-                volume_to_add = self.max_pump_capacity - constants.volume_in_pump
+                volume_to_add = self.max_pump_capacity - self.volume_in_pump
             self.drive_pump(volume_to_add, direction)
 
         # pump out solution
@@ -43,7 +50,7 @@ class Syringe_Pump:
                 )
 
                 # pump out all current volume
-                next_volume = constants.volume_in_pump
+                next_volume = self.volume_in_pump
                 self.drive_pump(next_volume, 1)
 
                 # calculate new volume to add
@@ -57,8 +64,8 @@ class Syringe_Pump:
                     volume_to_add -= next_volume
 
             # volume greater than volume in pump
-            elif volume_to_add > constants.volume_in_pump:
-                next_volume = constants.volume_in_pump
+            elif volume_to_add > self.volume_in_pump:
+                next_volume = self.volume_in_pump
                 self.drive_pump(next_volume, 1)
 
                 # calculate remaining volume to add
@@ -74,16 +81,16 @@ class Syringe_Pump:
     def drive_pump(self, volume, direction):
         """Converts volume to cycles and ensures and checks pump level and values"""
         if direction == 0:
-            space_in_pump = self.max_pump_capacity - constants.volume_in_pump
+            space_in_pump = self.max_pump_capacity - self.volume_in_pump
             if volume > space_in_pump:
                 interfaces.lcd_out("Filling Error", line=4)
             else:
                 interfaces.lcd_out("Filling {0:1.2f} ml".format(volume), line=4)
                 cycles = analysis.determine_pump_cycles(volume)
                 self.drive_step_stick(cycles, direction)
-                constants.volume_in_pump += volume
+                self.volume_in_pump += volume
         elif direction == 1:
-            if volume > constants.volume_in_pump:
+            if volume > self.volume_in_pump:
                 interfaces.lcd_out("Pumping Error", line=4)
             else:
                 interfaces.lcd_out("Pumping {0:1.2f} ml".format(volume), line=4)
@@ -93,10 +100,10 @@ class Syringe_Pump:
                 if offset != 0:
                     self.drive_step_stick(offset, 0)
                     self.drive_step_stick(offset, 1)
-                constants.volume_in_pump -= volume
+                self.set_volume_in_pump(self.volume_in_pump - volume)
 
         interfaces.lcd_out(
-            "Pump Vol: {0:1.2f} ml".format(constants.volume_in_pump), line=4
+            "Pump Vol: {0:1.2f} ml".format(self.volume_in_pump), line=4
         )
 
     def drive_step_stick(self, cycles, direction):

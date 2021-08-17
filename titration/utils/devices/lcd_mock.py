@@ -10,6 +10,7 @@ class LCD:
         self.rows = -1
 
         self.strings = []
+        self.clear_flag = True
 
     def begin(self, cols, rows):
         self.cols = cols
@@ -53,13 +54,21 @@ class LCD:
         """
         Draws the mock display
         """
-        if name == "nt":
-            _ = system("cls")
-        else:
-            _ = system("clear")
+        if self.clear_flag:
+            if name == "nt":
+                _ = system("cls")
+            else:
+                _ = system("clear")
 
         for i in range(-1, self.rows + 1):
             if i == -1 or i == self.rows:
                 print("*", "".ljust(self.cols, "="), "*", sep="")
             else:
                 print("|", self.strings[i], "|", sep="")
+
+
+    def mock_disable_clear(self):
+        self.clear_flag = False
+    
+    def mock_enable_clear(self):
+        self.clear_flag = True
