@@ -3,6 +3,7 @@ import traceback
 
 from titration.utils import analysis, constants, interfaces, routines
 
+
 def run():
     """Main driver for the program. Initializes components and queries the user for next steps"""
 
