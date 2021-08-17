@@ -368,7 +368,7 @@ def read_temperature():
     Reads and returns the temperature from GPIO
     :returns: temperature in celsius, resistance in ohms
     """
-    return temperature_sensor.temperature, temperature_sensor.resistance
+    return temperature_sensor.get_temperature(), temperature_sensor.get_resistance()
 
 
 def _test_read_temperature():
