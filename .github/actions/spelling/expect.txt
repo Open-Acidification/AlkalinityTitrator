@@ -55,6 +55,7 @@ monkeypatch
 mosi
 MOSI
 Mozilla
+mypy
 noqa
 numpy
 Onthank
