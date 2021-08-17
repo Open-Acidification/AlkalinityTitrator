@@ -4,6 +4,7 @@ antiwindup
 arduino
 argv
 backlight
+Barun
 baudrate
 blinka
 blog
@@ -21,6 +22,7 @@ controlparam
 csv
 ctime
 datetime
+Debnath
 desertbot
 digitalio
 elif
@@ -49,8 +51,9 @@ localtime
 markdownlint
 matplotlib
 micropython
-MOSI
+monkeypatch
 mosi
+MOSI
 Mozilla
 noqa
 numpy
@@ -91,6 +94,7 @@ SCLK
 screenshots
 sda
 sensorf
+setattr
 setpoint
 smbus
 spi
@@ -98,6 +102,7 @@ src
 ssh
 ssl
 startswith
+stdin
 stdout
 strftime
 sudo
@@ -114,6 +119,7 @@ TXD
 uint
 url
 userinterface
+utils
 vals
 VDD
 virual
