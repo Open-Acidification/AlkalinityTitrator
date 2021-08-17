@@ -351,4 +351,4 @@ test_pH_vals = [
 hcl_call_iter = 0
 pH_call_iter = -1
 
-IS_TEST = None
+IS_TEST = False

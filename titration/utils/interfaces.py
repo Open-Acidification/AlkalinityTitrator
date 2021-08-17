@@ -21,13 +21,13 @@ from titration.utils.devices import (
     temperature_probe_mock,
 )
 
-ph_class: types.ModuleType = None
-temperature_class: types.ModuleType = None
-board_class: types.ModuleType = None
-lcd_class: types.ModuleType = None
-keypad_class: types.ModuleType = None
-temperature_control_class: types.ModuleType = None
-serial_class: types.ModuleType = None
+ph_class: types.ModuleType = ph_probe_mock
+temperature_class: types.ModuleType = temperature_probe_mock
+board_class: types.ModuleType = board_mock
+lcd_class: types.ModuleType = lcd_mock
+keypad_class: types.ModuleType = keypad_mock
+temperature_control_class: types.ModuleType = temperature_control_mock
+serial_class: types.ModuleType = serial_mock
 
 # global, pH, lcd, and temperature probes
 ph_sensor = None
