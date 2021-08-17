@@ -1,6 +1,4 @@
 .vscode/
-notes.md
-titration/data
 *.pyc
 *.pdf
 .idea
@@ -10,3 +8,4 @@ titration/data
 __pycache__
 super-linter.log
 .mypy_cache
+data/calibration.json

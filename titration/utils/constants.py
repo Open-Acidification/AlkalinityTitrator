@@ -107,7 +107,7 @@ calibration_data_format = {
     "vol_pump": 0,
 }
 
-CALIBRATION_FILENAME = "src/calibration.json"
+CALIBRATION_FILENAME = "data/calibration.json"
 # temperature calibration values
 TEMPERATURE_REF_RESISTANCE = 4300.0
 TEMPERATURE_NOMINAL_RESISTANCE = 1000.0
@@ -350,4 +350,5 @@ test_pH_vals = [
 ]
 hcl_call_iter = 0
 pH_call_iter = -1
+
 IS_TEST = False

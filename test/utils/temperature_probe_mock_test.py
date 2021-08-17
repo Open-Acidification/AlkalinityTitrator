@@ -1,5 +1,5 @@
-import src.devices.board_mock as board_mock
-import src.devices.temperature_probe_mock as temperature_probe_mock
+import titration.utils.devices.board_mock as board_mock
+import titration.utils.devices.temperature_probe_mock as temperature_probe_mock
 
 
 def test_temperature_probe_create():

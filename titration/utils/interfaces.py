@@ -5,50 +5,29 @@ import types
 
 import serial  # Pump
 
-import analysis
-import constants
-import devices.board_mock as board_mock
-import devices.keypad as keypad  # UI
-import devices.keypad_mock as keypad_mock
-import devices.lcd as lcd  # UI
-import devices.lcd_mock as lcd_mock
-import devices.ph_probe as ph_probe  # pH
-import devices.ph_probe_mock as ph_probe_mock
-import devices.serial_mock as serial_mock
-import devices.temperature_control as temperature_control  # Temperature
-import devices.temperature_control_mock as temperature_control_mock
-import devices.temperature_probe as temperature_probe
-import devices.temperature_probe_mock as temperature_probe_mock
+from titration.utils import analysis, constants
+from titration.utils.devices import (
+    board_mock,
+    keypad,
+    keypad_mock,
+    lcd,
+    lcd_mock,
+    ph_probe,
+    ph_probe_mock,
+    serial_mock,
+    temperature_control,
+    temperature_control_mock,
+    temperature_probe,
+    temperature_probe_mock,
+)
 
-ph_class: types.ModuleType
-temperature_class: types.ModuleType
-board_class: types.ModuleType
-lcd_class: types.ModuleType
-keypad_class: types.ModuleType
-temperature_control_class: types.ModuleType
-serial_class: types.ModuleType
-
-if constants.IS_TEST:
-    ph_class = ph_probe_mock
-    temperature_class = temperature_probe_mock
-    board_class = board_mock
-    lcd_class = lcd_mock
-    keypad_class = keypad_mock
-    temperature_control_class = temperature_control_mock
-    serial_class = serial_mock
-else:
-    # NOTE: The board module can only be imported if
-    # running on specific hardware (i.e. Raspberry Pi)
-    # It will fail on regular Windows/Linux computers
-    import board  # All hardware (see above note)
-
-    ph_class = ph_probe
-    temperature_class = temperature_probe
-    board_class = board
-    lcd_class = lcd
-    keypad_class = keypad
-    temperature_control_class = temperature_control
-    serial_class = serial
+ph_class: types.ModuleType = ph_probe_mock
+temperature_class: types.ModuleType = temperature_probe_mock
+board_class: types.ModuleType = board_mock
+lcd_class: types.ModuleType = lcd_mock
+keypad_class: types.ModuleType = keypad_mock
+temperature_control_class: types.ModuleType = temperature_control_mock
+serial_class: types.ModuleType = serial_mock
 
 # global, pH, lcd, and temperature probes
 ph_sensor = None
@@ -59,12 +38,44 @@ ui_keypad = None
 temperature_controller = None
 
 
+def setup_module_classes():
+    """
+    Checks constants.IS_TEST and determines if classes should be
+    mocked or
+    """
+    global ph_class, temperature_class, board_class, lcd_class, keypad_class, temperature_control_class, serial_class
+    if constants.IS_TEST:
+        ph_class = ph_probe_mock
+        temperature_class = temperature_probe_mock
+        board_class = board_mock
+        lcd_class = lcd_mock
+        keypad_class = keypad_mock
+        temperature_control_class = temperature_control_mock
+        serial_class = serial_mock
+    elif constants.IS_TEST is False:
+        # NOTE: The board module can only be imported if
+        # running on specific hardware (i.e. Raspberry Pi)
+        # It will fail on regular Windows/Linux computers
+        import board  # All hardware (see above note)
+
+        ph_class = ph_probe
+        temperature_class = temperature_probe
+        board_class = board
+        lcd_class = lcd
+        keypad_class = keypad
+        temperature_control_class = temperature_control
+        serial_class = serial
+
+
 def setup_interfaces():
     """
     Initializes components for interfacing with pH probe,
     temperature probe, and stepper motor/syringe pump
     """
     global ph_sensor, temperature_sensor, arduino, ui_lcd, ui_keypad, temperature_controller
+
+    # set module classes
+    setup_module_classes()
 
     # LCD and ui_keypad setup
     ui_lcd = setup_lcd()
@@ -361,7 +372,7 @@ def read_temperature():
     Reads and returns the temperature from GPIO
     :returns: temperature in celsius, resistance in ohms
     """
-    return temperature_sensor.temperature(), temperature_sensor.resistance()
+    return temperature_sensor.get_temperature(), temperature_sensor.get_resistance()
 
 
 def _test_read_temperature():
@@ -451,7 +462,7 @@ def drive_pump(volume, direction):
                 drive_step_stick(offset, 1)
             constants.volume_in_pump -= volume
 
-    lcd_out("Pump Vol: {0:1.2f}".format(constants.volume_in_pump), line=4)
+    lcd_out("Pump Vol: {0:1.2f} ml".format(constants.volume_in_pump), line=4)
 
 
 def drive_step_stick(cycles, direction):

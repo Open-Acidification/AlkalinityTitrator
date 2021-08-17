@@ -17,5 +17,5 @@ class Temperature_Probe:
     def mock_set_temperature(self, temperature):
         self.temperature = temperature
 
-    def mock_set_resistance(self, res):
-        self.resistance = res
+    def mock_set_resistance(self, resistance):
+        self.resistance = resistance

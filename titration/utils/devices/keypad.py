@@ -1,6 +1,6 @@
 import digitalio
 
-import constants
+from titration.utils import constants
 
 
 class Keypad:

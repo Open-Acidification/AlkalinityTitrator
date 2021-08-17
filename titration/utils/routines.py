@@ -1,8 +1,6 @@
 import numpy as np  # debugging/testing
 
-import analysis
-import constants
-import interfaces
+from titration.utils import analysis, constants, interfaces
 
 ROUTINE_OPTIONS = {
     1: "Run titration",
@@ -33,13 +31,13 @@ def run_routine(selection):
         edit_settings()
     elif selection == "5" or selection == constants.KEY_5:
         # testing mode
-        test()
+        test_mode()
     else:
         # exit
         pass
 
 
-def test():
+def test_mode():
     """Function for running specific tests for the program"""
     page = 1
     user_choice = None
@@ -58,65 +56,87 @@ def test():
 
         user_choice = interfaces.read_user_input()
 
-        if user_choice == "1" or user_choice == constants.KEY_1:
-            numVals = 60
-            timestep = 0.5
-            timeVals = np.zeros(numVals)
-            temperatureVals = np.zeros(numVals)
-            resVals = np.zeros(numVals)
-            pHVals = np.zeros(numVals)
-            voltVals = np.zeros(numVals)
-
-            for i in range(numVals):
-                temperature, res = interfaces.read_temperature()
-                pH_reading, pH_volts = interfaces.read_pH()
-                interfaces.lcd_out(
-                    "Temperature: {0:>4.3f} C".format(temperature), line=1
-                )
-                interfaces.lcd_out("Res:  {0:>4.3f} Ohms".format(res), line=2)
-                interfaces.lcd_out("pH:   {0:>4.5f} pH".format(pH_reading), line=3)
-                interfaces.lcd_out("pH V: {0:>3.4f} mV".format(pH_volts * 1000), line=4)
-                interfaces.lcd_out("Reading: {}".format(i), 1, console=True)
-                timeVals[i] = timestep * i
-                temperatureVals[i] = temperature
-                resVals[i] = res
-                pHVals[i] = pH_reading
-                voltVals[i] = pH_volts
-                interfaces.delay(timestep)
-
-        elif user_choice == "2" or user_choice == constants.KEY_2:
-            p_volume = interfaces.read_user_value("Volume: ")
-
-            while True:
-                p_direction = interfaces.read_user_value("Direction (0/1):")
-                if p_direction == 0 or p_direction == 1:
-                    interfaces.lcd_clear()
-                    interfaces.pump_volume(float(p_volume), int(p_direction))
-                    break
-
-        elif user_choice == "3" or user_choice == constants.KEY_3:
-            # constants.volume_in_pump = float(input("Volume in pump: "))
-            constants.volume_in_pump = interfaces.read_user_value("Volume in pump: ")
-
-        elif user_choice == "4" or user_choice == constants.KEY_4:
-            constants.IS_TEST = not constants.IS_TEST
-            interfaces.lcd_clear()
-            interfaces.lcd_out("Testing: {}".format(constants.IS_TEST), line=1)
-            interfaces.lcd_out("Press any to cont.", line=3)
-            interfaces.read_user_input()
-
-        elif user_choice == "5" or user_choice == constants.KEY_5:
-            interfaces.lcd_clear()
-            interfaces.lcd_out("Pump Vol: ", line=1)
-            interfaces.lcd_out(
-                "{0:1.2f}".format(constants.volume_in_pump),
-                style=constants.LCD_CENT_JUST,
-                line=2,
-            )
-            interfaces.lcd_out("Press any to cont.", line=3)
-            interfaces.read_user_input()
-        elif user_choice == "6" or user_choice == constants.KEY_6:
+        if user_choice == "6" or user_choice == constants.KEY_6:
             break
+        else:
+            test_mode_selection(user_choice)
+
+
+def test_mode_selection(user_choice):
+    if user_choice == "1" or user_choice == constants.KEY_1:
+        test_mode_read_values()
+
+    elif user_choice == "2" or user_choice == constants.KEY_2:
+        test_mode_pump()
+
+    elif user_choice == "3" or user_choice == constants.KEY_3:
+        test_mode_set_volume()
+
+    elif user_choice == "4" or user_choice == constants.KEY_4:
+        test_mode_toggle_test_mode()
+
+    elif user_choice == "5" or user_choice == constants.KEY_5:
+        test_mode_read_volume()
+
+
+def test_mode_read_values(numVals=60, timestep=0.5):
+    numVals = numVals
+    timestep = timestep
+    timeVals = np.zeros(numVals)
+    tempVals = np.zeros(numVals)
+    resVals = np.zeros(numVals)
+    pHVals = np.zeros(numVals)
+    voltVals = np.zeros(numVals)
+
+    for i in range(numVals):
+        temp, res = interfaces.read_temperature()
+        pH_reading, pH_volts = interfaces.read_pH()
+        interfaces.lcd_out("Temp: {0:>4.3f} C".format(temp), line=1)
+        interfaces.lcd_out("Res:  {0:>4.3f} Ohms".format(res), line=2)
+        interfaces.lcd_out("pH:   {0:>4.5f} pH".format(pH_reading), line=3)
+        interfaces.lcd_out("pH V: {0:>3.4f} mV".format(pH_volts * 1000), line=4)
+        interfaces.lcd_out("Reading: {}".format(i), 1, console=True)
+        timeVals[i] = timestep * i
+        tempVals[i] = temp
+        resVals[i] = res
+        pHVals[i] = pH_reading
+        voltVals[i] = pH_volts
+        interfaces.delay(timestep)
+
+
+def test_mode_pump():
+    p_volume = interfaces.read_user_value("Volume: ")
+
+    while True:
+        p_direction = interfaces.read_user_value("Direction (0/1):")
+        if p_direction == 0 or p_direction == 1:
+            interfaces.lcd_clear()
+            interfaces.pump_volume(float(p_volume), int(p_direction))
+            break
+
+
+def test_mode_set_volume():
+    constants.volume_in_pump = interfaces.read_user_value("Volume in pump: ")
+
+
+def test_mode_toggle_test_mode():
+    constants.IS_TEST = not constants.IS_TEST
+    interfaces.lcd_clear()
+    interfaces.lcd_out("Testing: {}".format(constants.IS_TEST), line=1)
+    interfaces.lcd_out("Press any to cont.", line=3)
+    interfaces.read_user_input()
+
+
+def test_mode_read_volume():
+    interfaces.lcd_clear()
+    interfaces.lcd_out("Pump Vol: ", line=1)
+    interfaces.lcd_out(
+        "{0:1.2f}".format(constants.volume_in_pump),
+        style=constants.LCD_CENT_JUST,
+        line=2,
+    )
+    interfaces.lcd_out("Press any to cont.", line=3)
+    interfaces.read_user_input()
 
 
 def _test_temperature():
@@ -254,7 +274,7 @@ def total_alkalinity_titration():
         interfaces.temperature_controller.update()
         temperature = interfaces.temperature_controller.get_last_temperature()
         interfaces.lcd_out(
-            "Temperature: {0:>4.3f} C".format(temperature),
+            "Temp: {0:>4.3f} C".format(temperature),
             style=constants.LCD_CENT_JUST,
             line=2,
         )
@@ -366,9 +386,7 @@ def wait_pH_stable(total_sol, data):
         temperature_reading = interfaces.read_temperature()[0]
         interfaces.lcd_out("pH:   {0:>4.5f} pH".format(pH_reading), line=1)
         interfaces.lcd_out("pH V: {0:>3.4f} mV".format(pH_volts * 1000), line=2)
-        interfaces.lcd_out(
-            "Temperature: {0:>4.3f} C".format(temperature_reading), line=3
-        )
+        interfaces.lcd_out("Temp: {0:>4.3f} C".format(temperature_reading), line=3)
 
         pH_values[pH_list_counter] = pH_reading
 
