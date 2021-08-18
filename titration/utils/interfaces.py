@@ -378,6 +378,8 @@ def pump_volume(volume, direction):
     """
     arduino.pump_volume(volume, direction)
 
+def set_pump_volume(volume):
+    arduino.set_volume(volume)
 
 def _test_add_HCl():
     constants.hcl_call_iter += (

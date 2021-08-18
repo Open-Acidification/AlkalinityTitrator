@@ -116,8 +116,8 @@ def test_mode_pump():
 
 
 def test_mode_set_volume():
-    constants.volume_in_pump = interfaces.read_user_value("Volume in pump: ")
-
+    new_volume = interfaces.read_user_value("Volume in pump: ")
+    interfaces.set_pump_volume(new_volume)
 
 def test_mode_toggle_test_mode():
     constants.IS_TEST = not constants.IS_TEST
