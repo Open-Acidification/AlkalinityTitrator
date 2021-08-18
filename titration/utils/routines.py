@@ -108,7 +108,7 @@ def test_mode_pump():
     p_volume = interfaces.read_user_value("Volume: ")
 
     while True:
-        p_direction = interfaces.read_user_value("Direction (0/1):")
+        p_direction = interfaces.read_user_value("In/Out (0/1):")
         if p_direction == 0 or p_direction == 1:
             interfaces.lcd_clear()
             interfaces.pump_volume(float(p_volume), int(p_direction))
