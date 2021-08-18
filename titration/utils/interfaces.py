@@ -225,10 +225,10 @@ def read_user_input(valid_inputs=None, console=False):
         if user_input is None:
             pass
         elif valid_inputs is None or user_input in valid_inputs:
-            print("Input: ", user_input)
+            print("Input: ", user_input, type(user_input))
             break
         else:
-            print("Input: ", user_input)
+            print("Input: ", user_input, type(user_input))
             lcd_out(
                 constants.VALID_INPUT_WARNING,
                 constants.LCD_LINE_1,
