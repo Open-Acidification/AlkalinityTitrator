@@ -165,8 +165,8 @@ def _calibrate_pH():
     buffer1_actual_pH = interfaces.read_user_value("Enter buffer pH:")
     interfaces.lcd_out("Put sensor in buffer", style=constants.LCD_CENT_JUST, line=1)
     interfaces.lcd_out("", line=2)
-    interfaces.lcd_out("Press 1 to", style=constants.LCD_CENT_JUST, line=3)
-    interfaces.lcd_out("record value", style=constants.LCD_CENT_JUST, line=4)
+    interfaces.lcd_out("Press any button", style=constants.LCD_CENT_JUST, line=3)
+    interfaces.lcd_out("to record value", style=constants.LCD_CENT_JUST, line=4)
     # Waits for user to press enter
     interfaces.read_user_input()
     buffer1_measured_volts = float(interfaces.read_raw_pH())
@@ -243,7 +243,7 @@ def total_alkalinity_titration():
     interfaces.lcd_out("No (use old): 0", line=3)
     interfaces.lcd_out("{0:>2.3f} pH: {1:>2.4f} V".format(buffer_ph, buffer_v), line=4)
     selection = interfaces.read_user_input()
-    if selection == constants.KEY_1:
+    if selection == constants.KEY_1 or selection == "1":
         _calibrate_pH()
 
     data.append((None, None, None, initial_weight, salinity, buffer_ph, buffer_v))
@@ -266,7 +266,7 @@ def total_alkalinity_titration():
     interfaces.lcd_clear()
     interfaces.lcd_out("Heating to 30 C...", line=1)
     interfaces.lcd_out("Please wait...", style=constants.LCD_CENT_JUST, line=3)
-    if user_choice == "1":
+    if user_choice == "1" or user_choice == constants.KEY_1:
         interfaces.lcd_out("MANUAL SELECTED", style=constants.LCD_CENT_JUST, line=4)
     else:
         interfaces.lcd_out("AUTO SELECTED", style=constants.LCD_CENT_JUST, line=4)
@@ -279,9 +279,9 @@ def total_alkalinity_titration():
             line=2,
         )
 
-    if user_choice == "1":
+    if user_choice == "1" or user_choice == constants.KEY_1:
         # Manual
-        while user_choice == "1":
+        while user_choice == "1" or user_choice == constants.KEY_1:
             p_volume = interfaces.read_user_value("Volume: ")
             interfaces.lcd_clear()
             interfaces.lcd_out("Direction (0/1): ", line=1)
