@@ -37,10 +37,10 @@ def run():
         # Deactivate the SSR if any crash occurs
         if interfaces.temperature_controller is not None:
             interfaces.temperature_controller.deactivate()
-        print("\nDeactivated SSR")
+        print("\n************************\nDeactivated SSR\n************************")
 
-        print(sys.exc_info()[0])
-        traceback.print_exc()
+        #print(sys.exc_info()[0])
+        #traceback.print_exc()
 
 
 def initialize_components():
