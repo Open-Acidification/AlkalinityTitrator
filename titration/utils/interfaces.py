@@ -18,6 +18,7 @@ from titration.utils.devices import (
     temperature_control_mock,
     temperature_probe,
     temperature_probe_mock,
+    stir_control_mock,
 )
 
 ph_class: types.ModuleType = ph_probe_mock
@@ -27,6 +28,7 @@ lcd_class: types.ModuleType = lcd_mock
 keypad_class: types.ModuleType = keypad_mock
 temperature_control_class: types.ModuleType = temperature_control_mock
 syringe_class: types.ModuleType = syringe_pump_mock
+stir_class: types.ModuleType = stir_control_mock
 
 # global, pH, lcd, and temperature probes
 ph_sensor = None
@@ -35,35 +37,7 @@ arduino = None
 ui_lcd = None
 ui_keypad = None
 temperature_controller = None
-
-
-def setup_module_classes():
-    """
-    Checks constants.IS_TEST and determines if classes should be
-    mocked or
-    """
-    global ph_class, temperature_class, board_class, lcd_class, keypad_class, temperature_control_class, syringe_class
-    if constants.IS_TEST:
-        ph_class = ph_probe_mock
-        temperature_class = temperature_probe_mock
-        board_class = board_mock
-        lcd_class = lcd_mock
-        keypad_class = keypad_mock
-        temperature_control_class = temperature_control_mock
-        syringe_class = syringe_pump_mock
-    elif constants.IS_TEST is False:
-        # NOTE: The board module can only be imported if
-        # running on specific hardware (i.e. Raspberry Pi)
-        # It will fail on regular Windows/Linux computers
-        import board  # All hardware (see above note)
-
-        ph_class = ph_probe
-        temperature_class = temperature_probe
-        board_class = board
-        lcd_class = lcd
-        keypad_class = keypad
-        temperature_control_class = temperature_control
-        syringe_class = syringe_pump
+stir_controller = None
 
 
 def setup_interfaces():
@@ -71,7 +45,7 @@ def setup_interfaces():
     Initializes components for interfacing with pH probe,
     temperature probe, and stepper motor/syringe pump
     """
-    global ph_sensor, temperature_sensor, arduino, ui_lcd, ui_keypad, temperature_controller
+    global ph_sensor, temperature_sensor, arduino, ui_lcd, ui_keypad, temperature_controller, stir_controller
 
     # set module classes
     setup_module_classes()
@@ -85,6 +59,43 @@ def setup_interfaces():
     temperature_controller = setup_temperature_control()
     ph_sensor = setup_ph_probe()
     arduino = setup_syringe_pump()
+    stir_controller = setup_stir_control()
+
+
+
+def setup_module_classes():
+    """
+    Checks constants.IS_TEST and determines if classes should be
+    mocked or
+    """
+    global ph_class, temperature_class, board_class, lcd_class, keypad_class, temperature_control_class, syringe_class, stir_class
+    if constants.IS_TEST:
+        ph_class = ph_probe_mock
+        temperature_class = temperature_probe_mock
+        board_class = board_mock
+        lcd_class = lcd_mock
+        keypad_class = keypad_mock
+        temperature_control_class = temperature_control_mock
+        syringe_class = syringe_pump_mock
+        stir_class = stir_control_mock
+    elif constants.IS_TEST is False:
+        # NOTE: The board module can only be imported if
+        # running on specific hardware (i.e. Raspberry Pi)
+        # It will fail on regular Windows/Linux computers
+        import board  # All hardware (see above note)
+
+        # Similarly, stir_control imports pwmio which will fail
+        from titration.utils.devices import stir_control
+
+
+        ph_class = ph_probe
+        temperature_class = temperature_probe
+        board_class = board
+        lcd_class = lcd
+        keypad_class = keypad
+        temperature_control_class = temperature_control
+        syringe_class = syringe_pump
+        stir_class = stir_control
 
 
 def setup_lcd():
@@ -138,6 +149,9 @@ def setup_ph_probe():
 
 def setup_syringe_pump():
     return syringe_class.Syringe_Pump()
+
+def setup_stir_control():
+    return stir_class.Stir_Control(board_class.D13)
 
 
 def delay(seconds, countdown=False):
@@ -380,6 +394,18 @@ def pump_volume(volume, direction):
 
 def set_pump_volume(volume):
     arduino.set_volume_in_pump(volume)
+
+def stir_speed_fast():
+    stir_controller.motor_speed_fast()
+
+def stir_speed_slow():
+    stir_controller.motor_speed_slow()
+
+def stir_speed(pwm_speed, gradual=False):
+    stir_controller.set_motor_speed(pwm_speed, gradual)
+
+def stir_stop():
+    stir_controller.motor_stop()
 
 def _test_add_HCl():
     constants.hcl_call_iter += (
