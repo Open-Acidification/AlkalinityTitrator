@@ -295,15 +295,24 @@ def total_alkalinity_titration():
                 interfaces.pump_volume(p_volume, p_direction)
             current_pH = wait_pH_stable(total_sol, data)
             interfaces.lcd_out("Current pH: {0:>4.5f}".format(current_pH), line=1)
-            interfaces.lcd_out("Continue adding solution?", line=2)
+            interfaces.lcd_out("Add more HCl?", line=2)
             interfaces.lcd_out("(0 - No, 1 - Yes)", line=3)
             interfaces.lcd_out("", line=4)
 
             user_choice = interfaces.read_user_input()
+        interfaces.lcd_clear()
+        interfaces.lcd_out("Current pH: {0:>4.5f}".format(current_pH), line=1)
+        interfaces.lcd_out("Degas?", 1)
+        interfaces.lcd_out("(0 - No, 1 - Yes)", line=2)
+        user_choice = interfaces.read_user_input()
+        if user_choice == constants.KEY_1:
+            degas_time = interfaces.read_user_value("Degas time (s):")
+            degas(degas_time)
+
     else:
         # Automatic
         total_sol = titration(
-            constants.TARGET_PH_INIT, constants.INCREMENT_AMOUNT_INIT, data, 0, 0
+            constants.TARGET_PH_INIT, constants.INCREMENT_AMOUNT_INIT, data, 0,
         )
         total_sol = titration(
             constants.TARGET_PH_MID,
@@ -314,14 +323,12 @@ def total_alkalinity_titration():
         )
 
     # 3.5 -> 3.0
-    # todo set stir speed fast
-    interfaces.lcd_out("Stir speed: fast", line=4)
     titration(
         constants.TARGET_PH_FINAL, constants.INCREMENT_AMOUNT_FINAL, data, total_sol
     )
     # save data to csv
     analysis.write_titration_data(data)
-    interfaces.stir_stop()
+    interfaces.stir_stop
     interfaces.temperature_controller.deactivate()
 
 
@@ -364,10 +371,7 @@ def titration(
     interfaces.lcd_clear()
     interfaces.lcd_out("pH value {} reached".format(current_pH), line=1)
     if (degas_time > 0):
-        interfaces.lcd_out("Degassing " + str(degas_time) + " seconds", line=2)
-        interfaces.stir_speed_fast()
-        interfaces.delay(degas_time, countdown=True)
-        interfaces.stir_speed_slow()
+        degas(degas_time)
     return total_sol
 
 
@@ -418,6 +422,13 @@ def wait_pH_stable(total_sol, data):
 
         interfaces.delay(constants.TITRATION_WAIT_TIME)
 
+def degas(seconds):
+    interfaces.lcd_clear()
+    interfaces.lcd_out("Degassing {0:.0f}".format(seconds), line=2)
+    interfaces.lcd_out("seconds")
+    interfaces.stir_speed_fast()
+    interfaces.delay(seconds, countdown=True)
+    interfaces.stir_speed_slow()
 
 # TODO FIX LCD LINES
 def edit_settings():

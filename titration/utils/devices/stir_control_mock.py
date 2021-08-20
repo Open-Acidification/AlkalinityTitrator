@@ -2,8 +2,9 @@ import titration.utils.constants as constants
 import math
 
 class Stir_Control():
-    def __init__(self,pwm_pin, duty_cycle=constants.STIR_DUTY_CYCLE, frequency=constants.STIR_FREQUENCY):
+    def __init__(self,pwm_pin, duty_cycle=constants.STIR_DUTY_CYCLE, frequency=constants.STIR_FREQUENCY, debug=False):
         self.duty_cycle = 0
+        self.debug = debug
 
     def set_motor_speed(self, target, gradual=False):
         if gradual is True:
@@ -12,14 +13,18 @@ class Stir_Control():
             # It won't move under 1000, so this speeds up the process
             if direction == 1 and self.duty_cycle < 1000:
                 self.duty_cycle = 1000
+                if self.debug:
+                    print("Stirrer set to {0:.0f}".format(self.duty_cycle))
 
             while self.duty_cycle != target:
                 next_step = min(abs(target - self.duty_cycle), 100)
                 self.duty_cycle = self.duty_cycle + (next_step * direction)
-                print("Stirrer set to ", self.duty_cycle)
+                if self.debug:
+                    print("Stirrer set to {0:.0f}".format(self.duty_cycle))
         else:
             self.duty_cycle = target
-            print("Stirrer set to ", self.duty_cycle)
+            if self.debug:
+                print("Stirrer set to {0:.0f}".format(self.duty_cycle))
     
     def motor_speed_fast(self):
         self.set_motor_speed(constants.STIR_PWM_FAST, gradual=True)
