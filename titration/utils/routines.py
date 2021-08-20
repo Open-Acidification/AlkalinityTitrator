@@ -259,6 +259,7 @@ def total_alkalinity_titration():
     interfaces.lcd_out("Manual: 1", line=2)
     interfaces.lcd_out("Automatic: 2", line=3)
     interfaces.lcd_out("Stir speed: slow", line=4)
+    interfaces.stir_speed_slow()
     user_choice = interfaces.read_user_input()
 
     # wait until solution is up to temperature
@@ -320,6 +321,7 @@ def total_alkalinity_titration():
     )
     # save data to csv
     analysis.write_titration_data(data)
+    interfaces.stir_stop()
     interfaces.temperature_controller.deactivate()
 
 
@@ -361,9 +363,11 @@ def titration(
 
     interfaces.lcd_clear()
     interfaces.lcd_out("pH value {} reached".format(current_pH), line=1)
-    interfaces.lcd_out("Degassing " + str(degas_time) + " seconds", line=2)
-
-    interfaces.delay(degas_time, countdown=True)
+    if (degas_time > 0):
+        interfaces.lcd_out("Degassing " + str(degas_time) + " seconds", line=2)
+        interfaces.stir_speed_fast()
+        interfaces.delay(degas_time, countdown=True)
+        interfaces.stir_speed_slow()
     return total_sol
 
 
