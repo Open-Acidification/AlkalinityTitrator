@@ -10,6 +10,11 @@ class Stir_Control():
     def set_motor_speed(self, target, gradual=False):
         if gradual is True:
             direction = math.copysign(1, target - self.motor.duty_cycle)
+
+            # It won't move under 1000, so this speeds up the process
+            if direction == 1 and self.duty_cycle < 1000:
+                self.duty_cycle = 1000
+
             while self.motor.duty_cycle != target:
                 next_step = min(abs(target - self.duty_cycle), 100)
                 self.duty_cycle = self.duty_cycle + (next_step * direction)
