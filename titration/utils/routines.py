@@ -424,8 +424,8 @@ def wait_pH_stable(total_sol, data):
 
 def degas(seconds):
     interfaces.lcd_clear()
-    interfaces.lcd_out("Degassing {0:.0f}".format(seconds), line=2)
-    interfaces.lcd_out("seconds")
+    interfaces.lcd_out("Degassing {0:.0f}".format(seconds), line=1)
+    interfaces.lcd_out("seconds", line=2)
     interfaces.stir_speed_fast()
     interfaces.delay(seconds, countdown=True)
     interfaces.stir_speed_slow()
