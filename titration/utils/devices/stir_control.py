@@ -13,14 +13,14 @@ class Stir_Control():
             direction = math.copysign(1, target - self.motor.duty_cycle)
 
             # It won't move under 1000, so this speeds up the process
-            if direction == 1 and self.duty_cycle < 1000:
-                self.duty_cycle = 1000
+            if direction == 1 and self.motor.duty_cycle < 1000:
+                self.motor.duty_cycle = 1000
                 if self.debug:
                     print("Stirrer set to {0:.0f}".format(self.motor.duty_cycle))
 
             while self.motor.duty_cycle != target:
-                next_step = min(abs(target - self.duty_cycle), 100)
-                self.duty_cycle = self.duty_cycle + (next_step * direction)
+                next_step = min(abs(target - self.motor.duty_cycle), 100)
+                self.motor.duty_cycle = self.motor.duty_cycle + (next_step * direction)
                 if self.debug:
                     print("Stirrer set to {0:.0f}".format(self.motor.duty_cycle))
                 interfaces.delay(0.1)
