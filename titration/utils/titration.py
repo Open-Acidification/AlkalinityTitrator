@@ -37,14 +37,15 @@ def run():
         # Deactivate the SSR if any crash occurs
         if interfaces.temperature_controller is not None:
             interfaces.temperature_controller.deactivate()
-        print("\n************************\nDeactivated SSR\n************************")
+        print("\n************************\nDeactivated SSR\n************************\n")
 
         # Attempt to save calibration data, this will save syringe position
         # and any recent calibrations
         try:
             analysis.save_calibration_data()
+            print("\n************************\nCalibration Saved\n************************\n")
         except Exception:
-            print("!!! Unable to save calibration data !!!")
+            print("\n!!!!!!!!!!!!!!!!!!!!!!!!\nUnable to save calibration data\n!!!!!!!!!!!!!!!!!!!!!!!!\n")
         print(sys.exc_info()[0])
         traceback.print_exc()
 
