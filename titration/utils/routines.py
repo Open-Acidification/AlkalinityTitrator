@@ -185,6 +185,7 @@ def _calibrate_pH():
     constants.PH_REF_PH = buffer1_actual_pH
 
 
+
 def _calibrate_temperature():
     """Routine for calibrating the temperature probe."""
     expected_temperature = interfaces.read_user_value("Ref solution temperature?")
@@ -207,6 +208,7 @@ def _calibrate_temperature():
         + diff * constants.TEMPERATURE_REF_RESISTANCE / expected_resistance
     )
     constants.TEMPERATURE_REF_RESISTANCE = float(new_ref_resistance)
+
     # reinitialize sensors with calibrated values
     interfaces.lcd_out("{}".format(new_ref_resistance), line=2)
     interfaces.setup_interfaces()
@@ -245,6 +247,8 @@ def total_alkalinity_titration():
     selection = interfaces.read_user_input()
     if selection == constants.KEY_1 or selection == "1":
         _calibrate_pH()
+
+    analysis.save_calibration_data()
 
     data.append((None, None, None, initial_weight, salinity, buffer_ph, buffer_v))
 
@@ -328,7 +332,7 @@ def total_alkalinity_titration():
     )
     # save data to csv
     analysis.write_titration_data(data)
-    interfaces.stir_stop
+    interfaces.stir_stop()
     interfaces.temperature_controller.deactivate()
 
 

@@ -39,6 +39,12 @@ def run():
             interfaces.temperature_controller.deactivate()
         print("\n************************\nDeactivated SSR\n************************")
 
+        # Attempt to save calibration data, this will save syringe position
+        # and any recent calibrations
+        try:
+            analysis.save_calibration_data()
+        except Exception:
+            pass
         print(sys.exc_info()[0])
         traceback.print_exc()
 
