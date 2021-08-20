@@ -332,6 +332,9 @@ def total_alkalinity_titration():
     )
     # save data to csv
     analysis.write_titration_data(data)
+
+    # save the current syringe position
+    analysis.save_calibration_data()
     interfaces.stir_stop()
     interfaces.temperature_controller.deactivate()
 

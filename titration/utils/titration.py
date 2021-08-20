@@ -44,7 +44,7 @@ def run():
         try:
             analysis.save_calibration_data()
         except Exception:
-            pass
+            print("!!! Unable to save calibration data !!!")
         print(sys.exc_info()[0])
         traceback.print_exc()
 
