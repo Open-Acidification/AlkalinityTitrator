@@ -155,7 +155,7 @@ DEFAULT_TEMPERATURE_NOMINAL_RESISTANCE = 1000.0
 DEFAULT_PH_REF_VOLTAGE = -0.012
 DEFAULT_PH_REF_PH = 7.0
 # data paths
-DATA_PATH = ""
+DATA_PATH = "data/"
 volume_in_pump = 0  # keep track of solution in pump
 
 # TESTING
