@@ -10,7 +10,7 @@ def setup_module(module):
     constants.IS_TEST = True
     interfaces.setup_module_classes()
     interfaces.ui_lcd = interfaces.setup_lcd()
-    interfaces.stir_controller = interfaces.setup_stir_control()
+    interfaces.stir_controller = interfaces.setup_stir_control(debug=True)
 
 
 def test_interfaces_lcd(capsys):
