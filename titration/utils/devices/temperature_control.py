@@ -156,7 +156,10 @@ class Temperature_Control:
         self.df.to_csv(filename, index_label="step", header=True)
 
     def at_temperature(self):
-        if self.sensor.get_temperature() >= 29.5 and self.sensor.get_temperature() <= 30.5:
+        if (
+            self.sensor.get_temperature() >= 29.5
+            and self.sensor.get_temperature() <= 30.5
+        ):
             return True
         else:
             return False

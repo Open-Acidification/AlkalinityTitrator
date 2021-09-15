@@ -1,10 +1,19 @@
-import titration.utils.constants as constants
-import titration.utils.interfaces as interfaces
-import pwmio
 import math
 
-class Stir_Control():
-    def __init__(self,pwm_pin, duty_cycle=constants.STIR_DUTY_CYCLE, frequency=constants.STIR_FREQUENCY, debug=False):
+import pwmio
+
+import titration.utils.constants as constants
+import titration.utils.interfaces as interfaces
+
+
+class Stir_Control:
+    def __init__(
+        self,
+        pwm_pin,
+        duty_cycle=constants.STIR_DUTY_CYCLE,
+        frequency=constants.STIR_FREQUENCY,
+        debug=False,
+    ):
         self.motor = pwmio.PWMOut(pwm_pin, duty_cycle=duty_cycle, frequency=frequency)
         self.debug = False
 
@@ -28,12 +37,12 @@ class Stir_Control():
             self.motor.duty_cycle = target
             if self.debug:
                 print("Stirrer set to {0:.0f}".format(self.motor.duty_cycle))
-    
+
     def motor_speed_fast(self):
         self.set_motor_speed(constants.STIR_PWM_FAST, gradual=True)
-    
+
     def motor_speed_slow(self):
         self.set_motor_speed(constants.STIR_PWM_SLOW, gradual=True)
-    
+
     def motor_stop(self):
         self.set_motor_speed(0)

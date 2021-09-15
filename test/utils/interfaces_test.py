@@ -29,11 +29,12 @@ def test_interfaces_lcd(capsys):
         + "*====================*\n"
     )
 
+
 def test_interfaces_stir_fast(capsys):
     _ = capsys.readouterr()
 
     interfaces.stir_speed_fast()
-    
+
     captured = capsys.readouterr()
     assert captured.out == (
         "Stirrer set to 1000\n"
@@ -81,14 +82,14 @@ def test_interfaces_stir_fast(capsys):
 
     interfaces.stir_stop()
     captured = capsys.readouterr()
-    assert captured.out == (
-        "Stirrer set to 0\n")
+    assert captured.out == ("Stirrer set to 0\n")
+
 
 def test_interfaces_stir_slow(capsys):
     _ = capsys.readouterr()
 
     interfaces.stir_speed_slow()
-    
+
     captured = capsys.readouterr()
     assert captured.out == (
         "Stirrer set to 1000\n"
@@ -116,14 +117,14 @@ def test_interfaces_stir_slow(capsys):
 
     interfaces.stir_stop()
     captured = capsys.readouterr()
-    assert captured.out == (
-        "Stirrer set to 0\n")
+    assert captured.out == ("Stirrer set to 0\n")
+
 
 def test_interfaces_stir_set(capsys):
     _ = capsys.readouterr()
 
     interfaces.stir_speed(5000, gradual=True)
-    
+
     captured = capsys.readouterr()
     assert captured.out == (
         "Stirrer set to 1000\n"
@@ -259,8 +260,6 @@ def test_interfaces_stir_set(capsys):
         + "Stirrer set to 3000\n"
     )
 
-
     interfaces.stir_stop()
     captured = capsys.readouterr()
-    assert captured.out == (
-        "Stirrer set to 0\n")
+    assert captured.out == ("Stirrer set to 0\n")

@@ -19,6 +19,7 @@ Clure
 colorzero
 config
 controlparam
+copysign
 csv
 ctime
 datetime
@@ -52,8 +53,8 @@ markdownlint
 matplotlib
 micropython
 monkeypatch
-mosi
 MOSI
+mosi
 Mozilla
 mypy
 noqa
@@ -69,6 +70,7 @@ platformdetect
 prestoncarman
 println
 pureio
+pwmio
 pycodestyle
 pyftdi
 pylint
@@ -89,8 +91,8 @@ rtd
 RXD
 SCK
 sck
-scl
 SCL
+scl
 SCLK
 screenshots
 sda

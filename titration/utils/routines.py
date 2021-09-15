@@ -119,6 +119,7 @@ def test_mode_set_volume():
     new_volume = interfaces.read_user_value("Volume in pump: ")
     interfaces.set_pump_volume(new_volume)
 
+
 def test_mode_toggle_test_mode():
     constants.IS_TEST = not constants.IS_TEST
     interfaces.lcd_clear()
@@ -183,7 +184,6 @@ def _calibrate_pH():
     # set calibration constants
     constants.PH_REF_VOLTAGE = buffer1_measured_volts
     constants.PH_REF_PH = buffer1_actual_pH
-
 
 
 def _calibrate_temperature():
@@ -316,7 +316,10 @@ def total_alkalinity_titration():
     else:
         # Automatic
         total_sol = titration(
-            constants.TARGET_PH_INIT, constants.INCREMENT_AMOUNT_INIT, data, 0,
+            constants.TARGET_PH_INIT,
+            constants.INCREMENT_AMOUNT_INIT,
+            data,
+            0,
         )
         total_sol = titration(
             constants.TARGET_PH_MID,
@@ -377,7 +380,7 @@ def titration(
 
     interfaces.lcd_clear()
     interfaces.lcd_out("pH value {} reached".format(current_pH), line=1)
-    if (degas_time > 0):
+    if degas_time > 0:
         degas(degas_time)
     return total_sol
 
@@ -429,6 +432,7 @@ def wait_pH_stable(total_sol, data):
 
         interfaces.delay(constants.TITRATION_WAIT_TIME)
 
+
 def degas(seconds):
     interfaces.lcd_clear()
     interfaces.lcd_out("Degassing {0:.0f}".format(seconds), line=1)
@@ -436,6 +440,7 @@ def degas(seconds):
     interfaces.stir_speed_fast()
     interfaces.delay(seconds, countdown=True)
     interfaces.stir_speed_slow()
+
 
 # TODO FIX LCD LINES
 def edit_settings():
@@ -474,8 +479,8 @@ def prime_pump():
     sel = int(selection)
     while sel > 0:
         while sel > 0:
-            interfaces.drive_step_stick(10000, 0)
-            interfaces.drive_step_stick(10000, 1)
+            interfaces.pump_volume(1, 0)
+            interfaces.pump_volume(1, 1)
             sel = sel - 1
         interfaces.lcd_out("How many more?", 1)
         selection = interfaces.read_user_input()
@@ -487,4 +492,4 @@ def auto_home():
     Homes syringe to 0 mL upon calling.
     Runs on startup in titration.run(), depends on limit switches
     """
-    interfaces.drive_step_stick(10000, 1)
+    interfaces.pump_volume(1, 1)

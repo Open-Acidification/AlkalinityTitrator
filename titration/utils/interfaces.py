@@ -12,13 +12,13 @@ from titration.utils.devices import (
     lcd_mock,
     ph_probe,
     ph_probe_mock,
+    stir_control_mock,
     syringe_pump,
     syringe_pump_mock,
     temperature_control,
     temperature_control_mock,
     temperature_probe,
     temperature_probe_mock,
-    stir_control_mock,
 )
 
 ph_class: types.ModuleType = ph_probe_mock
@@ -62,7 +62,6 @@ def setup_interfaces():
     stir_controller = setup_stir_control()
 
 
-
 def setup_module_classes():
     """
     Checks constants.IS_TEST and determines if classes should be
@@ -86,7 +85,6 @@ def setup_module_classes():
 
         # Similarly, stir_control imports pwmio which will fail
         from titration.utils.devices import stir_control
-
 
         ph_class = ph_probe
         temperature_class = temperature_probe
@@ -149,6 +147,7 @@ def setup_ph_probe():
 
 def setup_syringe_pump():
     return syringe_class.Syringe_Pump()
+
 
 def setup_stir_control():
     return stir_class.Stir_Control(board_class.D13)
@@ -392,20 +391,26 @@ def pump_volume(volume, direction):
     """
     arduino.pump_volume(volume, direction)
 
+
 def set_pump_volume(volume):
     arduino.set_volume_in_pump(volume)
+
 
 def stir_speed_fast():
     stir_controller.motor_speed_fast()
 
+
 def stir_speed_slow():
     stir_controller.motor_speed_slow()
+
 
 def stir_speed(pwm_speed, gradual=False):
     stir_controller.set_motor_speed(pwm_speed, gradual)
 
+
 def stir_stop():
     stir_controller.motor_stop()
+
 
 def _test_add_HCl():
     constants.hcl_call_iter += (

@@ -36,7 +36,7 @@ def test_serial_write(capsys):
     )
     arduino.write("test string")
 
-    # diabled due to printing on syringe_pump calls
+    # disabled due to printing on syringe_pump calls
     # captured = capsys.readouterr()
     # assert captured.out == "test string\n"
 
