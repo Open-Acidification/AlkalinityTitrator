@@ -162,7 +162,7 @@ def write_titration_data(data):
     """
     file_name = (
         constants.DATA_PATH
-        + dt.datetime.strftime(dt.datetime.now(), "%m-%d-%Y %H_%M_%S_%f")
+        + dt.datetime.strftime(dt.datetime.now(), "%m-%d-%Y-%H_%M_%S_%f")
         + ".csv"
     )
     _write_csv(file_name, data)

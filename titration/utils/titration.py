@@ -33,12 +33,40 @@ def run():
         interfaces.temperature_controller.deactivate()
         interfaces.lcd_clear()
         interfaces.ui_lcd.lcd_backlight(False)
-    except Exception:
+    except (BaseException, Exception):
         # Deactivate the SSR if any crash occurs
         if interfaces.temperature_controller is not None:
             interfaces.temperature_controller.deactivate()
-        print("\nDeactivated SSR")
+        print("\n************************\nDeactivated SSR\n************************\n")
 
+        try:
+            interfaces.lcd_clear()
+        except BaseException:
+            pass
+        try:
+            interfaces.lcd_out("Deactivated SSR", 1)
+        except BaseException:
+            pass
+
+        # Attempt to save calibration data, this will save syringe position
+        # and any recent calibrations
+        try:
+            analysis.save_calibration_data()
+            print(
+                "\n************************\nCalibration Saved\n************************\n"
+            )
+            try:
+                interfaces.lcd_out("Calibration Saved", 2)
+            except Exception:
+                pass
+        except Exception:
+            print(
+                "\n!!!!!!!!!!!!!!!!!!!!!!!!\nUnable to save calibration data\n!!!!!!!!!!!!!!!!!!!!!!!!\n"
+            )
+            try:
+                interfaces.lcd_out("Calibration UNSAVED", 2)
+            except Exception:
+                pass
         print(sys.exc_info()[0])
         traceback.print_exc()
 
