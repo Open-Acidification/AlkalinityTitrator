@@ -67,7 +67,7 @@ def setup_module_classes():
     Checks constants.IS_TEST and determines if classes should be
     mocked or
     """
-    global ph_class, temperature_class, board_class, lcd_class, keypad_class, temperature_control_class, syringe_class, stir_class
+    global ph_class, temperature_class, board_class, lcd_class, keypad_class, temperature_control_class, syringe_class, stir_class  # noqa: E501
     if constants.IS_TEST:
         ph_class = ph_probe_mock
         temperature_class = temperature_probe_mock
