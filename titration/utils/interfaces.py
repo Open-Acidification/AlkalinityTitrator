@@ -4,13 +4,17 @@ import time  # time.sleep()
 import types
 
 from titration.utils import analysis, constants
+if constants.IS_TEST == False:
+    from titration.utils.devices import (
+        keypad,
+        lcd,
+        ph_probe,
+
+    )
 from titration.utils.devices import (
     board_mock,
-    keypad,
     keypad_mock,
-    lcd,
     lcd_mock,
-    ph_probe,
     ph_probe_mock,
     stir_control_mock,
     syringe_pump,
