@@ -1,2 +1,2 @@
 #!/bin/sh
-pipenv run python src/titration.py
+pipenv run python main.py
