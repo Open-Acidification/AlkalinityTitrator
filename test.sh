@@ -1,3 +1,2 @@
 #!/bin/sh
-cd ./titration || exit
-python -m pytest -vv
+pipenv run pytest -vv

@@ -3,16 +3,16 @@ LCD_CONSOLE = False
 
 VALID_INPUT_WARNING = "Input Invalid"
 # keypad
-KEY_0 = 0
-KEY_1 = 1
-KEY_2 = 2
-KEY_3 = 3
-KEY_4 = 4
-KEY_5 = 5
-KEY_6 = 6
-KEY_7 = 7
-KEY_8 = 8
-KEY_9 = 9
+KEY_0 = "0"
+KEY_1 = "1"
+KEY_2 = "2"
+KEY_3 = "3"
+KEY_4 = "4"
+KEY_5 = "5"
+KEY_6 = "6"
+KEY_7 = "7"
+KEY_8 = "8"
+KEY_9 = "9"
 KEY_A = "A"
 KEY_B = "B"
 KEY_C = "C"
@@ -134,6 +134,12 @@ TARGET_STD_DEVIATION = 0.15
 # Temperature Control
 RELAY_PIN = 12
 
+# Stir Control
+STIR_PWM_FAST = 5000
+STIR_PWM_SLOW = 3000
+STIR_FREQUENCY = 100
+STIR_DUTY_CYCLE = 0
+
 # pump settings
 # ARDUINO_PORT = "/dev/ttyUSB0"
 ARDUINO_PORT = "/dev/ttyACM0"
@@ -149,7 +155,7 @@ DEFAULT_TEMPERATURE_NOMINAL_RESISTANCE = 1000.0
 DEFAULT_PH_REF_VOLTAGE = -0.012
 DEFAULT_PH_REF_PH = 7.0
 # data paths
-DATA_PATH = ""
+DATA_PATH = "data/"
 volume_in_pump = 0  # keep track of solution in pump
 
 # TESTING

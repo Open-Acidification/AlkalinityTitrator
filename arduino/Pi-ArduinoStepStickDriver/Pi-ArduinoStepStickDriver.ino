@@ -14,6 +14,8 @@ void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
     pinMode(STEP, OUTPUT);
     pinMode(DIR, OUTPUT);
+    pinMode(EN, OUTPUT);
+    digitalWrite(EN,HIGH);
     Serial.begin(9600);
     //Serial1.begin(115200);
     

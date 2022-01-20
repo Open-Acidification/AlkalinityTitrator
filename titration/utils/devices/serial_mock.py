@@ -12,7 +12,7 @@ class Serial:
         return True
 
     def write(self, bytes):
-        print(bytes)
+        pass
 
     def flush(self):
         pass
