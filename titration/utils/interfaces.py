@@ -4,7 +4,7 @@ import time  # time.sleep()
 import types
 
 from titration.utils import analysis, constants
-if constants.IS_TEST == False:
+if constants.IS_TEST == False:  # See conftest.py for configuration of pytest
     from titration.utils.devices import (
         keypad,
         lcd,
@@ -225,7 +225,7 @@ def read_user_input(valid_inputs=None, console=False):
         temperature_controller.update()
 
         if console:
-            user_input = input()
+            user_input = input() # Poll keypad
         else:
             user_input = ui_keypad.keypad_poll()
 

@@ -9,6 +9,8 @@ isort = "*"
 pycodestyle = "*"
 pytest = "*"
 pylint = "*"
+pytest-cov = "*"
+pytest-mock = "*"
 
 [packages]
 adafruit-blinka = "*"

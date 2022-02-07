@@ -3,6 +3,7 @@ LCD_CONSOLE = False
 
 VALID_INPUT_WARNING = "Input Invalid"
 # keypad
+NO_KEY = ""
 KEY_0 = "0"
 KEY_1 = "1"
 KEY_2 = "2"
