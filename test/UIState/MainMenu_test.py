@@ -4,6 +4,7 @@ from titration.utils.UIState import MainMenu
 from titration.utils.Titrator import Titrator
 
 def test_handleKey():
+    pass
     key_input = '*'
     mainMenu = MainMenu.MainMenu(Titrator())
     mainMenu.handleKey(key_input)

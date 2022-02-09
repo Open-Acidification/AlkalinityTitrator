@@ -19,7 +19,7 @@ class Titrator:
         # EthernetServer_TC::instance()->loop();    # handle any HTTP requests
 
     def setNextState(self, newState, update):
-        print("Titrator::setNextState() from ", self.nextState.name(), " to ", newState.name())
+        print("Titrator::setNextState() from ", self.nextState.name() if self.nextState else 'nullptr', " to ", newState.name())
         assert(self.nextState == None)
         self.nextState = newState
         if (update):
@@ -32,9 +32,9 @@ class Titrator:
         if (self.nextState):
             print("Titrator::updateState() to ", self.nextState.name())
             assert(self.state != self.nextState)
-            state = self.nextState
+            self.state = self.nextState
             self.nextState = None
-            state.start()
+            self.state.start()
 
     def _handleUI(self):
         print("Titrator::handleUI() - ", self.state.name())
