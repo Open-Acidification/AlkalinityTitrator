@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
  
+# display prompts (based on array of subset)
+# get menu working with tests
 class UIState(ABC):
     def __init__(self, tc):
         self.tc = tc
