@@ -14,5 +14,5 @@ class UIState():
     def start(self):
         pass
 
-    def _setNextState(self, state):
-        self.titrator.setNextState(state, True)
+    def _setNextState(self, state, update):
+        self.titrator.setNextState(state, update)

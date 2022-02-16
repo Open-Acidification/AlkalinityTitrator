@@ -7,6 +7,9 @@ class MainMenu (UIState.UIState):
         self.routineSelection = 1
         self.titrator = titrator
 
+    def name(self):
+        return 'MainMenu'
+
     def handleKey(self, key):
         if self.routineSelection == 1:
             if key is constants.KEY_STAR:
@@ -15,7 +18,7 @@ class MainMenu (UIState.UIState):
             elif key is constants.KEY_1:
                 # Run titration.
                 interfaces.lcd_out('Run Titration', 1)
-                self._setNextState(SolWeightSalinity.SolWeightSalinity(self.titrator))
+                self._setNextState(SolWeightSalinity.SolWeightSalinity(self.titrator), True)
 
             elif key is constants.KEY_2:
                 interfaces.lcd_out('Calibrate sensors', 1)
@@ -35,9 +38,6 @@ class MainMenu (UIState.UIState):
 
             elif key is constants.KEY_6:
                 interfaces.lcd_out('Exit', 1)
-
-    def name(self):
-        return 'MainMenu'
 
     def loop(self):
         # Display menu options.

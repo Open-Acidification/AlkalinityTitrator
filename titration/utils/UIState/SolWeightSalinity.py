@@ -1,6 +1,6 @@
 from titration.utils.UIState import UIState
 from titration.utils import interfaces
-from titration.utils.UIState.PhProbe import PhProbe
+from titration.utils.UIState.CalibratePhProbe import CalibratePhProbe
 
 class SolWeightSalinity(UIState.UIState):
     def __init__(self, titrator):
@@ -13,18 +13,17 @@ class SolWeightSalinity(UIState.UIState):
         self.values = [ 0, 0 ]
         self.subState = 0
 
-    def handleKey(self, key):
-        pass
-
     def name(self):
         return 'SolWeightSalinity'
+
+    def handleKey(self, key):
+        pass
 
     def loop(self):
         self.values[self.subState] = interfaces.read_user_value(self.prompts[self.subState])
         self.subState += 1
         if self.subState == 2:
-            self._setNextState(PhProbe(self.titrator))
+            self._setNextState(CalibratePhProbe(self.titrator), True)
 
     def start(self):
         pass
-

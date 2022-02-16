@@ -59,3 +59,4 @@ class Titrator:
         self._updateState()
         print("Titrator::handleUI() - ", self.state.name(), "::loop()")
         self.state.loop()
+        
