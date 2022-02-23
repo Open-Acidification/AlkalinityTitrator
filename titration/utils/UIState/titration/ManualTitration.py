@@ -38,14 +38,14 @@ class ManualTitration(UIState.UIState):
             interfaces.lcd_out("Direction (0/1): ", line=1)
         
         elif self.subState == 2:
-            interfaces.lcd_out("Current pH: {0:>4.5f}".format(self.values['current_pH']), line=1) # TODO: change current pH value from 5
+            interfaces.lcd_out("Current pH: {0:>4.5f}".format(self.values['current_pH']), line=1)   # TODO: change current pH value from 5
             interfaces.lcd_out("Add more HCl?", line=2)
             interfaces.lcd_out("(0 - No, 1 - Yes)", line=3)
             interfaces.lcd_out("", line=4)
         
         elif self.subState == 3:
             interfaces.lcd_clear()
-            interfaces.lcd_out("Current pH: {0:>4.5f}".format(self.values['current_pH']), line=1) # TODO: change current pH value from 5
+            interfaces.lcd_out("Current pH: {0:>4.5f}".format(self.values['current_pH']), line=1)   # TODO: change current pH value from 5
             interfaces.lcd_out("Degas?", 1)
             interfaces.lcd_out("(0 - No, 1 - Yes)", line=2)
         

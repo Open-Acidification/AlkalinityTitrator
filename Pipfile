@@ -24,6 +24,7 @@ pep8 = "*"
 pyserial = "*"
 "rpi.gpio" = "*"
 smbus2 = "*"
+pynput = "*"
 
 [requires]
 python_version = "3.8"

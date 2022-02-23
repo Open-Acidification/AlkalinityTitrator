@@ -1,6 +1,9 @@
-from titration.utils.UIState import SolWeightSalinity, UIState
+from titration.utils.UIState import UIState
 from titration.utils import interfaces, constants
+from titration.utils.UIState.titration import SetupTitration
+from titration.utils.UIState.calibration import SetupCalibration
 
+# TODO: CollectNumber state
 class MainMenu (UIState.UIState):
     def __init__(self, titrator):
         UIState.__init__('MainMenu', titrator)
@@ -16,12 +19,12 @@ class MainMenu (UIState.UIState):
                 self.routineSelection = 2
 
             elif key is constants.KEY_1:
-                # Run titration.
                 interfaces.lcd_out('Run Titration', 1)
-                self._setNextState(SolWeightSalinity.SolWeightSalinity(self.titrator), True)
+                self._setNextState(SetupTitration.SetupTitration(self.titrator), True)
 
             elif key is constants.KEY_2:
                 interfaces.lcd_out('Calibrate sensors', 1)
+                self._setNextState(SetupCalibration.SetupCalibration(self.titrator), True)
 
             elif key is constants.KEY_3:
                 interfaces.lcd_out('Prime Pump', 1)

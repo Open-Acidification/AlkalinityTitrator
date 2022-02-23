@@ -7,10 +7,10 @@ class Titrator:
         self.nextState = None
         interfaces.setup_interfaces()
 
-    def loop(self):
+    def loop(self, key = ''):
         # wdt_reset()
         # blink                                     # blink the on-board LED to show that we are running
-        self._handleUI()                            # look at keypad, update LCD
+        self._handleUI(key)                            # look at keypad, update LCD
         # updateControls                            # turn CO2 and temperature controls on or off
         # writeDataToSD                             # record current state to data log
         # writeDataToSerial                         # record current pH and temperature to serial
@@ -36,9 +36,9 @@ class Titrator:
             self.nextState = None
             self.state.start()
 
-    def _handleUI(self):
+    def _handleUI(self, key = ''):
         print("Titrator::handleUI() - ", self.state.name())
-        key = interfaces.read_user_input()
+        # key = interfaces.read_user_input()  # TODO: handle key without blocking
         if (key == constants.NO_KEY):
             # if (!lastKeypadTime) {
                 # // we have already reached an idle state, so don't do other checks

@@ -1,7 +1,7 @@
 from titration.utils.UIState import UIState
 from titration.utils import interfaces, constants
-from titration.utils.UIState.AutomaticTitration import AutomaticTitration
-from titration.utils.UIState.ManualTitration import ManualTitration
+from titration.utils.UIState.titration.AutomaticTitration import AutomaticTitration
+from titration.utils.UIState.titration.ManualTitration import ManualTitration
 
 class InitialTitration(UIState.UIState):
     def __init__(self, titrator):
