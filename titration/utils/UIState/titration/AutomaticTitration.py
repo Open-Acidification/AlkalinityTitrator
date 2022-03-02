@@ -15,6 +15,7 @@ class AutomaticTitration(UIState.UIState):
         pass
 
     def loop(self):
+        # Substate 1 output
         if self.subState == 1:
             interfaces.lcd_out(
                 "Titrating to {} pH".format(str(self.values['pH_target'])),   # TODO: Change pH_target
@@ -23,10 +24,12 @@ class AutomaticTitration(UIState.UIState):
             )
             self.subState += 1
         
+        # Substate 2 output
         elif self.subState == 2:
             interfaces.lcd_out("Mixing...", style=constants.LCD_CENT_JUST, line=4)
             self.subState += 1
         
+        # Substate 3 output
         elif self.subState == 3:
             interfaces.lcd_clear()
             interfaces.lcd_out("pH value {} reached".format(self.values['current_pH']), line=1) # TODO: Change current_pH

@@ -25,6 +25,8 @@ pyserial = "*"
 "rpi.gpio" = "*"
 smbus2 = "*"
 pynput = "*"
+keyboard = "*"
+click = "*"
 
 [requires]
 python_version = "3.8"

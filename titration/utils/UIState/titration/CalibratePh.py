@@ -1,14 +1,14 @@
 from sre_parse import State
 from titration.utils.UIState import UIState
 from titration.utils import interfaces, constants
+from titration.utils.UIState.titration.InitialTitration import InitialTitration
 
 class CalibratePh(UIState.UIState):
-    def __init__(self, titrator, state):
+    def __init__(self, titrator):
         UIState.__init__('CalibratePh', titrator)
         self.titrator = titrator
         self.values = {'buffer1_measured_volts' : 5, 'buffer1_actual_pH' : 0}
         self.subState = 1
-        self.previousState = state
 
     def name(self):
         return 'CalibratePh'
@@ -16,7 +16,7 @@ class CalibratePh(UIState.UIState):
     def handleKey(self, key):
         # Substate 2 key handle
         if self.subState == 2:
-            self._setNextState(self.previousState, True)    # TODO: Does not return
+            self._setNextState(InitialTitration(self.titrator), True)    # TODO: Does not return
 
     def loop(self):
         # Substate 1 output and input

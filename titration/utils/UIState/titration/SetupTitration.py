@@ -1,6 +1,7 @@
 from titration.utils.UIState import UIState
 from titration.utils import interfaces, constants
 from titration.utils.UIState.titration.InitialTitration import InitialTitration
+from titration.utils.UIState.titration.CalibratePh import CalibratePh
 
 class SetupTitration(UIState.UIState):
     def __init__(self, titrator):
@@ -11,20 +12,29 @@ class SetupTitration(UIState.UIState):
             'Sol. salinity (ppt):'
         ]
         self.values = { 'weight' : 0, 'salinity' : 0}
-        self.subState = 0
+        self.subState = 1
 
     def name(self):
         return 'SetupTitration'
 
     def handleKey(self, key):
-        self.value = key
-        self._setNextState(InitialTitration(self.titrator), True)
-
-    def loop(self):
-        self.values[self.subState] = interfaces.read_user_value(self.prompts[self.subState])
+        # Substate 3 key handle
+        if self.subState == 3:
+            if key == 1 or key == constants.KEY_1:
+                # Next state SetupCalibration
+                self._setNextState(CalibratePh(self.titrator), True)
+            else:
+                # Next state InitialTitration
+                self._setNextState(InitialTitration(self.titrator), True)
         self.subState += 1
 
-        if self.subState == 2:
+    def loop(self):
+        # Substate 1 and 2 output and input
+        if self.subState == 1 or self.subState == 2:
+            self.values[self.subState] = interfaces.read_user_value(self.prompts[self.subState-1])
+
+        # Substate 3 output
+        elif self.subState == 3:
             interfaces.lcd_clear()
             interfaces.lcd_out("Calibrate pH probe?", line=1)
             interfaces.lcd_out("Yes: 1", line=2)

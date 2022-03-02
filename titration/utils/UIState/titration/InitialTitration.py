@@ -14,11 +14,13 @@ class InitialTitration(UIState.UIState):
         return 'InitialTitration'
 
     def handleKey(self, key):
+        # Substate 1 key handle
         if self.subState == 1:
             self.value = key
             self.subState += 1
 
     def loop(self):
+        # Substate 1 output
         if self.subState == 1:
             # Manual or automatic titration
             interfaces.lcd_out("Bring pH to 3.5:", line=1)
@@ -26,6 +28,7 @@ class InitialTitration(UIState.UIState):
             interfaces.lcd_out("Automatic: 2", line=3)
             interfaces.lcd_out("Stir speed: slow", line=4)
 
+        # Substate 2 output
         elif self.subState == 2:
             # wait until solution is up to temperature
             interfaces.lcd_clear()
@@ -33,8 +36,10 @@ class InitialTitration(UIState.UIState):
             interfaces.lcd_out("Please wait...", style=constants.LCD_CENT_JUST, line=3)
 
             if self.value == 1 or self.value == constants.KEY_1:
+                # Next state ManutalTitration
                 self._setNextState(ManualTitration(self.titrator), False)
             else:
+                # Next state AutomaticTitration
                 self._setNextState(AutomaticTitration(self.titrator), False)
 
             while not interfaces.temperature_controller.at_temperature():
