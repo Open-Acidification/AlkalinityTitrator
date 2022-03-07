@@ -31,7 +31,7 @@ def test_loop1(mock):
     initialTitration = ManualTitration(Titrator())
 
     initialTitration.loop()
-    assert mock.called
+    mock.assert_called_with('Volume: ')
 
 # Test loop
 @mock.patch.object(interfaces, "lcd_out")
@@ -40,7 +40,7 @@ def test_loop2(mock):
 
     initialTitration.subState += 1
     initialTitration.loop()
-    assert mock.called
+    mock.assert_called_with("", line=4)
 
 # Test loop
 @mock.patch.object(interfaces, "lcd_clear")
@@ -59,4 +59,4 @@ def test_loop4(mock):
     initialTitration.subState += 3
     initialTitration.values['user_choice'] = 1
     initialTitration.loop()
-    assert mock.called
+    mock.assert_called_with("Degas time (s):")

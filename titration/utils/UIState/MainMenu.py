@@ -3,6 +3,7 @@ from titration.utils import interfaces, constants
 from titration.utils.UIState.titration import SetupTitration
 from titration.utils.UIState.calibration import SetupCalibration
 
+# TODO: remove unecessary lcd_outs
 class MainMenu (UIState.UIState):
     def __init__(self, titrator):
         UIState.__init__('MainMenu', titrator)
@@ -15,35 +16,37 @@ class MainMenu (UIState.UIState):
     def handleKey(self, key):
         # Substate 1 key handle
         if self.routineSelection == 1:
-            if key is constants.KEY_STAR:
+            if key == '*' or key is constants.KEY_STAR:
                 self.routineSelection = 2
 
-            elif key is constants.KEY_1:
-                interfaces.lcd_out('Run Titration', 1)
+            elif key == 1 or key is constants.KEY_1:
                 # Next state SetupTitration
                 self._setNextState(SetupTitration.SetupTitration(self.titrator), True)
 
-            elif key is constants.KEY_2:
-                interfaces.lcd_out('Calibrate sensors', 1)
+            elif key == 2 or key is constants.KEY_2:
                 # Next state SetupCalibration
                 self._setNextState(SetupCalibration.SetupCalibration(self.titrator, self), True)
 
-            elif key is constants.KEY_3:
-                interfaces.lcd_out('Prime Pump', 1)
+            elif key == 3 or key is constants.KEY_3:
+                # prime pump
+                pass
 
         # Substate 2 key handle
         else:
-            if key is constants.KEY_STAR:
+            if key == '*' or key is constants.KEY_STAR:
                 self.routineSelection = 1
 
-            elif key is constants.KEY_4:
-                interfaces.lcd_out('Update settings', 1)
+            elif key == 4 or key is constants.KEY_4:
+                # update settings
+                pass
 
-            elif key is constants.KEY_5:
-                interfaces.lcd_out('Test Mode', 1)
+            elif key == 5 or key is constants.KEY_5:
+                # test mode
+                pass
 
-            elif key is constants.KEY_6:
-                interfaces.lcd_out('Exit', 1)
+            elif key == 6 or key is constants.KEY_6:
+                # exit
+                pass
 
     def loop(self):
         # Substate 1 output

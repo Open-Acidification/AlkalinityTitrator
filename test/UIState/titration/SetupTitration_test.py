@@ -12,34 +12,49 @@ def test_handleKey(mock):
     key_input = 1
     setupTitration.handleKey(key_input)
     assert not mock.called
+    assert(setupTitration.subState == 2)
     mock.reset_mock()
 
     setupTitration.handleKey(key_input)
     assert not mock.called
+    assert(setupTitration.subState == 3)
     mock.reset_mock()
 
     setupTitration.handleKey(key_input)
     assert mock.called
+    assert(setupTitration.subState == 4)
     mock.reset_mock()
+
+    setupTitration = SetupTitration(Titrator())
+
+    key_input = 2
+    setupTitration.handleKey(key_input)
+    assert not mock.called
+    assert(setupTitration.subState == 2)
+    mock.reset_mock()
+
+    setupTitration.handleKey(key_input)
+    assert not mock.called
+    assert(setupTitration.subState == 3)
+    mock.reset_mock()
+
+    setupTitration.handleKey(key_input)
+    assert mock.called
+    assert(setupTitration.subState == 4)
 
 # Test loop
-@mock.patch.object(interfaces, "read_user_value")
-def test_loop(mock):
+@mock.patch.object(interfaces, "read_user_value",  return_value=5.5)
+@mock.patch.object(interfaces, "lcd_out")
+def test_loop(mock1, mock2):
     setupTitration = SetupTitration(Titrator())
 
     setupTitration.loop()
-    assert mock.called
-    mock.reset_mock()
+    assert(setupTitration.values[1] == 5.5)
 
-    setupTitration.subState += 1
+    setupTitration.subState = 2
     setupTitration.loop()
-    assert mock.called
+    assert(setupTitration.values[2] == 5.5)
 
-
-@mock.patch.object(interfaces, "lcd_clear")
-def test_loop(mock):
-    setupTitration = SetupTitration(Titrator())
-
-    setupTitration.subState += 2
+    setupTitration.subState = 3
     setupTitration.loop()
-    assert mock.called
+    mock2.assert_called_with('"{0:>2.3f} pH: {1:>2.4f} V".format(constants.PH_REF_PH, constants.PH_REF_VOLTAGE), line=4')
