@@ -14,8 +14,12 @@ class CalibratePh(UIState.UIState):
         return 'CalibratePh'
 
     def handleKey(self, key):
+        # Substate 1 key handle
+        if self.subState == 1:
+            self.subState += 1
+
         # Substate 2 key handle
-        if self.subState == 2:
+        elif self.subState == 2:
             self._setNextState(self.previousState, True)    # TODO: Does not return
 
     def loop(self):
@@ -26,7 +30,6 @@ class CalibratePh(UIState.UIState):
             interfaces.lcd_out("", line=2)
             interfaces.lcd_out("Press any button", style=constants.LCD_CENT_JUST, line=3)
             interfaces.lcd_out("to record value", style=constants.LCD_CENT_JUST, line=4)
-            self.subState += 1
 
         # Substate 2 output
         elif self.subState == 2:

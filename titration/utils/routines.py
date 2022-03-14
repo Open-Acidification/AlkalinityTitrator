@@ -1,3 +1,4 @@
+from tkinter import X
 import numpy as np  # debugging/testing
 
 from titration.utils import analysis, constants, interfaces

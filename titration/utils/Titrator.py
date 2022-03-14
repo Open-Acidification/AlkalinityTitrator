@@ -39,6 +39,6 @@ class Titrator:
             print("Titrator::handleUI() - ", self.state.name(), "::handleKey(", key, ")")
             self.state.handleKey(key)
         self._updateState()
-        print("Titrator::handleUI() - ", self.state.name(), "::loop()")
+        print("Titrator::handleUI() - ", self.state.name(), "::substate", self.state.subState, "::loop()")
         self.state.loop()
         

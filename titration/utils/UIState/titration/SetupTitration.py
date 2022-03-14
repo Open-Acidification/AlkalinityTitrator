@@ -18,23 +18,19 @@ class SetupTitration(UIState.UIState):
         return 'SetupTitration'
 
     def handleKey(self, key):
-        # Substate 3 key handle
-        if self.subState == 3:
-            if key == 1 or key == constants.KEY_1:
-                # Next state SetupCalibration
-                self._setNextState(CalibratePh(self.titrator), True)
-            else:
-                # Next state InitialTitration
-                self._setNextState(InitialTitration(self.titrator), True)
-        self.subState += 1
+        if key == 1 or key == constants.KEY_1:
+            # Next state SetupCalibration
+            self._setNextState(CalibratePh(self.titrator), True)
+        else:
+            # Next state InitialTitration
+            self._setNextState(InitialTitration(self.titrator), True)
 
     def loop(self):
         # Substate 1 and 2 output and input
-        if self.subState == 1 or self.subState == 2:
-            self.values[self.subState] = interfaces.read_user_value(self.prompts[self.subState-1])
+        if self.subState == 1:
+            self.values[self.subState-1] = interfaces.read_user_value(self.prompts[self.subState-1])
+            self.values[self.subState] = interfaces.read_user_value(self.prompts[self.subState])
 
-        # Substate 3 output
-        elif self.subState == 3:
             interfaces.lcd_clear()
             interfaces.lcd_out("Calibrate pH probe?", line=1)
             interfaces.lcd_out("Yes: 1", line=2)

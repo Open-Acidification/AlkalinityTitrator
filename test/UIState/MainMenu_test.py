@@ -1,7 +1,4 @@
-from json.tool import main
-import pytest
 from unittest import mock
-from io import StringIO
 from titration.utils.UIState import MainMenu
 from titration.utils.Titrator import Titrator
 from titration.utils import interfaces, constants
@@ -36,10 +33,6 @@ def test_handleKey(mock):
     mock.assert_called()
     mock.reset_mock()
 
-    mainMenu.handleKey(6)
-    mock.assert_called()
-    mock.reset_mock()
-
     mainMenu.handleKey('*')
     assert(mainMenu.routineSelection == 1)
 
@@ -56,9 +49,9 @@ def test_loop(mock):
     mainMenu.loop()
     mock.assert_called_with(constants.ROUTINE_OPTIONS_2)
 
-# Test MainMenu fully
-@mock.patch.object(MainMenu.MainMenu, "_setNextState")
+# Test MainMenu
 @mock.patch.object(interfaces, "display_list")
+@mock.patch.object(MainMenu.MainMenu, "_setNextState")
 def test_MainMenu(mock1, mock2):
     mainMenu = MainMenu.MainMenu(Titrator())
 
@@ -90,10 +83,6 @@ def test_MainMenu(mock1, mock2):
     mock1.reset_mock()
 
     mainMenu.handleKey(5)
-    mock1.assert_called()
-    mock1.reset_mock()
-
-    mainMenu.handleKey(6)
     mock1.assert_called()
     mock1.reset_mock()
 

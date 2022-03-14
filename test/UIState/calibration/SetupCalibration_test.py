@@ -1,5 +1,5 @@
-import pytest
 from unittest import mock
+from titration.utils.UIState.calibration.CalibratePh import CalibratePh
 from titration.utils.UIState.calibration.SetupCalibration import SetupCalibration
 from titration.utils.Titrator import Titrator
 from titration.utils import interfaces
@@ -25,9 +25,22 @@ def test_handleKey(mock):
     assert not mock.called
 
 # Test loop
-@mock.patch.object(interfaces, "display_list")
-def test_loop1(mock):
+@mock.patch.object(interfaces, "lcd_out")
+def test_loop(mock):
     calibratePh = SetupCalibration(Titrator(), Titrator())
 
     calibratePh.loop()
-    assert mock.called
+    assert mock.called_with("3. Return", line=3)
+
+# Test SetupCalibration
+@mock.patch.object(SetupCalibration, "_setNextState")
+@mock.patch.object(interfaces, "lcd_out")
+def test_SetupCalibration(mock1, mock2):
+    calibratePh = SetupCalibration(Titrator(), Titrator())
+
+    calibratePh.loop()
+    assert mock1.called_with("3. Return", line=3)
+
+    calibratePh.handleKey(1)
+    assert mock2.called
+    mock2.reset_mock()

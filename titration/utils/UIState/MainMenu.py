@@ -1,7 +1,10 @@
 from titration.utils.UIState import UIState
 from titration.utils import interfaces, constants
+from titration.utils.UIState.prime_pump import PrimePump
+from titration.utils.UIState.test_mode import TestMode
 from titration.utils.UIState.titration import SetupTitration
 from titration.utils.UIState.calibration import SetupCalibration
+from titration.utils.UIState.update_settings import UpdateSettings
 
 # TODO: remove unecessary lcd_outs
 class MainMenu (UIState.UIState):
@@ -9,6 +12,7 @@ class MainMenu (UIState.UIState):
         UIState.__init__('MainMenu', titrator)
         self.routineSelection = 1
         self.titrator = titrator
+        self.subState = 1
 
     def name(self):
         return 'MainMenu'
@@ -28,8 +32,8 @@ class MainMenu (UIState.UIState):
                 self._setNextState(SetupCalibration.SetupCalibration(self.titrator, self), True)
 
             elif key == 3 or key is constants.KEY_3:
-                # prime pump
-                pass
+                # Next state PrimePump
+                self._setNextState(PrimePump.PrimePump(self.titrator, self), True)
 
         # Substate 2 key handle
         else:
@@ -37,16 +41,15 @@ class MainMenu (UIState.UIState):
                 self.routineSelection = 1
 
             elif key == 4 or key is constants.KEY_4:
-                # update settings
-                pass
+                # Next state UpdateSettings
+                self._setNextState(UpdateSettings.UpdateSettings(self.titrator, self), True)
 
             elif key == 5 or key is constants.KEY_5:
-                # test mode
-                pass
+                # Next state TestMode
+                self._setNextState(TestMode.TestMode(self.titrator, self), True)
 
             elif key == 6 or key is constants.KEY_6:
-                # exit
-                pass
+                quit()
 
     def loop(self):
         # Substate 1 output

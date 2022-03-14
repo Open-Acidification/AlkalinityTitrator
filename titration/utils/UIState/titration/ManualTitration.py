@@ -1,5 +1,6 @@
 from titration.utils.UIState import UIState
 from titration.utils import interfaces, constants
+from titration.utils.UIState import MainMenu
 
 
 class ManualTitration(UIState.UIState):
@@ -8,8 +9,7 @@ class ManualTitration(UIState.UIState):
         self.titrator = titrator
         self.values = {
             'p_volume' : 0, 'p_direction' : 0, 
-            'user_choice' : 0, 'degas_time' : 0,
-            'current_pH' : 5
+            'degas_time' : 0, 'current_pH' : 5
         }
         self.subState = 1
 
@@ -31,8 +31,22 @@ class ManualTitration(UIState.UIState):
         
         # Substate 3 key handle
         elif self.subState == 3:
-            self.values['user_choice'] = key
+            if key == 0 or key == constants.KEY_0:
+                self.subState += 2
+            elif key == 1 or key == constants.KEY_1:
+                self.subState += 1
+
+        # Substate 4 key handle
+        elif self.subState == 4:
             self.subState += 1
+
+        # Substate 5 key handle
+        elif self.subState == 5:
+            if key == 0 or key == constants.KEY_0:
+                self._setNextState(MainMenu.MainMenu(self.titrator), True)
+                pass
+            elif key == 1 or key == constants.KEY_1:
+                quit()
 
     def loop(self):
         # Substate 1 output
@@ -57,10 +71,14 @@ class ManualTitration(UIState.UIState):
         
         # Substate 4 output
         elif self.subState == 4:
-            if self.values['user_choice'] == 1 or self.values['user_choice'] == constants.KEY_1:
-                self.values['degas_time'] = interfaces.read_user_value("Degas time (s):")
-            # TODO: next state
+            self.values['degas_time'] = interfaces.read_user_value("Degas time (s):")
 
+        # Substate 5 output
+        elif self.subState == 5:
+            interfaces.lcd_clear()
+            interfaces.lcd_out("Return to", line=1)
+            interfaces.lcd_out("main menu: 0", line=2)
+            interfaces.lcd_out("Exit: 1", line=3)
 
     def start(self):
         interfaces.lcd_out("MANUAL SELECTED", style=constants.LCD_CENT_JUST, line=4)

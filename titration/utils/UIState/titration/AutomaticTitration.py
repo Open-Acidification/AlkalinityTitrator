@@ -1,5 +1,6 @@
 from titration.utils.UIState import UIState
 from titration.utils import interfaces, constants
+from titration.utils.UIState import MainMenu
 
 class AutomaticTitration(UIState.UIState):
     def __init__(self, titrator):
@@ -12,7 +13,14 @@ class AutomaticTitration(UIState.UIState):
         return 'AutomaticTitration'
 
     def handleKey(self, key):
-        pass
+        # Substate 4 key handle
+        if self.subState == 4:
+            if key == 0 or key == constants.KEY_0:
+                self._setNextState(MainMenu.MainMenu(self.titrator), True)
+                pass
+            elif key == 1 or key == constants.KEY_1:
+                quit()
+
 
     def loop(self):
         # Substate 1 output
@@ -20,7 +28,7 @@ class AutomaticTitration(UIState.UIState):
             interfaces.lcd_out(
                 "Titrating to {} pH".format(str(self.values['pH_target'])),   # TODO: Change pH_target
                 style=constants.LCD_CENT_JUST,
-                line=4,
+                line=4
             )
             self.subState += 1
         
@@ -31,8 +39,16 @@ class AutomaticTitration(UIState.UIState):
         
         # Substate 3 output
         elif self.subState == 3:
+            interfaces.lcd_out("pH value {} reached".format(self.values['current_pH']), line=4) # TODO: Change current_pH
+            self.subState += 1
+        
+        # Substate 4 output
+        elif self.subState == 4:
             interfaces.lcd_clear()
-            interfaces.lcd_out("pH value {} reached".format(self.values['current_pH']), line=1) # TODO: Change current_pH
+            interfaces.lcd_out("Return to", line=1)
+            interfaces.lcd_out("main menu: 0", line=2)
+            interfaces.lcd_out("Exit: 1", line=3)
+
 
     def start(self):
         interfaces.lcd_out("AUTO SELECTED", style=constants.LCD_CENT_JUST, line=4)

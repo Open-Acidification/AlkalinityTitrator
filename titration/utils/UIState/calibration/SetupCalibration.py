@@ -14,6 +14,7 @@ class SetupCalibration(UIState.UIState):
         return 'SetupCalibration'
 
     def handleKey(self, key):
+        # Substate 1 key handle
         if key == 1 or key == constants.KEY_1:
             # calibrate pH
             self._setNextState(CalibratePh(self.titrator, self), True)
@@ -23,9 +24,10 @@ class SetupCalibration(UIState.UIState):
             self._setNextState(CalibrateTemp(self.titrator, self), True)
 
         elif key == 3 or key == constants.KEY_3:
-            # calibrate temp
+            # return to main menu
             self._setNextState(self.previousState, True)
 
     def loop(self):
+        # Substate 1 output
         interfaces.display_list(constants.SENSOR_OPTIONS)
         interfaces.lcd_out("3. Return", line=3)
