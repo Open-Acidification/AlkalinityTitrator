@@ -1,6 +1,7 @@
 from titration.utils.UIState import UIState, MainMenu
-from titration.utils import interfaces, constants, Input
+from titration.utils import input, interfaces, constants
 import sys
+from titration.utils import LCD
 
 class Titrator:
     def __init__(self):
@@ -31,7 +32,7 @@ class Titrator:
 
     def _handleUI(self):
         print("Titrator::handleUI() - ", self.state.name())
-        key = Input.getKey()
+        key = input.getKey()
         if (key == constants.NO_KEY):
             if (self.nextState):
                 pass

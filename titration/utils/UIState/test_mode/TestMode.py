@@ -1,6 +1,6 @@
 from sre_parse import State
 from titration.utils.UIState import UIState
-from titration.utils import interfaces, constants
+from titration.utils import interfaces, constants, LCD
 from titration.utils.UIState.test_mode.Pump import Pump
 from titration.utils.UIState.test_mode.ReadValues import ReadValues
 from titration.utils.UIState.test_mode.ReadVolume import ReadVolume
@@ -47,7 +47,7 @@ class TestMode(UIState.UIState):
 
     def loop(self):
         if self.subState == 1:
-            interfaces.display_list(constants.TEST_OPTIONS_1)
+            LCD.display_list(constants.TEST_OPTIONS_1)
 
         elif self.subState == 2:
-            interfaces.display_list(constants.TEST_OPTIONS_2)
+            LCD.display_list(constants.TEST_OPTIONS_2)

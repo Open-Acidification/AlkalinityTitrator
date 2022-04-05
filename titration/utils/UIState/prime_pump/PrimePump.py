@@ -1,6 +1,6 @@
 from sre_parse import State
 from titration.utils.UIState import UIState
-from titration.utils import interfaces, constants
+from titration.utils import interfaces, constants, LCD
 from titration.utils.UIState.titration.InitialTitration import InitialTitration
 
 class PrimePump(UIState.UIState):
@@ -37,13 +37,13 @@ class PrimePump(UIState.UIState):
     def loop(self):
         # Substate 1 output
         if self.subState == 1:
-            interfaces.lcd_clear()
-            interfaces.lcd_out("How many pumps?", line=1)
-            interfaces.lcd_out("Choose a number", line=2)
-            interfaces.lcd_out("Choose 0 to return", line=3)
+            LCD.lcd_clear()
+            LCD.lcd_out("How many pumps?", line=1)
+            LCD.lcd_out("Choose a number", line=2)
+            LCD.lcd_out("Choose 0 to return", line=3)
 
         # Substate 2 output
         elif self.subState == 2:
-            interfaces.lcd_out("How many more?", line=1)
-            interfaces.lcd_out("Choose a number", line=2)
-            interfaces.lcd_out("Choose 0 to return", line=3)
+            LCD.lcd_out("How many more?", line=1)
+            LCD.lcd_out("Choose a number", line=2)
+            LCD.lcd_out("Choose 0 to return", line=3)

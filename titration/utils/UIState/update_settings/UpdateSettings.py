@@ -1,6 +1,7 @@
 from sre_parse import State
 from titration.utils.UIState import UIState
-from titration.utils import interfaces, constants
+from titration.utils import interfaces
+from titration.utils import LCD
 
 class UpdateSettings(UIState.UIState):
     def __init__(self, titrator, state):
@@ -34,24 +35,24 @@ class UpdateSettings(UIState.UIState):
 
     def loop(self):
         if self.subState == 1:
-            interfaces.lcd_clear()
-            interfaces.lcd_out("Reset calibration", line=1)
-            interfaces.lcd_out("settings to default?", line=2)
-            interfaces.lcd_out("(y/n)", line=3)
+            LCD.lcd_clear()
+            LCD.lcd_out("Reset calibration", line=1)
+            LCD.lcd_out("settings to default?", line=2)
+            LCD.lcd_out("(y/n)", line=3)
         
         elif self.subState == 2:
-            interfaces.lcd_clear()
-            interfaces.lcd_out("Default constants", line=1)
-            interfaces.lcd_out("restored", line=2)
-            interfaces.lcd_out("Press any to cont.", line=3)
+            LCD.lcd_clear()
+            LCD.lcd_out("Default constants", line=1)
+            LCD.lcd_out("restored", line=2)
+            LCD.lcd_out("Press any to cont.", line=3)
 
         elif self.subState == 3:
-            interfaces.lcd_clear()
-            interfaces.lcd_out("Set volume in pump?", line=1)
-            interfaces.lcd_out("(y/n)", line=3)
+            LCD.lcd_clear()
+            LCD.lcd_out("Set volume in pump?", line=1)
+            LCD.lcd_out("(y/n)", line=3)
 
         elif self.subState == 4:
-            self.values['vol_in_pump'] = interfaces.read_user_value("Volume in pump: ")
-            interfaces.lcd_clear()
-            interfaces.lcd_out("Volume in pump set", line=1)
-            interfaces.lcd_out("Press any to cont.", line=3)
+            self.values['vol_in_pump'] = LCD.read_user_value("Volume in pump: ")
+            LCD.lcd_clear()
+            LCD.lcd_out("Volume in pump set", line=1)
+            LCD.lcd_out("Press any to cont.", line=3)

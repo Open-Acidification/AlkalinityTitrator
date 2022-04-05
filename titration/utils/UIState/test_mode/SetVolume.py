@@ -1,7 +1,7 @@
 from pickletools import int4
 from sre_parse import State
 from titration.utils.UIState import UIState
-from titration.utils import interfaces, constants
+from titration.utils import interfaces, constants, LCD
 
 class SetVolume(UIState.UIState):
     def __init__(self, titrator, state):
@@ -18,6 +18,6 @@ class SetVolume(UIState.UIState):
         self._setNextState(self.previousState, True)
 
     def loop(self):
-        self.values['new_volume'] = interfaces.read_user_value("Volume in pump: ")
-        interfaces.lcd_clear()
-        interfaces.lcd_out("Press any to cont.", line=1)
+        self.values['new_volume'] = LCD.read_user_value("Volume in pump: ")
+        LCD.lcd_clear()
+        LCD.lcd_out("Press any to cont.", line=1)

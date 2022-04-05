@@ -1,7 +1,7 @@
 from pickletools import int4
 from sre_parse import State
 from titration.utils.UIState import UIState
-from titration.utils import interfaces, constants
+from titration.utils import interfaces, constants, LCD
 
 class ToggleTestMode(UIState.UIState):
     def __init__(self, titrator, state):
@@ -18,6 +18,6 @@ class ToggleTestMode(UIState.UIState):
         self._setNextState(self.previousState, True)
 
     def loop(self):
-        interfaces.lcd_clear()
-        interfaces.lcd_out("Testing: {}".format(constants.IS_TEST), line=1)
-        interfaces.lcd_out("Press any to cont.", line=3)
+        LCD.lcd_clear()
+        LCD.lcd_out("Testing: {}".format(constants.IS_TEST), line=1)
+        LCD.lcd_out("Press any to cont.", line=3)

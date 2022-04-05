@@ -1,7 +1,7 @@
 from unittest import mock
 from titration.utils.UIState.titration.ManualTitration import ManualTitration
 from titration.utils.Titrator import Titrator
-from titration.utils import constants, interfaces
+from titration.utils import constants, interfaces, LCD
 
 # Test handleKey
 @mock.patch.object(ManualTitration, "_setNextState")
@@ -31,38 +31,60 @@ def test_handleKey(mock):
     mock.assert_called()
 
 # Test loop
-@mock.patch.object(interfaces, "read_user_value", return_value=5.5)
-@mock.patch.object(interfaces, "lcd_out")
+@mock.patch.object(LCD, "read_user_value", return_value=5.5)
+@mock.patch.object(LCD, "lcd_out")
 def test_loop(mock1, mock2):
     manualTitration = ManualTitration(Titrator())
 
     manualTitration.loop()
     assert(manualTitration.values['p_volume'] == 5.5)
+    mock1.assert_has_calls(
+        [mock.call("Direction (0/1): ", line=1)
+    ])
     mock1.reset_mock()
 
     manualTitration.subState += 1
     manualTitration.loop()
-    # mock1.assert_called_with("", line=4)
-    mock1.assert_has_calls([mock1.call("(0 - No, 1 - Yes)", line=3), mock1.call("", line=4)])
+    mock1.assert_has_calls(
+        [mock.call("Current pH: {0:>4.5f}".format(manualTitration.values['current_pH']), line=1), 
+        mock.call("Add more HCl?", line=2),
+        mock.call("(0 - No, 1 - Yes)", line=3),
+        mock.call("", line=4)
+    ])
     mock1.reset_mock()
 
     manualTitration.subState += 1
     manualTitration.loop()
-    mock1.assert_called_with("(0 - No, 1 - Yes)", line=2)
+    mock1.assert_has_calls(
+        [mock.call("Current pH: {0:>4.5f}".format(manualTitration.values['current_pH']), line=1),
+        mock.call("Degas?", 1),
+        mock.call("(0 - No, 1 - Yes)", line=2)]
+    )
 
     manualTitration.subState += 1
     manualTitration.values['user_choice'] = 1
     manualTitration.loop()
     assert(manualTitration.values['degas_time'] == 5.5)
 
+    manualTitration.subState += 1
+    manualTitration.loop()
+    mock1.assert_has_calls(
+        [mock.call("Return to", line=1),
+        mock.call("main menu: 0", line=2),
+        mock.call("Exit: 1", line=3)]
+    )
+
 @mock.patch.object(ManualTitration, "_setNextState")
-@mock.patch.object(interfaces, "read_user_value", return_value=5.5)
-@mock.patch.object(interfaces, "lcd_out")
+@mock.patch.object(LCD, "read_user_value", return_value=5.5)
+@mock.patch.object(LCD, "lcd_out")
 def test_ManualTitration(mock1, mock2, mock3):
     manualTitration = ManualTitration(Titrator())
 
     manualTitration.loop()
     assert(manualTitration.values['p_volume'] == 5.5)
+    mock1.assert_has_calls(
+        [mock.call("Direction (0/1): ", line=1)
+    ])
     mock1.reset_mock()
 
     manualTitration.handleKey(1)
@@ -70,14 +92,24 @@ def test_ManualTitration(mock1, mock2, mock3):
     assert(manualTitration.subState == 2)
 
     manualTitration.loop()
-    mock1.assert_called_with("", line=4)
+    mock1.assert_has_calls(
+        [mock.call("Current pH: {0:>4.5f}".format(manualTitration.values['current_pH']), line=1), 
+        mock.call("Add more HCl?", line=2),
+        mock.call("(0 - No, 1 - Yes)", line=3),
+        mock.call("", line=4)
+    ])
     mock1.reset_mock()
 
     manualTitration.handleKey(2)
     assert(manualTitration.subState == 3)
 
     manualTitration.loop()
-    mock1.assert_called_with("(0 - No, 1 - Yes)", line=2)
+    mock1.assert_has_calls(
+        [mock.call("Current pH: {0:>4.5f}".format(manualTitration.values['current_pH']), line=1),
+        mock.call("Degas?", 1),
+        mock.call("(0 - No, 1 - Yes)", line=2)]
+    )
+    mock1.reset_mock()
 
     manualTitration.handleKey(1)
     assert(manualTitration.subState == 4)
@@ -87,6 +119,13 @@ def test_ManualTitration(mock1, mock2, mock3):
 
     manualTitration.handleKey(1)
     assert(manualTitration.subState == 5)
+
+    manualTitration.loop()
+    mock1.assert_has_calls(
+        [mock.call("Return to", line=1),
+        mock.call("main menu: 0", line=2),
+        mock.call("Exit: 1", line=3)]
+    )
 
     manualTitration.handleKey(0)
     mock3.assert_called()
