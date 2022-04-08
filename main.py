@@ -17,5 +17,5 @@ if __name__ == "__main__":
             raise SystemExit(f"Usage: {sys.argv[0]} (-test)")
     else:
         constants.IS_TEST = False
-    import titration.utils.titration as titration
-    titration.run()
+    import titration.utils.titration_old as titration_old
+    titration_old.run()

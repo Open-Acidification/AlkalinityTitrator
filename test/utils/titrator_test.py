@@ -1,6 +1,6 @@
 import pytest
 from io import StringIO
-from titration.utils.Titrator import Titrator
+from titration.utils.titrator import Titrator
 
 def test_loop(monkeypatch):
     pass

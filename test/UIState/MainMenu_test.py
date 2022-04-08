@@ -1,6 +1,6 @@
 from unittest import mock
 from titration.utils.UIState import MainMenu
-from titration.utils.Titrator import Titrator
+from titration.utils.titrator import Titrator
 from titration.utils import interfaces, constants
 from titration.utils.UIState.titration import SetupTitration
 from titration.utils.UIState.calibration import SetupCalibration

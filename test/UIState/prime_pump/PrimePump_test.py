@@ -1,5 +1,5 @@
 from unittest import mock
-from titration.utils.Titrator import Titrator
+from titration.utils.titrator import Titrator
 from titration.utils import constants, interfaces, LCD
 from titration.utils.UIState.prime_pump.PrimePump import PrimePump
 

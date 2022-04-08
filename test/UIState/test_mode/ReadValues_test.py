@@ -1,6 +1,6 @@
 from asyncore import read
 from unittest import mock
-from titration.utils.Titrator import Titrator
+from titration.utils.titrator import Titrator
 from titration.utils import constants, interfaces, LCD
 from titration.utils.UIState.test_mode.ReadValues import ReadValues
 

@@ -1,6 +1,6 @@
 from unittest import mock
 from titration.utils.UIState.titration.AutomaticTitration import AutomaticTitration
-from titration.utils.Titrator import Titrator
+from titration.utils.titrator import Titrator
 from titration.utils import constants, interfaces, LCD
 
 # Test handleKey

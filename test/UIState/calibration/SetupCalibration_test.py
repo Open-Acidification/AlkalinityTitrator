@@ -1,7 +1,7 @@
 from unittest import mock
 from titration.utils.UIState.calibration.CalibratePh import CalibratePh
 from titration.utils.UIState.calibration.SetupCalibration import SetupCalibration
-from titration.utils.Titrator import Titrator
+from titration.utils.titrator import Titrator
 from titration.utils import interfaces, LCD
 
 # Test handleKey

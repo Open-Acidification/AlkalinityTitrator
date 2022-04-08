@@ -1,5 +1,5 @@
 from unittest import mock
-from titration.utils.Titrator import Titrator
+from titration.utils.titrator import Titrator
 from titration.utils import constants, interfaces
 from titration.utils.UIState.update_settings.UpdateSettings import UpdateSettings
 from titration.utils import LCD

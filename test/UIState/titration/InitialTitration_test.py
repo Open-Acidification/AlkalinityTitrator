@@ -1,7 +1,7 @@
 from unittest import mock
 from titration.utils.UIState.titration.AutomaticTitration import AutomaticTitration
 from titration.utils.UIState.titration.InitialTitration import InitialTitration
-from titration.utils.Titrator import Titrator
+from titration.utils.titrator import Titrator
 from titration.utils import constants, interfaces, LCD
 from titration.utils.UIState.titration.ManualTitration import ManualTitration
 
