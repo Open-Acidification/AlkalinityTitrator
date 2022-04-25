@@ -1,27 +1,32 @@
 from unittest import mock
+from unittest.mock import ANY
+from titration.utils.UIState.MainMenu import MainMenu
 from titration.utils.UIState.calibration.CalibrateTemp import CalibrateTemp
+from titration.utils.UIState.calibration.SetupCalibration import SetupCalibration
 from titration.utils.titrator import Titrator
-from titration.utils import constants, interfaces, LCD
+from titration.utils import constants, LCD
 
 # Test handleKey
 @mock.patch.object(CalibrateTemp, "_setNextState")
 def test_handleKey(mock):
-    calibrateTemp = CalibrateTemp(Titrator(), Titrator())
+    calibrateTemp = CalibrateTemp(Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator()))
 
-    calibrateTemp.handleKey(1)
+    calibrateTemp.handleKey("1")
     assert(calibrateTemp.subState == 2)
 
-    calibrateTemp.handleKey(1)
+    calibrateTemp.handleKey("1")
     assert(calibrateTemp.subState == 3)
 
-    calibrateTemp.handleKey(1)
-    assert mock.called
+    calibrateTemp.handleKey("1")
+    mock.assert_called_with(ANY, True)
+    assert(mock.call_args.args[0].name() == "SetupCalibration")
+    mock.reset_mock()
 
 # Test loop
 @mock.patch.object(LCD, "lcd_out")
 @mock.patch.object(LCD, "read_user_value", return_value=5.5)
 def test_loop(mock1, mock2):
-    calibrateTemp = CalibrateTemp(Titrator(), Titrator())
+    calibrateTemp = CalibrateTemp(Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator()))
 
     calibrateTemp.loop()
     assert(calibrateTemp.values['expected_temperature'] == 5.5)
@@ -49,12 +54,12 @@ def test_loop(mock1, mock2):
 @mock.patch.object(LCD, "lcd_out")
 @mock.patch.object(LCD, "read_user_value", return_value=5.5)
 def test_CalibrateTemp(mock1, mock2, mock3):
-    calibrateTemp = CalibrateTemp(Titrator(), Titrator())
+    calibrateTemp = CalibrateTemp(Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator()))
 
     calibrateTemp.loop()
     assert(calibrateTemp.values['expected_temperature'] == 5.5)
 
-    calibrateTemp.handleKey(1)
+    calibrateTemp.handleKey("1")
     assert(calibrateTemp.subState == 2)
 
     calibrateTemp.loop()
@@ -67,7 +72,7 @@ def test_CalibrateTemp(mock1, mock2, mock3):
     mock2.reset_called()
     mock2.reset_mock()
 
-    calibrateTemp.handleKey(1)
+    calibrateTemp.handleKey("1")
     assert(calibrateTemp.subState == 3)
 
     calibrateTemp.loop()
@@ -77,5 +82,7 @@ def test_CalibrateTemp(mock1, mock2, mock3):
         mock.call("{}".format(calibrateTemp.values['new_ref_resistance']), line=3)]
     )
 
-    calibrateTemp.handleKey(1)
-    assert mock3.called
+    calibrateTemp.handleKey("1")
+    mock3.assert_called_with(ANY, True)
+    assert(mock3.call_args.args[0].name() == "SetupCalibration")
+    mock3.reset_mock()

@@ -137,8 +137,5 @@ dmypy.json
 .idea
 *.csv
 *.xlsx
-.pytest_cache
-__pycache__
 super-linter.log
-.mypy_cache
 data\calibration.json

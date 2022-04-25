@@ -6,7 +6,7 @@ from titration.utils.UIState.titration import SetupTitration
 from titration.utils.UIState.calibration import SetupCalibration
 from titration.utils.UIState.update_settings import UpdateSettings
 
-# TODO: remove unecessary lcd_outs
+# TODO: remove unecessary lcd_outs, remove subState, first comparisons
 class MainMenu (UIState.UIState):
     def __init__(self, titrator):
         UIState.__init__('MainMenu', titrator)
@@ -20,35 +20,35 @@ class MainMenu (UIState.UIState):
     def handleKey(self, key):
         # Substate 1 key handle
         if self.routineSelection == 1:
-            if key == '*' or key is constants.KEY_STAR:
+            if key == constants.KEY_STAR:
                 self.routineSelection = 2
 
-            elif key == 1 or key is constants.KEY_1:
+            elif key == constants.KEY_1:
                 # Next state SetupTitration
                 self._setNextState(SetupTitration.SetupTitration(self.titrator), True)
 
-            elif key == 2 or key is constants.KEY_2:
+            elif key == constants.KEY_2:
                 # Next state SetupCalibration
                 self._setNextState(SetupCalibration.SetupCalibration(self.titrator, self), True)
 
-            elif key == 3 or key is constants.KEY_3:
+            elif key == constants.KEY_3:
                 # Next state PrimePump
                 self._setNextState(PrimePump.PrimePump(self.titrator, self), True)
 
         # Substate 2 key handle
         else:
-            if key == '*' or key is constants.KEY_STAR:
+            if key == constants.KEY_STAR:
                 self.routineSelection = 1
 
-            elif key == 4 or key is constants.KEY_4:
+            elif key == constants.KEY_4:
                 # Next state UpdateSettings
                 self._setNextState(UpdateSettings.UpdateSettings(self.titrator, self), True)
 
-            elif key == 5 or key is constants.KEY_5:
+            elif key == constants.KEY_5:
                 # Next state TestMode
                 self._setNextState(TestMode.TestMode(self.titrator, self), True)
 
-            elif key == 6 or key is constants.KEY_6:
+            elif key == constants.KEY_6:
                 quit()
 
     def loop(self):

@@ -1,7 +1,5 @@
-from sre_parse import State
 from titration.utils.UIState import UIState
-from titration.utils import interfaces, constants, LCD
-from titration.utils.UIState.titration.InitialTitration import InitialTitration
+from titration.utils import LCD
 
 class PrimePump(UIState.UIState):
     def __init__(self, titrator, state):

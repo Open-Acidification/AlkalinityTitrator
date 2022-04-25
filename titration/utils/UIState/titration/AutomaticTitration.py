@@ -1,5 +1,5 @@
 from titration.utils.UIState import UIState
-from titration.utils import interfaces, constants, LCD
+from titration.utils import constants, LCD
 from titration.utils.UIState import MainMenu
 
 class AutomaticTitration(UIState.UIState):
@@ -15,10 +15,10 @@ class AutomaticTitration(UIState.UIState):
     def handleKey(self, key):
         # Substate 4 key handle
         if self.subState == 4:
-            if key == 0 or key == constants.KEY_0:
+            if key == constants.KEY_0:
                 self._setNextState(MainMenu.MainMenu(self.titrator), True)
                 pass
-            elif key == 1 or key == constants.KEY_1:
+            elif key == constants.KEY_1:
                 quit()
 
 

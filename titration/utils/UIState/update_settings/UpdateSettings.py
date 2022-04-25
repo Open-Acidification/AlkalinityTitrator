@@ -1,6 +1,4 @@
-from sre_parse import State
 from titration.utils.UIState import UIState
-from titration.utils import interfaces
 from titration.utils import LCD
 
 class UpdateSettings(UIState.UIState):

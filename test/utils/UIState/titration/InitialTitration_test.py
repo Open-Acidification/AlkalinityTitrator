@@ -1,9 +1,8 @@
 from unittest import mock
-from titration.utils.UIState.titration.AutomaticTitration import AutomaticTitration
+from unittest.mock import ANY 
 from titration.utils.UIState.titration.InitialTitration import InitialTitration
 from titration.utils.titrator import Titrator
-from titration.utils import constants, interfaces, LCD
-from titration.utils.UIState.titration.ManualTitration import ManualTitration
+from titration.utils import constants, LCD
 
 # Test handleKey
 @mock.patch.object(InitialTitration, "_setNextState")
@@ -37,21 +36,23 @@ def test_loop(mock1, mock2):
         mock.call("Please wait...", style=constants.LCD_CENT_JUST, line=3)]
     )
     mock1.reset_called()
-    assert mock2.called_with(AutomaticTitration(initialTitration.titrator), False)
-    mock2.reset_called()
+    mock2.assert_called_with(ANY, False)
+    assert(mock2.call_args.args[0].name() == "AutomaticTitration")
+    mock2.reset_mock()
 
     initialTitration = InitialTitration(Titrator())
 
     initialTitration.subState += 1
-    initialTitration.value = 1
+    initialTitration.value = "1"
     initialTitration.loop()
     mock1.assert_has_calls(
         [mock.call("Heating to 30 C...", line=1),
         mock.call("Please wait...", style=constants.LCD_CENT_JUST, line=3)]
     )
     mock1.reset_called()
-    assert mock2.called_with(ManualTitration(initialTitration.titrator), False)
-    mock2.reset_called()
+    mock2.assert_called_with(ANY, False)
+    assert(mock2.call_args.args[0].name() == "ManualTitration")
+    mock2.reset_mock()
 
 @mock.patch.object(InitialTitration, "_setNextState")
 @mock.patch.object(LCD, "lcd_out")
@@ -67,8 +68,8 @@ def test_InitialTitration(mock1, mock2):
     )
     mock1.reset_called()
 
-    initialTitration.handleKey(1)
-    assert(initialTitration.value == 1)
+    initialTitration.handleKey("1")
+    assert(initialTitration.value == "1")
     assert(initialTitration.subState == 2)
 
     initialTitration.loop()
@@ -77,13 +78,14 @@ def test_InitialTitration(mock1, mock2):
         mock.call("Please wait...", style=constants.LCD_CENT_JUST, line=3)]
     )
     mock1.reset_called()
-    assert mock2.called_with(ManualTitration(initialTitration.titrator), False)
-    mock2.reset_called()
+    mock2.assert_called_with(ANY, False)
+    assert(mock2.call_args.args[0].name() == "ManualTitration")
+    mock2.reset_mock()
 
     initialTitration = InitialTitration(Titrator())
 
-    initialTitration.handleKey(2)
-    assert(initialTitration.value == 2)
+    initialTitration.handleKey("2")
+    assert(initialTitration.value == "2")
     assert(initialTitration.subState == 2)
 
     initialTitration.loop()
@@ -92,5 +94,6 @@ def test_InitialTitration(mock1, mock2):
         mock.call("Please wait...", style=constants.LCD_CENT_JUST, line=3)]
     )
     mock1.reset_called()
-    assert mock2.called_with(AutomaticTitration(initialTitration.titrator), False)
-    mock2.reset_called()
+    mock2.assert_called_with(ANY, False)
+    assert(mock2.call_args.args[0].name() == "AutomaticTitration")
+    mock2.reset_mock()

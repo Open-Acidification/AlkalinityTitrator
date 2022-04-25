@@ -1,5 +1,5 @@
 from titration.utils.UIState import UIState
-from titration.utils import interfaces, constants, LCD
+from titration.utils import constants, LCD
 from titration.utils.UIState import MainMenu
 
 
@@ -24,14 +24,14 @@ class ManualTitration(UIState.UIState):
 
         # Substate 2 key handle
         elif self.subState == 2:
-            if key == 1 or key == constants.KEY_1:
+            if key == constants.KEY_1:
                 self.subState -= 1
             else:
                 self.subState += 1
         
         # Substate 3 key handle
         elif self.subState == 3:
-            if key == 0 or key == constants.KEY_0:
+            if key == constants.KEY_0:
                 self.subState += 2
             elif key == 1 or key == constants.KEY_1:
                 self.subState += 1
@@ -42,8 +42,8 @@ class ManualTitration(UIState.UIState):
 
         # Substate 5 key handle
         elif self.subState == 5:
-            if key == 0 or key == constants.KEY_0:
-                self._setNextState(MainMenu.MainMenu(self.titrator), True)
+            if key == constants.KEY_0:
+                self._setNextState(MainMenu.MainMenu(self.titrator), True) # TODO; pop back up
                 pass
             elif key == 1 or key == constants.KEY_1:
                 quit()

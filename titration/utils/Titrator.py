@@ -1,7 +1,6 @@
-from titration.utils.UIState import UIState, MainMenu
+from titration.utils.UIState import MainMenu
 from titration.utils import interfaces, constants
-import sys, types
-from titration.utils import LCD
+import types
 from titration.utils.devices.keypad_mock import Keypad
 
 if constants.IS_TEST:
@@ -56,8 +55,8 @@ class Titrator:
 
     def _handleUI(self):
         print("Titrator::handleUI() - ", self.state.name())
-        key = self.keypad.keypad_poll()
-        if (key == constants.NO_KEY):
+        key = self.keypad.get_key()
+        if (key == constants.NO_KEY): # TODO: key !=
             if (self.nextState):
                 pass
         else:

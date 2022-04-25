@@ -1,5 +1,5 @@
 from titration.utils.UIState import UIState
-from titration.utils import interfaces, constants
+from titration.utils import constants
 from titration.utils.UIState.titration.InitialTitration import InitialTitration
 from titration.utils.UIState.titration.CalibratePh import CalibratePh
 from titration.utils import LCD
@@ -19,7 +19,7 @@ class SetupTitration(UIState.UIState):
         return 'SetupTitration'
 
     def handleKey(self, key):
-        if key == 1 or key == constants.KEY_1:
+        if key == constants.KEY_1:
             # Next state SetupCalibration
             self._setNextState(CalibratePh(self.titrator), True)
         else:

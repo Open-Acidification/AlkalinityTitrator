@@ -14,8 +14,11 @@ class Keypad:
     
     def keypad_poll(self):
         if not self.buttonPressed:
-            self.buttonPressed = not self.buttonPressed
+            self.buttonPressed = True # not self.buttonPressed
             return click.getchar()
         else:
-            self.buttonPressed = not self.buttonPressed
+            self.buttonPressed = False # not self.buttonPressed
             return None
+
+    def get_key(self):
+            return click.getchar()

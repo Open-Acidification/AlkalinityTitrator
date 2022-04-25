@@ -1,28 +1,32 @@
 from unittest import mock
+from unittest.mock import ANY
 from titration.utils.UIState.titration.AutomaticTitration import AutomaticTitration
 from titration.utils.titrator import Titrator
-from titration.utils import constants, interfaces, LCD
+from titration.utils import constants, LCD
 
 # Test handleKey
 @mock.patch.object(AutomaticTitration, "_setNextState")
 def test_handleKey(mock):
     initialTitration = AutomaticTitration(Titrator())
 
-    initialTitration.handleKey(1)
+    initialTitration.handleKey("1")
     assert not mock.called
     mock.reset_mock()
 
     initialTitration.subState += 1
-    initialTitration.handleKey(1)
+    initialTitration.handleKey("1")
     assert not mock.called
 
     initialTitration.subState += 1
-    initialTitration.handleKey(1)
+    initialTitration.handleKey("1")
     assert not mock.called
 
     initialTitration.subState += 1
-    initialTitration.handleKey(0)
-    assert mock.called
+    
+    initialTitration.handleKey("0")
+    mock.assert_called_with(ANY, True)
+    assert(mock.call_args.args[0].name() == "MainMenu")
+    mock.reset_mock()
 
 # Test loop
 @mock.patch.object(LCD, "lcd_out")
@@ -77,7 +81,7 @@ def test_AutomaticTitration(mock1, mock2):
     mock1.reset_called()
     assert(initialTitration.subState == 2)
 
-    initialTitration.handleKey(1)
+    initialTitration.handleKey("1")
 
     initialTitration.loop()
     mock1.assert_has_calls(
@@ -86,7 +90,7 @@ def test_AutomaticTitration(mock1, mock2):
     mock1.reset_called()    
     assert(initialTitration.subState == 3)
 
-    initialTitration.handleKey(1)
+    initialTitration.handleKey("1")
 
     initialTitration.loop()
     mock1.assert_has_calls(
@@ -102,5 +106,7 @@ def test_AutomaticTitration(mock1, mock2):
         mock.call("Exit: 1", line=3)])
     mock1.reset_called()
 
-    initialTitration.handleKey(0)
-    mock2.assert_called()
+    initialTitration.handleKey("0")
+    mock2.assert_called_with(ANY, True)
+    assert(mock2.call_args.args[0].name() == "MainMenu")
+    mock2.reset_mock()

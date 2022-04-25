@@ -1,5 +1,5 @@
 from titration.utils.UIState import UIState
-from titration.utils import interfaces, constants, LCD
+from titration.utils import constants, LCD
 
 class CalibrateTemp(UIState.UIState):
     def __init__(self, titrator, state):

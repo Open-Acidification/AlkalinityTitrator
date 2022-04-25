@@ -1,12 +1,15 @@
 from unittest import mock
+from unittest.mock import ANY
+from titration.utils.UIState.MainMenu import MainMenu
+from titration.utils.UIState.test_mode.TestMode import TestMode
 from titration.utils.titrator import Titrator
-from titration.utils import constants, interfaces, LCD
+from titration.utils import LCD
 from titration.utils.UIState.prime_pump.PrimePump import PrimePump
 
 # Test handleKey
 @mock.patch.object(PrimePump, "_setNextState")
 def test_handleKey(mock):
-    primePump = PrimePump(Titrator(), Titrator())
+    primePump = PrimePump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     primePump.handleKey(3)
     assert(primePump.values['selection'] == 3)
@@ -17,12 +20,14 @@ def test_handleKey(mock):
 
     primePump.handleKey(0)
     assert(primePump.values['selection'] == 0)
-    assert mock.called
+    mock.assert_called_with(ANY, True)
+    assert(mock.call_args.args[0].name() == "TestMode")
+    mock.reset_mock()
 
 # Test loop
 @mock.patch.object(LCD, "lcd_out")
 def test_loop(mock1):
-    primePump = PrimePump(Titrator(), Titrator())
+    primePump = PrimePump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     primePump.loop()
     mock1.assert_has_calls(
@@ -44,7 +49,7 @@ def test_loop(mock1):
 @mock.patch.object(PrimePump, "_setNextState")
 @mock.patch.object(LCD, "lcd_out")
 def test_PrimePump(mock1, mock2):
-    primePump = PrimePump(Titrator(), Titrator())
+    primePump = PrimePump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     primePump.loop()
     mock1.assert_has_calls(
@@ -77,4 +82,6 @@ def test_PrimePump(mock1, mock2):
 
     primePump.handleKey(0)
     assert(primePump.values['selection'] == 0)
-    assert mock2.called
+    mock2.assert_called_with(ANY, True)
+    assert(mock2.call_args.args[0].name() == "TestMode")
+    mock2.reset_mock()

@@ -1,20 +1,25 @@
 from unittest import mock
+from unittest.mock import ANY
+from titration.utils.UIState.MainMenu import MainMenu
 from titration.utils.titrator import Titrator
-from titration.utils import constants, interfaces, LCD
+from titration.utils import LCD, constants
 from titration.utils.UIState.test_mode.ReadVolume import ReadVolume
+from titration.utils.UIState.test_mode.TestMode import TestMode
 
 # Test handleKey
 @mock.patch.object(ReadVolume, "_setNextState")
 def test_handleKey(mock):
-    readVolume = ReadVolume(Titrator(), Titrator())
+    readVolume = ReadVolume(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
-    readVolume.handleKey(1)
-    assert mock.called
+    readVolume.handleKey("1")
+    mock.assert_called_with(ANY, True)
+    assert(mock.call_args.args[0].name() == "TestMode")
+    mock.reset_mock()
 
 # Test loop
 @mock.patch.object(LCD, 'lcd_out')
 def test_loop(mock1):
-    readVolume = ReadVolume(Titrator(), Titrator())
+    readVolume = ReadVolume(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     readVolume.loop()
     mock1.assert_has_calls(
@@ -31,7 +36,7 @@ def test_loop(mock1):
 @mock.patch.object(ReadVolume, "_setNextState")
 @mock.patch.object(LCD, 'lcd_out')
 def test_ReadVolume(mock1, mock2):
-    readVolume = ReadVolume(Titrator(), Titrator())
+    readVolume = ReadVolume(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     readVolume.loop()
     mock1.assert_has_calls(
@@ -44,5 +49,7 @@ def test_ReadVolume(mock1, mock2):
         mock.call("Press any to cont.", line=3)]
     )
 
-    readVolume.handleKey(1)
-    assert mock2.called
+    readVolume.handleKey("1")
+    mock2.assert_called_with(ANY, True)
+    assert(mock2.call_args.args[0].name() == "TestMode")
+    mock2.reset_mock()

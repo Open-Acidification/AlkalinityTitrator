@@ -1,20 +1,25 @@
 from unittest import mock
+from unittest.mock import ANY
+from titration.utils.UIState.MainMenu import MainMenu 
+from titration.utils.UIState.test_mode.TestMode import TestMode
 from titration.utils.titrator import Titrator
-from titration.utils import constants, interfaces, LCD
+from titration.utils import constants, LCD
 from titration.utils.UIState.test_mode.ToggleTestMode import ToggleTestMode
 
 # Test handleKey
 @mock.patch.object(ToggleTestMode, "_setNextState")
 def test_handleKey(mock):
-    toggleTestMode = ToggleTestMode(Titrator(), Titrator())
+    toggleTestMode = ToggleTestMode(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
-    toggleTestMode.handleKey(1)
-    assert mock.called
+    toggleTestMode.handleKey("1")
+    mock.assert_called_with(ANY, True)
+    assert(mock.call_args.args[0].name() == "TestMode")
+    mock.reset_mock()
 
 # Test loop
 @mock.patch.object(LCD, "lcd_out")
 def test_loop(mock1):
-    toggleTestMode = ToggleTestMode(Titrator(), Titrator())
+    toggleTestMode = ToggleTestMode(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     toggleTestMode.loop()
     mock1.assert_has_calls(
@@ -26,7 +31,7 @@ def test_loop(mock1):
 @mock.patch.object(ToggleTestMode, "_setNextState")
 @mock.patch.object(LCD, "lcd_out")
 def test_ToggleTestMode(mock1, mock2):
-    toggleTestMode = ToggleTestMode(Titrator(), Titrator())
+    toggleTestMode = ToggleTestMode(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     toggleTestMode.loop()
     mock1.assert_has_calls(
@@ -34,6 +39,8 @@ def test_ToggleTestMode(mock1, mock2):
         mock.call("Press any to cont.", line=3)]
     )
 
-    toggleTestMode.handleKey(1)
-    assert mock2.called
+    toggleTestMode.handleKey("1")
+    mock2.assert_called_with(ANY, True)
+    assert(mock2.call_args.args[0].name() == "TestMode")
+    mock2.reset_mock()
 

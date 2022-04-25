@@ -35,7 +35,7 @@ class InitialTitration(UIState.UIState):
             LCD.lcd_out("Heating to 30 C...", line=1)
             LCD.lcd_out("Please wait...", style=constants.LCD_CENT_JUST, line=3)
 
-            if self.value == 1 or self.value == constants.KEY_1:
+            if self.value == constants.KEY_1:
                 # Next state ManutalTitration
                 self._setNextState(ManualTitration(self.titrator), False)
             else:

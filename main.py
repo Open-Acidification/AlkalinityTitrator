@@ -9,6 +9,8 @@ if __name__ == "__main__":
         if "-test" in opts:
             print("Starting in Test Mode")
             constants.IS_TEST = True
+            import titration.utils.titration_old as titration_old
+            titration_old.run()
         elif "-dev" in opts:
             constants.IS_TEST = True
             import titration.utils.driver as driver
@@ -17,5 +19,5 @@ if __name__ == "__main__":
             raise SystemExit(f"Usage: {sys.argv[0]} (-test)")
     else:
         constants.IS_TEST = False
-    import titration.utils.titration_old as titration_old
-    titration_old.run()
+        import titration.utils.titration_old as titration_old
+        titration_old.run()

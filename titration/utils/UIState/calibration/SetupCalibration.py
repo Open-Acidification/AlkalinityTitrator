@@ -1,5 +1,5 @@
 from titration.utils.UIState import UIState
-from titration.utils import interfaces, constants, LCD
+from titration.utils import constants, LCD
 from titration.utils.UIState.calibration.CalibratePh import CalibratePh
 from titration.utils.UIState.calibration.CalibrateTemp import CalibrateTemp
 
@@ -15,15 +15,15 @@ class SetupCalibration(UIState.UIState):
 
     def handleKey(self, key):
         # Substate 1 key handle
-        if key == 1 or key == constants.KEY_1:
+        if key == constants.KEY_1:
             # calibrate pH
             self._setNextState(CalibratePh(self.titrator, self), True)
         
-        elif key == 2 or key == constants.KEY_2:
+        elif key == constants.KEY_2:
             # calibrate temp
             self._setNextState(CalibrateTemp(self.titrator, self), True)
 
-        elif key == 3 or key == constants.KEY_3:
+        elif key == constants.KEY_3:
             # return to main menu
             self._setNextState(self.previousState, True)
 

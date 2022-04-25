@@ -1,25 +1,30 @@
 from unittest import mock
+from unittest.mock import ANY
+from titration.utils.UIState.MainMenu import MainMenu
 from titration.utils.UIState.calibration.CalibratePh import CalibratePh
+from titration.utils.UIState.calibration.SetupCalibration import SetupCalibration
 from titration.utils.titrator import Titrator
-from titration.utils import constants, interfaces, LCD
+from titration.utils import constants, LCD
 
 # Test handleKey
 @mock.patch.object(CalibratePh, "_setNextState")
 def test_handleKey(mock):
-    calibratePh = CalibratePh(Titrator(), Titrator())
+    calibratePh = CalibratePh(Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator()))
 
     calibratePh.handleKey('a')
     assert not mock.called
     mock.reset_call()
 
     calibratePh.handleKey('a')
-    assert mock.called
+    mock.assert_called_with(ANY, True)
+    assert(mock.call_args.args[0].name() == "SetupCalibration")
+    mock.reset_mock()
 
 # Test loop
 @mock.patch.object(LCD, "read_user_value", return_value=5.5)
 @mock.patch.object(LCD, 'lcd_out')
 def test_loop(mock1, mock2):
-    calibratePh = CalibratePh(Titrator(), Titrator())
+    calibratePh = CalibratePh(Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator()))
 
     calibratePh.loop()
     mock1.assert_has_calls(
@@ -47,7 +52,7 @@ def test_loop(mock1, mock2):
 @mock.patch.object(LCD, "read_user_value", return_value=5.5)
 @mock.patch.object(LCD, 'lcd_out')
 def test_CalibratePh(mock1, mock2, mock3):
-    calibratePh = CalibratePh(Titrator(), Titrator())
+    calibratePh = CalibratePh(Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator()))
 
     calibratePh.loop()
     mock1.assert_has_calls(
@@ -59,7 +64,7 @@ def test_CalibratePh(mock1, mock2, mock3):
     mock1.reset_called()
     assert(calibratePh.values['buffer1_actual_pH'] == 5.5)
 
-    calibratePh.handleKey(1)
+    calibratePh.handleKey("1")
     assert(calibratePh.subState == 2)
 
     calibratePh.loop()
@@ -75,4 +80,6 @@ def test_CalibratePh(mock1, mock2, mock3):
     )
 
     calibratePh.handleKey('a')
-    assert mock3.called
+    mock3.assert_called_with(ANY, True)
+    assert(mock3.call_args.args[0].name() == "SetupCalibration")
+    mock3.reset_mock()

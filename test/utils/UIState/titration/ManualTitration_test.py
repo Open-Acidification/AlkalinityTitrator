@@ -1,34 +1,37 @@
 from unittest import mock
+from unittest.mock import ANY
 from titration.utils.UIState.titration.ManualTitration import ManualTitration
 from titration.utils.titrator import Titrator
-from titration.utils import constants, interfaces, LCD
+from titration.utils import LCD
 
 # Test handleKey
 @mock.patch.object(ManualTitration, "_setNextState")
 def test_handleKey(mock):
     manualTitration = ManualTitration(Titrator())
 
-    manualTitration.handleKey(5)
-    assert(manualTitration.values['p_direction'] == 5)
+    manualTitration.handleKey("5")
+    assert(manualTitration.values['p_direction'] == "5")
     assert(manualTitration.subState == 2)
 
-    manualTitration.handleKey(1)
+    manualTitration.handleKey("1")
     assert(manualTitration.subState == 1)
 
-    manualTitration.handleKey(6)
-    assert(manualTitration.values['p_direction'] == 6)
+    manualTitration.handleKey("6")
+    assert(manualTitration.values['p_direction'] == "6")
 
-    manualTitration.handleKey(2)
+    manualTitration.handleKey("2")
     assert(manualTitration.subState == 3)
 
-    manualTitration.handleKey(1)
+    manualTitration.handleKey("1")
     assert(manualTitration.subState == 4)
 
-    manualTitration.handleKey(1)
+    manualTitration.handleKey("1")
     assert(manualTitration.subState == 5)
 
-    manualTitration.handleKey(0)
-    mock.assert_called()
+    manualTitration.handleKey("0")
+    mock.assert_called_with(ANY, True)
+    assert(mock.call_args.args[0].name() == "MainMenu")
+    mock.reset_mock()
 
 # Test loop
 @mock.patch.object(LCD, "read_user_value", return_value=5.5)
@@ -87,8 +90,8 @@ def test_ManualTitration(mock1, mock2, mock3):
     ])
     mock1.reset_mock()
 
-    manualTitration.handleKey(1)
-    assert(manualTitration.values['p_direction'] == 1)
+    manualTitration.handleKey("1")
+    assert(manualTitration.values['p_direction'] == "1")
     assert(manualTitration.subState == 2)
 
     manualTitration.loop()
@@ -100,7 +103,7 @@ def test_ManualTitration(mock1, mock2, mock3):
     ])
     mock1.reset_mock()
 
-    manualTitration.handleKey(2)
+    manualTitration.handleKey("2")
     assert(manualTitration.subState == 3)
 
     manualTitration.loop()
@@ -111,13 +114,13 @@ def test_ManualTitration(mock1, mock2, mock3):
     )
     mock1.reset_mock()
 
-    manualTitration.handleKey(1)
+    manualTitration.handleKey("1")
     assert(manualTitration.subState == 4)
     
     manualTitration.loop()
     assert(manualTitration.values['degas_time'] == 5.5)
 
-    manualTitration.handleKey(1)
+    manualTitration.handleKey("1")
     assert(manualTitration.subState == 5)
 
     manualTitration.loop()
@@ -127,5 +130,7 @@ def test_ManualTitration(mock1, mock2, mock3):
         mock.call("Exit: 1", line=3)]
     )
 
-    manualTitration.handleKey(0)
-    mock3.assert_called()
+    manualTitration.handleKey("0")
+    mock3.assert_called_with(ANY, True)
+    assert(mock3.call_args.args[0].name() == "MainMenu")
+    mock3.reset_mock()

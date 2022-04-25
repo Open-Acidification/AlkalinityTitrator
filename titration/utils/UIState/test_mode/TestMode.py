@@ -1,6 +1,5 @@
-from sre_parse import State
 from titration.utils.UIState import UIState
-from titration.utils import interfaces, constants, LCD
+from titration.utils import constants, LCD
 from titration.utils.UIState.test_mode.Pump import Pump
 from titration.utils.UIState.test_mode.ReadValues import ReadValues
 from titration.utils.UIState.test_mode.ReadVolume import ReadVolume
@@ -20,29 +19,29 @@ class TestMode(UIState.UIState):
 
     def handleKey(self, key):
         if self.subState == 1:
-            if key == '*' or key == constants.KEY_STAR:
+            if key == constants.KEY_STAR:
                 self.subState += 1
 
-            elif key == 1 or key == constants.KEY_1:
+            elif key == constants.KEY_1:
                 self._setNextState(ReadValues(self.titrator, self), True)
 
-            elif key == 2 or key == constants.KEY_2:
+            elif key == constants.KEY_2:
                 self._setNextState(Pump(self.titrator, self), True)
             
-            elif key == 3 or key == constants.KEY_3:
+            elif key == constants.KEY_3:
                 self._setNextState(SetVolume(self.titrator, self), True)
 
         elif self.subState == 2:
-            if key == '*' or key == constants.KEY_STAR:
+            if key == constants.KEY_STAR:
                 self.subState -= 1
 
-            elif key == 4 or key == constants.KEY_4:
+            elif key == constants.KEY_4:
                 self._setNextState(ToggleTestMode(self.titrator, self), True)
 
-            elif key == 5 or key == constants.KEY_5:
+            elif key == constants.KEY_5:
                 self._setNextState(ReadVolume(self.titrator, self), True)
             
-            elif key == 6 or key == constants.KEY_6:
+            elif key == constants.KEY_6:
                 self._setNextState(self.previousState, True)
 
     def loop(self):

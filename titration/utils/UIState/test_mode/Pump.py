@@ -1,7 +1,5 @@
-from pickletools import int4
-from sre_parse import State
 from titration.utils.UIState import UIState
-from titration.utils import interfaces, constants, LCD
+from titration.utils import constants, LCD
 
 class Pump(UIState.UIState):
     def __init__(self, titrator, state):
@@ -16,7 +14,7 @@ class Pump(UIState.UIState):
 
     def handleKey(self, key):
         if self.subState == 1:
-            if key == 0 or key == constants.KEY_0 or key == 1 or key == constants.KEY_1:
+            if key == constants.KEY_0 or key == constants.KEY_1:
                 self.values['p_direction'] = key
                 self.subState += 1
         

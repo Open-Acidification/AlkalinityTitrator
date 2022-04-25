@@ -1,22 +1,26 @@
-from asyncore import read
 from unittest import mock
+from unittest.mock import ANY
+from titration.utils.UIState.MainMenu import MainMenu
+from titration.utils.UIState.test_mode.TestMode import TestMode
 from titration.utils.titrator import Titrator
-from titration.utils import constants, interfaces, LCD
+from titration.utils import interfaces, LCD
 from titration.utils.UIState.test_mode.ReadValues import ReadValues
 
 # Test handleKey
 @mock.patch.object(ReadValues, "_setNextState")
 def test_handleKey(mock):
-    readValues = ReadValues(Titrator(), Titrator())
+    readValues = ReadValues(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
-    readValues.handleKey(1)
-    assert mock.called
+    readValues.handleKey("1")
+    mock.assert_called_with(ANY, True)
+    assert(mock.call_args.args[0].name() == "TestMode")
+    mock.reset_mock()
 
 # Test loop
 @mock.patch.object(LCD, 'lcd_out')
 @mock.patch.object(interfaces, 'delay')
 def test_loop(mock1, mock2):
-    readValues = ReadValues(Titrator(), Titrator())
+    readValues = ReadValues(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     readValues.loop()
     assert mock1.called_with(readValues.values['timeStep'])
@@ -38,7 +42,7 @@ def test_loop(mock1, mock2):
 @mock.patch.object(LCD, 'lcd_out')
 @mock.patch.object(interfaces, 'delay')
 def test_ReadValues(mock1, mock2, mock3):
-    readValues = ReadValues(Titrator(), Titrator())
+    readValues = ReadValues(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     readValues.loop()
     assert mock1.called_with(readValues.values['timeStep'])
@@ -55,5 +59,7 @@ def test_ReadValues(mock1, mock2, mock3):
         [mock.call("Press any to cont.", line=1)]
     )
 
-    readValues.handleKey(1)
-    assert mock3.called
+    readValues.handleKey("1")
+    mock3.assert_called_with(ANY, True)
+    assert(mock3.call_args.args[0].name() == "TestMode")
+    mock3.reset_mock()
