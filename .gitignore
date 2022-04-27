@@ -130,6 +130,7 @@ dmypy.json
 
 
 # Titrator specific files
+test/.DS_Store
 .DS_Store
 .vscode/
 *.pyc
