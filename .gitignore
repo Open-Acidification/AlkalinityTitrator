@@ -130,7 +130,6 @@ dmypy.json
 
 
 # Titrator specific files
-test/.DS_Store
 .DS_Store
 .vscode/
 *.pyc
@@ -139,4 +138,4 @@ test/.DS_Store
 *.csv
 *.xlsx
 super-linter.log
-data\calibration.json
+data/calibration.json
