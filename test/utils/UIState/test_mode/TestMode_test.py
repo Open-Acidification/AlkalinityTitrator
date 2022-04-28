@@ -117,4 +117,3 @@ def test_TestMode(mock1, mock2):
     testMode.handleKey("6")
     mock2.assert_called_with(ANY, True)
     assert(mock2.call_args.args[0].name() == "MainMenu")
-    mock2.reset_mock()

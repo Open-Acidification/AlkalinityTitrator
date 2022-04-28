@@ -9,9 +9,8 @@ from titration.utils import constants, LCD
 def test_handleKey(mock):
     initialTitration = InitialTitration(Titrator())
 
-    key_input = 'a'
-    initialTitration.handleKey(key_input)
-    assert(initialTitration.value == 'a')
+    initialTitration.handleKey("1")
+    assert(initialTitration.value == "1")
     assert(initialTitration.subState == 2)
 
 # Test loop
@@ -52,7 +51,6 @@ def test_loop(mock1, mock2):
     mock1.reset_called()
     mock2.assert_called_with(ANY, False)
     assert(mock2.call_args.args[0].name() == "ManualTitration")
-    mock2.reset_mock()
 
 @mock.patch.object(InitialTitration, "_setNextState")
 @mock.patch.object(LCD, "lcd_out")
@@ -96,4 +94,3 @@ def test_InitialTitration(mock1, mock2):
     mock1.reset_called()
     mock2.assert_called_with(ANY, False)
     assert(mock2.call_args.args[0].name() == "AutomaticTitration")
-    mock2.reset_mock()

@@ -11,14 +11,12 @@ from titration.utils import constants, LCD
 def test_handleKey(mock):
     calibratePh = CalibratePh(Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator()))
 
-    calibratePh.handleKey('a')
-    assert not mock.called
-    mock.reset_call()
+    calibratePh.handleKey("1")
+    assert(calibratePh.subState == 2)
 
-    calibratePh.handleKey('a')
+    calibratePh.handleKey("a")
     mock.assert_called_with(ANY, True)
     assert(mock.call_args.args[0].name() == "SetupCalibration")
-    mock.reset_mock()
 
 # Test loop
 @mock.patch.object(LCD, "read_user_value", return_value=5.5)
@@ -35,6 +33,8 @@ def test_loop(mock1, mock2):
     )
     mock1.reset_called()
     assert(calibratePh.values['buffer1_actual_pH'] == 5.5)
+    assert mock2.called_with("Enter buffer pH:")
+    mock2.reset_called()
 
     calibratePh.subState += 1
     calibratePh.loop()
@@ -63,6 +63,8 @@ def test_CalibratePh(mock1, mock2, mock3):
     )
     mock1.reset_called()
     assert(calibratePh.values['buffer1_actual_pH'] == 5.5)
+    assert mock2.called_with("Enter buffer pH:")
+    mock2.reset_called()
 
     calibratePh.handleKey("1")
     assert(calibratePh.subState == 2)
@@ -79,7 +81,6 @@ def test_CalibratePh(mock1, mock2, mock3):
         mock.call("to continue", style=constants.LCD_CENT_JUST, line=4)]
     )
 
-    calibratePh.handleKey('a')
+    calibratePh.handleKey("a")
     mock3.assert_called_with(ANY, True)
     assert(mock3.call_args.args[0].name() == "SetupCalibration")
-    mock3.reset_mock()

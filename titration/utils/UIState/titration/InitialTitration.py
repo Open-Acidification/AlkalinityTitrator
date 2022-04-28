@@ -51,4 +51,3 @@ class InitialTitration(UIState.UIState):
                     line=2,
                 )
                 break                               # TODO: fix mock temperature controller
-

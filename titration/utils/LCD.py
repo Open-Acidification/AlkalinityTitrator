@@ -213,4 +213,3 @@ def display_list(dict_to_display):
     # Original method, slow due to screen scrolling
     # for key, value in list_to_display.items():
     #   lcd_out(str(key) + '. ' + value)
-

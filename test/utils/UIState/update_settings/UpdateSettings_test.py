@@ -10,26 +10,26 @@ from titration.utils import LCD
 def test_handleKey(mock):
     updateSettings = UpdateSettings(Titrator(), MainMenu(Titrator()))
 
-    updateSettings.handleKey('y')
+    updateSettings.handleKey("y")
     assert(updateSettings.subState == 2)
 
-    updateSettings.handleKey('a')
+    updateSettings.handleKey("1")
     assert(updateSettings.subState == 3)
 
-    updateSettings.handleKey('y')
+    updateSettings.handleKey("y")
     assert(updateSettings.subState == 4)
 
-    updateSettings.handleKey('a')
+    updateSettings.handleKey("1")
     mock.assert_called_with(ANY, True)
     assert(mock.call_args.args[0].name() == "MainMenu")
     mock.reset_mock()
 
     updateSettings = UpdateSettings(Titrator(), MainMenu(Titrator()))
 
-    updateSettings.handleKey('n')
+    updateSettings.handleKey("n")
     assert(updateSettings.subState == 3)
 
-    updateSettings.handleKey('n')
+    updateSettings.handleKey("n")
     mock.assert_called_with(ANY, True)
     assert(mock.call_args.args[0].name() == "MainMenu")
 
@@ -66,6 +66,8 @@ def test_loop(mock1, mock2):
 
     updateSettings.subState += 1
     updateSettings.loop()
+    mock2.assert_called_with("Volume in pump: ")
+    mock2.reset_called()
     assert(updateSettings.values['vol_in_pump'] == 5.5)
 
     updateSettings.subState += 1
@@ -90,7 +92,7 @@ def test_PrimePump(mock1, mock2, mock3):
     ])
     mock1.reset_called()
 
-    updateSettings.handleKey('y')
+    updateSettings.handleKey("y")
     assert(updateSettings.subState == 2)
 
     updateSettings.loop()
@@ -101,7 +103,7 @@ def test_PrimePump(mock1, mock2, mock3):
     ])
     mock1.reset_called()
 
-    updateSettings.handleKey('a')
+    updateSettings.handleKey("1")
     assert(updateSettings.subState == 3)
 
     updateSettings.loop()
@@ -111,10 +113,12 @@ def test_PrimePump(mock1, mock2, mock3):
     ])
     mock1.reset_called()
 
-    updateSettings.handleKey('y')
+    updateSettings.handleKey("y")
     assert(updateSettings.subState == 4)
 
     updateSettings.loop()
+    mock3.assert_called_with("Volume in pump: ")
+    mock3.reset_called()
     assert(updateSettings.values['vol_in_pump'] == 5.5)
 
     mock1.assert_has_calls(
@@ -122,7 +126,6 @@ def test_PrimePump(mock1, mock2, mock3):
         mock.call("Press any to cont.", line=3)
     ])
 
-    updateSettings.handleKey('a')
+    updateSettings.handleKey("1")
     mock2.assert_called_with(ANY, True)
     assert(mock2.call_args.args[0].name() == "MainMenu")
-    mock2.reset_mock()

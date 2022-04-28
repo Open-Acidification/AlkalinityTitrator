@@ -41,6 +41,8 @@ def test_loop(mock1, mock2):
 
     manualTitration.loop()
     assert(manualTitration.values['p_volume'] == 5.5)
+    mock2.assert_called_with("Volume: ")
+    mock2.reset_called()
     mock1.assert_has_calls(
         [mock.call("Direction (0/1): ", line=1)
     ])
@@ -67,6 +69,8 @@ def test_loop(mock1, mock2):
     manualTitration.subState += 1
     manualTitration.values['user_choice'] = 1
     manualTitration.loop()
+    mock2.assert_called_with("Degas time (s):")
+    mock2.reset_called()
     assert(manualTitration.values['degas_time'] == 5.5)
 
     manualTitration.subState += 1
@@ -85,6 +89,8 @@ def test_ManualTitration(mock1, mock2, mock3):
 
     manualTitration.loop()
     assert(manualTitration.values['p_volume'] == 5.5)
+    mock2.assert_called_with("Volume: ")
+    mock2.reset_called()
     mock1.assert_has_calls(
         [mock.call("Direction (0/1): ", line=1)
     ])
@@ -118,6 +124,8 @@ def test_ManualTitration(mock1, mock2, mock3):
     assert(manualTitration.subState == 4)
     
     manualTitration.loop()
+    mock2.assert_called_with("Degas time (s):")
+    mock2.reset_called()
     assert(manualTitration.values['degas_time'] == 5.5)
 
     manualTitration.handleKey("1")
@@ -133,4 +141,3 @@ def test_ManualTitration(mock1, mock2, mock3):
     manualTitration.handleKey("0")
     mock3.assert_called_with(ANY, True)
     assert(mock3.call_args.args[0].name() == "MainMenu")
-    mock3.reset_mock()

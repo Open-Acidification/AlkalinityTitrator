@@ -20,17 +20,6 @@ def test_handleKey(mock):
     assert(mock.call_args.args[0].name() == "TestMode")
     mock.reset_mock()
 
-    pump = Pump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
-
-    pump.handleKey("1")
-    assert(pump.values['p_direction'] == "1")
-    assert(pump.subState == 2)
-
-    pump.handleKey("0")
-    mock.assert_called_with(ANY, True)
-    assert(mock.call_args.args[0].name() == "TestMode")
-    mock.reset_mock()
-
 # Test loop
 @mock.patch.object(LCD, 'lcd_out')
 @mock.patch.object(LCD, 'read_user_value', return_value=5.5)
@@ -39,6 +28,8 @@ def test_loop(mock1, mock2):
 
     pump.loop()
     assert(pump.values['p_volume'] == 5.5)
+    assert mock1.called_with("Volume: ")
+    mock1.reset_called()
     mock2.assert_has_calls(
         [mock.call("In/Out (0/1):", line=1)]
     )
@@ -60,6 +51,8 @@ def test_Pump(mock1, mock2, mock3):
 
     pump.loop()
     assert(pump.values['p_volume'] == 5.5)
+    assert mock1.called_with("Volume: ")
+    mock1.reset_called()
     mock2.assert_has_calls(
         [mock.call("In/Out (0/1):", line=1)]
     )

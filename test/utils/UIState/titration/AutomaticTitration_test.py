@@ -9,19 +9,7 @@ from titration.utils import constants, LCD
 def test_handleKey(mock):
     initialTitration = AutomaticTitration(Titrator())
 
-    initialTitration.handleKey("1")
-    assert not mock.called
-    mock.reset_mock()
-
-    initialTitration.subState += 1
-    initialTitration.handleKey("1")
-    assert not mock.called
-
-    initialTitration.subState += 1
-    initialTitration.handleKey("1")
-    assert not mock.called
-
-    initialTitration.subState += 1
+    initialTitration.subState += 3
     
     initialTitration.handleKey("0")
     mock.assert_called_with(ANY, True)
@@ -63,7 +51,6 @@ def test_loop(mock1):
         [mock.call("Return to", line=1),
         mock.call("main menu: 0", line=2),
         mock.call("Exit: 1", line=3)])
-    mock1.reset_called()
 
 @mock.patch.object(AutomaticTitration, "_setNextState")
 @mock.patch.object(LCD, "lcd_out")
@@ -109,4 +96,3 @@ def test_AutomaticTitration(mock1, mock2):
     initialTitration.handleKey("0")
     mock2.assert_called_with(ANY, True)
     assert(mock2.call_args.args[0].name() == "MainMenu")
-    mock2.reset_mock()

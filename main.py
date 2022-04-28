@@ -16,7 +16,7 @@ if __name__ == "__main__":
             import titration.utils.driver as driver
             driver.run()
         else:
-            raise SystemExit(f"Usage: {sys.argv[0]} (-test)")
+            raise SystemExit(f"Usage: {sys.argv[0]} [-test | -dev]")
     else:
         constants.IS_TEST = False
         import titration.utils.titration_old as titration_old

@@ -14,12 +14,9 @@ def test_handleKey(mock):
     assert(mock.call_args.args[0].name() == "CalibratePh")
     mock.reset_mock()
 
-    setupTitration = SetupTitration(Titrator())
-
     setupTitration.handleKey("0")
     mock.assert_called_with(ANY, True)
     assert(mock.call_args.args[0].name() == "InitialTitration")
-    mock.reset_mock()
 
 # Test loop
 @mock.patch.object(LCD, "read_user_value",  return_value=5.5)
@@ -30,6 +27,10 @@ def test_loop(mock1, mock2):
     setupTitration.loop()
     assert(setupTitration.values[0] == 5.5)
     assert(setupTitration.values[1] == 5.5)
+    mock2.assert_has_calls([mock.call('Sol. weight (g):'),
+        mock.call('Sol. salinity (ppt):')])
+    mock2.reset_called()
+
     mock1.assert_has_calls(
         [mock.call("Calibrate pH probe?", line=1), 
         mock.call("Yes: 1", line=2),
@@ -46,6 +47,10 @@ def test_SetupTitration(mock1, mock2, mock3):
     setupTitration.loop()
     assert(setupTitration.values[0] == 5.5)
     assert(setupTitration.values[1] == 5.5)
+    mock2.assert_has_calls([mock.call('Sol. weight (g):'),
+        mock.call('Sol. salinity (ppt):')])
+    mock2.reset_called()
+    
     mock1.assert_has_calls(
         [mock.call("Calibrate pH probe?", line=1), 
         mock.call("Yes: 1", line=2),
@@ -56,4 +61,3 @@ def test_SetupTitration(mock1, mock2, mock3):
     setupTitration.handleKey("1")
     mock3.assert_called_with(ANY, True)
     assert(mock3.call_args.args[0].name() == "CalibratePh")
-    mock3.reset_mock()

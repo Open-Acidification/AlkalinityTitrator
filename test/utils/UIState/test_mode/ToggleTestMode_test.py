@@ -43,4 +43,3 @@ def test_ToggleTestMode(mock1, mock2):
     mock2.assert_called_with(ANY, True)
     assert(mock2.call_args.args[0].name() == "TestMode")
     mock2.reset_mock()
-

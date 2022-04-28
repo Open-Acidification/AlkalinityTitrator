@@ -16,7 +16,7 @@ class PrimePump(UIState.UIState):
         # Substate 1 key handle
         if self.subState == 1:
             try:
-                self.values['selection'] = int(key)
+                self.values['selection'] = key
                 self.subState += 1
             except:
                 pass
@@ -24,12 +24,12 @@ class PrimePump(UIState.UIState):
         # Substate 2 key handle
         elif self.subState == 2:
             try:
-                self.values['selection'] = int(key)
+                self.values['selection'] = key
             except:
                 pass
         
         # Substate 1 and 2; check if selection is 0
-        if self.values['selection'] == 0:
+        if self.values['selection'] == "0":
             self._setNextState(self.previousState, True)
 
     def loop(self):

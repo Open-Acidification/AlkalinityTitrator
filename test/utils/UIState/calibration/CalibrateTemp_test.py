@@ -20,7 +20,6 @@ def test_handleKey(mock):
     calibrateTemp.handleKey("1")
     mock.assert_called_with(ANY, True)
     assert(mock.call_args.args[0].name() == "SetupCalibration")
-    mock.reset_mock()
 
 # Test loop
 @mock.patch.object(LCD, "lcd_out")
@@ -29,7 +28,9 @@ def test_loop(mock1, mock2):
     calibrateTemp = CalibrateTemp(Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator()))
 
     calibrateTemp.loop()
+    assert mock1.called_with("Ref solution temp?")
     assert(calibrateTemp.values['expected_temperature'] == 5.5)
+    mock1.reset_called()
 
     calibrateTemp.subState += 1 
     calibrateTemp.loop()
@@ -57,7 +58,9 @@ def test_CalibrateTemp(mock1, mock2, mock3):
     calibrateTemp = CalibrateTemp(Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator()))
 
     calibrateTemp.loop()
+    assert mock1.called_with("Ref solution temp?")
     assert(calibrateTemp.values['expected_temperature'] == 5.5)
+    mock1.reset_called()
 
     calibrateTemp.handleKey("1")
     assert(calibrateTemp.subState == 2)
@@ -70,7 +73,6 @@ def test_CalibrateTemp(mock1, mock2, mock3):
         mock.call("record value", style=constants.LCD_CENT_JUST, line=4)]
     )
     mock2.reset_called()
-    mock2.reset_mock()
 
     calibrateTemp.handleKey("1")
     assert(calibrateTemp.subState == 3)
@@ -85,4 +87,3 @@ def test_CalibrateTemp(mock1, mock2, mock3):
     calibrateTemp.handleKey("1")
     mock3.assert_called_with(ANY, True)
     assert(mock3.call_args.args[0].name() == "SetupCalibration")
-    mock3.reset_mock()

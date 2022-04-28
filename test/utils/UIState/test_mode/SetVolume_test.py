@@ -25,6 +25,7 @@ def test_loop(mock1, mock2):
     mock2.assert_has_calls(
         [mock.call("Press any to cont.", line=1)]
     )
+    mock1.assert_called_with("Volume in pump: ")
     assert(setVolume.values['new_volume'] == 5.5)
 
 # Test SetVolume
@@ -38,6 +39,8 @@ def test_SetVolume(mock1, mock2, mock3):
     mock3.assert_has_calls(
         [mock.call("Press any to cont.", line=1)]
     )
+    mock1.assert_called_with("Volume in pump: ")
+    mock1.reset_called()
     assert(setVolume.values['new_volume'] == 5.5)
 
     setVolume.handleKey("1")

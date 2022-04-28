@@ -9,10 +9,10 @@ from titration.utils import constants, LCD
 def test_handleKey(mock):
     calibratePh = CalibratePh(Titrator())
 
-    calibratePh.handleKey(1)
+    calibratePh.handleKey("1")
     assert(calibratePh.subState == 2)
 
-    calibratePh.handleKey('a')
+    calibratePh.handleKey("a")
     mock.assert_called_with(ANY, True)
     assert(mock.call_args.args[0].name() == "InitialTitration")
     mock.reset_mock()
@@ -31,7 +31,9 @@ def test_loop(mock1, mock2):
         mock.call("to record value", style=constants.LCD_CENT_JUST, line=4)]
     )
     mock2.reset_called()
+    mock1.assert_called_with("Enter buffer pH:")
     assert(calibratePh.values['buffer1_actual_pH'] == 5.5)
+    mock1.reset_called()
 
     calibratePh.subState += 1
     calibratePh.loop()
@@ -59,9 +61,11 @@ def test_CalibratePh(mock1, mock2, mock3):
         mock.call("to record value", style=constants.LCD_CENT_JUST, line=4)]
     )
     mock1.reset_called()
+    mock2.assert_called_with("Enter buffer pH:")
     assert(calibratePh.values['buffer1_actual_pH'] == 5.5)
+    mock2.reset_called()
 
-    calibratePh.handleKey(1)
+    calibratePh.handleKey("1")
     assert(calibratePh.subState == 2)
 
     calibratePh.loop()
@@ -78,5 +82,4 @@ def test_CalibratePh(mock1, mock2, mock3):
     calibratePh.handleKey('a')
     mock3.assert_called_with(ANY, True)
     assert(mock3.call_args.args[0].name() == "InitialTitration")
-    mock3.reset_mock()
     
