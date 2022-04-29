@@ -56,12 +56,8 @@ class Titrator:
     def _handleUI(self):
         print("Titrator::handleUI() - ", self.state.name())
         key = self.keypad.get_key()
-        if (key == constants.NO_KEY): # TODO: key !=
-            if (self.nextState):
-                pass
-        else:
-            print("Titrator::handleUI() - ", self.state.name(), "::handleKey(", key, ")")
-            self.state.handleKey(key)
+        print("Titrator::handleUI() - ", self.state.name(), "::handleKey(", key, ")")
+        self.state.handleKey(key)
         self._updateState()
         print("Titrator::handleUI() - ", self.state.name(), "::substate", self.state.subState, "::loop()")
         self.state.loop()
