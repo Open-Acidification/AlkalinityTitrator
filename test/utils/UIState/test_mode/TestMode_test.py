@@ -2,7 +2,7 @@ from unittest import mock
 from unittest.mock import ANY
 from titration.utils.UIState.MainMenu import MainMenu
 from titration.utils.titrator import Titrator
-from titration.utils import constants, LCD
+from titration.utils import LCD_interface, constants
 from titration.utils.UIState.test_mode.TestMode import TestMode
 
 # Test handleKey
@@ -47,7 +47,7 @@ def test_handleKey(mock):
     assert(testMode.subState == 1)
 
 # Test loop
-@mock.patch.object(LCD, "display_list")
+@mock.patch.object(LCD_interface, "display_list")
 def test_loop(mock):
     testMode = TestMode(Titrator(), MainMenu(Titrator()))
 
@@ -61,7 +61,7 @@ def test_loop(mock):
 
 # Test TestMode
 @mock.patch.object(TestMode, "_setNextState")
-@mock.patch.object(LCD, "display_list")
+@mock.patch.object(LCD_interface, "display_list")
 def test_TestMode(mock1, mock2):
     testMode = TestMode(Titrator(), MainMenu(Titrator()))
 

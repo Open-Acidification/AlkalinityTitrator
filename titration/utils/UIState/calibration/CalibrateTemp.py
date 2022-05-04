@@ -1,5 +1,5 @@
 from titration.utils.UIState import UIState
-from titration.utils import constants, LCD
+from titration.utils import LCD_interface, constants
 
 class CalibrateTemp(UIState.UIState):
     def __init__(self, titrator, state):
@@ -30,19 +30,19 @@ class CalibrateTemp(UIState.UIState):
     def loop(self):
         # Substate 1 output and input
         if self.subState == 1:
-            self.values['expected_temperature'] = LCD.read_user_value("Ref solution temp?")
+            self.values['expected_temperature'] = LCD_interface.read_user_value("Ref solution temp?")
         
         # Substate 2 output
         elif self.subState == 2:
-            LCD.lcd_out("Put probe in sol", style=constants.LCD_CENT_JUST, line=1)
-            LCD.lcd_out("", line=2)
-            LCD.lcd_out("Press 1 to", style=constants.LCD_CENT_JUST, line=3)
-            LCD.lcd_out("record value", style=constants.LCD_CENT_JUST, line=4)
+            LCD_interface.lcd_out("Put probe in sol", style=constants.LCD_CENT_JUST, line=1)
+            LCD_interface.lcd_out("", line=2)
+            LCD_interface.lcd_out("Press 1 to", style=constants.LCD_CENT_JUST, line=3)
+            LCD_interface.lcd_out("record value", style=constants.LCD_CENT_JUST, line=4)
 
         # Substate 3 output
         elif self.subState == 3:
-            LCD.lcd_clear()
-            LCD.lcd_out("Recorded temp:", line=1)
-            LCD.lcd_out("{0:0.3f}".format(self.values['actual_temperature']), line=2)
+            LCD_interface.lcd_clear()
+            LCD_interface.lcd_out("Recorded temp:", line=1)
+            LCD_interface.lcd_out("{0:0.3f}".format(self.values['actual_temperature']), line=2)
             # reinitialize sensors with calibrated values
-            LCD.lcd_out("{}".format(self.values['new_ref_resistance']), line=3)
+            LCD_interface.lcd_out("{}".format(self.values['new_ref_resistance']), line=3)

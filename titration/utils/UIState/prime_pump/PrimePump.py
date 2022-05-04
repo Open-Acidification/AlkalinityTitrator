@@ -1,5 +1,5 @@
 from titration.utils.UIState import UIState
-from titration.utils import LCD
+from titration.utils import LCD_interface
 
 class PrimePump(UIState.UIState):
     def __init__(self, titrator, state):
@@ -15,18 +15,12 @@ class PrimePump(UIState.UIState):
     def handleKey(self, key):
         # Substate 1 key handle
         if self.subState == 1:
-            try:
-                self.values['selection'] = key
-                self.subState += 1
-            except:
-                pass
+            self.values['selection'] = key
+            self.subState += 1
         
         # Substate 2 key handle
         elif self.subState == 2:
-            try:
-                self.values['selection'] = key
-            except:
-                pass
+            self.values['selection'] = key
         
         # Substate 1 and 2; check if selection is 0
         if self.values['selection'] == "0":
@@ -35,13 +29,13 @@ class PrimePump(UIState.UIState):
     def loop(self):
         # Substate 1 output
         if self.subState == 1:
-            LCD.lcd_clear()
-            LCD.lcd_out("How many pumps?", line=1)
-            LCD.lcd_out("Choose a number", line=2)
-            LCD.lcd_out("Choose 0 to return", line=3)
+            LCD_interface.lcd_clear()
+            LCD_interface.lcd_out("How many pumps?", line=1)
+            LCD_interface.lcd_out("Choose a number", line=2)
+            LCD_interface.lcd_out("Choose 0 to return", line=3)
 
         # Substate 2 output
         elif self.subState == 2:
-            LCD.lcd_out("How many more?", line=1)
-            LCD.lcd_out("Choose a number", line=2)
-            LCD.lcd_out("Choose 0 to return", line=3)
+            LCD_interface.lcd_out("How many more?", line=1)
+            LCD_interface.lcd_out("Choose a number", line=2)
+            LCD_interface.lcd_out("Choose 0 to return", line=3)

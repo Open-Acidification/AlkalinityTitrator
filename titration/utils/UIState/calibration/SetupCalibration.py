@@ -1,5 +1,5 @@
 from titration.utils.UIState import UIState
-from titration.utils import constants, LCD
+from titration.utils import LCD_interface, constants
 from titration.utils.UIState.calibration.CalibratePh import CalibratePh
 from titration.utils.UIState.calibration.CalibrateTemp import CalibrateTemp
 
@@ -29,5 +29,5 @@ class SetupCalibration(UIState.UIState):
 
     def loop(self):
         # Substate 1 output
-        LCD.display_list(constants.SENSOR_OPTIONS)
-        LCD.lcd_out("3. Return", line=3)
+        LCD_interface.display_list(constants.SENSOR_OPTIONS)
+        LCD_interface.lcd_out("3. Return", line=3)

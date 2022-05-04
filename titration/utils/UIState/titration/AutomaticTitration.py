@@ -1,5 +1,5 @@
 from titration.utils.UIState import UIState
-from titration.utils import constants, LCD
+from titration.utils import LCD_interface, constants
 from titration.utils.UIState import MainMenu
 
 class AutomaticTitration(UIState.UIState):
@@ -17,15 +17,13 @@ class AutomaticTitration(UIState.UIState):
         if self.subState == 4:
             if key == constants.KEY_0:
                 self._setNextState(MainMenu.MainMenu(self.titrator), True)
-                pass
             elif key == constants.KEY_1:
                 quit()
-
 
     def loop(self):
         # Substate 1 output
         if self.subState == 1:
-            LCD.lcd_out(
+            LCD_interface.lcd_out(
                 "Titrating to {} pH".format(str(self.values['pH_target'])),   # TODO: Change pH_target
                 style=constants.LCD_CENT_JUST,
                 line=4
@@ -34,21 +32,21 @@ class AutomaticTitration(UIState.UIState):
         
         # Substate 2 output
         elif self.subState == 2:
-            LCD.lcd_out("Mixing...", style=constants.LCD_CENT_JUST, line=4)
+            LCD_interface.lcd_out("Mixing...", style=constants.LCD_CENT_JUST, line=4)
             self.subState += 1
         
         # Substate 3 output
         elif self.subState == 3:
-            LCD.lcd_out("pH value {} reached".format(self.values['current_pH']), line=4) # TODO: Change current_pH
+            LCD_interface.lcd_out("pH value {} reached".format(self.values['current_pH']), line=4) # TODO: Change current_pH
             self.subState += 1
         
         # Substate 4 output
         elif self.subState == 4:
-            LCD.lcd_clear()
-            LCD.lcd_out("Return to", line=1)
-            LCD.lcd_out("main menu: 0", line=2)
-            LCD.lcd_out("Exit: 1", line=3)
+            LCD_interface.lcd_clear()
+            LCD_interface.lcd_out("Return to", line=1)
+            LCD_interface.lcd_out("main menu: 0", line=2)
+            LCD_interface.lcd_out("Exit: 1", line=3)
 
 
     def start(self):
-        LCD.lcd_out("AUTO SELECTED", style=constants.LCD_CENT_JUST, line=4)
+        LCD_interface.lcd_out("AUTO SELECTED", style=constants.LCD_CENT_JUST, line=4)

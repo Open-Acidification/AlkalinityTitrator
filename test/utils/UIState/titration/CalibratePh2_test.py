@@ -2,7 +2,7 @@ from unittest import mock
 from unittest.mock import ANY
 from titration.utils.UIState.titration.CalibratePh import CalibratePh
 from titration.utils.titrator import Titrator
-from titration.utils import constants, LCD
+from titration.utils import LCD_interface, constants
 
 # Test handleKey
 @mock.patch.object(CalibratePh, "_setNextState")
@@ -18,8 +18,8 @@ def test_handleKey(mock):
     mock.reset_mock()
 
 # Test loop
-@mock.patch.object(LCD, "lcd_out")
-@mock.patch.object(LCD, "read_user_value", return_value=5.5)
+@mock.patch.object(LCD_interface, "lcd_out")
+@mock.patch.object(LCD_interface, "read_user_value", return_value=5.5)
 def test_loop(mock1, mock2):
     calibratePh = CalibratePh(Titrator())
 
@@ -48,8 +48,8 @@ def test_loop(mock1, mock2):
     )
 
 @mock.patch.object(CalibratePh, "_setNextState")
-@mock.patch.object(LCD, "read_user_value", return_value=5.5)
-@mock.patch.object(LCD, "lcd_out")
+@mock.patch.object(LCD_interface, "read_user_value", return_value=5.5)
+@mock.patch.object(LCD_interface, "lcd_out")
 def test_CalibratePh(mock1, mock2, mock3):
     calibratePh = CalibratePh(Titrator())
 

@@ -1,5 +1,5 @@
 from titration.utils.UIState import UIState
-from titration.utils import constants, LCD
+from titration.utils import LCD_interface, constants
 from titration.utils.UIState import MainMenu
 
 
@@ -51,35 +51,34 @@ class ManualTitration(UIState.UIState):
     def loop(self):
         # Substate 1 output
         if self.subState == 1:
-            self.values['p_volume'] = LCD.read_user_value("Volume: ")
-            LCD.lcd_clear()
-            LCD.lcd_out("Direction (0/1): ", line=1)
+            self.values['p_volume'] = LCD_interface.read_user_value("Volume: ")
+            LCD_interface.lcd_clear()
+            LCD_interface.lcd_out("Direction (0/1): ", line=1)
         
         # Substate 2 output
         elif self.subState == 2:
-            LCD.lcd_out("Current pH: {0:>4.5f}".format(self.values['current_pH']), line=1)   # TODO: change current pH value from 5
-            LCD.lcd_out("Add more HCl?", line=2)
-            LCD.lcd_out("(0 - No, 1 - Yes)", line=3)
-            LCD.lcd_out("", line=4)
+            LCD_interface.lcd_out("Current pH: {0:>4.5f}".format(self.values['current_pH']), line=1)   # TODO: change current pH value from 5
+            LCD_interface.lcd_out("Add more HCl?", line=2)
+            LCD_interface.lcd_out("(0 - No, 1 - Yes)", line=3)
+            LCD_interface.lcd_out("", line=4)
         
         # Substate 3 output
         elif self.subState == 3:
-            LCD.lcd_clear()
-            LCD.lcd_out("Current pH: {0:>4.5f}".format(self.values['current_pH']), line=1)   # TODO: change current pH value from 5
-            LCD.lcd_out("Degas?", 1)
-            LCD.lcd_out("(0 - No, 1 - Yes)", line=2)
+            LCD_interface.lcd_clear()
+            LCD_interface.lcd_out("Current pH: {0:>4.5f}".format(self.values['current_pH']), line=1)   # TODO: change current pH value from 5
+            LCD_interface.lcd_out("Degas?", 1)
+            LCD_interface.lcd_out("(0 - No, 1 - Yes)", line=2)
         
         # Substate 4 output
         elif self.subState == 4:
-            self.values['degas_time'] = LCD.read_user_value("Degas time (s):")
+            self.values['degas_time'] = LCD_interface.read_user_value("Degas time (s):")
 
         # Substate 5 output
         elif self.subState == 5:
-            LCD.lcd_clear()
-            LCD.lcd_out("Return to", line=1)
-            LCD.lcd_out("main menu: 0", line=2)
-            LCD.lcd_out("Exit: 1", line=3)
+            LCD_interface.lcd_clear()
+            LCD_interface.lcd_out("Return to", line=1)
+            LCD_interface.lcd_out("main menu: 0", line=2)
+            LCD_interface.lcd_out("Exit: 1", line=3)
 
     def start(self):
-        LCD.lcd_out("MANUAL SELECTED", style=constants.LCD_CENT_JUST, line=4)
-
+        LCD_interface.lcd_out("MANUAL SELECTED", style=constants.LCD_CENT_JUST, line=4)

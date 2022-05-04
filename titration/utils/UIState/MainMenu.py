@@ -5,7 +5,7 @@ from titration.utils.UIState.test_mode import TestMode
 from titration.utils.UIState.titration import SetupTitration
 from titration.utils.UIState.calibration import SetupCalibration
 from titration.utils.UIState.update_settings import UpdateSettings
-from titration.utils import LCD
+from titration.utils import LCD_interface
 
 # TODO: remove unecessary lcd_outs, remove subState, first comparisons
 class MainMenu (UIState.UIState):
@@ -55,8 +55,8 @@ class MainMenu (UIState.UIState):
     def loop(self):
         # Substate 1 output
         if self.routineSelection == 1:
-            LCD.display_list(constants.ROUTINE_OPTIONS_1)    # TODO: change to LCD
+            LCD_interface.display_list(constants.ROUTINE_OPTIONS_1)    # TODO: change to LCD
             
         # Substate 2 output
         else:
-            LCD.display_list(constants.ROUTINE_OPTIONS_2)
+            LCD_interface.display_list(constants.ROUTINE_OPTIONS_2)

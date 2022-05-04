@@ -2,7 +2,7 @@ from unittest.mock import ANY
 from unittest import mock
 from titration.utils.UIState import MainMenu
 from titration.utils.titrator import Titrator
-from titration.utils import LCD, constants
+from titration.utils import LCD_interface, constants
 
 # Test handleKey
 @mock.patch.object(MainMenu.MainMenu, "_setNextState")
@@ -41,7 +41,7 @@ def test_handleKey(mock):
     assert(mainMenu.routineSelection == 1)
 
 # Test loop
-@mock.patch.object(LCD, "display_list")
+@mock.patch.object(LCD_interface, "display_list")
 def test_loop(mock):
     mainMenu = MainMenu.MainMenu(Titrator())
 
@@ -54,7 +54,7 @@ def test_loop(mock):
     mock.assert_called_with(constants.ROUTINE_OPTIONS_2)
 
 # Test MainMenu
-@mock.patch.object(LCD, "display_list")
+@mock.patch.object(LCD_interface, "display_list")
 @mock.patch.object(MainMenu.MainMenu, "_setNextState")
 def test_MainMenu(mock1, mock2):
     mainMenu = MainMenu.MainMenu(Titrator())

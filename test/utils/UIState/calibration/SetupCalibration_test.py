@@ -4,7 +4,7 @@ from titration.utils.UIState.MainMenu import MainMenu
 from titration.utils.UIState.calibration.CalibratePh import CalibratePh
 from titration.utils.UIState.calibration.SetupCalibration import SetupCalibration
 from titration.utils.titrator import Titrator
-from titration.utils import LCD, constants
+from titration.utils import LCD_interface, constants
 
 # Test handleKey
 @mock.patch.object(SetupCalibration, "_setNextState")
@@ -26,8 +26,8 @@ def test_handleKey(mock):
     assert(mock.call_args.args[0].name() == "MainMenu")
 
 # Test loop
-@mock.patch.object(LCD, "display_list")
-@mock.patch.object(LCD, "lcd_out")
+@mock.patch.object(LCD_interface, "display_list")
+@mock.patch.object(LCD_interface, "lcd_out")
 def test_loop(mock1, mock2):
     setupCalibration = SetupCalibration(Titrator(), MainMenu(Titrator()))
 
@@ -36,9 +36,9 @@ def test_loop(mock1, mock2):
     assert mock2.called_with(constants.SENSOR_OPTIONS)
 
 # Test SetupCalibration
-@mock.patch.object(LCD, "display_list")
+@mock.patch.object(LCD_interface, "display_list")
 @mock.patch.object(SetupCalibration, "_setNextState")
-@mock.patch.object(LCD, "lcd_out")
+@mock.patch.object(LCD_interface, "lcd_out")
 def test_SetupCalibration(mock1, mock2, mock3):
     setupCalibration = SetupCalibration(Titrator(), MainMenu(Titrator()))
 

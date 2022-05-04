@@ -3,7 +3,7 @@ from unittest.mock import ANY
 from titration.utils.UIState.MainMenu import MainMenu
 from titration.utils.titrator import Titrator
 from titration.utils.UIState.update_settings.UpdateSettings import UpdateSettings
-from titration.utils import LCD
+from titration.utils import LCD_interface
 
 # Test handleKey
 @mock.patch.object(UpdateSettings, "_setNextState")
@@ -34,8 +34,8 @@ def test_handleKey(mock):
     assert(mock.call_args.args[0].name() == "MainMenu")
 
 # Test loop
-@mock.patch.object(LCD, "read_user_value", return_value=5.5)
-@mock.patch.object(LCD, "lcd_out")
+@mock.patch.object(LCD_interface, "read_user_value", return_value=5.5)
+@mock.patch.object(LCD_interface, "lcd_out")
 def test_loop(mock1, mock2):
     updateSettings = UpdateSettings(Titrator(), MainMenu(Titrator()))
 
@@ -78,9 +78,9 @@ def test_loop(mock1, mock2):
     ])    
 
 # Test UpdateSettings
-@mock.patch.object(LCD, "read_user_value", return_value=5.5)
+@mock.patch.object(LCD_interface, "read_user_value", return_value=5.5)
 @mock.patch.object(UpdateSettings, "_setNextState")
-@mock.patch.object(LCD, "lcd_out")
+@mock.patch.object(LCD_interface, "lcd_out")
 def test_PrimePump(mock1, mock2, mock3):
     updateSettings = UpdateSettings(Titrator(), MainMenu(Titrator()))
 

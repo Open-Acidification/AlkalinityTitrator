@@ -4,7 +4,7 @@ from titration.utils.UIState.MainMenu import MainMenu
 from titration.utils.UIState.calibration.CalibrateTemp import CalibrateTemp
 from titration.utils.UIState.calibration.SetupCalibration import SetupCalibration
 from titration.utils.titrator import Titrator
-from titration.utils import constants, LCD
+from titration.utils import LCD_interface, constants
 
 # Test handleKey
 @mock.patch.object(CalibrateTemp, "_setNextState")
@@ -22,8 +22,8 @@ def test_handleKey(mock):
     assert(mock.call_args.args[0].name() == "SetupCalibration")
 
 # Test loop
-@mock.patch.object(LCD, "lcd_out")
-@mock.patch.object(LCD, "read_user_value", return_value=5.5)
+@mock.patch.object(LCD_interface, "lcd_out")
+@mock.patch.object(LCD_interface, "read_user_value", return_value=5.5)
 def test_loop(mock1, mock2):
     calibrateTemp = CalibrateTemp(Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator()))
 
@@ -52,8 +52,8 @@ def test_loop(mock1, mock2):
 
 # Test CalibrateTemp
 @mock.patch.object(CalibrateTemp, "_setNextState")
-@mock.patch.object(LCD, "lcd_out")
-@mock.patch.object(LCD, "read_user_value", return_value=5.5)
+@mock.patch.object(LCD_interface, "lcd_out")
+@mock.patch.object(LCD_interface, "read_user_value", return_value=5.5)
 def test_CalibrateTemp(mock1, mock2, mock3):
     calibrateTemp = CalibrateTemp(Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator()))
 

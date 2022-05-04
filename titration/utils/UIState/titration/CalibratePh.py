@@ -1,5 +1,5 @@
 from titration.utils.UIState import UIState
-from titration.utils import constants, LCD
+from titration.utils import LCD_interface, constants
 from titration.utils.UIState.titration.InitialTitration import InitialTitration
 
 class CalibratePh(UIState.UIState):
@@ -24,19 +24,19 @@ class CalibratePh(UIState.UIState):
     def loop(self):
         # Substate 1 output and input
         if self.subState == 1:
-            self.values['buffer1_actual_pH'] = LCD.read_user_value("Enter buffer pH:")
-            LCD.lcd_out("Put sensor in buffer", style=constants.LCD_CENT_JUST, line=1)
-            LCD.lcd_out("", line=2)
-            LCD.lcd_out("Press any button", style=constants.LCD_CENT_JUST, line=3)
-            LCD.lcd_out("to record value", style=constants.LCD_CENT_JUST, line=4)
+            self.values['buffer1_actual_pH'] = LCD_interface.read_user_value("Enter buffer pH:")
+            LCD_interface.lcd_out("Put sensor in buffer", style=constants.LCD_CENT_JUST, line=1)
+            LCD_interface.lcd_out("", line=2)
+            LCD_interface.lcd_out("Press any button", style=constants.LCD_CENT_JUST, line=3)
+            LCD_interface.lcd_out("to record value", style=constants.LCD_CENT_JUST, line=4)
 
         # Substate 2 output
         elif self.subState == 2:
-            LCD.lcd_clear()
-            LCD.lcd_out("Recorded pH, volts:", line=1)
-            LCD.lcd_out(
+            LCD_interface.lcd_clear()
+            LCD_interface.lcd_out("Recorded pH, volts:", line=1)
+            LCD_interface.lcd_out(
                 "{0:>2.5f} pH, {1:>3.4f} V".format(self.values['buffer1_actual_pH'], self.values['buffer1_measured_volts']),
                 line=2,
             )
-            LCD.lcd_out("Press any button", style=constants.LCD_CENT_JUST, line=3)
-            LCD.lcd_out("to continue", style=constants.LCD_CENT_JUST, line=4)
+            LCD_interface.lcd_out("Press any button", style=constants.LCD_CENT_JUST, line=3)
+            LCD_interface.lcd_out("to continue", style=constants.LCD_CENT_JUST, line=4)

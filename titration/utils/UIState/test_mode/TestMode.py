@@ -1,5 +1,5 @@
 from titration.utils.UIState import UIState
-from titration.utils import constants, LCD
+from titration.utils import LCD_interface, constants
 from titration.utils.UIState.test_mode.Pump import Pump
 from titration.utils.UIState.test_mode.ReadValues import ReadValues
 from titration.utils.UIState.test_mode.ReadVolume import ReadVolume
@@ -46,7 +46,7 @@ class TestMode(UIState.UIState):
 
     def loop(self):
         if self.subState == 1:
-            LCD.display_list(constants.TEST_OPTIONS_1)
+            LCD_interface.display_list(constants.TEST_OPTIONS_1)
 
         elif self.subState == 2:
-            LCD.display_list(constants.TEST_OPTIONS_2)
+            LCD_interface.display_list(constants.TEST_OPTIONS_2)

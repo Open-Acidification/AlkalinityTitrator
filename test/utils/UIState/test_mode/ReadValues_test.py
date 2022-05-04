@@ -3,7 +3,7 @@ from unittest.mock import ANY
 from titration.utils.UIState.MainMenu import MainMenu
 from titration.utils.UIState.test_mode.TestMode import TestMode
 from titration.utils.titrator import Titrator
-from titration.utils import interfaces, LCD
+from titration.utils import LCD_interface, interfaces
 from titration.utils.UIState.test_mode.ReadValues import ReadValues
 
 # Test handleKey
@@ -17,7 +17,7 @@ def test_handleKey(mock):
     mock.reset_mock()
 
 # Test loop
-@mock.patch.object(LCD, 'lcd_out')
+@mock.patch.object(LCD_interface, 'lcd_out')
 @mock.patch.object(interfaces, 'delay')
 def test_loop(mock1, mock2):
     readValues = ReadValues(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
@@ -39,7 +39,7 @@ def test_loop(mock1, mock2):
 
 # Test ReadValues
 @mock.patch.object(ReadValues, "_setNextState")
-@mock.patch.object(LCD, 'lcd_out')
+@mock.patch.object(LCD_interface, 'lcd_out')
 @mock.patch.object(interfaces, 'delay')
 def test_ReadValues(mock1, mock2, mock3):
     readValues = ReadValues(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))

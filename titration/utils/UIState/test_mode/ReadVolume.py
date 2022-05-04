@@ -1,5 +1,5 @@
 from titration.utils.UIState import UIState
-from titration.utils import constants, LCD
+from titration.utils import LCD_interface, constants
 
 class ReadVolume(UIState.UIState):
     def __init__(self, titrator, state):
@@ -16,11 +16,11 @@ class ReadVolume(UIState.UIState):
         self._setNextState(self.previousState, True)
 
     def loop(self):
-        LCD.lcd_clear()
-        LCD.lcd_out("Pump Vol: ", line=1)
-        LCD.lcd_out(
+        LCD_interface.lcd_clear()
+        LCD_interface.lcd_out("Pump Vol: ", line=1)
+        LCD_interface.lcd_out(
             "{0:1.2f}".format(constants.volume_in_pump),
             style=constants.LCD_CENT_JUST,
             line=2,
         )
-        LCD.lcd_out("Press any to cont.", line=3)
+        LCD_interface.lcd_out("Press any to cont.", line=3)

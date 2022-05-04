@@ -2,7 +2,7 @@ from unittest import mock
 from unittest.mock import ANY 
 from titration.utils.UIState.titration.InitialTitration import InitialTitration
 from titration.utils.titrator import Titrator
-from titration.utils import constants, LCD
+from titration.utils import LCD_interface, constants
 
 # Test handleKey
 @mock.patch.object(InitialTitration, "_setNextState")
@@ -15,7 +15,7 @@ def test_handleKey(mock):
 
 # Test loop
 @mock.patch.object(InitialTitration, "_setNextState")
-@mock.patch.object(LCD, "lcd_out")
+@mock.patch.object(LCD_interface, "lcd_out")
 def test_loop(mock1, mock2):
     initialTitration = InitialTitration(Titrator())
 
@@ -53,7 +53,7 @@ def test_loop(mock1, mock2):
     assert(mock2.call_args.args[0].name() == "ManualTitration")
 
 @mock.patch.object(InitialTitration, "_setNextState")
-@mock.patch.object(LCD, "lcd_out")
+@mock.patch.object(LCD_interface, "lcd_out")
 def test_InitialTitration(mock1, mock2):
     initialTitration = InitialTitration(Titrator())
 

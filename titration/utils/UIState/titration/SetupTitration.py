@@ -2,7 +2,7 @@ from titration.utils.UIState import UIState
 from titration.utils import constants
 from titration.utils.UIState.titration.InitialTitration import InitialTitration
 from titration.utils.UIState.titration.CalibratePh import CalibratePh
-from titration.utils import LCD
+from titration.utils import LCD_interface
 
 class SetupTitration(UIState.UIState):
     def __init__(self, titrator):
@@ -29,14 +29,14 @@ class SetupTitration(UIState.UIState):
     def loop(self):
         # Substate 1 and 2 output and input
         if self.subState == 1:
-            self.values[self.subState-1] = LCD.read_user_value(self.prompts[self.subState-1])
-            self.values[self.subState] = LCD.read_user_value(self.prompts[self.subState])
+            self.values[self.subState-1] = LCD_interface.read_user_value(self.prompts[self.subState-1])
+            self.values[self.subState] = LCD_interface.read_user_value(self.prompts[self.subState])
 
-            LCD.lcd_clear()
-            LCD.lcd_out("Calibrate pH probe?", line=1)
-            LCD.lcd_out("Yes: 1", line=2)
-            LCD.lcd_out("No (use old): 0", line=3)
-            LCD.lcd_out("{0:>2.3f} pH: {1:>2.4f} V".format(constants.PH_REF_PH, constants.PH_REF_VOLTAGE), line=4)
+            LCD_interface.lcd_clear()
+            LCD_interface.lcd_out("Calibrate pH probe?", line=1)
+            LCD_interface.lcd_out("Yes: 1", line=2)
+            LCD_interface.lcd_out("No (use old): 0", line=3)
+            LCD_interface.lcd_out("{0:>2.3f} pH: {1:>2.4f} V".format(constants.PH_REF_PH, constants.PH_REF_VOLTAGE), line=4)
 
     def start(self):
         pass

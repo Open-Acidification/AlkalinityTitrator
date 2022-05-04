@@ -3,7 +3,7 @@ from unittest.mock import ANY
 from titration.utils.UIState.MainMenu import MainMenu
 from titration.utils.UIState.test_mode.TestMode import TestMode
 from titration.utils.titrator import Titrator
-from titration.utils import LCD
+from titration.utils import LCD_interface
 from titration.utils.UIState.prime_pump.PrimePump import PrimePump
 
 # Test handleKey
@@ -25,7 +25,7 @@ def test_handleKey(mock):
     mock.reset_mock()
 
 # Test loop
-@mock.patch.object(LCD, "lcd_out")
+@mock.patch.object(LCD_interface, "lcd_out")
 def test_loop(mock1):
     primePump = PrimePump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
@@ -47,7 +47,7 @@ def test_loop(mock1):
 
 # Test PrimePump
 @mock.patch.object(PrimePump, "_setNextState")
-@mock.patch.object(LCD, "lcd_out")
+@mock.patch.object(LCD_interface, "lcd_out")
 def test_PrimePump(mock1, mock2):
     primePump = PrimePump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 

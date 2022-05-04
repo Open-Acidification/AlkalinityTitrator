@@ -1,5 +1,5 @@
 from titration.utils.UIState import UIState
-from titration.utils import constants, LCD
+from titration.utils import LCD_interface, constants
 
 class ToggleTestMode(UIState.UIState):
     def __init__(self, titrator, state):
@@ -16,6 +16,6 @@ class ToggleTestMode(UIState.UIState):
         self._setNextState(self.previousState, True)
 
     def loop(self):
-        LCD.lcd_clear()
-        LCD.lcd_out("Testing: {}".format(constants.IS_TEST), line=1)
-        LCD.lcd_out("Press any to cont.", line=3)
+        LCD_interface.lcd_clear()
+        LCD_interface.lcd_out("Testing: {}".format(constants.IS_TEST), line=1)
+        LCD_interface.lcd_out("Press any to cont.", line=3)
