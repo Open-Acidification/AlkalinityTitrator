@@ -10,7 +10,18 @@ class TestMode(UIState.UIState):
     def __init__(self, titrator, state):
         UIState.__init__('TestMode', titrator)
         self.titrator = titrator
-        self.values = {'selection' : 0}
+        self.TEST_OPTIONS_1 = {
+            "1": "Read Values",
+            "2": "Pump",
+            "3": "Set Volume",
+            "*": "Page 2",
+        }
+        self.TEST_OPTIONS_2 = {
+            "4": "Toggle Test Mode",
+            "5": "Read Volume",
+            "6": "Exit Test Mode",
+            "*": "Page 1",
+        }
         self.subState = 1
         self.previousState = state
 
@@ -46,7 +57,7 @@ class TestMode(UIState.UIState):
 
     def loop(self):
         if self.subState == 1:
-            LCD_interface.display_list(constants.TEST_OPTIONS_1)
+            LCD_interface.display_list(self.TEST_OPTIONS_1)
 
         elif self.subState == 2:
-            LCD_interface.display_list(constants.TEST_OPTIONS_2)
+            LCD_interface.display_list(self.TEST_OPTIONS_2)

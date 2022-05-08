@@ -18,4 +18,6 @@ class ToggleTestMode(UIState.UIState):
     def loop(self):
         LCD_interface.lcd_clear()
         LCD_interface.lcd_out("Testing: {}".format(constants.IS_TEST), line=1)
+        LCD_interface.lcd_out("", line=2)
         LCD_interface.lcd_out("Press any to cont.", line=3)
+        LCD_interface.lcd_out("", line=4)

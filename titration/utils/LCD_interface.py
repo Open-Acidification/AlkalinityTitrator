@@ -41,7 +41,7 @@ ui_keypad = keypad_class.Keypad(
 
 lines = { 1: '', 2: '', 3: '', 4: ''}
 
-def lcd_out(
+def lcd_out(    # TODO: change to cammel-case
     message, 
     line,
     style=constants.LCD_LEFT_JUST,
@@ -62,7 +62,7 @@ def lcd_clear():
     for key in lines:
         lines[key] = ''
 
-def read_user_value(message):
+def read_user_value(message):   # TODO: look at making a state; redisign, include Done
     """Prompts the user to enter a value using the keypad"""
     instructions_1 = "* = .       B = BS"
     instructions_2 = "A = accept  C = Clr"

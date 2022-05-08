@@ -40,9 +40,10 @@ class CalibrateTemp(UIState.UIState):
             LCD_interface.lcd_out("record value", style=constants.LCD_CENT_JUST, line=4)
 
         # Substate 3 output
-        elif self.subState == 3:
-            LCD_interface.lcd_clear()
+        elif self.subState == 3:    # TODO: look at lcd_clear()
+            # LCD_interface.lcd_clear()
             LCD_interface.lcd_out("Recorded temp:", line=1)
             LCD_interface.lcd_out("{0:0.3f}".format(self.values['actual_temperature']), line=2)
-            # reinitialize sensors with calibrated values
             LCD_interface.lcd_out("{}".format(self.values['new_ref_resistance']), line=3)
+            LCD_interface.lcd_out("", line=4)
+            # TODO: reinitialize sensors with calibrated values

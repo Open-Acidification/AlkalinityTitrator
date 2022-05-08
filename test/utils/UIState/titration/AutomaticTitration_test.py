@@ -2,97 +2,122 @@ from unittest import mock
 from unittest.mock import ANY
 from titration.utils.UIState.titration.AutomaticTitration import AutomaticTitration
 from titration.utils.titrator import Titrator
-from titration.utils import LCD_interface, constants
+from titration.utils import LCD_interface
 
 # Test handleKey
 @mock.patch.object(AutomaticTitration, "_setNextState")
-def test_handleKey(mock):
-    initialTitration = AutomaticTitration(Titrator())
+def test_handleKey(setNextStateMock):
+    automaticTitration = AutomaticTitration(Titrator())
 
-    initialTitration.subState += 3
+    automaticTitration.handleKey("1")
+    assert(automaticTitration.subState == 2)
+
+    automaticTitration.handleKey("1")
+    assert(automaticTitration.subState == 3)
+
+    automaticTitration.handleKey("1")
+    assert(automaticTitration.subState == 4)
     
-    initialTitration.handleKey("0")
-    mock.assert_called_with(ANY, True)
-    assert(mock.call_args.args[0].name() == "MainMenu")
-    mock.reset_mock()
+    automaticTitration.handleKey("0")
+    setNextStateMock.assert_called_with(ANY, True)
+    assert(setNextStateMock.call_args.args[0].name() == "MainMenu")
 
 # Test loop
 @mock.patch.object(LCD_interface, "lcd_out")
-def test_loop(mock1):
-    initialTitration = AutomaticTitration(Titrator())
+def test_loop(lcdOutMock):
+    automaticTitration = AutomaticTitration(Titrator())
 
-    initialTitration.loop()
-    mock1.assert_has_calls(
+    automaticTitration.loop()
+    lcdOutMock.assert_has_calls(
         [mock.call(
-            "Titrating to {} pH".format(str(initialTitration.values['pH_target'])),
-            style=constants.LCD_CENT_JUST,
-            line=4
-        )]
+            "Titrating to {} pH".format(str(automaticTitration.values['pH_target'])),
+            line=1
+        ),
+        mock.call("", line=2),
+        mock.call("Press any to cont", line=3),
+        mock.call("", line=4)]
     )
-    mock1.reset_called()
-    assert(initialTitration.subState == 2)
+    lcdOutMock.reset_called()
 
-    initialTitration.loop()
-    mock1.assert_has_calls(
-        [mock.call("Mixing...", style=constants.LCD_CENT_JUST, line=4)]
+    automaticTitration.subState += 1
+    automaticTitration.loop()
+    lcdOutMock.assert_has_calls(
+        [mock.call("Mixing...", line=1),
+        mock.call("", line=2),
+        mock.call("Press any to cont", line=3),
+        mock.call("", line=4)]
     )
-    mock1.reset_called()
-    assert(initialTitration.subState == 3)
+    lcdOutMock.reset_called()
 
-    initialTitration.loop()
-    mock1.assert_has_calls(
-        [mock.call("pH value {} reached".format(initialTitration.values['current_pH']), line=4)]
+    automaticTitration.subState += 1
+    automaticTitration.loop()
+    lcdOutMock.assert_has_calls(
+        [mock.call("pH value {} reached".format(automaticTitration.values['current_pH']), line=1),
+        mock.call("", line=2),
+        mock.call("Press any to cont", line=3),
+        mock.call("", line=4)]
     )
-    mock1.reset_called()
-    assert(initialTitration.subState == 4)
+    lcdOutMock.reset_called()
 
-    initialTitration.loop()
-    mock1.assert_has_calls(
+    automaticTitration.subState += 1
+    automaticTitration.loop()
+    lcdOutMock.assert_has_calls(
         [mock.call("Return to", line=1),
-        mock.call("main menu: 0", line=2),
-        mock.call("Exit: 1", line=3)])
+        mock.call("main menu", line=2),
+        mock.call("Press any to cont", line=3),
+        mock.call("", line=4)])
 
 @mock.patch.object(AutomaticTitration, "_setNextState")
 @mock.patch.object(LCD_interface, "lcd_out")
-def test_AutomaticTitration(mock1, mock2):
-    initialTitration = AutomaticTitration(Titrator())
+def test_AutomaticTitration(lcdOutMock, setNextStateMock):
+    automaticTitration = AutomaticTitration(Titrator())
 
-    initialTitration.loop()
-    mock1.assert_has_calls(
+    automaticTitration.loop()
+    lcdOutMock.assert_has_calls(
         [mock.call(
-            "Titrating to {} pH".format(str(initialTitration.values['pH_target'])),
-            style=constants.LCD_CENT_JUST,
-            line=4
-        )]
+            "Titrating to {} pH".format(str(automaticTitration.values['pH_target'])),
+            line=1
+        ),
+        mock.call("", line=2),
+        mock.call("Press any to cont", line=3),
+        mock.call("", line=4)]
     )
-    mock1.reset_called()
-    assert(initialTitration.subState == 2)
+    lcdOutMock.reset_called()
 
-    initialTitration.handleKey("1")
+    automaticTitration.handleKey("1")
+    assert(automaticTitration.subState == 2)
 
-    initialTitration.loop()
-    mock1.assert_has_calls(
-        [mock.call("Mixing...", style=constants.LCD_CENT_JUST, line=4)]
+    automaticTitration.loop()
+    lcdOutMock.assert_has_calls(
+        [mock.call("Mixing...", line=1),
+        mock.call("", line=2),
+        mock.call("Press any to cont", line=3),
+        mock.call("", line=4)]
     )
-    mock1.reset_called()    
-    assert(initialTitration.subState == 3)
+    lcdOutMock.reset_called()
 
-    initialTitration.handleKey("1")
+    automaticTitration.handleKey("1")
+    assert(automaticTitration.subState == 3)
 
-    initialTitration.loop()
-    mock1.assert_has_calls(
-        [mock.call("pH value {} reached".format(initialTitration.values['current_pH']), line=4)]
+    automaticTitration.loop()
+    lcdOutMock.assert_has_calls(
+        [mock.call("pH value {} reached".format(automaticTitration.values['current_pH']), line=1),
+        mock.call("", line=2),
+        mock.call("Press any to cont", line=3),
+        mock.call("", line=4)]
     )
-    mock1.reset_called()
-    assert(initialTitration.subState == 4)
+    lcdOutMock.reset_called()
 
-    initialTitration.loop()
-    mock1.assert_has_calls(
+    automaticTitration.handleKey("1")
+    assert(automaticTitration.subState == 4)
+
+    automaticTitration.loop()
+    lcdOutMock.assert_has_calls(
         [mock.call("Return to", line=1),
-        mock.call("main menu: 0", line=2),
-        mock.call("Exit: 1", line=3)])
-    mock1.reset_called()
+        mock.call("main menu", line=2),
+        mock.call("Press any to cont", line=3),
+        mock.call("", line=4)])
 
-    initialTitration.handleKey("0")
-    mock2.assert_called_with(ANY, True)
-    assert(mock2.call_args.args[0].name() == "MainMenu")
+    automaticTitration.handleKey("0")
+    setNextStateMock.assert_called_with(ANY, True)
+    assert(setNextStateMock.call_args.args[0].name() == "MainMenu")

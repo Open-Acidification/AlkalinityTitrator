@@ -3,6 +3,8 @@ from titration.utils import interfaces, constants
 import types
 from titration.utils.devices.keypad_mock import Keypad
 
+# TODO: look at ModuleType
+# TODO: log instead of print
 if constants.IS_TEST:
     from titration.utils.devices import (
         board_mock
@@ -20,7 +22,7 @@ class Titrator:
     def __init__(self):
         self.state = MainMenu.MainMenu(self)
         self.nextState = None
-        interfaces.setup_interfaces()
+        interfaces.setup_interfaces() # TODO: look at removing, update to not call LCD and keypad
         self.keypad = Keypad(       
             r0=board_class.D1,
             r1=board_class.D6,
@@ -61,4 +63,3 @@ class Titrator:
         self._updateState()
         print("Titrator::handleUI() - ", self.state.name(), "::substate", self.state.subState, "::loop()")
         self.state.loop()
-        

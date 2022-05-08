@@ -29,5 +29,5 @@ class SetupCalibration(UIState.UIState):
 
     def loop(self):
         # Substate 1 output
-        LCD_interface.display_list(constants.SENSOR_OPTIONS)
+        LCD_interface.display_list(constants.SENSOR_OPTIONS)    # TODO: change to lcd_outs
         LCD_interface.lcd_out("3. Return", line=3)

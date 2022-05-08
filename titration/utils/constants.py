@@ -36,20 +36,6 @@ ROUTINE_OPTIONS_2 = {
     KEY_STAR: "Page 1",
 }
 
-TEST_OPTIONS_1 = {
-    KEY_1: "Read Values",
-    KEY_2: "Pump",
-    KEY_3: "Set Volume",
-    KEY_STAR: "Page 2",
-}
-
-TEST_OPTIONS_2 = {
-    KEY_4: "Toggle Test Mode",
-    KEY_5: "Read Volume",
-    KEY_6: "Exit Test Mode",
-    KEY_STAR: "Page 1",
-}
-
 SENSOR_OPTIONS = {KEY_1: "pH", KEY_2: "Temperature"}
 
 KEY_VALUES = {

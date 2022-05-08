@@ -1,5 +1,6 @@
 from titration.utils.UIState import UIState
 from titration.utils import LCD_interface
+from titration.utils.UIState.user_value.UserValue import UserValue
 
 class UpdateSettings(UIState.UIState):
     def __init__(self, titrator, state):
@@ -27,8 +28,12 @@ class UpdateSettings(UIState.UIState):
                 self.subState += 1
             else:
                 self._setNextState(self.previousState, True)
-        
+
         elif self.subState == 4:
+            self._setNextState(UserValue(self.titrator, self, 'Volume in pump:'), True)
+            self.subState += 1
+        
+        elif self.subState == 5:
             self._setNextState(self.previousState, True) 
 
     def loop(self):
@@ -37,20 +42,29 @@ class UpdateSettings(UIState.UIState):
             LCD_interface.lcd_out("Reset calibration", line=1)
             LCD_interface.lcd_out("settings to default?", line=2)
             LCD_interface.lcd_out("(y/n)", line=3)
+            LCD_interface.lcd_out("", line=4)
         
         elif self.subState == 2:
             LCD_interface.lcd_clear()
             LCD_interface.lcd_out("Default constants", line=1)
             LCD_interface.lcd_out("restored", line=2)
             LCD_interface.lcd_out("Press any to cont.", line=3)
+            LCD_interface.lcd_out("", line=4)
 
         elif self.subState == 3:
-            LCD_interface.lcd_clear()
             LCD_interface.lcd_out("Set volume in pump?", line=1)
+            LCD_interface.lcd_out("", line=2)
             LCD_interface.lcd_out("(y/n)", line=3)
+            LCD_interface.lcd_out("", line=4)
 
         elif self.subState == 4:
-            self.values['vol_in_pump'] = LCD_interface.read_user_value("Volume in pump: ")
-            LCD_interface.lcd_clear()
+            LCD_interface.lcd_out("Enter Volume in pump", line=1)
+            LCD_interface.lcd_out("", line=2)
+            LCD_interface.lcd_out("Press any to cont", line=3)
+            LCD_interface.lcd_out("", line=4)
+
+        elif self.subState == 5:
             LCD_interface.lcd_out("Volume in pump set", line=1)
-            LCD_interface.lcd_out("Press any to cont.", line=3)
+            LCD_interface.lcd_out("", line=2)
+            LCD_interface.lcd_out("Press any to cont", line=3)
+            LCD_interface.lcd_out("", line=4)
