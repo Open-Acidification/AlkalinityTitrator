@@ -16,7 +16,6 @@ class ReadVolume(UIState.UIState):
         self._setNextState(self.previousState, True)
 
     def loop(self):
-        LCD_interface.lcd_clear()
         LCD_interface.lcd_out("Pump Vol: ", line=1)
         LCD_interface.lcd_out(
             "{0:1.2f}".format(constants.volume_in_pump),
@@ -24,3 +23,4 @@ class ReadVolume(UIState.UIState):
             line=2,
         )
         LCD_interface.lcd_out("Press any to cont.", line=3)
+        LCD_interface.lcd_out("", line=4)

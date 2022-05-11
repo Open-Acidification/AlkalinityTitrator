@@ -7,43 +7,71 @@ from titration.utils.UIState.test_mode.SetVolume import SetVolume
 
 # Test handleKey
 @mock.patch.object(SetVolume, "_setNextState")
-def test_handleKey(mock):
+def test_handleKey(setNextStateMock):
     setVolume = SetVolume(Titrator(), MainMenu(Titrator()))
 
     setVolume.handleKey("1")
-    mock.assert_called_with(ANY, True)
-    assert(mock.call_args.args[0].name() == "MainMenu")
-    mock.reset_mock()
+    setNextStateMock.assert_called_with(ANY, True)
+    assert(setNextStateMock.call_args.args[0].name() == "UserValue")
+    setNextStateMock.reset_called()
+    assert(setVolume.subState == 2)
+
+    setVolume.handleKey("1")
+    setNextStateMock.assert_called_with(ANY, True)
+    assert(setNextStateMock.call_args.args[0].name() == "MainMenu")
 
 # Test loop
-@mock.patch.object(LCD_interface, 'lcd_out')
-@mock.patch.object(LCD_interface, 'read_user_value', return_value=5.5)
-def test_loop(mock1, mock2):
+@mock.patch.object(LCD_interface, "lcd_out")
+def test_loop(lcdOutMock):
     setVolume = SetVolume(Titrator(), MainMenu(Titrator()))
 
     setVolume.loop()
-    mock2.assert_has_calls(
-        [mock.call("Press any to cont.", line=1)]
+    lcdOutMock.assert_has_calls(
+        [mock.call("Set volume in pump", line=1),
+        mock.call("", line=2),
+        mock.call("Press any to cont", line=3),
+        mock.call("", line=4)]
     )
-    mock1.assert_called_with("Volume in pump: ")
-    assert(setVolume.values['new_volume'] == 5.5)
+    lcdOutMock.reset_called()
+
+    setVolume.subState += 1
+    setVolume.loop()
+    lcdOutMock.assert_has_calls(
+        [mock.call("Volume in pump", line=1),
+        mock.call("recorded", line=2),
+        mock.call("Press any to cont", line=3),
+        mock.call("", line=4)]
+    )
 
 # Test SetVolume
-@mock.patch.object(LCD_interface, 'lcd_out')
+@mock.patch.object(LCD_interface, "lcd_out")
 @mock.patch.object(SetVolume, "_setNextState")
-@mock.patch.object(LCD_interface, 'read_user_value', return_value=5.5)
-def test_SetVolume(mock1, mock2, mock3):
+def test_SetVolume(setNextStateMock, lcdOutMock):
     setVolume = SetVolume(Titrator(), MainMenu(Titrator()))
 
     setVolume.loop()
-    mock3.assert_has_calls(
-        [mock.call("Press any to cont.", line=1)]
+    lcdOutMock.assert_has_calls(
+        [mock.call("Set volume in pump", line=1),
+        mock.call("", line=2),
+        mock.call("Press any to cont", line=3),
+        mock.call("", line=4)]
     )
-    mock1.assert_called_with("Volume in pump: ")
-    mock1.reset_called()
-    assert(setVolume.values['new_volume'] == 5.5)
+    lcdOutMock.reset_called()
 
     setVolume.handleKey("1")
-    mock2.assert_called_with(ANY, True)
-    assert(mock2.call_args.args[0].name() == "MainMenu")
-    mock2.reset_mock()
+    setNextStateMock.assert_called_with(ANY, True)
+    assert(setNextStateMock.call_args.args[0].name() == "UserValue")
+    setNextStateMock.reset_called()
+    assert(setVolume.subState == 2)
+
+    setVolume.loop()
+    lcdOutMock.assert_has_calls(
+        [mock.call("Volume in pump", line=1),
+        mock.call("recorded", line=2),
+        mock.call("Press any to cont", line=3),
+        mock.call("", line=4)]
+    )
+
+    setVolume.handleKey("1")
+    setNextStateMock.assert_called_with(ANY, True)
+    assert(setNextStateMock.call_args.args[0].name() == "MainMenu")

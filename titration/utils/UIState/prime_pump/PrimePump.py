@@ -15,29 +15,25 @@ class PrimePump(UIState.UIState):
         return 'PrimePump'
 
     def handleKey(self, key):
-        # Substate 1 key handle
         if self.subState == 1:
             self.values['selection'] = key
             self.subState += 1
         
-        # Substate 2 key handle
         elif self.subState == 2:
             self.values['selection'] = key
         
-        # Substate 1 and 2; check if selection is 0
         if self.values['selection'] == "0":
             self._setNextState(self.previousState, True)
 
     def loop(self):
-        # Substate 1 output
         if self.subState == 1:
-            LCD_interface.lcd_clear()
             LCD_interface.lcd_out("How many pumps?", line=1)
             LCD_interface.lcd_out("Choose a number", line=2)
             LCD_interface.lcd_out("Choose 0 to return", line=3)
+            LCD_interface.lcd_out("", line=4)
 
-        # Substate 2 output
         elif self.subState == 2:
             LCD_interface.lcd_out("How many more?", line=1)
             LCD_interface.lcd_out("Choose a number", line=2)
             LCD_interface.lcd_out("Choose 0 to return", line=3)
+            LCD_interface.lcd_out("", line=4)

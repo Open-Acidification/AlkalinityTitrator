@@ -8,7 +8,7 @@ from titration.utils.UIState.prime_pump.PrimePump import PrimePump
 
 # Test handleKey
 @mock.patch.object(PrimePump, "_setNextState")
-def test_handleKey(mock):
+def test_handleKey(setNextStateMock):
     primePump = PrimePump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     primePump.handleKey("3")
@@ -20,68 +20,71 @@ def test_handleKey(mock):
 
     primePump.handleKey("0")
     assert(primePump.values['selection'] == "0")
-    mock.assert_called_with(ANY, True)
-    assert(mock.call_args.args[0].name() == "TestMode")
-    mock.reset_mock()
+    setNextStateMock.assert_called_with(ANY, True)
+    assert(setNextStateMock.call_args.args[0].name() == "TestMode")
 
 # Test loop
 @mock.patch.object(LCD_interface, "lcd_out")
-def test_loop(mock1):
+def test_loop(lcdOutMock):
     primePump = PrimePump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     primePump.loop()
-    mock1.assert_has_calls(
+    lcdOutMock.assert_has_calls(
         [mock.call("How many pumps?", line=1),
         mock.call("Choose a number", line=2),
-        mock.call("Choose 0 to return", line=3)]
+        mock.call("Choose 0 to return", line=3),
+        mock.call("", line=4)]
     )
-    mock1.reset_called()
+    lcdOutMock.reset_called()
 
     primePump.subState += 1
     primePump.loop()
-    mock1.assert_has_calls(
+    lcdOutMock.assert_has_calls(
         [mock.call("How many more?", line=1),
         mock.call("Choose a number", line=2),
-        mock.call("Choose 0 to return", line=3)]
+        mock.call("Choose 0 to return", line=3),
+        mock.call("", line=4)]
     )
 
 # Test PrimePump
 @mock.patch.object(PrimePump, "_setNextState")
 @mock.patch.object(LCD_interface, "lcd_out")
-def test_PrimePump(mock1, mock2):
+def test_PrimePump(lcdOutMock, setNextStateMock):
     primePump = PrimePump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     primePump.loop()
-    mock1.assert_has_calls(
+    lcdOutMock.assert_has_calls(
         [mock.call("How many pumps?", line=1),
         mock.call("Choose a number", line=2),
-        mock.call("Choose 0 to return", line=3)]
+        mock.call("Choose 0 to return", line=3),
+        mock.call("", line=4)]
     )
-    mock1.reset_called()
+    lcdOutMock.reset_called()
 
     primePump.handleKey("3")
     assert(primePump.values['selection'] == "3")
     assert(primePump.subState == 2)
 
     primePump.loop()
-    mock1.assert_has_calls(
+    lcdOutMock.assert_has_calls(
         [mock.call("How many more?", line=1),
         mock.call("Choose a number", line=2),
-        mock.call("Choose 0 to return", line=3)]
+        mock.call("Choose 0 to return", line=3),
+        mock.call("", line=4)]
     )
-    mock1.reset_called()
+    lcdOutMock.reset_called()
 
     primePump.handleKey("1")
     assert(primePump.values['selection'] == "1")
 
-    mock1.assert_has_calls(
+    lcdOutMock.assert_has_calls(
         [mock.call("How many more?", line=1),
         mock.call("Choose a number", line=2),
-        mock.call("Choose 0 to return", line=3)]
+        mock.call("Choose 0 to return", line=3),
+        mock.call("", line=4)]
     )
 
     primePump.handleKey("0")
     assert(primePump.values['selection'] == "0")
-    mock2.assert_called_with(ANY, True)
-    assert(mock2.call_args.args[0].name() == "TestMode")
-    mock2.reset_mock()
+    setNextStateMock.assert_called_with(ANY, True)
+    assert(setNextStateMock.call_args.args[0].name() == "TestMode")

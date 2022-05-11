@@ -1,5 +1,6 @@
 from titration.utils.UIState import UIState
 from titration.utils import LCD_interface
+from titration.utils.UIState.user_value.UserValue import UserValue
 
 class SetVolume(UIState.UIState):
     def __init__(self, titrator, state):
@@ -13,9 +14,22 @@ class SetVolume(UIState.UIState):
         return 'SetVolume'
 
     def handleKey(self, key):
-        self._setNextState(self.previousState, True)
+        if self.subState == 1:
+            self._setNextState(UserValue(self.titrator, self, 'Volume in pump: '), True)
+            self.subState += 1
+
+        elif self.subState == 2:
+            self._setNextState(self.previousState, True)
 
     def loop(self):
-        self.values['new_volume'] = LCD_interface.read_user_value("Volume in pump: ")
-        LCD_interface.lcd_clear()
-        LCD_interface.lcd_out("Press any to cont.", line=1)
+        if self.subState == 1:
+            LCD_interface.lcd_out("Set volume in pump", line=1)
+            LCD_interface.lcd_out("", line=2)
+            LCD_interface.lcd_out("Press any to cont", line=3)
+            LCD_interface.lcd_out("", line=4)
+
+        elif self.subState == 2:
+            LCD_interface.lcd_out("Volume in pump", line=1)
+            LCD_interface.lcd_out("recorded", line=2)
+            LCD_interface.lcd_out("Press any to cont", line=3)
+            LCD_interface.lcd_out("", line=4)

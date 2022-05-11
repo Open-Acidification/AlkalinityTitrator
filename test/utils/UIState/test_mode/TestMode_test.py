@@ -47,26 +47,42 @@ def test_handleKey(setNextStateMock):
     assert(testMode.subState == 1)
 
 # Test loop
-@mock.patch.object(LCD_interface, "display_list")
-def test_loop(displayListMock):
+@mock.patch.object(LCD_interface, "lcd_out")
+def test_loop(lcdOutMock):
     testMode = TestMode(Titrator(), MainMenu(Titrator()))
 
     testMode.loop()
-    assert displayListMock.called_with(testMode.TEST_OPTIONS_1)
-    displayListMock.reset_called()
+    lcdOutMock.assert_has_calls(
+        [mock.call("1: Read Values", line=1),
+        mock.call("2: Pump", line=2),
+        mock.call("3: Set Volume", line=3),
+        mock.call("*: Page 2", line=4)]
+    )
+    lcdOutMock.reset_called()
 
     testMode.subState += 1
     testMode.loop()
-    assert displayListMock.called_with(testMode.TEST_OPTIONS_2)
+    lcdOutMock.assert_has_calls(
+        [mock.call("4: Toggle Test Mode", line=1),
+        mock.call("5: Read Volume", line=2),
+        mock.call("6: Exit Test Mode", line=3),
+        mock.call("*: Page 1", line=4)]
+    )
 
 # Test TestMode
 @mock.patch.object(TestMode, "_setNextState")
-@mock.patch.object(LCD_interface, "display_list")
-def test_TestMode(displayListMock, setNextStateMock):
+@mock.patch.object(LCD_interface, "lcd_out")
+def test_TestMode(lcdOutMock, setNextStateMock):
     testMode = TestMode(Titrator(), MainMenu(Titrator()))
 
     testMode.loop()
-    assert displayListMock.called_with(testMode.TEST_OPTIONS_1)
+    lcdOutMock.assert_has_calls(
+        [mock.call("1: Read Values", line=1),
+        mock.call("2: Pump", line=2),
+        mock.call("3: Set Volume", line=3),
+        mock.call("*: Page 2", line=4)]
+    )
+    lcdOutMock.reset_called()
 
     testMode.handleKey("1")
     setNextStateMock.assert_called_with(ANY, True)
@@ -74,8 +90,13 @@ def test_TestMode(displayListMock, setNextStateMock):
     setNextStateMock.reset_called()
 
     testMode.loop()
-    assert displayListMock.called_with(testMode.TEST_OPTIONS_1)
-    displayListMock.reset_called()
+    lcdOutMock.assert_has_calls(
+        [mock.call("1: Read Values", line=1),
+        mock.call("2: Pump", line=2),
+        mock.call("3: Set Volume", line=3),
+        mock.call("*: Page 2", line=4)]
+    )
+    lcdOutMock.reset_called()
 
     testMode.handleKey("2")
     setNextStateMock.assert_called_with(ANY, True)
@@ -83,8 +104,13 @@ def test_TestMode(displayListMock, setNextStateMock):
     setNextStateMock.reset_called()
     
     testMode.loop()
-    assert displayListMock.called_with(testMode.TEST_OPTIONS_1)
-    displayListMock.reset_called()
+    lcdOutMock.assert_has_calls(
+        [mock.call("1: Read Values", line=1),
+        mock.call("2: Pump", line=2),
+        mock.call("3: Set Volume", line=3),
+        mock.call("*: Page 2", line=4)]
+    )
+    lcdOutMock.reset_called()
 
     testMode.handleKey("3")
     setNextStateMock.assert_called_with(ANY, True)
@@ -92,15 +118,25 @@ def test_TestMode(displayListMock, setNextStateMock):
     setNextStateMock.reset_called()
 
     testMode.loop()
-    assert displayListMock.called_with(testMode.TEST_OPTIONS_1)
-    displayListMock.reset_called()
+    lcdOutMock.assert_has_calls(
+        [mock.call("1: Read Values", line=1),
+        mock.call("2: Pump", line=2),
+        mock.call("3: Set Volume", line=3),
+        mock.call("*: Page 2", line=4)]
+    )
+    lcdOutMock.reset_called()
 
     testMode.handleKey('*')
     assert(testMode.subState == 2)
 
     testMode.loop()
-    assert displayListMock.called_with(testMode.TEST_OPTIONS_2)
-    displayListMock.reset_called()
+    lcdOutMock.assert_has_calls(
+        [mock.call("4: Toggle Test Mode", line=1),
+        mock.call("5: Read Volume", line=2),
+        mock.call("6: Exit Test Mode", line=3),
+        mock.call("*: Page 1", line=4)]
+    )
+    lcdOutMock.reset_called()
 
     testMode.handleKey("4")
     setNextStateMock.assert_called_with(ANY, True)
@@ -108,7 +144,13 @@ def test_TestMode(displayListMock, setNextStateMock):
     setNextStateMock.reset_called()
 
     testMode.loop()
-    assert displayListMock.called_with(testMode.TEST_OPTIONS_2)
+    lcdOutMock.assert_has_calls(
+        [mock.call("4: Toggle Test Mode", line=1),
+        mock.call("5: Read Volume", line=2),
+        mock.call("6: Exit Test Mode", line=3),
+        mock.call("*: Page 1", line=4)]
+    )
+    lcdOutMock.reset_called()
 
     testMode.handleKey("5")
     setNextStateMock.assert_called_with(ANY, True)
@@ -116,7 +158,13 @@ def test_TestMode(displayListMock, setNextStateMock):
     setNextStateMock.reset_called()
     
     testMode.loop()
-    assert displayListMock.called_with(testMode.TEST_OPTIONS_2)
+    lcdOutMock.assert_has_calls(
+        [mock.call("4: Toggle Test Mode", line=1),
+        mock.call("5: Read Volume", line=2),
+        mock.call("6: Exit Test Mode", line=3),
+        mock.call("*: Page 1", line=4)]
+    )
+    lcdOutMock.reset_called()
 
     testMode.handleKey("6")
     setNextStateMock.assert_called_with(ANY, True)
