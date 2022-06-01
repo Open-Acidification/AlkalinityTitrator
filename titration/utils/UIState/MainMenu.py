@@ -11,7 +11,6 @@ from titration.utils import LCD_interface
 class MainMenu (UIState.UIState):
     def __init__(self, titrator):
         UIState.__init__('MainMenu', titrator)
-        self.routineSelection = 1
         self.titrator = titrator
         self.subState = 1
 
@@ -20,9 +19,9 @@ class MainMenu (UIState.UIState):
 
     def handleKey(self, key):
         # Substate 1 key handle
-        if self.routineSelection == 1:
+        if self.subState == 1:
             if key == constants.KEY_STAR:
-                self.routineSelection = 2
+                self.subState = 2
 
             elif key == constants.KEY_1:
                 # Next state SetupTitration
@@ -39,7 +38,7 @@ class MainMenu (UIState.UIState):
         # Substate 2 key handle
         else:
             if key == constants.KEY_STAR:
-                self.routineSelection = 1
+                self.subState = 1
 
             elif key == constants.KEY_4:
                 # Next state UpdateSettings
@@ -54,7 +53,7 @@ class MainMenu (UIState.UIState):
 
     def loop(self):
         # Substate 1 output
-        if self.routineSelection == 1:
+        if self.subState == 1:
             LCD_interface.display_list(constants.ROUTINE_OPTIONS_1)    # TODO: change to LCD
             
         # Substate 2 output

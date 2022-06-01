@@ -25,7 +25,7 @@ def test_handleKey(mock):
     mock.reset_mock()
 
     mainMenu.handleKey('*')
-    assert(mainMenu.routineSelection == 2)
+    assert(mainMenu.subState == 2)
 
     mainMenu.handleKey("4")
     mock.assert_called_with(ANY, True)
@@ -38,7 +38,7 @@ def test_handleKey(mock):
     mock.reset_mock()
 
     mainMenu.handleKey("*")
-    assert(mainMenu.routineSelection == 1)
+    assert(mainMenu.subState == 1)
 
 # Test loop
 @mock.patch.object(LCD_interface, "display_list")
@@ -49,7 +49,7 @@ def test_loop(mock):
     mock.assert_called_with(constants.ROUTINE_OPTIONS_1)
     mock.reset_mock()
 
-    mainMenu.routineSelection = 2
+    mainMenu.subState = 2
     mainMenu.loop()
     mock.assert_called_with(constants.ROUTINE_OPTIONS_2)
 
@@ -79,7 +79,7 @@ def test_MainMenu(mock1, mock2):
     mock1.reset_mock()
 
     mainMenu.handleKey("*")
-    assert(mainMenu.routineSelection == 2)
+    assert(mainMenu.subState == 2)
 
     mainMenu.loop()
     mock2.assert_called_with(constants.ROUTINE_OPTIONS_2)
@@ -96,4 +96,4 @@ def test_MainMenu(mock1, mock2):
     mock1.reset_mock()
 
     mainMenu.handleKey("*")
-    assert(mainMenu.routineSelection == 1)
+    assert(mainMenu.subState == 1)
