@@ -60,15 +60,49 @@ Run installation script
 sudo ./install.sh
 ```
 
-## User Instructions
+## Device Environment Instructions
 
-Run script
+To run (with the UI State Machine integrated)
 
 ``` sh
 ./run.sh
 ```
 
-Follow the user prompts and you're good to go!
+## Local Environment Instructions
+
+To run in a local environment with mocked devices (with the UI State Machine integrated)
+
+``` sh
+./run_mocked.sh
+```
+
+## Device Environment Instructions (old)
+
+To run (the old version without the UI State Machine integrated)
+
+``` sh
+./run_old.sh
+```
+
+This is the old way to run the code until the titration processes have been integrated into the new UI State Machine.
+
+## Local Environment Instructions (old)
+
+To run in a local environment with mocked devices (the old version without the UI State Machine integrated)
+
+``` sh
+./run_old_mocked.sh
+```
+
+This is the old way to run the code mocked until the titration processes have been integrated into the new UI State Machine.
+
+## Testing
+
+To perform Pytest tests for the devices and UI states.
+
+``` sh
+./test.sh
+```
 
 ## Pins
 

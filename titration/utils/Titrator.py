@@ -44,9 +44,6 @@ class Titrator:
         if (update):
             self._updateState()
 
-    def setup():
-        pass
-
     def _updateState(self):
         if (self.nextState):
             print("Titrator::updateState() to ", self.nextState.name())

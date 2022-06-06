@@ -7,7 +7,6 @@ from titration.utils.UIState.calibration import SetupCalibration
 from titration.utils.UIState.update_settings import UpdateSettings
 from titration.utils import LCD_interface
 
-# TODO: change to substate
 class MainMenu (UIState.UIState):
     def __init__(self, titrator):
         UIState.__init__('MainMenu', titrator)

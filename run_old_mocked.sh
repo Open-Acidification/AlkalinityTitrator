@@ -1,2 +1,2 @@
 #!/bin/sh
-pipenv run python main.py -test
+pipenv run python main.py -dev -old
