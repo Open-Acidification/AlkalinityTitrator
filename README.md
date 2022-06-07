@@ -19,6 +19,10 @@ The titration process used in this project is based on SOP 3b from
 
 ```Christian, James Robert, Andrew G. Dickson, and Christopher L. Sabine. Guide to Best Practices for Ocean CO2 Measurements. Sidney, B.C.: North Pacific Marine Science Organization, 2007.```
 
+## Current Development Note
+
+The most recent development in this project is the implementation of a UI State Machine framework (see the titration/utils/UIState folder for UI states implemented). While the UI State Machine framework has been fully implemented, the actual titration processes and routines have not been integreated with the UI State Machine (see GitHub Issues for for further specifications). 
+
 ## Setup and Installation
 
 ### Setting up the Raspberry Pi
