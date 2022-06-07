@@ -63,8 +63,9 @@ Run installation script
 ``` sh
 sudo ./install.sh
 ```
+## User Instructions
 
-## Run on Device Instructions
+### Run on Device
 
 To run (with the UI State Machine integrated)
 
@@ -72,7 +73,7 @@ To run (with the UI State Machine integrated)
 ./run.sh
 ```
 
-## Run in Local Environment Instructions
+### Run in Local Environment
 
 To run in a local environment with mocked devices (with the UI State Machine integrated)
 
@@ -80,7 +81,7 @@ To run in a local environment with mocked devices (with the UI State Machine int
 ./run_mocked.sh
 ```
 
-## Run on Device Instructions (old)
+### Run on Device (old)
 
 To run (the old version without the UI State Machine integrated)
 
@@ -90,7 +91,7 @@ To run (the old version without the UI State Machine integrated)
 
 This is the old way to run the code until the titration processes have been integrated into the new UI State Machine.
 
-## Run in Local Environment Instructions (old)
+### Run in Local Environment (old)
 
 To run in a local environment with mocked devices (the old version without the UI State Machine integrated)
 
