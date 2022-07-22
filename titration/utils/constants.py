@@ -3,6 +3,7 @@ LCD_CONSOLE = False
 
 VALID_INPUT_WARNING = "Input Invalid"
 # keypad
+NO_KEY = ""
 KEY_0 = "0"
 KEY_1 = "1"
 KEY_2 = "2"
@@ -32,20 +33,6 @@ ROUTINE_OPTIONS_2 = {
     KEY_4: "Update settings",
     KEY_5: "Test Mode",
     KEY_6: "Exit",
-    KEY_STAR: "Page 1",
-}
-
-TEST_OPTIONS_1 = {
-    KEY_1: "Read Values",
-    KEY_2: "Pump",
-    KEY_3: "Set Volume",
-    KEY_STAR: "Page 2",
-}
-
-TEST_OPTIONS_2 = {
-    KEY_4: "Toggle Test Mode",
-    KEY_5: "Read Volume",
-    KEY_6: "Exit Test Mode",
     KEY_STAR: "Page 1",
 }
 

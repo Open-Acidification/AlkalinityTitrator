@@ -3,6 +3,7 @@ import traceback
 
 from titration.utils import analysis, constants, interfaces, routines
 
+# The old driver function for the alkalinity titrator. Does implement the UI state machine that has since been created.
 
 def run():
     """Main driver for the program. Initializes components and queries the user for next steps"""

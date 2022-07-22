@@ -19,6 +19,10 @@ The titration process used in this project is based on SOP 3b from
 
 ```Christian, James Robert, Andrew G. Dickson, and Christopher L. Sabine. Guide to Best Practices for Ocean CO2 Measurements. Sidney, B.C.: North Pacific Marine Science Organization, 2007.```
 
+## Current Development Note
+
+The most recent development in this project is the implementation of a UI State Machine framework (see the titration/utils/UIState folder for UI states implemented). While the UI State Machine framework has been fully implemented, the actual titration processes and routines have not been integreated with the UI State Machine (see GitHub Issues for for further specifications). 
+
 ## Setup and Installation
 
 ### Setting up the Raspberry Pi
@@ -59,16 +63,51 @@ Run installation script
 ``` sh
 sudo ./install.sh
 ```
-
 ## User Instructions
 
-Run script
+### Run on Device
+
+To run (with the UI State Machine integrated)
 
 ``` sh
 ./run.sh
 ```
 
-Follow the user prompts and you're good to go!
+### Run in Local Environment
+
+To run in a local environment with mocked devices (with the UI State Machine integrated)
+
+``` sh
+./run_mocked.sh
+```
+
+### Run on Device (old)
+
+To run (the old version without the UI State Machine integrated)
+
+``` sh
+./run_old.sh
+```
+
+This is the old way to run the code until the titration processes have been integrated into the new UI State Machine.
+
+### Run in Local Environment (old)
+
+To run in a local environment with mocked devices (the old version without the UI State Machine integrated)
+
+``` sh
+./run_old_mocked.sh
+```
+
+This is the old way to run the code mocked until the titration processes have been integrated into the new UI State Machine.
+
+## Testing
+
+To perform Pytest tests for the devices and UI states.
+
+``` sh
+./test.sh
+```
 
 ## Pins
 
