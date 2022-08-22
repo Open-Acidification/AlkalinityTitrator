@@ -1,0 +1,10 @@
+github
+https
+MOSI
+mosi
+SCK
+sck
+SCL
+scl
+ssh
+ubuntu
