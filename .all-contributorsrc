@@ -52,6 +52,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "kieransukachevin",
+      "name": "Kieran Sukachevin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/54186484?v=4",
+      "profile": "https://kieransukachevin.github.io/first%20portfolio/portfolio.html",
+      "contributions": [
+        "test",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
