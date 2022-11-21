@@ -2,7 +2,7 @@ from unittest import mock
 from unittest.mock import ANY
 from titration.utils.UIState.MainMenu import MainMenu 
 from titration.utils.UIState.test_mode.TestMode import TestMode
-from titration.utils.titrator import Titrator
+from titration.utils.Titrator import Titrator
 from titration.utils import LCD_interface, constants
 from titration.utils.UIState.test_mode.ToggleTestMode import ToggleTestMode
 

@@ -3,7 +3,7 @@ from unittest.mock import ANY
 from titration.utils.UIState.MainMenu import MainMenu
 from titration.utils.UIState.calibration.CalibrateTemp import CalibrateTemp
 from titration.utils.UIState.calibration.SetupCalibration import SetupCalibration
-from titration.utils.titrator import Titrator
+from titration.utils.Titrator import Titrator
 from titration.utils import LCD_interface, constants
 
 # Test handleKey

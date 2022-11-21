@@ -1,7 +1,7 @@
 from unittest import mock
 from unittest.mock import ANY
 from titration.utils.UIState.MainMenu import MainMenu
-from titration.utils.titrator import Titrator
+from titration.utils.Titrator import Titrator
 from titration.utils.UIState.update_settings.UpdateSettings import UpdateSettings
 from titration.utils import LCD_interface
 

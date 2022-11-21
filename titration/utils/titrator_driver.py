@@ -1,6 +1,6 @@
-from titration.utils import titrator
+from titration.utils import Titrator
 
-titrator = titrator.Titrator()
+titrator = Titrator.Titrator()
 
 def run():
     while True:
