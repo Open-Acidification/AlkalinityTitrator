@@ -36,7 +36,7 @@ ui_keypad = keypad_class.Keypad(
 lines = {1: "", 2: "", 3: "", 4: ""}
 
 
-def lcd_out(  # TODO: change to cammel-case
+def lcd_out(  # TODO: change to camel-case
     message, line, style=constants.LCD_LEFT_JUST, console=False
 ):
     """
