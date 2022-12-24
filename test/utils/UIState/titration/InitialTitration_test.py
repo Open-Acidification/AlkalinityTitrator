@@ -4,6 +4,7 @@ from titration.utils.UIState.titration.InitialTitration import InitialTitration
 from titration.utils.Titrator import Titrator
 from titration.utils import LCD_interface, constants
 
+
 # Test handleKey
 def test_handleKey():
     initialTitration = InitialTitration(Titrator())

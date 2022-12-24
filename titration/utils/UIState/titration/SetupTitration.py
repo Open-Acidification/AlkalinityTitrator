@@ -1,4 +1,3 @@
-from distutils.util import subst_vars
 from titration.utils.UIState import UIState
 from titration.utils import constants
 from titration.utils.UIState.titration.InitialTitration import InitialTitration

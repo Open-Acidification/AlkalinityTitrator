@@ -1,18 +1,11 @@
-from titration.utils.UIState import UIState, MainMenu
-from titration.utils import interfaces, constants
+from titration.utils import constants
 import types
 
-if constants.IS_TEST == False:  # See conftest.py for configuration of pytest
-    from titration.utils.devices import (
-        keypad,
-        lcd,
-    )
 from titration.utils.devices import (
     board_mock,
     keypad_mock,
     lcd_mock,
 )
-from titration.utils.devices.keypad_mock import Keypad
 
 lcd_class: types.ModuleType = lcd_mock
 board_class: types.ModuleType = board_mock
@@ -77,7 +70,8 @@ def read_user_input(valid_inputs=None, console=False):
         # temperature_controller.update()
 
         if console:
-            user_input = mock_input()  # Poll keypad
+            dummy = None
+            # ? user_input = mock_input()  # Poll keypad
         else:
             user_input = ui_keypad.keypad_poll()
             pass

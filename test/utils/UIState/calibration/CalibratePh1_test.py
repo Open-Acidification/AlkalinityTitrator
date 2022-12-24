@@ -4,7 +4,8 @@ from titration.utils.UIState.MainMenu import MainMenu
 from titration.utils.UIState.calibration.CalibratePh import CalibratePh
 from titration.utils.UIState.calibration.SetupCalibration import SetupCalibration
 from titration.utils.Titrator import Titrator
-from titration.utils import LCD_interface, constants
+from titration.utils import LCD_interface
+
 
 # Test handleKey
 @mock.patch.object(CalibratePh, "_setNextState")
@@ -122,10 +123,10 @@ def test_CalibratePh(lcdOutMock, setNextStateMock):
                     calibratePh.values["buffer1_actual_pH"],
                     calibratePh.values["buffer1_measured_volts"],
                 ),
-            line=2,
-        ),
-        mock.call("Press any to cont", line=3),
-        mock.call("", line=4),
+                line=2,
+            ),
+            mock.call("Press any to cont", line=3),
+            mock.call("", line=4),
         ]
     )
 

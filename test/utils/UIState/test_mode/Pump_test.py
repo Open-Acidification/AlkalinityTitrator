@@ -6,6 +6,7 @@ from titration.utils.Titrator import Titrator
 from titration.utils import LCD_interface
 from titration.utils.UIState.test_mode.Pump import Pump
 
+
 # Test handleKey
 @mock.patch.object(Pump, "_setNextState")
 def test_handleKey(setNextStateMock):

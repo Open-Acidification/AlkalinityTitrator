@@ -4,6 +4,7 @@ from titration.utils.UIState.titration.AutomaticTitration import AutomaticTitrat
 from titration.utils.Titrator import Titrator
 from titration.utils import LCD_interface
 
+
 # Test handleKey
 @mock.patch.object(AutomaticTitration, "_setNextState")
 def test_handleKey(setNextStateMock):

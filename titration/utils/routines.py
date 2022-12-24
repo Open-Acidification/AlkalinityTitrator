@@ -50,9 +50,9 @@ def test_mode():
                 page = 1
         # Display the proper page
         if page == 1:
-            interfaces.display_list(constants.TEST_OPTIONS_1)
+            interfaces.display_list(constants.ROUTINE_OPTIONS_1)
         else:
-            interfaces.display_list(constants.TEST_OPTIONS_2)
+            interfaces.display_list(constants.ROUTINE_OPTIONS_2)
 
         user_choice = interfaces.read_user_input()
 

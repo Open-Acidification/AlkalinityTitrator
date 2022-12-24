@@ -1,6 +1,7 @@
 from titration.utils.UIState import UIState
 from titration.utils import LCD_interface
 
+
 # TODO: feedback on number of pumps; one state? Use "D" to exit always
 # TODO: implement constant feedback on pumping
 class PrimePump(UIState.UIState):

@@ -4,7 +4,8 @@ from titration.utils.UIState.MainMenu import MainMenu
 from titration.utils.UIState.calibration.CalibrateTemp import CalibrateTemp
 from titration.utils.UIState.calibration.SetupCalibration import SetupCalibration
 from titration.utils.Titrator import Titrator
-from titration.utils import LCD_interface, constants
+from titration.utils import LCD_interface
+
 
 # Test handleKey
 @mock.patch.object(CalibrateTemp, "_setNextState")

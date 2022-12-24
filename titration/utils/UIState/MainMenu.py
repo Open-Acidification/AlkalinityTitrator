@@ -1,5 +1,5 @@
 from titration.utils.UIState import UIState
-from titration.utils import interfaces, constants
+from titration.utils import constants
 from titration.utils.UIState.prime_pump import PrimePump
 from titration.utils.UIState.test_mode import TestMode
 from titration.utils.UIState.titration import SetupTitration

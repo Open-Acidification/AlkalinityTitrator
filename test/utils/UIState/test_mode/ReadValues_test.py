@@ -6,6 +6,7 @@ from titration.utils.Titrator import Titrator
 from titration.utils import LCD_interface, interfaces
 from titration.utils.UIState.test_mode.ReadValues import ReadValues
 
+
 # Test handleKey
 @mock.patch.object(ReadValues, "_setNextState")
 def test_handleKey(setNextStateMock):

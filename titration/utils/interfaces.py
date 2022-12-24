@@ -5,7 +5,7 @@ import types
 
 from titration.utils import analysis, constants
 
-if constants.IS_TEST == False:  # See conftest.py for configuration of pytest
+if constants.IS_TEST is False:  # See conftest.py for configuration of pytest
     from titration.utils.devices import (
         keypad,
         lcd,

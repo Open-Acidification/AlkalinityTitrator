@@ -44,7 +44,7 @@ class Titrator:
             " to ",
             newState.name(),
         )
-        assert self.nextState == None
+        assert self.nextState is None
         self.nextState = newState
         if update:
             self._updateState()

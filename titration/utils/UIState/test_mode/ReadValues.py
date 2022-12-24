@@ -1,6 +1,7 @@
 from titration.utils.UIState import UIState
 from titration.utils import LCD_interface, interfaces
 
+
 # TODO: read from actual devices
 class ReadValues(UIState.UIState):
     def __init__(self, titrator, state):

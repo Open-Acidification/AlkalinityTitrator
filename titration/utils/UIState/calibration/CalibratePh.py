@@ -1,5 +1,5 @@
 from titration.utils.UIState import UIState
-from titration.utils import LCD_interface, constants
+from titration.utils import LCD_interface
 from titration.utils.UIState.user_value.UserValue import UserValue
 
 
