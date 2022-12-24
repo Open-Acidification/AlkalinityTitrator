@@ -4,6 +4,7 @@ from titration.utils.UIState.titration.AutomaticTitration import AutomaticTitrat
 from titration.utils.Titrator import Titrator
 from titration.utils import LCD_interface
 
+
 # Test handleKey
 @mock.patch.object(AutomaticTitration, "_setNextState")
 def test_handleKey(setNextStateMock):
@@ -17,7 +18,7 @@ def test_handleKey(setNextStateMock):
 
     automaticTitration.handleKey("1")
     assert automaticTitration.subState == 4
-    
+
     automaticTitration.handleKey("0")
     setNextStateMock.assert_called_with(ANY, True)
     assert setNextStateMock.call_args.args[0].name() == "MainMenu"
@@ -33,7 +34,7 @@ def test_loop(lcdOutMock):
         [
             mock.call(
                 "Titrating to {} pH".format(
-                    str(automaticTitration.values['pH_target'])
+                    str(automaticTitration.values["pH_target"])
                 ),
                 line=1,
             ),
@@ -61,7 +62,7 @@ def test_loop(lcdOutMock):
     lcdOutMock.assert_has_calls(
         [
             mock.call(
-                "pH value {} reached".format(automaticTitration.values['current_pH']),
+                "pH value {} reached".format(automaticTitration.values["current_pH"]),
                 line=1,
             ),
             mock.call("", line=2),
@@ -93,7 +94,7 @@ def test_AutomaticTitration(lcdOutMock, setNextStateMock):
         [
             mock.call(
                 "Titrating to {} pH".format(
-                    str(automaticTitration.values['pH_target'])
+                    str(automaticTitration.values["pH_target"])
                 ),
                 line=1,
             ),

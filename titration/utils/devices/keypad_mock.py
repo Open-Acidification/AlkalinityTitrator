@@ -1,5 +1,4 @@
-from pynput.keyboard import Key, Listener
-import click, sys
+import click
 
 
 """

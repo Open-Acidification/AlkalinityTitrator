@@ -2,7 +2,8 @@ from unittest import mock
 from unittest.mock import ANY
 from titration.utils.UIState.titration.CalibratePh import CalibratePh
 from titration.utils.Titrator import Titrator
-from titration.utils import LCD_interface, constants
+from titration.utils import LCD_interface
+
 
 # Test handleKey
 @mock.patch.object(CalibratePh, "_setNextState")

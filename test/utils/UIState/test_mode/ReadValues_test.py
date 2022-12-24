@@ -6,6 +6,7 @@ from titration.utils.Titrator import Titrator
 from titration.utils import LCD_interface, interfaces
 from titration.utils.UIState.test_mode.ReadValues import ReadValues
 
+
 # Test handleKey
 @mock.patch.object(ReadValues, "_setNextState")
 def test_handleKey(setNextStateMock):
@@ -38,7 +39,7 @@ def test_loop(delayMock, lcdOutMock):
                 ),
                 mock.call(
                     "pH V: {0:>3.4f} mV".format(readValues.values["pH_volts"] * 1000),
-                    line=4
+                    line=4,
                 ),
                 mock.call("Reading: {}".format(i), 1, console=True),
             ]
@@ -64,7 +65,7 @@ def test_ReadValues(delayMock, lcdOutMock, setNextStateMock):
 
     readValues.loop()
     assert delayMock.called_with(readValues.values["timeStep"])
-    for i in range(readValues.values['numVals']):
+    for i in range(readValues.values["numVals"]):
         lcdOutMock.assert_has_calls(
             [
                 mock.call(
@@ -78,7 +79,7 @@ def test_ReadValues(delayMock, lcdOutMock, setNextStateMock):
                 ),
                 mock.call(
                     "pH V: {0:>3.4f} mV".format(readValues.values["pH_volts"] * 1000),
-                    line=4
+                    line=4,
                 ),
                 mock.call("Reading: {}".format(i), 1, console=True),
             ]

@@ -6,9 +6,7 @@ from titration.utils.devices.keypad_mock import Keypad
 # TODO: look at ModuleType
 # TODO: log instead of print
 if constants.IS_TEST:
-    from titration.utils.devices import (
-        board_mock
-    )
+    from titration.utils.devices import board_mock
 
 board_class: types.ModuleType = board_mock
 
@@ -16,14 +14,16 @@ if constants.IS_TEST:
     board_class = board_mock
 else:
     import board
+
     board_class = board
+
 
 class Titrator:
     def __init__(self):
         self.state = MainMenu.MainMenu(self)
         self.nextState = None
-        interfaces.setup_interfaces() # TODO: look at removing, update to not call LCD and keypad
-        self.keypad = Keypad(       
+        interfaces.setup_interfaces()  # TODO: look at removing, update to not call LCD and keypad
+        self.keypad = Keypad(
             r0=board_class.D1,
             r1=board_class.D6,
             r2=board_class.D5,
@@ -35,19 +35,24 @@ class Titrator:
         )
 
     def loop(self):
-        self._handleUI()                            # look at keypad, update LCD
+        self._handleUI()  # look at keypad, update LCD
 
     def setNextState(self, newState, update):
-        print("Titrator::setNextState() from ", self.nextState.name() if self.nextState else 'nullptr', " to ", newState.name())
-        assert(self.nextState == None)
+        print(
+            "Titrator::setNextState() from ",
+            self.nextState.name() if self.nextState else "nullptr",
+            " to ",
+            newState.name(),
+        )
+        assert self.nextState is None
         self.nextState = newState
-        if (update):
+        if update:
             self._updateState()
 
     def _updateState(self):
-        if (self.nextState):
+        if self.nextState:
             print("Titrator::updateState() to ", self.nextState.name())
-            assert(self.state != self.nextState)
+            assert self.state != self.nextState
             self.state = self.nextState
             self.nextState = None
             self.state.start()
@@ -58,5 +63,11 @@ class Titrator:
         print("Titrator::handleUI() - ", self.state.name(), "::handleKey(", key, ")")
         self.state.handleKey(key)
         self._updateState()
-        print("Titrator::handleUI() - ", self.state.name(), "::substate", self.state.subState, "::loop()")
+        print(
+            "Titrator::handleUI() - ",
+            self.state.name(),
+            "::substate",
+            self.state.subState,
+            "::loop()",
+        )
         self.state.loop()

@@ -6,15 +6,16 @@ from titration.utils.UIState.test_mode.ReadVolume import ReadVolume
 from titration.utils.UIState.test_mode.SetVolume import SetVolume
 from titration.utils.UIState.test_mode.ToggleTestMode import ToggleTestMode
 
+
 class TestMode(UIState.UIState):
     def __init__(self, titrator, state):
-        UIState.__init__('TestMode', titrator)
+        UIState.__init__("TestMode", titrator)
         self.titrator = titrator
         self.subState = 1
         self.previousState = state
 
     def name(self):
-        return 'TestMode'
+        return "TestMode"
 
     def handleKey(self, key):
         if self.subState == 1:
@@ -26,7 +27,7 @@ class TestMode(UIState.UIState):
 
             elif key == constants.KEY_2:
                 self._setNextState(Pump(self.titrator, self), True)
-            
+
             elif key == constants.KEY_3:
                 self._setNextState(SetVolume(self.titrator, self), True)
 
@@ -39,7 +40,7 @@ class TestMode(UIState.UIState):
 
             elif key == constants.KEY_5:
                 self._setNextState(ReadVolume(self.titrator, self), True)
-            
+
             elif key == constants.KEY_6:
                 self._setNextState(self.previousState, True)
 
@@ -50,7 +51,7 @@ class TestMode(UIState.UIState):
             LCD_interface.lcd_out("3: Set Volume", line=3)
             LCD_interface.lcd_out("*: Page 2", line=4)
 
-        elif self.subState == 2:    
+        elif self.subState == 2:
             LCD_interface.lcd_out("4: Toggle Test Mode", line=1)
             LCD_interface.lcd_out("5: Read Volume", line=2)
             LCD_interface.lcd_out("6: Exit Test Mode", line=3)

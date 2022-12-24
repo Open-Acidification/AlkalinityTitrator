@@ -16,7 +16,7 @@ serial_mock_test.py
 serial_mock_test.py:5:0: E0401: Unable to import 'titration.utils.constants' (import-error)
 serial_mock_test.py:6:0: E0401: Unable to import 'titration.utils.devices.serial_mock' (import-error)
 
-syring_pump_mock_test.py
+syringe_pump_mock_test.py
 syringe_pump_mock_test.py:5:0: E0401: Unable to import 'titration.utils' (import-error)
 syringe_pump_mock_test.py:6:0: E0401: Unable to import 'titration.utils.devices' (import-error)
 

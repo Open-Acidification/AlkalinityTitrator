@@ -2,39 +2,40 @@ from titration.utils.UIState import UIState
 from titration.utils import LCD_interface
 from titration.utils.UIState.user_value.UserValue import UserValue
 
+
 class UpdateSettings(UIState.UIState):
     def __init__(self, titrator, state):
-        UIState.__init__('UpdateSettings', titrator)
+        UIState.__init__("UpdateSettings", titrator)
         self.titrator = titrator
-        self.values = {'vol_in_pump' : 0}
+        self.values = {"vol_in_pump": 0}
         self.subState = 1
         self.previousState = state
 
     def name(self):
-        return 'UpdateSettings'
+        return "UpdateSettings"
 
     def handleKey(self, key):
         if self.subState == 1:
-            if key != 'n' and key != 'N':
+            if key != "n" and key != "N":
                 self.subState += 1
             else:
                 self.subState += 2
-        
+
         elif self.subState == 2:
             self.subState += 1
-        
+
         elif self.subState == 3:
-            if key != 'n' and key != 'N':
+            if key != "n" and key != "N":
                 self.subState += 1
             else:
                 self._setNextState(self.previousState, True)
 
         elif self.subState == 4:
-            self._setNextState(UserValue(self.titrator, self, 'Volume in pump:'), True)
+            self._setNextState(UserValue(self.titrator, self, "Volume in pump:"), True)
             self.subState += 1
-        
+
         elif self.subState == 5:
-            self._setNextState(self.previousState, True) 
+            self._setNextState(self.previousState, True)
 
     def loop(self):
         if self.subState == 1:
@@ -43,7 +44,7 @@ class UpdateSettings(UIState.UIState):
             LCD_interface.lcd_out("settings to default?", line=2)
             LCD_interface.lcd_out("(y/n)", line=3)
             LCD_interface.lcd_out("", line=4)
-        
+
         elif self.subState == 2:
             LCD_interface.lcd_clear()
             LCD_interface.lcd_out("Default constants", line=1)

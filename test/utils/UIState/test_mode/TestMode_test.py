@@ -5,6 +5,7 @@ from titration.utils.Titrator import Titrator
 from titration.utils import LCD_interface
 from titration.utils.UIState.test_mode.TestMode import TestMode
 
+
 # Test handleKey
 @mock.patch.object(TestMode, "_setNextState")
 def test_handleKey(setNextStateMock):
@@ -112,7 +113,7 @@ def test_TestMode(lcdOutMock, setNextStateMock):
     setNextStateMock.assert_called_with(ANY, True)
     assert setNextStateMock.call_args.args[0].name() == "Pump"
     setNextStateMock.reset_called()
-    
+
     testMode.loop()
     lcdOutMock.assert_has_calls(
         [
@@ -174,7 +175,7 @@ def test_TestMode(lcdOutMock, setNextStateMock):
     setNextStateMock.assert_called_with(ANY, True)
     assert setNextStateMock.call_args.args[0].name() == "ReadVolume"
     setNextStateMock.reset_called()
-    
+
     testMode.loop()
     lcdOutMock.assert_has_calls(
         [

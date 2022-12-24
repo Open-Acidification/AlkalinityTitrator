@@ -2,6 +2,7 @@ adafruit
 allcontributors
 antiwindup
 arduino
+args
 argv
 backlight
 Barun
@@ -18,8 +19,10 @@ cls
 Clure
 colorzero
 config
+conftest
 controlparam
 copysign
+cov
 csv
 ctime
 datetime
@@ -29,6 +32,7 @@ digitalio
 elif
 emoji
 ETris
+getchar
 github
 gpio
 gpiozero
@@ -44,6 +48,7 @@ isdigit
 isnumeric
 json
 kadensukachevin
+kieransukachevin
 len
 linkedin
 Linux
@@ -58,6 +63,7 @@ mosi
 Mozilla
 mypy
 noqa
+nullptr
 numpy
 Onthank
 opcodes
@@ -75,6 +81,7 @@ pwmio
 pycodestyle
 pyftdi
 pylint
+pynput
 pypi
 pyplot
 pyserial
@@ -121,6 +128,7 @@ timestep
 todo
 TXD
 uint
+unittest
 url
 userinterface
 utils

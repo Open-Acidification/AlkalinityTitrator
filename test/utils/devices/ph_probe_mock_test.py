@@ -7,6 +7,7 @@ import pytest
 import titration.utils.devices.board_mock as board_mock
 import titration.utils.devices.ph_probe_mock as ph_probe_mock
 
+
 def test_ph_create():
     """
     Function to test creating a mock pH probe

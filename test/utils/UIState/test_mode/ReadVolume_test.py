@@ -6,6 +6,7 @@ from titration.utils import LCD_interface, constants
 from titration.utils.UIState.test_mode.ReadVolume import ReadVolume
 from titration.utils.UIState.test_mode.TestMode import TestMode
 
+
 # Test handleKey
 @mock.patch.object(ReadVolume, "_setNextState")
 def test_handleKey(setNextStateMock):

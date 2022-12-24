@@ -4,6 +4,7 @@ from titration.utils.UIState import MainMenu
 from titration.utils.Titrator import Titrator
 from titration.utils import LCD_interface, constants
 
+
 # Test handleKey
 @mock.patch.object(MainMenu.MainMenu, "_setNextState")
 def test_handleKey(mock):
@@ -64,7 +65,7 @@ def test_MainMenu(mock1, mock2):
     mainMenu.loop()
     mock2.assert_called_with(constants.ROUTINE_OPTIONS_1)
     mock2.reset_mock()
-    
+
     mainMenu.handleKey("1")
     mock1.assert_called_with(ANY, True)
     assert mock1.call_args.args[0].name() == "SetupTitration"

@@ -1,7 +1,7 @@
-class UIState():
+class UIState:
     def __init__(self, titrator):
         self.titrator = titrator
- 
+
     def handleKey(self, key):
         pass
 

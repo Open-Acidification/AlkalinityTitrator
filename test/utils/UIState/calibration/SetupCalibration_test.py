@@ -3,7 +3,8 @@ from unittest.mock import ANY
 from titration.utils.UIState.MainMenu import MainMenu
 from titration.utils.UIState.calibration.SetupCalibration import SetupCalibration
 from titration.utils.Titrator import Titrator
-from titration.utils import LCD_interface, constants
+from titration.utils import LCD_interface
+
 
 # Test handleKey
 @mock.patch.object(SetupCalibration, "_setNextState")
@@ -33,7 +34,7 @@ def test_loop(lcdOutMock):
     setupCalibration.loop()
     lcdOutMock.assert_has_calls(
         [
-            mock.call("1. pH", line=1), 
+            mock.call("1. pH", line=1),
             mock.call("2. Temperature", line=2),
             mock.call("3. Return", line=3),
             mock.call("", line=4),
@@ -49,8 +50,8 @@ def test_SetupCalibration(lcdOutMock, setNextStateMock):
 
     setupCalibration.loop()
     lcdOutMock.assert_has_calls(
-        [  
-            mock.call("1. pH", line=1), 
+        [
+            mock.call("1. pH", line=1),
             mock.call("2. Temperature", line=2),
             mock.call("3. Return", line=3),
             mock.call("", line=4),

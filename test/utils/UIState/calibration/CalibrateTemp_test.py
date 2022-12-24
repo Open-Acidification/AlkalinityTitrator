@@ -4,7 +4,8 @@ from titration.utils.UIState.MainMenu import MainMenu
 from titration.utils.UIState.calibration.CalibrateTemp import CalibrateTemp
 from titration.utils.UIState.calibration.SetupCalibration import SetupCalibration
 from titration.utils.Titrator import Titrator
-from titration.utils import LCD_interface, constants
+from titration.utils import LCD_interface
+
 
 # Test handleKey
 @mock.patch.object(CalibrateTemp, "_setNextState")
@@ -16,7 +17,7 @@ def test_handleKey(setNextStateMock):
     calibrateTemp.handleKey("1")
     setNextStateMock.assert_called_with(ANY, True)
     assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    assert calibrateTemp.subState == 2 
+    assert calibrateTemp.subState == 2
 
     calibrateTemp.handleKey("1")
     assert calibrateTemp.subState == 3
@@ -61,8 +62,10 @@ def test_loop(lcdOutMock):
     lcdOutMock.assert_has_calls(
         [
             mock.call("Recorded temp:", line=1),
-            mock.call("{0:0.3f}".format(calibrateTemp.values['actual_temperature']), line=2),
-            mock.call("{}".format(calibrateTemp.values['new_ref_resistance']), line=3),
+            mock.call(
+                "{0:0.3f}".format(calibrateTemp.values["actual_temperature"]), line=2
+            ),
+            mock.call("{}".format(calibrateTemp.values["new_ref_resistance"]), line=3),
             mock.call("", line=4),
         ]
     )
@@ -110,8 +113,10 @@ def test_CalibrateTemp(lcdOutMock, setNextStateMock):
     lcdOutMock.assert_has_calls(
         [
             mock.call("Recorded temp:", line=1),
-            mock.call("{0:0.3f}".format(calibrateTemp.values['actual_temperature']), line=2),
-            mock.call("{}".format(calibrateTemp.values['new_ref_resistance']), line=3),
+            mock.call(
+                "{0:0.3f}".format(calibrateTemp.values["actual_temperature"]), line=2
+            ),
+            mock.call("{}".format(calibrateTemp.values["new_ref_resistance"]), line=3),
             mock.call("", line=4),
         ]
     )
