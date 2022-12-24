@@ -69,10 +69,9 @@ def read_user_input(valid_inputs=None, console=False):
     while True:
         # temperature_controller.update()
 
-        if console:
-            dummy = None
-            # ? user_input = mock_input()  # Poll keypad
-        else:
+        # if console:
+        # ? user_input = mock_input()  # Poll keypad
+        if not console:
             user_input = ui_keypad.keypad_poll()
             pass
 
