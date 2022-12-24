@@ -1,14 +1,23 @@
+"""
+Modlue to test mock syringe pump
+"""
+
 from titration.utils import constants, interfaces
 from titration.utils.devices import syringe_pump_mock as syringe
 
-
 def setup_module():
+    """
+    Function to setup syringe test module
+    """
     constants.IS_TEST = True
     interfaces.setup_module_classes()
     interfaces.setup_lcd()
 
 
 def test_syringe_mock_create():
+    """
+    Function to test creating mock syring
+    """
     pump = syringe.Syringe_Pump()
     assert pump is not None
     assert pump.volume_in_pump == constants.volume_in_pump
@@ -17,6 +26,9 @@ def test_syringe_mock_create():
 
 
 def test_syringe_mock_pump_volume_out_less_than(capsys):
+    """
+    Function to test mock syringe pump volume out less than
+    """
     pump = syringe.Syringe_Pump()
     interfaces.ui_lcd.mock_disable_clear()
     pump.set_volume_in_pump(1.0)
@@ -40,6 +52,9 @@ def test_syringe_mock_pump_volume_out_less_than(capsys):
 
 
 def test_syringe_mock_pump_volume_out_greater_than_current(capsys):
+    """
+    Function to test mock syringe pump volume out greater than
+    """
     pump = syringe.Syringe_Pump()
     interfaces.ui_lcd.mock_disable_clear()
     pump.set_volume_in_pump(0.5)
@@ -87,6 +102,9 @@ def test_syringe_mock_pump_volume_out_greater_than_current(capsys):
 
 
 def test_syringe_mock_pump_volume_out_greater_than_max(capsys):
+    """
+    Function to test mock syringe pump volume out greater than max
+    """
     pump = syringe.Syringe_Pump()
     interfaces.ui_lcd.mock_disable_clear()
     pump.set_volume_in_pump(1.0)

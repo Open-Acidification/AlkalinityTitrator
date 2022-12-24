@@ -12,17 +12,18 @@ def test_handleKey(setNextStateMock):
 
     setupCalibration.handleKey("1")
     setNextStateMock.assert_called_with(ANY, True)
-    assert(setNextStateMock.call_args.args[0].name() == "CalibratePh")
+    assert setNextStateMock.call_args.args[0].name() == "CalibratePh"
     setNextStateMock.reset_called()
 
     setupCalibration.handleKey("2")
     setNextStateMock.assert_called_with(ANY, True)
-    assert(setNextStateMock.call_args.args[0].name() == "CalibrateTemp")
+    assert setNextStateMock.call_args.args[0].name() == "CalibrateTemp"
     setNextStateMock.reset_called()
 
     setupCalibration.handleKey("3")
     setNextStateMock.assert_called_with(ANY, True)
-    assert(setNextStateMock.call_args.args[0].name() == "MainMenu")
+    assert setNextStateMock.call_args.args[0].name() == "MainMenu"
+
 
 # Test loop
 @mock.patch.object(LCD_interface, "lcd_out")
@@ -31,11 +32,14 @@ def test_loop(lcdOutMock):
 
     setupCalibration.loop()
     lcdOutMock.assert_has_calls(
-        [mock.call("1. pH", line=1), 
-        mock.call("2. Temperature", line=2),
-        mock.call("3. Return", line=3),
-        mock.call("", line=4)
-    ])
+        [
+            mock.call("1. pH", line=1), 
+            mock.call("2. Temperature", line=2),
+            mock.call("3. Return", line=3),
+            mock.call("", line=4),
+        ]
+    )
+
 
 # Test SetupCalibration
 @mock.patch.object(SetupCalibration, "_setNextState")
@@ -45,12 +49,14 @@ def test_SetupCalibration(lcdOutMock, setNextStateMock):
 
     setupCalibration.loop()
     lcdOutMock.assert_has_calls(
-        [mock.call("1. pH", line=1), 
-        mock.call("2. Temperature", line=2),
-        mock.call("3. Return", line=3),
-        mock.call("", line=4)
-    ])
+        [  
+            mock.call("1. pH", line=1), 
+            mock.call("2. Temperature", line=2),
+            mock.call("3. Return", line=3),
+            mock.call("", line=4),
+        ]
+    )
 
     setupCalibration.handleKey("1")
     setNextStateMock.assert_called_with(ANY, True)
-    assert(setNextStateMock.call_args.args[0].name() == "CalibratePh")
+    assert setNextStateMock.call_args.args[0].name() == "CalibratePh"

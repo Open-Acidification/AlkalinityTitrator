@@ -89,15 +89,15 @@ def calculate_expected_resistance(temperature):
 
     if temperature >= 0:
         return constants.TEMPERATURE_NOMINAL_RESISTANCE * (
-            1 + A * temperature + B * temperature ** 2
+            1 + A * temperature + B * temperature**2
         )
 
     # for temperatures below 0 celsius
     return constants.TEMPERATURE_NOMINAL_RESISTANCE * (
         1
         + A * temperature
-        + B * temperature ** 2
-        + C * (temperature - 100) * temperature ** 3
+        + B * temperature**2
+        + C * (temperature - 100) * temperature**3
     )
 
 
