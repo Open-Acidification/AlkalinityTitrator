@@ -46,7 +46,7 @@ def test_serial_writeable():
     assert arduino.writable()
 
 
-#def test_serial_write(capsys):
+# def test_serial_write(capsys):
 #    """
 #    Function to test a mock serial write
 #    """
@@ -55,9 +55,9 @@ def test_serial_writeable():
 #    )
 #    arduino.write("test string")
 
-    # disabled due to printing on syringe_pump calls
-    # captured = capsys.readouterr()
-    # assert captured.out == "test string\n"
+# disabled due to printing on syringe_pump calls
+# captured = capsys.readouterr()
+# assert captured.out == "test string\n"
 
 
 def test_serial_flush():

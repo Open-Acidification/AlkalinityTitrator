@@ -5,24 +5,24 @@ from titration.utils import LCD_interface
 # TODO: implement constant feedback on pumping
 class PrimePump(UIState.UIState):
     def __init__(self, titrator, state):
-        UIState.__init__('PrimePump', titrator)
+        UIState.__init__("PrimePump", titrator)
         self.titrator = titrator
-        self.values = {'selection' : 0}
+        self.values = {"selection": 0}
         self.subState = 1
         self.previousState = state
 
     def name(self):
-        return 'PrimePump'
+        return "PrimePump"
 
     def handleKey(self, key):
         if self.subState == 1:
-            self.values['selection'] = key
+            self.values["selection"] = key
             self.subState += 1
-        
+
         elif self.subState == 2:
-            self.values['selection'] = key
-        
-        if self.values['selection'] == "0":
+            self.values["selection"] = key
+
+        if self.values["selection"] == "0":
             self._setNextState(self.previousState, True)
 
     def loop(self):

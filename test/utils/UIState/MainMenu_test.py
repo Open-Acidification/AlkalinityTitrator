@@ -64,7 +64,7 @@ def test_MainMenu(mock1, mock2):
     mainMenu.loop()
     mock2.assert_called_with(constants.ROUTINE_OPTIONS_1)
     mock2.reset_mock()
-    
+
     mainMenu.handleKey("1")
     mock1.assert_called_with(ANY, True)
     assert mock1.call_args.args[0].name() == "SetupTitration"

@@ -4,6 +4,7 @@ import time  # time.sleep()
 import types
 
 from titration.utils import analysis, constants
+
 if constants.IS_TEST == False:  # See conftest.py for configuration of pytest
     from titration.utils.devices import (
         keypad,
@@ -11,7 +12,7 @@ if constants.IS_TEST == False:  # See conftest.py for configuration of pytest
         ph_probe,
         syringe_pump,
         temperature_control,
-        temperature_probe
+        temperature_probe,
     )
 from titration.utils.devices import (
     board_mock,
@@ -225,7 +226,7 @@ def read_user_input(valid_inputs=None, console=False):
         temperature_controller.update()
 
         if console:
-            user_input = input() # Poll keypad
+            user_input = input()  # Poll keypad
         else:
             user_input = ui_keypad.keypad_poll()
 

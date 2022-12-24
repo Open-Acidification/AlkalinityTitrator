@@ -13,6 +13,7 @@ from titration.utils.devices import (
     lcd_mock,
 )
 from titration.utils.devices.keypad_mock import Keypad
+
 lcd_class: types.ModuleType = lcd_mock
 board_class: types.ModuleType = board_mock
 keypad_class: types.ModuleType = keypad_mock
@@ -39,13 +40,11 @@ ui_keypad = keypad_class.Keypad(
     c3=board_class.D21,
 )
 
-lines = { 1: '', 2: '', 3: '', 4: ''}
+lines = {1: "", 2: "", 3: "", 4: ""}
 
-def lcd_out(    # TODO: change to cammel-case
-    message, 
-    line,
-    style=constants.LCD_LEFT_JUST,
-    console=False
+
+def lcd_out(  # TODO: change to cammel-case
+    message, line, style=constants.LCD_LEFT_JUST, console=False
 ):
     """
     Outputs given string to LCD screen
@@ -56,11 +55,13 @@ def lcd_out(    # TODO: change to cammel-case
     else:
         ui_lcd.print(message, line, style)
     lines[line] = message
-    
+
+
 def lcd_clear():
     ui_lcd.clear()
     for key in lines:
-        lines[key] = ''
+        lines[key] = ""
+
 
 def read_user_input(valid_inputs=None, console=False):
     """
@@ -76,7 +77,7 @@ def read_user_input(valid_inputs=None, console=False):
         # temperature_controller.update()
 
         if console:
-            user_input = mock_input() # Poll keypad
+            user_input = mock_input()  # Poll keypad
         else:
             user_input = ui_keypad.keypad_poll()
             pass
@@ -98,6 +99,7 @@ def read_user_input(valid_inputs=None, console=False):
         if ui_keypad.keypad_poll() is None:
             break
     return user_input
+
 
 def display_list(dict_to_display):
     """

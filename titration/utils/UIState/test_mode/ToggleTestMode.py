@@ -1,16 +1,17 @@
 from titration.utils.UIState import UIState
 from titration.utils import LCD_interface, constants
 
+
 class ToggleTestMode(UIState.UIState):
     def __init__(self, titrator, state):
-        UIState.__init__('ToggleTestMode', titrator)
+        UIState.__init__("ToggleTestMode", titrator)
         self.titrator = titrator
-        self.values = {'new_volume' : 0}
+        self.values = {"new_volume": 0}
         self.subState = 1
         self.previousState = state
 
     def name(self):
-        return 'ToggleTestMode'
+        return "ToggleTestMode"
 
     def handleKey(self, key):
         self._setNextState(self.previousState, True)

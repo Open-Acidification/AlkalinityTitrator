@@ -28,7 +28,7 @@ def test_handleKey(setNextStateMock):
 
 
 # Test loop
-@mock.patch.object(LCD_interface, 'lcd_out')
+@mock.patch.object(LCD_interface, "lcd_out")
 def test_loop(lcdOutMock):
     calibratePh = CalibratePh(
         Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator())
@@ -40,7 +40,7 @@ def test_loop(lcdOutMock):
             mock.call("Enter Sol weight", line=1),
             mock.call("", line=2),
             mock.call("Press any to cont", line=3),
-            mock.call("", line=4)
+            mock.call("", line=4),
         ]
     )
     lcdOutMock.reset_called()
@@ -52,7 +52,7 @@ def test_loop(lcdOutMock):
             mock.call("Put sensor in buffer", line=1),
             mock.call("", line=2),
             mock.call("Press any to cont", line=3),
-            mock.call("to record value", line=4)
+            mock.call("to record value", line=4),
         ]
     )
     lcdOutMock.reset_called()
@@ -64,8 +64,8 @@ def test_loop(lcdOutMock):
             mock.call("Recorded pH and volts:", line=1),
             mock.call(
                 "{0:>2.5f} pH, {1:>3.4f} V".format(
-                    calibratePh.values['buffer1_actual_pH'],
-                    calibratePh.values['buffer1_measured_volts'],
+                    calibratePh.values["buffer1_actual_pH"],
+                    calibratePh.values["buffer1_measured_volts"],
                 ),
                 line=2,
             ),
@@ -119,8 +119,8 @@ def test_CalibratePh(lcdOutMock, setNextStateMock):
             mock.call("Recorded pH and volts:", line=1),
             mock.call(
                 "{0:>2.5f} pH, {1:>3.4f} V".format(
-                    calibratePh.values['buffer1_actual_pH'],
-                    calibratePh.values['buffer1_measured_volts']
+                    calibratePh.values["buffer1_actual_pH"],
+                    calibratePh.values["buffer1_measured_volts"],
                 ),
             line=2,
         ),

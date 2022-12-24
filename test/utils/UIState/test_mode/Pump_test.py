@@ -41,7 +41,7 @@ def test_loop(lcdOutMock):
         ]
     )
     lcdOutMock.reset_called()
-    
+
     pump.subState += 1
     pump.loop()
     lcdOutMock.assert_has_calls(
@@ -113,7 +113,7 @@ def test_Pump(lcdOutMock, setNextStateMock):
             mock.call("", line=4),
         ]
     )
-    
+
     pump.handleKey("1")
     setNextStateMock.assert_called_with(ANY, True)
     assert setNextStateMock.call_args.args[0].name() == "TestMode"
