@@ -11,7 +11,7 @@ def setup_module(module):
 #     monkeypatch.setattr("sys.stdin", io.StringIO("0\n*\n5\nA\n0\nA\n"))
 #     routines.test_mode_pump()
 #     _ = capsys.readouterr()
-#     LCD_interface.lcd_out("", 1)
+#     lcd_interface.lcd_out("", 1)
 #     captured = capsys.readouterr()
 #     assert captured.out == (
 #         "*====================*\n"

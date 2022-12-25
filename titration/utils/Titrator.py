@@ -1,4 +1,4 @@
-from titration.utils.UIState import MainMenu
+from titration.utils.ui_state import main_menu
 from titration.utils import interfaces, constants
 import types
 from titration.utils.devices.keypad_mock import Keypad
@@ -20,7 +20,7 @@ else:
 
 class Titrator:
     def __init__(self):
-        self.state = MainMenu.MainMenu(self)
+        self.state = main_menu.MainMenu(self)
         self.nextState = None
         interfaces.setup_interfaces()  # TODO: look at removing, update to not call LCD and keypad
         self.keypad = Keypad(
