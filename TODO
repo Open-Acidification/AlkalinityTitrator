@@ -1,0 +1,10 @@
+Pipfile:
+Remove:
+- keyboard
+- pynput
+- smbus2
+- "rpi.gpio"?
+- pyserial
+- pep8
+- pad4pi
+- adafruit-blinka
