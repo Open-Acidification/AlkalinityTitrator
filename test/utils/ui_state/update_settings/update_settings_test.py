@@ -108,7 +108,7 @@ def test_loop(lcdOutMock):
 # Test UpdateSettings
 @mock.patch.object(Titrator, "updateState")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_PrimePump(lcdOutMock, updateStateMock):
+def test_UpdateSettings(lcdOutMock, updateStateMock):
     updateSettings = UpdateSettings(Titrator(), MainMenu(Titrator()))
 
     updateSettings.loop()
