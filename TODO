@@ -30,7 +30,7 @@ Create user_value_test.py: COMPLETE
  - create a loop test
  - create a UserValue test
 
-Updates user_value.py: COMPLETE
+Update user_value.py: COMPLETE
  - separate key.isnumeric() and key == "*"
  - remove self.inputs (Everything can be accomplished with just self.string)
  - remove key == "D" (Not listed as an option, already implemented as A)
@@ -42,5 +42,13 @@ Updates user_value.py: COMPLETE
  - updated user_value_test to reflect these changes
  - # TODO: Return to a variable in the titrator class???
 
+Update initial_titration.py:
+ - Move "if self.choice" (should be in handleUI, follows a standard)
 
- 
+
+ - initial_test updated to reflect changes
+
+What needs to be implemented in order for titration:
+ - Automatic Titration, Line 32: Update Target PH
+ - Automatic Titration, Line 48: Update Current PH
+ - Initial Titration, Line 51: Fix Mock Temperature Controller and remove break
