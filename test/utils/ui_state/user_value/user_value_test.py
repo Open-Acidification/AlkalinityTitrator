@@ -24,7 +24,7 @@ def test_handleKey(updateStateMock):
 
     userValue.handleKey("C")
     assert len(userValue.inputs) == 0
-    assert userValue.decimal == False
+    assert userValue.decimal is False
     assert userValue.string == "_"
 
     userValue.handleKey("D")
@@ -39,7 +39,7 @@ def test_handleKey(updateStateMock):
     userValue.handleKey("*")
     assert userValue.inputs[-1] == "*"
     assert userValue.string[-1] == "."
-    assert userValue.decimal == True
+    assert userValue.decimal is True
 
 
 # Test loop
@@ -82,7 +82,7 @@ def test_UserValue(lcdOutMock, updateStateMock):
     userValue.handleKey("3")
     assert userValue.string == "3"
     assert userValue.inputs == [3]
-    assert userValue.decimal == False
+    assert userValue.decimal is False
 
     userValue.loop()
     lcdOutMock.assert_has_calls(
@@ -98,7 +98,7 @@ def test_UserValue(lcdOutMock, updateStateMock):
     userValue.handleKey("*")
     assert userValue.string == "3."
     assert userValue.inputs == [3, "*"]
-    assert userValue.decimal == True
+    assert userValue.decimal is True
 
     userValue.loop()
     lcdOutMock.assert_has_calls(
@@ -115,7 +115,7 @@ def test_UserValue(lcdOutMock, updateStateMock):
     userValue.handleKey("*")
     assert userValue.string == "3."
     assert userValue.inputs == [3, "*"]
-    assert userValue.decimal == True
+    assert userValue.decimal is True
 
     userValue.loop()
     lcdOutMock.assert_has_calls(
@@ -131,7 +131,7 @@ def test_UserValue(lcdOutMock, updateStateMock):
     userValue.handleKey("1")
     assert userValue.string == "3.1"
     assert userValue.inputs == [3, "*", 1]
-    assert userValue.decimal == True
+    assert userValue.decimal is True
 
     userValue.loop()
     lcdOutMock.assert_has_calls(
@@ -147,7 +147,7 @@ def test_UserValue(lcdOutMock, updateStateMock):
     userValue.handleKey("B")
     assert userValue.string == "3."
     assert userValue.inputs == [3, "*"]
-    assert userValue.decimal == True
+    assert userValue.decimal is True
 
     userValue.loop()
     lcdOutMock.assert_has_calls(
@@ -163,7 +163,7 @@ def test_UserValue(lcdOutMock, updateStateMock):
     userValue.handleKey("B")
     assert userValue.string == "3"
     assert userValue.inputs == [3]
-    assert userValue.decimal == False
+    assert userValue.decimal is False
 
     userValue.loop()
     lcdOutMock.assert_has_calls(
@@ -179,7 +179,7 @@ def test_UserValue(lcdOutMock, updateStateMock):
     userValue.handleKey("C")
     assert userValue.string == "_"
     assert userValue.inputs == []
-    assert userValue.decimal == False
+    assert userValue.decimal is False
 
     userValue.loop()
     lcdOutMock.assert_has_calls(
