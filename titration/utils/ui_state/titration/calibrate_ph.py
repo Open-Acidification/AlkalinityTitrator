@@ -14,7 +14,9 @@ class CalibratePh:
 
     def handleKey(self, key):
         if self.subState == 1:
-            self.titrator.updateState(UserValue(self.titrator, self, "Enter buffer pH:"))
+            self.titrator.updateState(
+                UserValue(self.titrator, self, "Enter buffer pH:")
+            )
             self.subState += 1
 
         elif self.subState == 2:

@@ -43,7 +43,6 @@ class Titrator:
             " to ",
             newState.name(),
         )
-        self.state.start()
 
     def _handleUI(self):
         print("Titrator::handleUI() - ", self.state.name())

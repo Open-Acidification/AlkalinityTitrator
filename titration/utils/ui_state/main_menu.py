@@ -28,7 +28,8 @@ class MainMenu:
             elif key == constants.KEY_2:
                 # Next state SetupCalibration
                 self.titrator.updateState(
-                    setup_calibration.SetupCalibration(self.titrator, self))
+                    setup_calibration.SetupCalibration(self.titrator, self)
+                )
 
             elif key == constants.KEY_3:
                 # Next state PrimePump
@@ -42,7 +43,8 @@ class MainMenu:
             elif key == constants.KEY_4:
                 # Next state UpdateSettings
                 self.titrator.updateState(
-                    update_settings.UpdateSettings(self.titrator, self))
+                    update_settings.UpdateSettings(self.titrator, self)
+                )
 
             elif key == constants.KEY_5:
                 # Next state TestMode

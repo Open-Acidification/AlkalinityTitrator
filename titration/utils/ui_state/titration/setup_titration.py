@@ -16,12 +16,15 @@ class SetupTitration:
 
     def handleKey(self, key):
         if self.subState == 1:
-            self.titrator.updateState(UserValue(self.titrator, self, "Sol. weight (g):"))
+            self.titrator.updateState(
+                UserValue(self.titrator, self, "Sol. weight (g):")
+            )
             self.subState += 1
 
         elif self.subState == 2:
             self.titrator.updateState(
-                UserValue(self.titrator, self, "Sol. salinity (ppt):"))
+                UserValue(self.titrator, self, "Sol. salinity (ppt):")
+            )
             self.subState += 1
 
         elif self.subState == 3:

@@ -44,7 +44,8 @@ class ManualTitration:
 
         elif self.subState == 6:
             self.titrator.updateState(
-                main_menu.MainMenu(self.titrator))  # TODO; pop back up
+                main_menu.MainMenu(self.titrator)
+            )  # TODO; pop back up
 
     def loop(self):
         if self.subState == 1:

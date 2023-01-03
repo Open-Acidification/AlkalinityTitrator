@@ -14,7 +14,9 @@ class SetVolume:
 
     def handleKey(self, key):
         if self.subState == 1:
-            self.titrator.updateState(UserValue(self.titrator, self, "Volume in pump: "))
+            self.titrator.updateState(
+                UserValue(self.titrator, self, "Volume in pump: ")
+            )
             self.subState += 1
 
         elif self.subState == 2:
