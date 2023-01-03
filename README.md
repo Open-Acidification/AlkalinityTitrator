@@ -21,7 +21,7 @@ The titration process used in this project is based on SOP 3b from
 
 ## Current Development Note
 
-The most recent development in this project is the implementation of a UI State Machine framework (see the titration/utils/UIState folder for UI states implemented). While the UI State Machine framework has been fully implemented, the actual titration processes and routines have not been integreated with the UI State Machine (see GitHub Issues for for further specifications). 
+The most recent development in this project is the implementation of a UI State Machine framework (see the titration/utils/UIState folder for UI states implemented). While the UI State Machine framework has been fully implemented, the actual titration processes and routines have not been integrated with the UI State Machine (see GitHub Issues for further specifications). 
 
 ## Setup and Installation
 
