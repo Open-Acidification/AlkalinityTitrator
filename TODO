@@ -9,14 +9,14 @@ Remove:
 - pad4pi
 - adafruit-blinka
 
-Remove Class UIState:
+Remove Class UIState: COMPLETE
  - changed the self._setNextState calls to self.titrator.updateState
  - removed (ui_state.UIState) from class prototypes
  - removed ui_state.__init__ from states (not used)
  - removed all imports of UIState
  - removed the class and its file
 
-Updates to Titrator:
+Updates to Titrator: COMPLETE
  - removed setNextState (Isn't used and doesn't make sense)
  - updated updateState to not need nextState
  - removed variable nextState (Useless)
