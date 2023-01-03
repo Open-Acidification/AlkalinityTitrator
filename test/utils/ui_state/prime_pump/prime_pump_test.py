@@ -8,8 +8,8 @@ from titration.utils.ui_state.prime_pump.prime_pump import PrimePump
 
 
 # Test handleKey
-@mock.patch.object(PrimePump, "_setNextState")
-def test_handleKey(setNextStateMock):
+@mock.patch.object(Titrator, "updateState")
+def test_handleKey(updateStateMock):
     primePump = PrimePump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     primePump.handleKey("3")
@@ -21,8 +21,8 @@ def test_handleKey(setNextStateMock):
 
     primePump.handleKey("0")
     assert primePump.values["selection"] == "0"
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "TestMode"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "TestMode"
 
 
 # Test loop
@@ -54,9 +54,9 @@ def test_loop(lcdOutMock):
 
 
 # Test PrimePump
-@mock.patch.object(PrimePump, "_setNextState")
+@mock.patch.object(Titrator, "updateState")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_PrimePump(lcdOutMock, setNextStateMock):
+def test_PrimePump(lcdOutMock, updateStateMock):
     primePump = PrimePump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     primePump.loop()
@@ -99,5 +99,5 @@ def test_PrimePump(lcdOutMock, setNextStateMock):
 
     primePump.handleKey("0")
     assert primePump.values["selection"] == "0"
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "TestMode"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "TestMode"

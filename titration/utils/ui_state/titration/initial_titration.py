@@ -1,12 +1,10 @@
-from titration.utils.ui_state import ui_state
 from titration.utils import lcd_interface, interfaces, constants
 from titration.utils.ui_state.titration.automatic_titration import AutomaticTitration
 from titration.utils.ui_state.titration.manual_titration import ManualTitration
 
 
-class InitialTitration(ui_state.UIState):
+class InitialTitration:
     def __init__(self, titrator):
-        ui_state.__init__("InitialTitration", titrator)
         self.titrator = titrator
         self.choice = 0
         self.subState = 1
@@ -47,6 +45,6 @@ class InitialTitration(ui_state.UIState):
                 break  # TODO: fix mock temperature controller and remove break
 
             if self.choice == constants.KEY_1:
-                self._setNextState(ManualTitration(self.titrator), True)
+                self.titrator.updateState(ManualTitration(self.titrator))
             else:
-                self._setNextState(AutomaticTitration(self.titrator), True)
+                self.titrator.updateState(AutomaticTitration(self.titrator))

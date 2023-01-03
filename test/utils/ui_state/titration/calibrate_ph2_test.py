@@ -6,23 +6,23 @@ from titration.utils import lcd_interface
 
 
 # Test handleKey
-@mock.patch.object(CalibratePh, "_setNextState")
-def test_handleKey(setNextStateMock):
+@mock.patch.object(Titrator, "updateState")
+def test_handleKey(updateStateMock):
     calibratePh = CalibratePh(Titrator())
 
     calibratePh.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    setNextStateMock.reset_mock()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "UserValue"
+    updateStateMock.reset_mock()
     assert calibratePh.subState == 2
 
     calibratePh.handleKey("1")
     assert calibratePh.subState == 3
 
     calibratePh.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "InitialTitration"
-    setNextStateMock.reset_mock()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "InitialTitration"
+    updateStateMock.reset_mock()
 
 
 # Test loop
@@ -71,9 +71,9 @@ def test_loop(lcdOutMock):
     )
 
 
-@mock.patch.object(CalibratePh, "_setNextState")
+@mock.patch.object(Titrator, "updateState")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_CalibratePh(lcdOutMock, setNextStateMock):
+def test_CalibratePh(lcdOutMock, updateStateMock):
     calibratePh = CalibratePh(Titrator())
 
     calibratePh.loop()
@@ -88,9 +88,9 @@ def test_CalibratePh(lcdOutMock, setNextStateMock):
     lcdOutMock.reset_called()
 
     calibratePh.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    setNextStateMock.reset_mock()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "UserValue"
+    updateStateMock.reset_mock()
     assert calibratePh.subState == 2
 
     calibratePh.loop()
@@ -124,5 +124,5 @@ def test_CalibratePh(lcdOutMock, setNextStateMock):
     )
 
     calibratePh.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "InitialTitration"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "InitialTitration"

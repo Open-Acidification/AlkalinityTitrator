@@ -1,4 +1,3 @@
-from titration.utils.ui_state import ui_state
 from titration.utils import constants
 from titration.utils.ui_state.titration.initial_titration import InitialTitration
 from titration.utils.ui_state.titration.calibrate_ph import CalibratePh
@@ -6,9 +5,8 @@ from titration.utils import lcd_interface
 from titration.utils.ui_state.user_value.user_value import UserValue
 
 
-class SetupTitration(ui_state.UIState):
+class SetupTitration:
     def __init__(self, titrator):
-        ui_state.__init__("SetupTitration", titrator)
         self.titrator = titrator
         self.values = {"weight": 0, "salinity": 0}
         self.subState = 1
@@ -18,20 +16,22 @@ class SetupTitration(ui_state.UIState):
 
     def handleKey(self, key):
         if self.subState == 1:
-            self._setNextState(UserValue(self.titrator, self, "Sol. weight (g):"), True)
+            self.titrator.updateState(
+                UserValue(self.titrator, self, "Sol. weight (g):")
+            )
             self.subState += 1
 
         elif self.subState == 2:
-            self._setNextState(
-                UserValue(self.titrator, self, "Sol. salinity (ppt):"), True
+            self.titrator.updateState(
+                UserValue(self.titrator, self, "Sol. salinity (ppt):")
             )
             self.subState += 1
 
         elif self.subState == 3:
             if key == constants.KEY_1:
-                self._setNextState(CalibratePh(self.titrator), True)
+                self.titrator.updateState(CalibratePh(self.titrator))
             else:
-                self._setNextState(InitialTitration(self.titrator), True)
+                self.titrator.updateState(InitialTitration(self.titrator))
 
     def loop(self):
         if self.subState == 1:

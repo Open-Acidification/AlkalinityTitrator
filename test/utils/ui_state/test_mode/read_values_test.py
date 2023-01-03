@@ -8,13 +8,13 @@ from titration.utils.ui_state.test_mode.read_values import ReadValues
 
 
 # Test handleKey
-@mock.patch.object(ReadValues, "_setNextState")
-def test_handleKey(setNextStateMock):
+@mock.patch.object(Titrator, "updateState")
+def test_handleKey(updateStateMock):
     readValues = ReadValues(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     readValues.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "TestMode"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "TestMode"
 
 
 # Test loop
@@ -57,10 +57,10 @@ def test_loop(delayMock, lcdOutMock):
 
 
 # Test ReadValues
-@mock.patch.object(ReadValues, "_setNextState")
+@mock.patch.object(Titrator, "updateState")
 @mock.patch.object(lcd_interface, "lcd_out")
 @mock.patch.object(interfaces, "delay")
-def test_ReadValues(delayMock, lcdOutMock, setNextStateMock):
+def test_ReadValues(delayMock, lcdOutMock, updateStateMock):
     readValues = ReadValues(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     readValues.loop()
@@ -96,5 +96,5 @@ def test_ReadValues(delayMock, lcdOutMock, setNextStateMock):
     )
 
     readValues.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "TestMode"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "TestMode"

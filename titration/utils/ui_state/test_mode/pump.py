@@ -1,11 +1,9 @@
-from titration.utils.ui_state import ui_state
 from titration.utils import lcd_interface, constants
 from titration.utils.ui_state.user_value.user_value import UserValue
 
 
-class Pump(ui_state.UIState):
+class Pump:
     def __init__(self, titrator, state):
-        ui_state.__init__("Pump", titrator)
         self.titrator = titrator
         self.values = {"p_direction": 0}
         self.subState = 1
@@ -16,7 +14,7 @@ class Pump(ui_state.UIState):
 
     def handleKey(self, key):
         if self.subState == 1:
-            self._setNextState(UserValue(self.titrator, self, "Volume: "), True)
+            self.titrator.updateState(UserValue(self.titrator, self, "Volume: "))
             self.subState += 1
 
         elif self.subState == 2:
@@ -25,7 +23,7 @@ class Pump(ui_state.UIState):
                 self.subState += 1
 
         elif self.subState == 3:
-            self._setNextState(self.previousState, True)
+            self.titrator.updateState(self.previousState)
 
     def loop(self):
         if self.subState == 1:

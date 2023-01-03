@@ -1,12 +1,10 @@
-from titration.utils.ui_state import ui_state
 from titration.utils import lcd_interface, constants
 from titration.utils.ui_state import main_menu
 from titration.utils.ui_state.user_value.user_value import UserValue
 
 
-class ManualTitration(ui_state.UIState):
+class ManualTitration:
     def __init__(self, titrator):
-        ui_state.__init__("ManualTitration", titrator)
         self.titrator = titrator
         self.values = {
             "p_volume": 0,
@@ -21,7 +19,7 @@ class ManualTitration(ui_state.UIState):
 
     def handleKey(self, key):
         if self.subState == 1:
-            self._setNextState(UserValue(self.titrator, self, "Volume:"), True)
+            self.titrator.updateState(UserValue(self.titrator, self, "Volume:"))
             self.subState += 1
 
         elif self.subState == 2:
@@ -41,12 +39,12 @@ class ManualTitration(ui_state.UIState):
                 self.subState += 1
 
         elif self.subState == 5:
-            self._setNextState(UserValue(self.titrator, self, "Degas time (s):"), True)
+            self.titrator.updateState(UserValue(self.titrator, self, "Degas time (s):"))
             self.subState += 1
 
         elif self.subState == 6:
-            self._setNextState(
-                main_menu.MainMenu(self.titrator), True
+            self.titrator.updateState(
+                main_menu.MainMenu(self.titrator)
             )  # TODO; pop back up
 
     def loop(self):

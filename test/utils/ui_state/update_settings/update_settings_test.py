@@ -7,8 +7,8 @@ from titration.utils import lcd_interface
 
 
 # Test handleKey
-@mock.patch.object(UpdateSettings, "_setNextState")
-def test_handleKey(setNextStateMock):
+@mock.patch.object(Titrator, "updateState")
+def test_handleKey(updateStateMock):
     updateSettings = UpdateSettings(Titrator(), MainMenu(Titrator()))
 
     updateSettings.handleKey("y")
@@ -21,15 +21,15 @@ def test_handleKey(setNextStateMock):
     assert updateSettings.subState == 4
 
     updateSettings.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    setNextStateMock.reset_mock()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "UserValue"
+    updateStateMock.reset_mock()
     assert updateSettings.subState == 5
 
     updateSettings.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "MainMenu"
-    setNextStateMock.reset_mock()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "MainMenu"
+    updateStateMock.reset_mock()
 
     updateSettings = UpdateSettings(Titrator(), MainMenu(Titrator()))
 
@@ -37,8 +37,8 @@ def test_handleKey(setNextStateMock):
     assert updateSettings.subState == 3
 
     updateSettings.handleKey("n")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "MainMenu"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "MainMenu"
 
 
 # Test loop
@@ -106,9 +106,9 @@ def test_loop(lcdOutMock):
 
 
 # Test UpdateSettings
-@mock.patch.object(UpdateSettings, "_setNextState")
+@mock.patch.object(Titrator, "updateState")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_PrimePump(lcdOutMock, setNextStateMock):
+def test_PrimePump(lcdOutMock, updateStateMock):
     updateSettings = UpdateSettings(Titrator(), MainMenu(Titrator()))
 
     updateSettings.loop()
@@ -165,9 +165,9 @@ def test_PrimePump(lcdOutMock, setNextStateMock):
     lcdOutMock.reset_called()
 
     updateSettings.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    setNextStateMock.reset_mock()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "UserValue"
+    updateStateMock.reset_mock()
     assert updateSettings.subState == 5
 
     updateSettings.loop()
@@ -181,6 +181,6 @@ def test_PrimePump(lcdOutMock, setNextStateMock):
     )
 
     updateSettings.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "MainMenu"
-    setNextStateMock.reset_mock()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "MainMenu"
+    updateStateMock.reset_mock()

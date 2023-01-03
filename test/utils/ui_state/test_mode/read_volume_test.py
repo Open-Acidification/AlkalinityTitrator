@@ -8,13 +8,13 @@ from titration.utils.ui_state.test_mode.test_mode import TestMode
 
 
 # Test handleKey
-@mock.patch.object(ReadVolume, "_setNextState")
-def test_handleKey(setNextStateMock):
+@mock.patch.object(Titrator, "updateState")
+def test_handleKey(updateStateMock):
     readVolume = ReadVolume(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     readVolume.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "TestMode"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "TestMode"
 
 
 # Test loop
@@ -38,9 +38,9 @@ def test_loop(lcdOutMock):
 
 
 # Test ReadVolume
-@mock.patch.object(ReadVolume, "_setNextState")
+@mock.patch.object(Titrator, "updateState")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_ReadVolume(lcdOutMock, setNextStateMock):
+def test_ReadVolume(lcdOutMock, updateStateMock):
     readVolume = ReadVolume(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     readVolume.loop()
@@ -58,5 +58,5 @@ def test_ReadVolume(lcdOutMock, setNextStateMock):
     )
 
     readVolume.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "TestMode"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "TestMode"
