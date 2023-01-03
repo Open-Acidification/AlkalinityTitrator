@@ -17,6 +17,12 @@ class InitialTitration:
             self.choice = key
             self.subState += 1
 
+        elif self.subState == 3:
+            if self.choice == constants.KEY_1:
+                self.titrator.updateState(ManualTitration(self.titrator))
+            else:
+                self.titrator.updateState(AutomaticTitration(self.titrator))
+
     def loop(self):
         if self.subState == 1:
             # Manual or automatic titration
@@ -43,8 +49,5 @@ class InitialTitration:
                     line=2,
                 )
                 break  # TODO: fix mock temperature controller and remove break
-
-            if self.choice == constants.KEY_1:
-                self.titrator.updateState(ManualTitration(self.titrator))
-            else:
-                self.titrator.updateState(AutomaticTitration(self.titrator))
+            self.subState += 1
+            self.handleKey("1")

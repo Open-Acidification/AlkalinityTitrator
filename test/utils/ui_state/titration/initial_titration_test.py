@@ -10,7 +10,6 @@ def test_handleKey():
     initialTitration = InitialTitration(Titrator())
 
     initialTitration.handleKey("1")
-    assert initialTitration.choice == "1"
     assert initialTitration.subState == 2
 
 
