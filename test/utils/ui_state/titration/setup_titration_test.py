@@ -6,30 +6,30 @@ from titration.utils import lcd_interface, constants
 
 
 # Test handleKey
-@mock.patch.object(SetupTitration, "_setNextState")
-def test_handleKey(setNextStateMock):
+@mock.patch.object(Titrator, "updateState")
+def test_handleKey(updateStateMock):
     setupTitration = SetupTitration(Titrator())
 
     setupTitration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "UserValue"
     assert setupTitration.subState == 2
-    setNextStateMock.reset_called()
+    updateStateMock.reset_called()
 
     setupTitration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "UserValue"
     assert setupTitration.subState == 3
-    setNextStateMock.reset_called()
+    updateStateMock.reset_called()
 
     setupTitration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "CalibratePh"
-    setNextStateMock.reset_called()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "CalibratePh"
+    updateStateMock.reset_called()
 
     setupTitration.handleKey("0")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "InitialTitration"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "InitialTitration"
 
 
 # Test loop
@@ -77,9 +77,9 @@ def test_loop(lcdOutMock):
     )
 
 
-@mock.patch.object(SetupTitration, "_setNextState")
+@mock.patch.object(Titrator, "updateState")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_SetupTitration(lcdOutMock, setNextStateMock):
+def test_SetupTitration(lcdOutMock, updateStateMock):
     setupTitration = SetupTitration(Titrator())
 
     setupTitration.loop()
@@ -94,10 +94,10 @@ def test_SetupTitration(lcdOutMock, setNextStateMock):
     lcdOutMock.reset_called()
 
     setupTitration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "UserValue"
     assert setupTitration.subState == 2
-    setNextStateMock.reset_called()
+    updateStateMock.reset_called()
 
     setupTitration.loop()
     lcdOutMock.assert_has_calls(
@@ -111,10 +111,10 @@ def test_SetupTitration(lcdOutMock, setNextStateMock):
     lcdOutMock.reset_called()
 
     setupTitration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "UserValue"
     assert setupTitration.subState == 3
-    setNextStateMock.reset_called()
+    updateStateMock.reset_called()
 
     setupTitration.loop()
     lcdOutMock.assert_has_calls(
@@ -132,5 +132,5 @@ def test_SetupTitration(lcdOutMock, setNextStateMock):
     )
 
     setupTitration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "CalibratePh"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "CalibratePh"

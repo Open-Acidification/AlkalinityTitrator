@@ -8,23 +8,23 @@ from titration.utils import lcd_interface
 
 
 # Test handleKey
-@mock.patch.object(CalibrateTemp, "_setNextState")
-def test_handleKey(setNextStateMock):
+@mock.patch.object(Titrator, "updateState")
+def test_handleKey(updateStateMock):
     calibrateTemp = CalibrateTemp(
         Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator())
     )
 
     calibrateTemp.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "UserValue"
     assert calibrateTemp.subState == 2
 
     calibrateTemp.handleKey("1")
     assert calibrateTemp.subState == 3
 
     calibrateTemp.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "SetupCalibration"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "SetupCalibration"
 
 
 # Test loop
@@ -72,9 +72,9 @@ def test_loop(lcdOutMock):
 
 
 # Test CalibrateTemp
-@mock.patch.object(CalibrateTemp, "_setNextState")
+@mock.patch.object(Titrator, "updateState")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_CalibrateTemp(lcdOutMock, setNextStateMock):
+def test_CalibrateTemp(lcdOutMock, updateStateMock):
     calibrateTemp = CalibrateTemp(
         Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator())
     )
@@ -91,8 +91,8 @@ def test_CalibrateTemp(lcdOutMock, setNextStateMock):
     lcdOutMock.reset_called()
 
     calibrateTemp.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "UserValue"
     assert calibrateTemp.subState == 2
 
     calibrateTemp.loop()
@@ -122,5 +122,5 @@ def test_CalibrateTemp(lcdOutMock, setNextStateMock):
     )
 
     calibrateTemp.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "SetupCalibration"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "SetupCalibration"

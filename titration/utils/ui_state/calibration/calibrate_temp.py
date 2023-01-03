@@ -1,11 +1,9 @@
-from titration.utils.ui_state import ui_state
 from titration.utils import lcd_interface, constants
 from titration.utils.ui_state.user_value.user_value import UserValue
 
 
-class CalibrateTemp(ui_state.UIState):
+class CalibrateTemp:
     def __init__(self, titrator, state):
-        ui_state.__init__("CalibrateTemp", titrator)
         self.titrator = titrator
         self.subState = 1
         self.values = {
@@ -20,8 +18,8 @@ class CalibrateTemp(ui_state.UIState):
 
     def handleKey(self, key):
         if self.subState == 1:
-            self._setNextState(
-                UserValue(self.titrator, self, "Ref solution temp:"), True
+            self.titrator.updateState(
+                UserValue(self.titrator, self, "Ref solution temp:")
             )
             self.subState += 1
 
@@ -30,7 +28,7 @@ class CalibrateTemp(ui_state.UIState):
                 self.subState += 1
 
         elif self.subState == 3:
-            self._setNextState(self.previousState, True)
+            self.titrator.updateState(self.previousState)
 
     def loop(self):
         if self.subState == 1:

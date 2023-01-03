@@ -1,4 +1,3 @@
-from titration.utils.ui_state import ui_state
 from titration.utils import lcd_interface, constants
 from titration.utils.ui_state.test_mode.pump import Pump
 from titration.utils.ui_state.test_mode.read_values import ReadValues
@@ -7,9 +6,8 @@ from titration.utils.ui_state.test_mode.set_volume import SetVolume
 from titration.utils.ui_state.test_mode.toggle_test_mode import ToggleTestMode
 
 
-class TestMode(ui_state.UIState):
+class TestMode:
     def __init__(self, titrator, state):
-        ui_state.__init__("TestMode", titrator)
         self.titrator = titrator
         self.subState = 1
         self.previousState = state
@@ -23,26 +21,26 @@ class TestMode(ui_state.UIState):
                 self.subState += 1
 
             elif key == constants.KEY_1:
-                self._setNextState(ReadValues(self.titrator, self), True)
+                self.titrator.updateState(ReadValues(self.titrator, self))
 
             elif key == constants.KEY_2:
-                self._setNextState(Pump(self.titrator, self), True)
+                self.titrator.updateState(Pump(self.titrator, self))
 
             elif key == constants.KEY_3:
-                self._setNextState(SetVolume(self.titrator, self), True)
+                self.titrator.updateState(SetVolume(self.titrator, self))
 
         elif self.subState == 2:
             if key == constants.KEY_STAR:
                 self.subState -= 1
 
             elif key == constants.KEY_4:
-                self._setNextState(ToggleTestMode(self.titrator, self), True)
+                self.titrator.updateState(ToggleTestMode(self.titrator, self))
 
             elif key == constants.KEY_5:
-                self._setNextState(ReadVolume(self.titrator, self), True)
+                self.titrator.updateState(ReadVolume(self.titrator, self))
 
             elif key == constants.KEY_6:
-                self._setNextState(self.previousState, True)
+                self.titrator.updateState(self.previousState)
 
     def loop(self):
         if self.subState == 1:

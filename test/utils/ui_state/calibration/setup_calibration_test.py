@@ -7,23 +7,23 @@ from titration.utils import lcd_interface
 
 
 # Test handleKey
-@mock.patch.object(SetupCalibration, "_setNextState")
-def test_handleKey(setNextStateMock):
+@mock.patch.object(Titrator, "updateState")
+def test_handleKey(updateStateMock):
     setupCalibration = SetupCalibration(Titrator(), MainMenu(Titrator()))
 
     setupCalibration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "CalibratePh"
-    setNextStateMock.reset_called()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "CalibratePh"
+    updateStateMock.reset_called()
 
     setupCalibration.handleKey("2")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "CalibrateTemp"
-    setNextStateMock.reset_called()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "CalibrateTemp"
+    updateStateMock.reset_called()
 
     setupCalibration.handleKey("3")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "MainMenu"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "MainMenu"
 
 
 # Test loop
@@ -43,9 +43,9 @@ def test_loop(lcdOutMock):
 
 
 # Test SetupCalibration
-@mock.patch.object(SetupCalibration, "_setNextState")
+@mock.patch.object(Titrator, "updateState")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_SetupCalibration(lcdOutMock, setNextStateMock):
+def test_SetupCalibration(lcdOutMock, updateStateMock):
     setupCalibration = SetupCalibration(Titrator(), MainMenu(Titrator()))
 
     setupCalibration.loop()
@@ -59,5 +59,5 @@ def test_SetupCalibration(lcdOutMock, setNextStateMock):
     )
 
     setupCalibration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "CalibratePh"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "CalibratePh"

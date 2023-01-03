@@ -1,12 +1,10 @@
-from titration.utils.ui_state import ui_state
 from titration.utils import lcd_interface
 from titration.utils.ui_state.titration.initial_titration import InitialTitration
 from titration.utils.ui_state.user_value.user_value import UserValue
 
 
-class CalibratePh(ui_state.UIState):
+class CalibratePh:
     def __init__(self, titrator):
-        ui_state.__init__("CalibratePh", titrator)
         self.titrator = titrator
         self.values = {"buffer1_measured_volts": 5, "buffer1_actual_pH": 0}
         self.subState = 1
@@ -16,14 +14,14 @@ class CalibratePh(ui_state.UIState):
 
     def handleKey(self, key):
         if self.subState == 1:
-            self._setNextState(UserValue(self.titrator, self, "Enter buffer pH:"), True)
+            self.titrator.updateState(UserValue(self.titrator, self, "Enter buffer pH:"))
             self.subState += 1
 
         elif self.subState == 2:
             self.subState += 1
 
         elif self.subState == 3:
-            self._setNextState(InitialTitration(self.titrator), True)
+            self.titrator.updateState(InitialTitration(self.titrator))
 
     def loop(self):
         if self.subState == 1:

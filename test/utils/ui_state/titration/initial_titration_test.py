@@ -15,9 +15,9 @@ def test_handleKey():
 
 
 # Test loop
-@mock.patch.object(InitialTitration, "_setNextState")
+@mock.patch.object(Titrator, "updateState")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcdOutMock, setNextStateMock):
+def test_loop(lcdOutMock, updateStateMock):
     initialTitration = InitialTitration(Titrator())
 
     initialTitration.loop()
@@ -42,9 +42,9 @@ def test_loop(lcdOutMock, setNextStateMock):
         ]
     )
     lcdOutMock.reset_called()
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "AutomaticTitration"
-    setNextStateMock.reset_mock()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "AutomaticTitration"
+    updateStateMock.reset_mock()
 
     initialTitration = InitialTitration(Titrator())
 
@@ -59,13 +59,13 @@ def test_loop(lcdOutMock, setNextStateMock):
             mock.call("", line=4),
         ]
     )
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "ManualTitration"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "ManualTitration"
 
 
-@mock.patch.object(InitialTitration, "_setNextState")
+@mock.patch.object(Titrator, "updateState")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_InitialTitration(lcdOutMock, setNextStateMock):
+def test_InitialTitration(lcdOutMock, updateStateMock):
     initialTitration = InitialTitration(Titrator())
 
     initialTitration.loop()
@@ -93,9 +93,9 @@ def test_InitialTitration(lcdOutMock, setNextStateMock):
         ]
     )
     lcdOutMock.reset_called()
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "ManualTitration"
-    setNextStateMock.reset_called()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "ManualTitration"
+    updateStateMock.reset_called()
 
     initialTitration = InitialTitration(Titrator())
 
@@ -123,5 +123,5 @@ def test_InitialTitration(lcdOutMock, setNextStateMock):
             mock.call("", line=4),
         ]
     )
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "AutomaticTitration"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "AutomaticTitration"

@@ -8,15 +8,15 @@ from titration.utils.ui_state.test_mode.toggle_test_mode import ToggleTestMode
 
 
 # Test handleKey
-@mock.patch.object(ToggleTestMode, "_setNextState")
-def test_handleKey(setNextStateMock):
+@mock.patch.object(Titrator, "updateState")
+def test_handleKey(updateStateMock):
     toggleTestMode = ToggleTestMode(
         Titrator(), TestMode(Titrator(), MainMenu(Titrator()))
     )
 
     toggleTestMode.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "TestMode"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "TestMode"
 
 
 # Test loop
@@ -38,9 +38,9 @@ def test_loop(lcdOutMock):
 
 
 # Test ToggleTestMode
-@mock.patch.object(ToggleTestMode, "_setNextState")
+@mock.patch.object(Titrator, "updateState")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_ToggleTestMode(lcdOutMock, setNextStateMock):
+def test_ToggleTestMode(lcdOutMock, updateStateMock):
     toggleTestMode = ToggleTestMode(
         Titrator(), TestMode(Titrator(), MainMenu(Titrator()))
     )
@@ -56,5 +56,5 @@ def test_ToggleTestMode(lcdOutMock, setNextStateMock):
     )
 
     toggleTestMode.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "TestMode"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "TestMode"

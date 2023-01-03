@@ -7,42 +7,42 @@ from titration.utils.ui_state.test_mode.test_mode import TestMode
 
 
 # Test handleKey
-@mock.patch.object(TestMode, "_setNextState")
-def test_handleKey(setNextStateMock):
+@mock.patch.object(Titrator, "updateState")
+def test_handleKey(updateStateMock):
     testMode = TestMode(Titrator(), MainMenu(Titrator()))
 
     testMode.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "ReadValues"
-    setNextStateMock.reset_mock()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "ReadValues"
+    updateStateMock.reset_mock()
 
     testMode.handleKey("2")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "Pump"
-    setNextStateMock.reset_mock()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "Pump"
+    updateStateMock.reset_mock()
 
     testMode.handleKey("3")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "SetVolume"
-    setNextStateMock.reset_mock()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "SetVolume"
+    updateStateMock.reset_mock()
 
     testMode.handleKey("*")
     assert testMode.subState == 2
 
     testMode.handleKey("4")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "ToggleTestMode"
-    setNextStateMock.reset_mock()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "ToggleTestMode"
+    updateStateMock.reset_mock()
 
     testMode.handleKey("5")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "ReadVolume"
-    setNextStateMock.reset_mock()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "ReadVolume"
+    updateStateMock.reset_mock()
 
     testMode.handleKey("6")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "MainMenu"
-    setNextStateMock.reset_mock()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "MainMenu"
+    updateStateMock.reset_mock()
 
     testMode.handleKey("*")
     assert testMode.subState == 1
@@ -77,9 +77,9 @@ def test_loop(lcdOutMock):
 
 
 # Test TestMode
-@mock.patch.object(TestMode, "_setNextState")
+@mock.patch.object(Titrator, "updateState")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_TestMode(lcdOutMock, setNextStateMock):
+def test_TestMode(lcdOutMock, updateStateMock):
     testMode = TestMode(Titrator(), MainMenu(Titrator()))
 
     testMode.loop()
@@ -94,9 +94,9 @@ def test_TestMode(lcdOutMock, setNextStateMock):
     lcdOutMock.reset_called()
 
     testMode.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "ReadValues"
-    setNextStateMock.reset_called()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "ReadValues"
+    updateStateMock.reset_called()
 
     testMode.loop()
     lcdOutMock.assert_has_calls(
@@ -110,9 +110,9 @@ def test_TestMode(lcdOutMock, setNextStateMock):
     lcdOutMock.reset_called()
 
     testMode.handleKey("2")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "Pump"
-    setNextStateMock.reset_called()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "Pump"
+    updateStateMock.reset_called()
 
     testMode.loop()
     lcdOutMock.assert_has_calls(
@@ -126,9 +126,9 @@ def test_TestMode(lcdOutMock, setNextStateMock):
     lcdOutMock.reset_called()
 
     testMode.handleKey("3")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "SetVolume"
-    setNextStateMock.reset_called()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "SetVolume"
+    updateStateMock.reset_called()
 
     testMode.loop()
     lcdOutMock.assert_has_calls(
@@ -156,9 +156,9 @@ def test_TestMode(lcdOutMock, setNextStateMock):
     lcdOutMock.reset_called()
 
     testMode.handleKey("4")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "ToggleTestMode"
-    setNextStateMock.reset_called()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "ToggleTestMode"
+    updateStateMock.reset_called()
 
     testMode.loop()
     lcdOutMock.assert_has_calls(
@@ -172,9 +172,9 @@ def test_TestMode(lcdOutMock, setNextStateMock):
     lcdOutMock.reset_called()
 
     testMode.handleKey("5")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "ReadVolume"
-    setNextStateMock.reset_called()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "ReadVolume"
+    updateStateMock.reset_called()
 
     testMode.loop()
     lcdOutMock.assert_has_calls(
@@ -188,5 +188,5 @@ def test_TestMode(lcdOutMock, setNextStateMock):
     lcdOutMock.reset_called()
 
     testMode.handleKey("6")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "MainMenu"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "MainMenu"

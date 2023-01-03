@@ -8,3 +8,19 @@ Remove:
 - pep8
 - pad4pi
 - adafruit-blinka
+
+Remove Class UIState: 
+ - change the self._setNextState calls to self.titrator.setNextState
+ - remove (ui_state.UIState) from class prototypes
+ - remove ui_state.__init__ from states
+ - remove all imports of UIState
+ - remove the class itself and its file
+
+Updates to Titrator:
+ - remove update from setNextState (Not Used)
+ - remove function setNextState(self, newState)
+ - remove nextState (Useless)
+ - change _updateState to not be private
+
+Create user_value_test.py:
+ - just do it

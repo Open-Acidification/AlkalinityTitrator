@@ -1,10 +1,8 @@
-from titration.utils.ui_state import ui_state
 from titration.utils import lcd_interface, constants
 
 
-class ReadVolume(ui_state.UIState):
+class ReadVolume:
     def __init__(self, titrator, state):
-        ui_state.__init__("ReadVolume", titrator)
         self.titrator = titrator
         self.values = {"new_volume": 0}
         self.subState = 1
@@ -14,7 +12,7 @@ class ReadVolume(ui_state.UIState):
         return "ReadVolume"
 
     def handleKey(self, key):
-        self._setNextState(self.previousState, True)
+        self.titrator.updateState(self.previousState)
 
     def loop(self):
         lcd_interface.lcd_out("Pump Vol: ", line=1)
