@@ -26,12 +26,14 @@ class PrimePump:
 
     def loop(self):
         if self.subState == 1:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("How many pumps?", line=1)
             lcd_interface.lcd_out("Choose a number", line=2)
             lcd_interface.lcd_out("Choose 0 to return", line=3)
             lcd_interface.lcd_out("", line=4)
 
         elif self.subState == 2:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("How many more?", line=1)
             lcd_interface.lcd_out("Choose a number", line=2)
             lcd_interface.lcd_out("Choose 0 to return", line=3)

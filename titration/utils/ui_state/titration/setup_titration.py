@@ -35,18 +35,21 @@ class SetupTitration:
 
     def loop(self):
         if self.subState == 1:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("Enter Sol.", line=1)
             lcd_interface.lcd_out("weight (g)", line=2)
             lcd_interface.lcd_out("Press any to cont", line=3)
             lcd_interface.lcd_out("", line=4)
 
         elif self.subState == 2:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("Enter Sol.", line=1)
             lcd_interface.lcd_out("salinity (ppt)", line=2)
             lcd_interface.lcd_out("Press any to cont", line=3)
             lcd_interface.lcd_out("", line=4)
 
         elif self.subState == 3:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("Calibrate pH probe?", line=1)
             lcd_interface.lcd_out("Yes: 1", line=2)
             lcd_interface.lcd_out("No (use old): 0", line=3)

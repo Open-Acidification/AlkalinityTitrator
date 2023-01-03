@@ -24,6 +24,7 @@ class ReadValues:
 
     def loop(self):
         for i in range(self.values["numVals"]):
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out(
                 "Temp: {0:>4.3f} C".format(self.values["temp"]), line=1
             )
@@ -38,6 +39,7 @@ class ReadValues:
             )
             lcd_interface.lcd_out("Reading: {}".format(i), 1, console=True)
             interfaces.delay(self.values["timeStep"])
+        lcd_interface.lcd_clear()
         lcd_interface.lcd_out("Press any to cont", line=1)
         lcd_interface.lcd_out("", line=2)
         lcd_interface.lcd_out("", line=3)

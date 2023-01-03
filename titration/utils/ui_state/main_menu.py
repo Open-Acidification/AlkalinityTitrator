@@ -56,10 +56,12 @@ class MainMenu:
     def loop(self):
         # Substate 1 output
         if self.subState == 1:
+            lcd_interface.lcd_clear()
             lcd_interface.display_list(
                 constants.ROUTINE_OPTIONS_1
             )  # TODO: change to LCD
 
         # Substate 2 output
         else:
+            lcd_interface.lcd_clear()
             lcd_interface.display_list(constants.ROUTINE_OPTIONS_2)

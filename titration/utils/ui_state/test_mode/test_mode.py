@@ -44,12 +44,14 @@ class TestMode:
 
     def loop(self):
         if self.subState == 1:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("1: Read Values", line=1)
             lcd_interface.lcd_out("2: Pump", line=2)
             lcd_interface.lcd_out("3: Set Volume", line=3)
             lcd_interface.lcd_out("*: Page 2", line=4)
 
         elif self.subState == 2:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("4: Toggle Test Mode", line=1)
             lcd_interface.lcd_out("5: Read Volume", line=2)
             lcd_interface.lcd_out("6: Exit Test Mode", line=3)

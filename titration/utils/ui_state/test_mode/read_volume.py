@@ -13,6 +13,7 @@ class ReadVolume:
         self.titrator.updateState(self.previousState)
 
     def loop(self):
+        lcd_interface.lcd_clear()
         lcd_interface.lcd_out("Pump Vol: ", line=1)
         lcd_interface.lcd_out(
             "{0:1.2f}".format(constants.volume_in_pump),

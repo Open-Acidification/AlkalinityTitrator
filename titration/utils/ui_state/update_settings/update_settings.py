@@ -51,18 +51,21 @@ class UpdateSettings:
             lcd_interface.lcd_out("", line=4)
 
         elif self.subState == 3:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("Set volume in pump?", line=1)
             lcd_interface.lcd_out("", line=2)
             lcd_interface.lcd_out("(y/n)", line=3)
             lcd_interface.lcd_out("", line=4)
 
         elif self.subState == 4:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("Enter Volume in pump", line=1)
             lcd_interface.lcd_out("", line=2)
             lcd_interface.lcd_out("Press any to cont", line=3)
             lcd_interface.lcd_out("", line=4)
 
         elif self.subState == 5:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("Volume in pump set", line=1)
             lcd_interface.lcd_out("", line=2)
             lcd_interface.lcd_out("Press any to cont", line=3)

@@ -40,7 +40,6 @@ Update user_value.py: COMPLETE
  - remove self.instructions_2 (Does not make sense to have variable for this, doesnt follow standard)
  - remove self.subState (Is not used)
  - updated user_value_test to reflect these changes
- - # TODO: Return to a variable in the titrator class???
 
 Update initial_titration.py: Complete
  - Move "if self.choice" (should be in handleUI, follows a standard)
@@ -61,25 +60,25 @@ Update setup_titration.py: Complete
  - Removed self.subState (Not used)
  - Removed self.values (Not used)
 
-Update setup_calibration.py:
+Update setup_calibration.py: Complete
  - Removed self.subState (Not used)
 
- Remove constants.key:
+ Remove constants.key: Complete
  - Update keys to be actual value (Improves Readability)
  - Removed severals files' import constants
  - Update tests to reflect these changes
 
-Update calibrate_temp.py:
+Update calibrate_temp.py: Complete
  - Removed expected temperature (Not used)
 
-Update manual_titration.py:
+Update manual_titration.py: Complete
  - Removed def start (Not Used)
 
-Update update_settings.py:
+Update update_settings.py: Complete
  - Updated for more robust conditional statements (Better UX)
 
-
-
+Update automatic_titration.py:
+ - Removed def start (Not Used)
 
 What needs to be implemented in order for titration:
  - User Value, Line 18: return entered string to someplace (database or state)
@@ -92,4 +91,4 @@ What needs to be implemented in order for titration:
  - Read Values, Line 4: read from actual devices
  - Prime Pump, Line 4: feedback on number of pumps; one state? Use "D" to exit always, implement constant feedback on pumping
  - Main Menu, Line 61: change to LCD
- - Determine if we need LCD clear statements in our loop functions, lcd_interface.lcd_clear()
+ - Determine if we need LCD clear statements in our loop functions, lcd_interface.lcd_clear() !!! ADD FOR NOW

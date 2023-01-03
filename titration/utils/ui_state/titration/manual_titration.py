@@ -49,18 +49,21 @@ class ManualTitration:
 
     def loop(self):
         if self.subState == 1:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("Enter Volume", line=1)
             lcd_interface.lcd_out("", line=2)
             lcd_interface.lcd_out("Press any to cont", line=3)
             lcd_interface.lcd_out("", line=4)
 
         elif self.subState == 2:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("Direction (0/1):", line=1)
             lcd_interface.lcd_out("", line=2)
             lcd_interface.lcd_out("", line=3)
             lcd_interface.lcd_out("", line=4)
 
         elif self.subState == 3:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out(
                 "Current pH: {0:>4.5f}".format(self.values["current_pH"]), line=1
             )  # TODO: change current pH value from 5
@@ -69,6 +72,7 @@ class ManualTitration:
             lcd_interface.lcd_out("", line=4)
 
         elif self.subState == 4:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out(
                 "Current pH: {0:>4.5f}".format(self.values["current_pH"]), line=1
             )  # TODO: change current pH value from 5
@@ -77,12 +81,14 @@ class ManualTitration:
             lcd_interface.lcd_out("", line=4)
 
         elif self.subState == 5:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("Enter Degas time", line=1)
             lcd_interface.lcd_out("", line=2)
             lcd_interface.lcd_out("Press any to cont", line=3)
             lcd_interface.lcd_out("", line=4)
 
         elif self.subState == 6:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("Return to", line=1)
             lcd_interface.lcd_out("main menu", line=2)
             lcd_interface.lcd_out(
