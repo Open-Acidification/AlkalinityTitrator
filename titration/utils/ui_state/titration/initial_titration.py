@@ -18,7 +18,7 @@ class InitialTitration:
             self.subState += 1
 
         elif self.subState == 3:
-            if self.choice == constants.KEY_1:
+            if self.choice == "1":
                 self.titrator.updateState(ManualTitration(self.titrator))
             else:
                 self.titrator.updateState(AutomaticTitration(self.titrator))

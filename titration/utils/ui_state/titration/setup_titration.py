@@ -28,7 +28,7 @@ class SetupTitration:
             self.subState += 1
 
         elif self.subState == 3:
-            if key == constants.KEY_1:
+            if key == "1":
                 self.titrator.updateState(CalibratePh(self.titrator))
             else:
                 self.titrator.updateState(InitialTitration(self.titrator))

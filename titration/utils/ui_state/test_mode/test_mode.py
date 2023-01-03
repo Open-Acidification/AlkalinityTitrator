@@ -1,4 +1,4 @@
-from titration.utils import lcd_interface, constants
+from titration.utils import lcd_interface
 from titration.utils.ui_state.test_mode.pump import Pump
 from titration.utils.ui_state.test_mode.read_values import ReadValues
 from titration.utils.ui_state.test_mode.read_volume import ReadVolume
@@ -17,29 +17,29 @@ class TestMode:
 
     def handleKey(self, key):
         if self.subState == 1:
-            if key == constants.KEY_STAR:
+            if key == "*":
                 self.subState += 1
 
-            elif key == constants.KEY_1:
+            elif key == "1":
                 self.titrator.updateState(ReadValues(self.titrator, self))
 
-            elif key == constants.KEY_2:
+            elif key == "2":
                 self.titrator.updateState(Pump(self.titrator, self))
 
-            elif key == constants.KEY_3:
+            elif key == "3":
                 self.titrator.updateState(SetVolume(self.titrator, self))
 
         elif self.subState == 2:
-            if key == constants.KEY_STAR:
+            if key == "*":
                 self.subState -= 1
 
-            elif key == constants.KEY_4:
+            elif key == "4":
                 self.titrator.updateState(ToggleTestMode(self.titrator, self))
 
-            elif key == constants.KEY_5:
+            elif key == "5":
                 self.titrator.updateState(ReadVolume(self.titrator, self))
 
-            elif key == constants.KEY_6:
+            elif key == "6":
                 self.titrator.updateState(self.previousState)
 
     def loop(self):
