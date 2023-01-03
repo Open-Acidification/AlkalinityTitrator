@@ -17,7 +17,7 @@ def run():
 
         page = 1
         while routine_selection != "6":
-            if routine_selection is "*":
+            if routine_selection == "*":
                 if page == 1:
                     page = 2
                 else:
