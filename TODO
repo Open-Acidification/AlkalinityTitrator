@@ -30,8 +30,8 @@ Create user_value_test.py: COMPLETE
  - create a loop test
  - create a UserValue test
 
-Refactor user_value.py:
- - seperate key.isnumeric() and key == "*"
+Updates user_value.py: COMPLETE
+ - separate key.isnumeric() and key == "*"
  - remove self.inputs (Everything can be accomplished with just self.string)
  - remove key == "D" (Not listed as an option, already implemented as A)
  - change "if len(key) > 0" to "if len(self.string) > 0" (This is the correct implementation)
@@ -42,5 +42,5 @@ Refactor user_value.py:
  - updated user_value_test to reflect these changes
  - # TODO: Return to a variable in the titrator class???
 
- 
+
  
