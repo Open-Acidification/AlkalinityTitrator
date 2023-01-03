@@ -56,6 +56,3 @@ class SetupTitration:
                 ),
                 line=4,
             )
-
-    def start(self):
-        pass
