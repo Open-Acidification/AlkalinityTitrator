@@ -25,6 +25,22 @@ Updates to Titrator: COMPLETE
  no need for the state machine to constantly call this function)
  - updated names of function in state files and test files
 
+Create user_value_test.py: COMPLETE
+ - create a handleUI test
+ - create a loop test
+ - create a UserValue test
 
-Create user_value_test.py:
- - just do it
+Refactor user_value.py:
+ - seperate key.isnumeric() and key == "*"
+ - remove self.inputs (Everything can be accomplished with just self.string)
+ - remove key == "D" (Not listed as an option, already implemented as A)
+ - change "if len(key) > 0" to "if len(self.string) > 0" (This is the correct implementation)
+ - updated key == "*" so that "0." appears if no number was entered before (Better UI)
+ - remove self.instructions_1 (Does not make sense to have variable for this, doesnt follow standard)
+ - remove self.instructions_2 (Does not make sense to have variable for this, doesnt follow standard)
+ - remove self.subState (Is not used)
+ - updated user_value_test to reflect these changes
+ - # TODO: Return to a variable in the titrator class???
+
+ 
+ 
