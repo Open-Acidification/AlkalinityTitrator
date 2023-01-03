@@ -20,7 +20,7 @@ class UserValue:
         elif key == "B":
             if len(self.string) > 0:
                 popped = self.string[-1]
-                self.string = self.string[:len(self.string)-1]
+                self.string = self.string[: len(self.string) - 1]
                 if popped == ".":
                     self.decimal = False
 
@@ -35,7 +35,7 @@ class UserValue:
                     self.decimal = True
                 else:
                     self.string = "0."
-                    self.decimal = True 
+                    self.decimal = True
 
         elif key.isnumeric():
             self.string = self.string + str(key)
