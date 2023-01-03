@@ -6,14 +6,14 @@ from titration.utils import lcd_interface
 
 
 # Test handleKey
-@mock.patch.object(ManualTitration, "_setNextState")
-def test_handleKey(setNextStateMock):
+@mock.patch.object(Titrator, "updateState")
+def test_handleKey(updateStateMock):
     manualTitration = ManualTitration(Titrator())
 
     manualTitration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    setNextStateMock.reset_mock()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "UserValue"
+    updateStateMock.reset_mock()
     assert manualTitration.subState == 2
 
     manualTitration.handleKey("1")
@@ -27,14 +27,14 @@ def test_handleKey(setNextStateMock):
     assert manualTitration.subState == 5
 
     manualTitration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    setNextStateMock.reset_mock()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "UserValue"
+    updateStateMock.reset_mock()
     assert manualTitration.subState == 6
 
     manualTitration.handleKey("0")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "MainMenu"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "MainMenu"
 
 
 # Test loop
@@ -119,9 +119,9 @@ def test_loop(lcdOutMock):
     )
 
 
-@mock.patch.object(ManualTitration, "_setNextState")
+@mock.patch.object(Titrator, "updateState")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_ManualTitration(lcdOutMock, setNextStateMock):
+def test_ManualTitration(lcdOutMock, updateStateMock):
     manualTitration = ManualTitration(Titrator())
 
     manualTitration.loop()
@@ -136,9 +136,9 @@ def test_ManualTitration(lcdOutMock, setNextStateMock):
     lcdOutMock.reset_mock()
 
     manualTitration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    setNextStateMock.reset_mock()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "UserValue"
+    updateStateMock.reset_mock()
     assert manualTitration.subState == 2
 
     manualTitration.loop()
@@ -202,9 +202,9 @@ def test_ManualTitration(lcdOutMock, setNextStateMock):
     lcdOutMock.reset_mock()
 
     manualTitration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    setNextStateMock.reset_mock()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "UserValue"
+    updateStateMock.reset_mock()
     assert manualTitration.subState == 6
 
     manualTitration.loop()
@@ -218,5 +218,5 @@ def test_ManualTitration(lcdOutMock, setNextStateMock):
     )
 
     manualTitration.handleKey("0")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "MainMenu"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "MainMenu"

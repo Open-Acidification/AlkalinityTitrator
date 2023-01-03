@@ -1,11 +1,9 @@
-from titration.utils.ui_state import ui_state
 from titration.utils import lcd_interface, interfaces
 
 
 # TODO: read from actual devices
-class ReadValues(ui_state.UIState):
+class ReadValues:
     def __init__(self, titrator, state):
-        ui_state.__init__("ReadValues", titrator)
         self.titrator = titrator
         self.values = {
             "temp": 1,
@@ -22,7 +20,7 @@ class ReadValues(ui_state.UIState):
         return "ReadValues"
 
     def handleKey(self, key):
-        self._setNextState(self.previousState, True)
+        self.titrator.updateState(self.previousState)
 
     def loop(self):
         for i in range(self.values["numVals"]):

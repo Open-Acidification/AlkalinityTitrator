@@ -21,7 +21,6 @@ else:
 class Titrator:
     def __init__(self):
         self.state = main_menu.MainMenu(self)
-        self.nextState = None
         interfaces.setup_interfaces()  # TODO: look at removing, update to not call LCD and keypad
         self.keypad = Keypad(
             r0=board_class.D1,
@@ -37,32 +36,20 @@ class Titrator:
     def loop(self):
         self._handleUI()  # look at keypad, update LCD
 
-    def setNextState(self, newState, update):
+    def updateState(self, newState):
         print(
-            "Titrator::setNextState() from ",
-            self.nextState.name() if self.nextState else "nullptr",
+            "Titrator::updateState() from ",
+            self.state.name(),
             " to ",
             newState.name(),
         )
-        assert self.nextState is None
-        self.nextState = newState
-        if update:
-            self._updateState()
-
-    def _updateState(self):
-        if self.nextState:
-            print("Titrator::updateState() to ", self.nextState.name())
-            assert self.state != self.nextState
-            self.state = self.nextState
-            self.nextState = None
-            self.state.start()
+        self.state.start()
 
     def _handleUI(self):
         print("Titrator::handleUI() - ", self.state.name())
         key = self.keypad.get_key()
         print("Titrator::handleUI() - ", self.state.name(), "::handleKey(", key, ")")
         self.state.handleKey(key)
-        self._updateState()
         print(
             "Titrator::handleUI() - ",
             self.state.name(),

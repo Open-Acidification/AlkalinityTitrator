@@ -1,11 +1,9 @@
-from titration.utils.ui_state import ui_state
 from titration.utils import lcd_interface, constants
 from titration.utils.ui_state import main_menu
 
 
-class AutomaticTitration(ui_state.UIState):
+class AutomaticTitration:
     def __init__(self, titrator):
-        ui_state.__init__("AutomaticTitration", titrator)
         self.titrator = titrator
         self.values = {"pH_target": 5, "current_pH": 5}
         self.subState = 1
@@ -24,7 +22,7 @@ class AutomaticTitration(ui_state.UIState):
             self.subState += 1
 
         elif self.subState == 4:
-            self._setNextState(main_menu.MainMenu(self.titrator), True)
+            self.titrator.updateState(main_menu.MainMenu(self.titrator))
 
     def loop(self):
         if self.subState == 1:

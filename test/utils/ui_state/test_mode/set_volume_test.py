@@ -7,19 +7,19 @@ from titration.utils.ui_state.test_mode.set_volume import SetVolume
 
 
 # Test handleKey
-@mock.patch.object(SetVolume, "_setNextState")
-def test_handleKey(setNextStateMock):
+@mock.patch.object(Titrator, "updateState")
+def test_handleKey(updateStateMock):
     setVolume = SetVolume(Titrator(), MainMenu(Titrator()))
 
     setVolume.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    setNextStateMock.reset_called()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "UserValue"
+    updateStateMock.reset_called()
     assert setVolume.subState == 2
 
     setVolume.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "MainMenu"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "MainMenu"
 
 
 # Test loop
@@ -52,8 +52,8 @@ def test_loop(lcdOutMock):
 
 # Test SetVolume
 @mock.patch.object(lcd_interface, "lcd_out")
-@mock.patch.object(SetVolume, "_setNextState")
-def test_SetVolume(setNextStateMock, lcdOutMock):
+@mock.patch.object(Titrator, "updateState")
+def test_SetVolume(updateStateMock, lcdOutMock):
     setVolume = SetVolume(Titrator(), MainMenu(Titrator()))
 
     setVolume.loop()
@@ -68,9 +68,9 @@ def test_SetVolume(setNextStateMock, lcdOutMock):
     lcdOutMock.reset_called()
 
     setVolume.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    setNextStateMock.reset_called()
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "UserValue"
+    updateStateMock.reset_called()
     assert setVolume.subState == 2
 
     setVolume.loop()
@@ -84,5 +84,5 @@ def test_SetVolume(setNextStateMock, lcdOutMock):
     )
 
     setVolume.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "MainMenu"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "MainMenu"

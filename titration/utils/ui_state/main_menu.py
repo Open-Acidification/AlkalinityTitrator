@@ -1,4 +1,3 @@
-from titration.utils.ui_state import ui_state
 from titration.utils import constants
 from titration.utils.ui_state.prime_pump import prime_pump
 from titration.utils.ui_state.test_mode import test_mode
@@ -8,9 +7,8 @@ from titration.utils.ui_state.update_settings import update_settings
 from titration.utils import lcd_interface
 
 
-class MainMenu(ui_state.UIState):
+class MainMenu:
     def __init__(self, titrator):
-        ui_state.__init__("MainMenu", titrator)
         self.titrator = titrator
         self.subState = 1
 
@@ -25,17 +23,16 @@ class MainMenu(ui_state.UIState):
 
             elif key == constants.KEY_1:
                 # Next state SetupTitration
-                self._setNextState(setup_titration.SetupTitration(self.titrator), True)
+                self.titrator.updateState(setup_titration.SetupTitration(self.titrator))
 
             elif key == constants.KEY_2:
                 # Next state SetupCalibration
-                self._setNextState(
-                    setup_calibration.SetupCalibration(self.titrator, self), True
-                )
+                self.titrator.updateState(
+                    setup_calibration.SetupCalibration(self.titrator, self))
 
             elif key == constants.KEY_3:
                 # Next state PrimePump
-                self._setNextState(prime_pump.PrimePump(self.titrator, self), True)
+                self.titrator.updateState(prime_pump.PrimePump(self.titrator, self))
 
         # Substate 2 key handle
         else:
@@ -44,13 +41,12 @@ class MainMenu(ui_state.UIState):
 
             elif key == constants.KEY_4:
                 # Next state UpdateSettings
-                self._setNextState(
-                    update_settings.UpdateSettings(self.titrator, self), True
-                )
+                self.titrator.updateState(
+                    update_settings.UpdateSettings(self.titrator, self))
 
             elif key == constants.KEY_5:
                 # Next state TestMode
-                self._setNextState(test_mode.TestMode(self.titrator, self), True)
+                self.titrator.updateState(test_mode.TestMode(self.titrator, self))
 
             elif key == constants.KEY_6:
                 quit()

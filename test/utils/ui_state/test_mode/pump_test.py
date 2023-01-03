@@ -8,23 +8,23 @@ from titration.utils.ui_state.test_mode.pump import Pump
 
 
 # Test handleKey
-@mock.patch.object(Pump, "_setNextState")
-def test_handleKey(setNextStateMock):
+@mock.patch.object(Titrator, "updateState")
+def test_handleKey(updateStateMock):
     pump = Pump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     pump.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "UserValue"
     assert pump.subState == 2
-    setNextStateMock.reset_called()
+    updateStateMock.reset_called()
 
     pump.handleKey("0")
     assert pump.values["p_direction"] == "0"
     assert pump.subState == 3
 
     pump.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "TestMode"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "TestMode"
 
 
 # Test loop
@@ -68,9 +68,9 @@ def test_loop(lcdOutMock):
 
 
 # Test Pump
-@mock.patch.object(Pump, "_setNextState")
+@mock.patch.object(Titrator, "updateState")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_Pump(lcdOutMock, setNextStateMock):
+def test_Pump(lcdOutMock, updateStateMock):
     pump = Pump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     pump.loop()
@@ -85,10 +85,10 @@ def test_Pump(lcdOutMock, setNextStateMock):
     lcdOutMock.reset_called()
 
     pump.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "UserValue"
     assert pump.subState == 2
-    setNextStateMock.reset_called()
+    updateStateMock.reset_called()
 
     pump.loop()
     lcdOutMock.assert_has_calls(
@@ -116,5 +116,5 @@ def test_Pump(lcdOutMock, setNextStateMock):
     )
 
     pump.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "TestMode"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "TestMode"

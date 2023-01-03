@@ -6,8 +6,8 @@ from titration.utils import lcd_interface
 
 
 # Test handleKey
-@mock.patch.object(AutomaticTitration, "_setNextState")
-def test_handleKey(setNextStateMock):
+@mock.patch.object(Titrator, "updateState")
+def test_handleKey(updateStateMock):
     automaticTitration = AutomaticTitration(Titrator())
 
     automaticTitration.handleKey("1")
@@ -20,8 +20,8 @@ def test_handleKey(setNextStateMock):
     assert automaticTitration.subState == 4
 
     automaticTitration.handleKey("0")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "MainMenu"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "MainMenu"
 
 
 # Test loop
@@ -84,9 +84,9 @@ def test_loop(lcdOutMock):
     )
 
 
-@mock.patch.object(AutomaticTitration, "_setNextState")
+@mock.patch.object(Titrator, "updateState")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_AutomaticTitration(lcdOutMock, setNextStateMock):
+def test_AutomaticTitration(lcdOutMock, updateStateMock):
     automaticTitration = AutomaticTitration(Titrator())
 
     automaticTitration.loop()
@@ -150,5 +150,5 @@ def test_AutomaticTitration(lcdOutMock, setNextStateMock):
     )
 
     automaticTitration.handleKey("0")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "MainMenu"
+    updateStateMock.assert_called_with(ANY)
+    assert updateStateMock.call_args.args[0].name() == "MainMenu"
