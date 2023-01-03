@@ -5,7 +5,6 @@ from titration.utils.ui_state.user_value.user_value import UserValue
 class SetVolume:
     def __init__(self, titrator, state):
         self.titrator = titrator
-        self.values = {"new_volume": 0}
         self.subState = 1
         self.previousState = state
 

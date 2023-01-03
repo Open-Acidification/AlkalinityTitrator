@@ -42,13 +42,38 @@ Update user_value.py: COMPLETE
  - updated user_value_test to reflect these changes
  - # TODO: Return to a variable in the titrator class???
 
-Update initial_titration.py:
+Update initial_titration.py: Complete
  - Move "if self.choice" (should be in handleUI, follows a standard)
-
-
+ - Further improvements could possibly be made
  - initial_test updated to reflect changes
+
+Update setup_titration.py:
+ - Removed def start (Not used)
+
+ Update read_volume.py:
+ - Removed subState (Not used)
+ - Removed self.Values (Not used)
+
+ Update set_volume.py:
+ - Removed self.Values (Not used)
+
+ Update toggle_test_mode.py:
+ - Removed self.subState (Not used)
+ - Removed self.values (Not used)
+
+
+
+
+
+Remove constants.key:
+ - Update keys to be actual value (Improves Readability)
 
 What needs to be implemented in order for titration:
  - Automatic Titration, Line 32: Update Target PH
  - Automatic Titration, Line 48: Update Current PH
  - Initial Titration, Line 51: Fix Mock Temperature Controller and remove break
+ - Manual Titration, Line 48: pop back up???
+ - Manual Titration, Line 66, 74: Update current pH
+ - Manual Titration, Line 90: Change exit and go to main menu
+ - Read Values, Line 4: read from actual devices
+ - 
