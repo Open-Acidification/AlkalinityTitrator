@@ -8,6 +8,10 @@ on:
     branches: ["**"]
     tags-ignore: ["**"]
   pull_request:
+    types:
+    - 'opened'
+    - 'reopened'
+    - 'synchronize'
 
 jobs:
   spelling:
@@ -27,23 +31,50 @@ jobs:
     steps:
     - name: check-spelling
       id: spelling
-      uses: check-spelling/check-spelling@v0.0.20
+      uses: check-spelling/check-spelling@v0.0.21
       with:
         suppress_push_for_open_pull_request: 1
         checkout: true
         post_comment: 0
+        use_magic_file: 1
+        extra_dictionaries:
+          cspell:python/src/python/python-lib.txt
+          cspell:python/src/python/python.txt
+          cspell:software-terms/src/software-terms.txt
+          cspell:python/src/common/extra.txt
+          cspell:fullstack/fullstack.txt
+          cspell:css/css.txt
+          cspell:html/html.txt
+          cspell:filetypes/filetypes.txt
+          cspell:django/django.txt
+        check_extra_dictionaries: ''
 
-  comment:
-    name: Report
+  comment-push:
+    name: Report (Push)
+    # If your workflow isn't running on push, you can remove this job
     runs-on: ubuntu-latest
     needs: spelling
     permissions:
       contents: write
-      pull-requests: write
-    if: (success() || failure()) && needs.spelling.outputs.followup
+    if: (success() || failure()) && needs.spelling.outputs.followup && github.event_name == 'push'
     steps:
     - name: comment
-      uses: check-spelling/check-spelling@v0.0.20
+      uses: check-spelling/check-spelling@v0.0.21
+      with:
+        checkout: true
+        task: ${{ needs.spelling.outputs.followup }}
+
+  comment-pr:
+    name: Report (PR)
+    # If you workflow isn't running on pull_request*, you can remove this job
+    runs-on: ubuntu-latest
+    needs: spelling
+    permissions:
+      pull-requests: write
+    if: (success() || failure()) && needs.spelling.outputs.followup && contains(github.event_name, 'pull_request')
+    steps:
+    - name: comment
+      uses: check-spelling/check-spelling@v0.0.21
       with:
         checkout: true
         task: ${{ needs.spelling.outputs.followup }}
