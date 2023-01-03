@@ -18,39 +18,39 @@ class MainMenu:
     def handleKey(self, key):
         # Substate 1 key handle
         if self.subState == 1:
-            if key == constants.KEY_STAR:
+            if key == "*":
                 self.subState = 2
 
-            elif key == constants.KEY_1:
+            elif key == "1":
                 # Next state SetupTitration
                 self.titrator.updateState(setup_titration.SetupTitration(self.titrator))
 
-            elif key == constants.KEY_2:
+            elif key == "2":
                 # Next state SetupCalibration
                 self.titrator.updateState(
                     setup_calibration.SetupCalibration(self.titrator, self)
                 )
 
-            elif key == constants.KEY_3:
+            elif key == "3":
                 # Next state PrimePump
                 self.titrator.updateState(prime_pump.PrimePump(self.titrator, self))
 
         # Substate 2 key handle
-        else:
-            if key == constants.KEY_STAR:
+        elif self.subState == 2:
+            if key == "*":
                 self.subState = 1
 
-            elif key == constants.KEY_4:
+            elif key == "4":
                 # Next state UpdateSettings
                 self.titrator.updateState(
                     update_settings.UpdateSettings(self.titrator, self)
                 )
 
-            elif key == constants.KEY_5:
+            elif key == "5":
                 # Next state TestMode
                 self.titrator.updateState(test_mode.TestMode(self.titrator, self))
 
-            elif key == constants.KEY_6:
+            elif key == "6":
                 quit()
 
     def loop(self):

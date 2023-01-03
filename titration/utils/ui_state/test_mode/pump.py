@@ -1,4 +1,4 @@
-from titration.utils import lcd_interface, constants
+from titration.utils import lcd_interface
 from titration.utils.ui_state.user_value.user_value import UserValue
 
 
@@ -18,7 +18,7 @@ class Pump:
             self.subState += 1
 
         elif self.subState == 2:
-            if key == constants.KEY_0 or key == constants.KEY_1:
+            if key == "0" or key == "1":
                 self.values["p_direction"] = key
                 self.subState += 1
 

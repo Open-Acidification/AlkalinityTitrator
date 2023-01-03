@@ -1,4 +1,4 @@
-from titration.utils import lcd_interface, constants
+from titration.utils import lcd_interface
 from titration.utils.ui_state.user_value.user_value import UserValue
 
 
@@ -9,7 +9,6 @@ class CalibrateTemp:
         self.values = {
             "actual_temperature": 5,
             "new_ref_resistance": 5,
-            "expected_temperature": 0,
         }
         self.previousState = state
 
@@ -24,7 +23,7 @@ class CalibrateTemp:
             self.subState += 1
 
         elif self.subState == 2:
-            if key == 1 or key == constants.KEY_1:
+            if key == "1":
                 self.subState += 1
 
         elif self.subState == 3:

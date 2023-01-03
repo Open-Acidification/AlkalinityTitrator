@@ -16,8 +16,8 @@ def run():
         routine_selection = "0"
 
         page = 1
-        while routine_selection != "6" or routine_selection != constants.KEY_6:
-            if routine_selection is constants.KEY_STAR:
+        while routine_selection != "6":
+            if routine_selection == "*":
                 if page == 1:
                     page = 2
                 else:

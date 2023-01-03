@@ -14,18 +14,18 @@ class UpdateSettings:
 
     def handleKey(self, key):
         if self.subState == 1:
-            if key != "n" and key != "N":
+            if key == "y" or key == "Y":
                 self.subState += 1
-            else:
+            elif key == "n" or key == "N":
                 self.subState += 2
 
         elif self.subState == 2:
             self.subState += 1
 
         elif self.subState == 3:
-            if key != "n" and key != "N":
+            if key == "y" or key == "Y":
                 self.subState += 1
-            else:
+            elif key == "n" or key == "N":
                 self.titrator.updateState(self.previousState)
 
         elif self.subState == 4:

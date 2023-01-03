@@ -17,19 +17,19 @@ def run_routine(selection):
     Selects which routine to run
     :param selection: user input used to determine which routine to run
     """
-    if selection == "1" or selection == constants.KEY_1:
+    if selection == "1":
         # run titration
         total_alkalinity_titration()
-    elif selection == "2" or selection == constants.KEY_2:
+    elif selection == "2":
         # calibrate sensors
         calibration()
-    elif selection == "3" or selection == constants.KEY_3:
+    elif selection == "3":
         # prime pump
         prime_pump()
-    elif selection == "4" or selection == constants.KEY_4:
+    elif selection == "4":
         # edit settings
         edit_settings()
-    elif selection == "5" or selection == constants.KEY_5:
+    elif selection == "5":
         # testing mode
         test_mode()
     else:
@@ -43,7 +43,7 @@ def test_mode():
     user_choice = None
     while True:
         # Swap page display if user chooses *
-        if user_choice == constants.KEY_STAR:
+        if user_choice == "*":
             if page == 1:
                 page = 2
             else:
@@ -56,26 +56,26 @@ def test_mode():
 
         user_choice = interfaces.read_user_input()
 
-        if user_choice == "6" or user_choice == constants.KEY_6:
+        if user_choice == "6" or user_choice == "6":
             break
         else:
             test_mode_selection(user_choice)
 
 
 def test_mode_selection(user_choice):
-    if user_choice == "1" or user_choice == constants.KEY_1:
+    if user_choice == "1" or user_choice == "1":
         test_mode_read_values()
 
-    elif user_choice == "2" or user_choice == constants.KEY_2:
+    elif user_choice == "2" or user_choice == "2":
         test_mode_pump()
 
-    elif user_choice == "3" or user_choice == constants.KEY_3:
+    elif user_choice == "3" or user_choice == "3":
         test_mode_set_volume()
 
-    elif user_choice == "4" or user_choice == constants.KEY_4:
+    elif user_choice == "4" or user_choice == "4":
         test_mode_toggle_test_mode()
 
-    elif user_choice == "5" or user_choice == constants.KEY_5:
+    elif user_choice == "5" or user_choice == "5":
         test_mode_read_volume()
 
 
@@ -153,9 +153,9 @@ def calibration():
     """Routine for letting the user pick the sensor to calibrate. Call another routine to calibrate the sensor"""
     interfaces.display_list(constants.SENSOR_OPTIONS)
     sensor_selection = interfaces.read_user_input()
-    if sensor_selection == "1" or sensor_selection == constants.KEY_1:
+    if sensor_selection == "1" or sensor_selection == "1":
         _calibrate_pH()
-    elif sensor_selection == "2" or sensor_selection == constants.KEY_2:
+    elif sensor_selection == "2" or sensor_selection == "2":
         _calibrate_temperature()
     analysis.save_calibration_data()
 
@@ -245,7 +245,7 @@ def total_alkalinity_titration():
     interfaces.lcd_out("No (use old): 0", line=3)
     interfaces.lcd_out("{0:>2.3f} pH: {1:>2.4f} V".format(buffer_ph, buffer_v), line=4)
     selection = interfaces.read_user_input()
-    if selection == constants.KEY_1 or selection == "1":
+    if selection == "1":
         _calibrate_pH()
 
     analysis.save_calibration_data()
@@ -271,7 +271,7 @@ def total_alkalinity_titration():
     interfaces.lcd_clear()
     interfaces.lcd_out("Heating to 30 C...", line=1)
     interfaces.lcd_out("Please wait...", style=constants.LCD_CENT_JUST, line=3)
-    if user_choice == "1" or user_choice == constants.KEY_1:
+    if user_choice == "1":
         interfaces.lcd_out("MANUAL SELECTED", style=constants.LCD_CENT_JUST, line=4)
     else:
         interfaces.lcd_out("AUTO SELECTED", style=constants.LCD_CENT_JUST, line=4)
@@ -284,9 +284,9 @@ def total_alkalinity_titration():
             line=2,
         )
 
-    if user_choice == "1" or user_choice == constants.KEY_1:
+    if user_choice == "1":
         # Manual
-        while user_choice == "1" or user_choice == constants.KEY_1:
+        while user_choice == "1":
             p_volume = interfaces.read_user_value("Volume: ")
             interfaces.lcd_clear()
             interfaces.lcd_out("Direction (0/1): ", line=1)
@@ -309,7 +309,7 @@ def total_alkalinity_titration():
         interfaces.lcd_out("Degas?", 1)
         interfaces.lcd_out("(0 - No, 1 - Yes)", line=2)
         user_choice = interfaces.read_user_input()
-        if user_choice == constants.KEY_1:
+        if user_choice == "1":
             degas_time = interfaces.read_user_value("Degas time (s):")
             degas(degas_time)
 

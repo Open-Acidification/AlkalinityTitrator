@@ -1,4 +1,4 @@
-from titration.utils import lcd_interface, constants
+from titration.utils import lcd_interface
 from titration.utils.ui_state import main_menu
 from titration.utils.ui_state.user_value.user_value import UserValue
 
@@ -27,15 +27,15 @@ class ManualTitration:
             self.subState += 1
 
         elif self.subState == 3:
-            if key == constants.KEY_1:
+            if key == "1":
                 self.subState -= 1
             else:
                 self.subState += 1
 
         elif self.subState == 4:
-            if key == constants.KEY_0:
+            if key == "0":
                 self.subState += 2
-            elif key == constants.KEY_1:
+            elif key == "1":
                 self.subState += 1
 
         elif self.subState == 5:
@@ -89,6 +89,3 @@ class ManualTitration:
                 "Press any to cont", line=3
             )  # TODO: change exit and go to main menu
             lcd_interface.lcd_out("", line=4)
-
-    def start(self):
-        lcd_interface.lcd_out("MANUAL SELECTED", style=constants.LCD_CENT_JUST, line=4)
