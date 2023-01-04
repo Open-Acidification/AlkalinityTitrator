@@ -1,7 +1,4 @@
-import io
-
-from titration.utils import constants, interfaces, routines
-from titration.utils import LCD_interface
+from titration.utils import constants, interfaces
 
 
 def setup_module(module):

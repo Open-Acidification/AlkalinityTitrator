@@ -1,9 +1,10 @@
 from titration.utils.UIState import UIState
 from titration.utils import LCD_interface, constants
 
+
 class UserValue(UIState.UIState):
     def __init__(self, titrator, state, message):
-        UIState.__init__('UserValue', titrator)
+        UIState.__init__("UserValue", titrator)
         self.titrator = titrator
         self.subState = 1
         self.previousState = state
@@ -15,11 +16,13 @@ class UserValue(UIState.UIState):
         self.instructions_2 = "A = accept  C = Clr"
 
     def name(self):
-        return 'UserValue'
+        return "UserValue"
 
     def handleKey(self, key):
         if key == "A":
-            self._setNextState(self.previousState, True) # TODO: return entered string to someplace (database or state)
+            self._setNextState(
+                self.previousState, True
+            )  # TODO: return entered string to someplace (database or state)
 
         elif key == "B":
             if len(key) > 0:
@@ -27,12 +30,12 @@ class UserValue(UIState.UIState):
                 if popped == "*":
                     self.decimal = False
                 self.string = self.string[:-1]
-        
+
         elif key == "C":
             self.inputs.clear()
             self.decimal = False
             self.string = "_"
-        
+
         elif key == "D":
             self._setNextState(self.previousState, True)
 

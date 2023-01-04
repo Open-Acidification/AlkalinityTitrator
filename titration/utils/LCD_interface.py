@@ -1,18 +1,12 @@
-from titration.utils.UIState import UIState, MainMenu
-from titration.utils import interfaces, constants
+from titration.utils import constants
 import types
 
-if constants.IS_TEST == False:  # See conftest.py for configuration of pytest
-    from titration.utils.devices import (
-        keypad,
-        lcd,
-    )
 from titration.utils.devices import (
     board_mock,
     keypad_mock,
     lcd_mock,
 )
-from titration.utils.devices.keypad_mock import Keypad
+
 lcd_class: types.ModuleType = lcd_mock
 board_class: types.ModuleType = board_mock
 keypad_class: types.ModuleType = keypad_mock
@@ -39,14 +33,10 @@ ui_keypad = keypad_class.Keypad(
     c3=board_class.D21,
 )
 
-lines = { 1: '', 2: '', 3: '', 4: ''}
+lines = {1: "", 2: "", 3: "", 4: ""}
 
-def lcd_out(    # TODO: change to camel-case
-    message, 
-    line,
-    style=constants.LCD_LEFT_JUST,
-    console=False
-):
+
+def lcd_out(message, line, style=constants.LCD_LEFT_JUST, console=False):
     """
     Outputs given string to LCD screen
     :param info: string to be displayed on LCD screen
@@ -56,11 +46,13 @@ def lcd_out(    # TODO: change to camel-case
     else:
         ui_lcd.print(message, line, style)
     lines[line] = message
-    
+
+
 def lcd_clear():
     ui_lcd.clear()
     for key in lines:
-        lines[key] = ''
+        lines[key] = ""
+
 
 def read_user_input(valid_inputs=None, console=False):
     """
@@ -75,9 +67,9 @@ def read_user_input(valid_inputs=None, console=False):
     while True:
         # temperature_controller.update()
 
-        if console:
-            user_input = mock_input() # Poll keypad
-        else:
+        # if console:
+        # ? user_input = mock_input()  # Poll keypad
+        if not console:
             user_input = ui_keypad.keypad_poll()
             pass
 
@@ -98,6 +90,7 @@ def read_user_input(valid_inputs=None, console=False):
         if ui_keypad.keypad_poll() is None:
             break
     return user_input
+
 
 def display_list(dict_to_display):
     """
