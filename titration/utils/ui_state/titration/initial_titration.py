@@ -4,15 +4,9 @@ from titration.utils.ui_state.titration.automatic_titration import AutomaticTitr
 from titration.utils.ui_state.titration.manual_titration import ManualTitration
 
 
-<<<<<<< HEAD:titration/utils/ui_state/titration/initial_titration.py
 class InitialTitration(ui_state.UIState):
     def __init__(self, titrator):
         ui_state.__init__("InitialTitration", titrator)
-=======
-class InitialTitration(UIState.UIState):
-    def __init__(self, titrator):
-        UIState.__init__("InitialTitration", titrator)
->>>>>>> upstream/main:titration/utils/UIState/titration/InitialTitration.py
         self.titrator = titrator
         self.choice = 0
         self.subState = 1
@@ -35,21 +29,12 @@ class InitialTitration(UIState.UIState):
 
         elif self.subState == 2:
             # Wait until solution is up to temperature
-<<<<<<< HEAD:titration/utils/ui_state/titration/initial_titration.py
             lcd_interface.lcd_out("Heating to 30 C...", line=1)
             lcd_interface.lcd_out("", line=2)
             lcd_interface.lcd_out(
                 "Please wait...", style=constants.LCD_CENT_JUST, line=3
             )
             lcd_interface.lcd_out("", line=4)
-=======
-            LCD_interface.lcd_out("Heating to 30 C...", line=1)
-            LCD_interface.lcd_out("", line=2)
-            LCD_interface.lcd_out(
-                "Please wait...", style=constants.LCD_CENT_JUST, line=3
-            )
-            LCD_interface.lcd_out("", line=4)
->>>>>>> upstream/main:titration/utils/UIState/titration/InitialTitration.py
 
             while not interfaces.temperature_controller.at_temperature():
                 interfaces.temperature_controller.update()
