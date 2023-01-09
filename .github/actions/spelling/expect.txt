@@ -25,6 +25,7 @@ emoji
 ETris
 getchar
 github
+gitleaks
 gpio
 gpiozero
 HTris
