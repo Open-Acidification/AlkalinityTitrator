@@ -62,6 +62,25 @@
         "test",
         "code"
       ]
+    },
+    {
+      "login": "jsoref",
+      "name": "Josh Soref",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2119212?v=4",
+      "profile": "https://github.com/jsoref",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "TaylorSmith28",
+      "name": "TaylorSmith28",
+      "avatar_url": "https://avatars.githubusercontent.com/u/83837157?v=4",
+      "profile": "https://github.com/TaylorSmith28",
+      "contributions": [
+        "test",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -69,5 +88,6 @@
   "projectOwner": "Open-Acidification",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "angular"
 }

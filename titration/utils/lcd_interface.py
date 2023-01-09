@@ -36,9 +36,7 @@ ui_keypad = keypad_class.Keypad(
 lines = {1: "", 2: "", 3: "", 4: ""}
 
 
-def lcd_out(  # TODO: change to camel-case
-    message, line, style=constants.LCD_LEFT_JUST, console=False
-):
+def lcd_out(message, line, style=constants.LCD_LEFT_JUST, console=False):
     """
     Outputs given string to LCD screen
     :param info: string to be displayed on LCD screen

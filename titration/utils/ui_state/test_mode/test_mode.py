@@ -7,9 +7,15 @@ from titration.utils.ui_state.test_mode.set_volume import SetVolume
 from titration.utils.ui_state.test_mode.toggle_test_mode import ToggleTestMode
 
 
+<<<<<<< HEAD:titration/utils/ui_state/test_mode/test_mode.py
 class TestMode(ui_state.UIState):
     def __init__(self, titrator, state):
         ui_state.__init__("TestMode", titrator)
+=======
+class TestMode(UIState.UIState):
+    def __init__(self, titrator, state):
+        UIState.__init__("TestMode", titrator)
+>>>>>>> upstream/main:titration/utils/UIState/test_mode/TestMode.py
         self.titrator = titrator
         self.subState = 1
         self.previousState = state
@@ -52,7 +58,14 @@ class TestMode(ui_state.UIState):
             lcd_interface.lcd_out("*: Page 2", line=4)
 
         elif self.subState == 2:
+<<<<<<< HEAD:titration/utils/ui_state/test_mode/test_mode.py
             lcd_interface.lcd_out("4: Toggle Test Mode", line=1)
             lcd_interface.lcd_out("5: Read Volume", line=2)
             lcd_interface.lcd_out("6: Exit Test Mode", line=3)
             lcd_interface.lcd_out("*: Page 1", line=4)
+=======
+            LCD_interface.lcd_out("4: Toggle Test Mode", line=1)
+            LCD_interface.lcd_out("5: Read Volume", line=2)
+            LCD_interface.lcd_out("6: Exit Test Mode", line=3)
+            LCD_interface.lcd_out("*: Page 1", line=4)
+>>>>>>> upstream/main:titration/utils/UIState/test_mode/TestMode.py

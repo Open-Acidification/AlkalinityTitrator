@@ -1,6 +1,6 @@
-from titration.utils import titrator
+from titration.utils import Titrator
 
-titrator_object = titrator.Titrator()
+titrator_object = Titrator.Titrator()
 
 
 def run():
