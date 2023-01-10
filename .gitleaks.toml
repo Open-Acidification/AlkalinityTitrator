@@ -1,9 +1,0 @@
-#
-# GitLeaks Repo Specific Configuration
-#
-# This allowlist is used to allow README allcontributors generated code
-
-[allowlist]
-paths = [
-  '''README.md''',
-]
