@@ -13,19 +13,12 @@ pytest-cov = "*"
 pytest-mock = "*"
 
 [packages]
-adafruit-blinka = "*"
 adafruit-circuitpython-ads1x15 = "*"
 adafruit-circuitpython-lis3dh = "*"
 adafruit-circuitpython-max31865 = "*"
 gpiozero = "*"
-pad4pi = "*"
 pandas = "*"
-pep8 = "*"
-pyserial = "*"
 "rpi.gpio" = "*"
-smbus2 = "*"
-pynput = "*"
-keyboard = "*"
 click = "*"
 
 [requires]

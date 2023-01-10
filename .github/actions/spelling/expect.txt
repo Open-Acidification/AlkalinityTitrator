@@ -25,6 +25,7 @@ emoji
 ETris
 getchar
 github
+gitleaks
 gpio
 gpiozero
 HTris
@@ -70,6 +71,7 @@ RXD
 sck
 scl
 SCLK
+Soref
 screenshots
 sda
 setpoint
