@@ -3,13 +3,13 @@ class UIState:
         self.titrator = titrator
 
     def handleKey(self, key):
-        pass
+        raise Exception("A handleKey function is missing")
 
     def name(self):
-        pass
+        raise Exception("A name function is missing")
 
     def loop(self):
-        pass
+        raise Exception("A loop function is missing")
 
     def start(self):
         pass
