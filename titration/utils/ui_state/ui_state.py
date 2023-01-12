@@ -3,13 +3,13 @@ class UIState:
         self.titrator = titrator
 
     def handleKey(self, key):
-        pass
+        raise Exception(self.titrator.state.name() + " requires a handleKey function")
 
     def name(self):
-        pass
+        raise Exception(self.titrator.state.name() + " requires a name function")
 
     def loop(self):
-        pass
+        raise Exception(self.titrator.state.name() + " requires a loop function")
 
     def start(self):
         pass
