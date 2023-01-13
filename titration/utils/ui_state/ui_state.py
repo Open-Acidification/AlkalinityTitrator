@@ -1,5 +1,5 @@
 class UIState:
-    def __init__(self, titrator, previousState = None):
+    def __init__(self, titrator, previousState=None):
         self.titrator = titrator
         self.previousState = previousState
         self.subState = 1
