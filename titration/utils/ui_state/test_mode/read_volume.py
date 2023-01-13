@@ -7,9 +7,6 @@ class ReadVolume(UIState):
         super().__init__(titrator, state)
         self.values = {"new_volume": 0}
 
-    def name(self):
-        return "ReadVolume"
-
     def handleKey(self, key):
         self._setNextState(self.previousState, True)
 

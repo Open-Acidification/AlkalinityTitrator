@@ -8,9 +8,6 @@ class UpdateSettings(UIState):
         super().__init__(titrator, state)
         self.values = {"vol_in_pump": 0}
 
-    def name(self):
-        return "UpdateSettings"
-
     def handleKey(self, key):
         if self.subState == 1:
             if key != "n" and key != "N":

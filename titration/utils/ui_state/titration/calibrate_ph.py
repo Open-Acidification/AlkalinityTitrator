@@ -9,9 +9,6 @@ class CalibratePh(UIState):
         super().__init__(titrator)
         self.values = {"buffer1_measured_volts": 5, "buffer1_actual_pH": 0}
 
-    def name(self):
-        return "CalibratePh"
-
     def handleKey(self, key):
         if self.subState == 1:
             self._setNextState(UserValue(self.titrator, self, "Enter buffer pH:"), True)

@@ -8,7 +8,7 @@ class UIState:
         raise Exception(self.__class__.__name__ + " requires a handleKey function")
 
     def name(self):
-        raise Exception(self.__class__.__name__ + " requires a name function")
+        return self.__class__.__name__
 
     def loop(self):
         raise Exception(self.__class__.__name__ + " requires a loop function")

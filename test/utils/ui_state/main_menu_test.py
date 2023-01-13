@@ -2,7 +2,7 @@ from unittest.mock import ANY
 from unittest import mock
 from titration.utils.ui_state import main_menu
 from titration.utils.titrator import Titrator
-from titration.utils import lcd_interface, constants
+from titration.utils import lcd_interface
 
 
 # Test handleKey

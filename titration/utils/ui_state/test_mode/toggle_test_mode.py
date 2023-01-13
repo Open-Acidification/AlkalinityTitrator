@@ -7,9 +7,6 @@ class ToggleTestMode(UIState):
         super().__init__(titrator, state)
         self.values = {"new_volume": 0}
 
-    def name(self):
-        return "ToggleTestMode"
-
     def handleKey(self, key):
         self._setNextState(self.previousState, True)
 

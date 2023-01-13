@@ -14,9 +14,6 @@ class ManualTitration(UIState):
             "current_pH": 5,
         }
 
-    def name(self):
-        return "ManualTitration"
-
     def handleKey(self, key):
         if self.subState == 1:
             self._setNextState(UserValue(self.titrator, self, "Volume:"), True)

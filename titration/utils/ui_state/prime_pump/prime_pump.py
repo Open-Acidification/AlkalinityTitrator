@@ -9,9 +9,6 @@ class PrimePump(UIState):
         super().__init__(titrator, state)
         self.values = {"selection": 0}
 
-    def name(self):
-        return "PrimePump"
-
     def handleKey(self, key):
         if self.subState == 1:
             self.values["selection"] = key

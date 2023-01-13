@@ -5,9 +5,6 @@ from titration.utils.ui_state.calibration.calibrate_temp import CalibrateTemp
 
 
 class SetupCalibration(UIState):
-    def name(self):
-        return "SetupCalibration"
-
     def handleKey(self, key):
         if key == constants.KEY_1:
             self._setNextState(CalibratePh(self.titrator, self), True)

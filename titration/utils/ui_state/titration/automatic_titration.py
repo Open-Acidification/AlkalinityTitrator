@@ -8,9 +8,6 @@ class AutomaticTitration(UIState):
         super().__init__(titrator)
         self.values = {"pH_target": 5, "current_pH": 5}
 
-    def name(self):
-        return "AutomaticTitration"
-
     def handleKey(self, key):
         if self.subState == 1:
             self.subState += 1

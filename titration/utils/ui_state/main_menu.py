@@ -9,9 +9,6 @@ from titration.utils import lcd_interface
 
 
 class MainMenu(UIState):
-    def name(self):
-        return "MainMenu"
-
     def handleKey(self, key):
         # Substate 1 key handle
         if self.subState == 1:

@@ -12,9 +12,6 @@ class CalibrateTemp(UIState):
             "expected_temperature": 0,
         }
 
-    def name(self):
-        return "CalibrateTemp"
-
     def handleKey(self, key):
         if self.subState == 1:
             self._setNextState(

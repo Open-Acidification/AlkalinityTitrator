@@ -8,9 +8,6 @@ class Pump(UIState):
         super().__init__(titrator, state)
         self.values = {"p_direction": 0}
 
-    def name(self):
-        return "Pump"
-
     def handleKey(self, key):
         if self.subState == 1:
             self._setNextState(UserValue(self.titrator, self, "Volume: "), True)

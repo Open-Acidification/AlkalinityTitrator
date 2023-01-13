@@ -11,9 +11,6 @@ class SetupTitration(UIState):
         super().__init__(titrator)
         self.values = {"weight": 0, "salinity": 0}
 
-    def name(self):
-        return "SetupTitration"
-
     def handleKey(self, key):
         if self.subState == 1:
             self._setNextState(UserValue(self.titrator, self, "Sol. weight (g):"), True)
@@ -57,6 +54,3 @@ class SetupTitration(UIState):
                 ),
                 line=4,
             )
-
-    def start(self):
-        pass

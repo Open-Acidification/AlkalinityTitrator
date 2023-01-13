@@ -15,9 +15,6 @@ class ReadValues(UIState):
             "timeStep": 0.5,
         }
 
-    def name(self):
-        return "ReadValues"
-
     def handleKey(self, key):
         self._setNextState(self.previousState, True)
 

@@ -9,11 +9,6 @@ class UserValue(UIState):
         self.decimal = False
         self.message = message
         self.string = ""
-        self.instructions_1 = "* = .       B = BS"
-        self.instructions_2 = "A = accept  C = Clr"
-
-    def name(self):
-        return "UserValue"
 
     def handleKey(self, key):
         if key == "A":
@@ -53,5 +48,5 @@ class UserValue(UIState):
         lcd_interface.lcd_clear()
         lcd_interface.lcd_out(self.message, line=1)
         lcd_interface.lcd_out(self.string, style=constants.LCD_CENT_JUST, line=2)
-        lcd_interface.lcd_out(self.instructions_1, line=3)
-        lcd_interface.lcd_out(self.instructions_2, line=4)
+        lcd_interface.lcd_out("* = .       B = BS", line=3)
+        lcd_interface.lcd_out("A = accept  C = Clr", line=4)

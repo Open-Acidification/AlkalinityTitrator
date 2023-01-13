@@ -8,9 +8,6 @@ class SetVolume(UIState):
         super().__init__(titrator, state)
         self.values = {"new_volume": 0}
 
-    def name(self):
-        return "SetVolume"
-
     def handleKey(self, key):
         if self.subState == 1:
             self._setNextState(UserValue(self.titrator, self, "Volume in pump: "), True)

@@ -8,9 +8,6 @@ from titration.utils.ui_state.test_mode.toggle_test_mode import ToggleTestMode
 
 
 class TestMode(UIState):
-    def name(self):
-        return "TestMode"
-
     def handleKey(self, key):
         if self.subState == 1:
             if key == constants.KEY_STAR:

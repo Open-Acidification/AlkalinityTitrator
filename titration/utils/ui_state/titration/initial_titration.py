@@ -9,9 +9,6 @@ class InitialTitration(UIState):
         super().__init__(titrator)
         self.choice = 0
 
-    def name(self):
-        return "InitialTitration"
-
     def handleKey(self, key):
         if self.subState == 1:
             self.choice = key
