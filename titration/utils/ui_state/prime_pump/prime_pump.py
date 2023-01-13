@@ -1,16 +1,13 @@
-from titration.utils.ui_state import ui_state
+from titration.utils.ui_state.ui_state import UIState
 from titration.utils import lcd_interface
 
 
 # TODO: feedback on number of pumps; one state? Use "D" to exit always
 # TODO: implement constant feedback on pumping
-class PrimePump(ui_state.UIState):
+class PrimePump(UIState):
     def __init__(self, titrator, state):
-        ui_state.__init__("PrimePump", titrator)
-        self.titrator = titrator
+        super().__init__(titrator, state)
         self.values = {"selection": 0}
-        self.subState = 1
-        self.previousState = state
 
     def name(self):
         return "PrimePump"

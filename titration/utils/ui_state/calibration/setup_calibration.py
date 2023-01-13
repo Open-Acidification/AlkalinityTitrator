@@ -1,19 +1,10 @@
-from titration.utils.ui_state import ui_state
+from titration.utils.ui_state.ui_state import UIState
 from titration.utils import lcd_interface, constants
 from titration.utils.ui_state.calibration.calibrate_ph import CalibratePh
 from titration.utils.ui_state.calibration.calibrate_temp import CalibrateTemp
 
 
-class SetupCalibration(ui_state.UIState):
-    def __init__(self, titrator, state):
-        ui_state.__init__(
-            "SetupCalibration",
-            titrator,
-        )
-        self.titrator = titrator
-        self.previousState = state
-        self.subState = 1
-
+class SetupCalibration(UIState):
     def name(self):
         return "SetupCalibration"
 

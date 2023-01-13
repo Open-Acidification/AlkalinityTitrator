@@ -1,15 +1,12 @@
-from titration.utils.ui_state import ui_state
+from titration.utils.ui_state.ui_state import UIState
 from titration.utils import lcd_interface
 from titration.utils.ui_state.user_value.user_value import UserValue
 
 
-class CalibratePh(ui_state.UIState):
+class CalibratePh(UIState):
     def __init__(self, titrator, state):
-        ui_state.__init__("CalibratePh", titrator)
-        self.titrator = titrator
+        super().__init__(titrator, state)
         self.values = {"buffer1_measured_volts": 5, "buffer1_actual_pH": 0}
-        self.subState = 1
-        self.previousState = state
 
     def name(self):
         return "CalibratePh"

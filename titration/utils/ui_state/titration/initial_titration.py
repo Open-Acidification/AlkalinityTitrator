@@ -1,15 +1,13 @@
-from titration.utils.ui_state import ui_state
+from titration.utils.ui_state.ui_state import UIState
 from titration.utils import lcd_interface, interfaces, constants
 from titration.utils.ui_state.titration.automatic_titration import AutomaticTitration
 from titration.utils.ui_state.titration.manual_titration import ManualTitration
 
 
-class InitialTitration(ui_state.UIState):
+class InitialTitration(UIState):
     def __init__(self, titrator):
-        ui_state.__init__("InitialTitration", titrator)
-        self.titrator = titrator
+        super().__init__(titrator)
         self.choice = 0
-        self.subState = 1
 
     def name(self):
         return "InitialTitration"

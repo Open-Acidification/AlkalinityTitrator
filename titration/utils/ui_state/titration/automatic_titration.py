@@ -1,14 +1,12 @@
-from titration.utils.ui_state import ui_state
+from titration.utils.ui_state.ui_state import UIState
 from titration.utils import lcd_interface, constants
 from titration.utils.ui_state import main_menu
 
 
-class AutomaticTitration(ui_state.UIState):
+class AutomaticTitration(UIState):
     def __init__(self, titrator):
-        ui_state.__init__("AutomaticTitration", titrator)
-        self.titrator = titrator
+        super().__init__(titrator)
         self.values = {"pH_target": 5, "current_pH": 5}
-        self.subState = 1
 
     def name(self):
         return "AutomaticTitration"

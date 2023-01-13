@@ -1,20 +1,18 @@
-from titration.utils.ui_state import ui_state
+from titration.utils.ui_state.ui_state import UIState
 from titration.utils import lcd_interface, constants
 from titration.utils.ui_state import main_menu
 from titration.utils.ui_state.user_value.user_value import UserValue
 
 
-class ManualTitration(ui_state.UIState):
+class ManualTitration(UIState):
     def __init__(self, titrator):
-        ui_state.__init__("ManualTitration", titrator)
-        self.titrator = titrator
+        super().__init__(titrator)
         self.values = {
             "p_volume": 0,
             "p_direction": 0,
             "degas_time": 0,
             "current_pH": 5,
         }
-        self.subState = 1
 
     def name(self):
         return "ManualTitration"

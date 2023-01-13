@@ -1,6 +1,8 @@
 class UIState:
-    def __init__(self, titrator):
+    def __init__(self, titrator, previousState = None):
         self.titrator = titrator
+        self.previousState = previousState
+        self.subState = 1
 
     def handleKey(self, key):
         raise Exception(self.__class__.__name__ + " requires a handleKey function")

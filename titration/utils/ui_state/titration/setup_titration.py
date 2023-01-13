@@ -1,4 +1,4 @@
-from titration.utils.ui_state import ui_state
+from titration.utils.ui_state.ui_state import UIState
 from titration.utils import constants
 from titration.utils.ui_state.titration.initial_titration import InitialTitration
 from titration.utils.ui_state.titration.calibrate_ph import CalibratePh
@@ -6,12 +6,10 @@ from titration.utils import lcd_interface
 from titration.utils.ui_state.user_value.user_value import UserValue
 
 
-class SetupTitration(ui_state.UIState):
+class SetupTitration(UIState):
     def __init__(self, titrator):
-        ui_state.__init__("SetupTitration", titrator)
-        self.titrator = titrator
+        super().__init__(titrator)
         self.values = {"weight": 0, "salinity": 0}
-        self.subState = 1
 
     def name(self):
         return "SetupTitration"
