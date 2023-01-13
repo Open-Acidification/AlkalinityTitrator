@@ -4,6 +4,7 @@ from titration.utils.ui_state.titration.setup_titration import SetupTitration
 from titration.utils.titrator import Titrator
 from titration.utils.devices.keypad_mock import Keypad
 
+
 # Test loop
 @mock.patch.object(Titrator, "_handleUI")
 def test_loop(handleUIMock):
