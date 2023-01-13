@@ -1,4 +1,4 @@
-from titration.utils.ui_state import ui_state
+from titration.utils.ui_state.ui_state import UIState
 from titration.utils import lcd_interface, constants
 from titration.utils.ui_state.test_mode.pump import Pump
 from titration.utils.ui_state.test_mode.read_values import ReadValues
@@ -7,13 +7,7 @@ from titration.utils.ui_state.test_mode.set_volume import SetVolume
 from titration.utils.ui_state.test_mode.toggle_test_mode import ToggleTestMode
 
 
-class TestMode(ui_state.UIState):
-    def __init__(self, titrator, state):
-        ui_state.__init__("TestMode", titrator)
-        self.titrator = titrator
-        self.subState = 1
-        self.previousState = state
-
+class TestMode(UIState):
     def name(self):
         return "TestMode"
 

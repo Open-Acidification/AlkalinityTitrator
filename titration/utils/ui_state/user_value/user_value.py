@@ -1,13 +1,10 @@
-from titration.utils.ui_state import ui_state
+from titration.utils.ui_state.ui_state import UIState
 from titration.utils import lcd_interface, constants
 
 
-class UserValue(ui_state.UIState):
+class UserValue(UIState):
     def __init__(self, titrator, state, message):
-        ui_state.__init__("UserValue", titrator)
-        self.titrator = titrator
-        self.subState = 1
-        self.previousState = state
+        super().__init__(titrator, state)
         self.inputs = []
         self.decimal = False
         self.message = message

@@ -1,4 +1,4 @@
-from titration.utils.ui_state import ui_state
+from titration.utils.ui_state.ui_state import UIState
 from titration.utils import constants
 from titration.utils.ui_state.prime_pump import prime_pump
 from titration.utils.ui_state.test_mode import test_mode
@@ -8,12 +8,7 @@ from titration.utils.ui_state.update_settings import update_settings
 from titration.utils import lcd_interface
 
 
-class MainMenu(ui_state.UIState):
-    def __init__(self, titrator):
-        ui_state.__init__("MainMenu", titrator)
-        self.titrator = titrator
-        self.subState = 1
-
+class MainMenu(UIState):
     def name(self):
         return "MainMenu"
 

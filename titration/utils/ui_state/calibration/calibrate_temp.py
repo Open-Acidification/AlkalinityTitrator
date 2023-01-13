@@ -1,19 +1,16 @@
-from titration.utils.ui_state import ui_state
+from titration.utils.ui_state.ui_state import UIState
 from titration.utils import lcd_interface, constants
 from titration.utils.ui_state.user_value.user_value import UserValue
 
 
-class CalibrateTemp(ui_state.UIState):
+class CalibrateTemp(UIState):
     def __init__(self, titrator, state):
-        ui_state.__init__("CalibrateTemp", titrator)
-        self.titrator = titrator
-        self.subState = 1
+        super().__init__(titrator, state)
         self.values = {
             "actual_temperature": 5,
             "new_ref_resistance": 5,
             "expected_temperature": 0,
         }
-        self.previousState = state
 
     def name(self):
         return "CalibrateTemp"
