@@ -19,6 +19,7 @@ class SetupCalibration(UIState):
             self._setNextState(self.previousState, True)
 
     def loop(self):
+        lcd_interface.lcd_clear()
         lcd_interface.lcd_out("1. pH", line=1)
         lcd_interface.lcd_out("2. Temperature", line=2)
         lcd_interface.lcd_out("3. Return", line=3)

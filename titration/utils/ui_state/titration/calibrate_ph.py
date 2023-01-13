@@ -25,18 +25,21 @@ class CalibratePh(UIState):
 
     def loop(self):
         if self.subState == 1:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("Enter buffer pH", line=1)
             lcd_interface.lcd_out("", line=2)
             lcd_interface.lcd_out("Press any to cont", line=3)
             lcd_interface.lcd_out("", line=4)
 
         elif self.subState == 2:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("Put sensor in buffer", line=1)
             lcd_interface.lcd_out("", line=2)
             lcd_interface.lcd_out("Press any to cont", line=3)
             lcd_interface.lcd_out("", line=4)
 
         elif self.subState == 3:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("Recorded pH, volts:", line=1)
             lcd_interface.lcd_out(
                 "{0:>2.5f} pH, {1:>3.4f} V".format(

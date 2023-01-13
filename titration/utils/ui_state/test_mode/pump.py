@@ -26,18 +26,21 @@ class Pump(UIState):
 
     def loop(self):
         if self.subState == 1:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("Set Volume", line=1)
             lcd_interface.lcd_out("", line=2)
             lcd_interface.lcd_out("Press any to cont", line=3)
             lcd_interface.lcd_out("", line=4)
 
         elif self.subState == 2:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("In/Out (0/1):", line=1)
             lcd_interface.lcd_out("", line=2)
             lcd_interface.lcd_out("", line=3)
             lcd_interface.lcd_out("", line=4)
 
         elif self.subState == 3:
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("Pumping volume", line=1)
             lcd_interface.lcd_out("", line=2)
             lcd_interface.lcd_out("Press any to cont", line=3)

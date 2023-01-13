@@ -50,6 +50,7 @@ class UserValue(UIState):
                 self.inputs.append(int(key))
 
     def loop(self):
+        lcd_interface.lcd_clear()
         lcd_interface.lcd_out(self.message, line=1)
         lcd_interface.lcd_out(self.string, style=constants.LCD_CENT_JUST, line=2)
         lcd_interface.lcd_out(self.instructions_1, line=3)

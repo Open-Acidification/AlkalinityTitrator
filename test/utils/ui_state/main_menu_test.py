@@ -43,27 +43,48 @@ def test_handleKey(mock):
 
 
 # Test loop
-@mock.patch.object(lcd_interface, "display_list")
-def test_loop(mock):
+@mock.patch.object(lcd_interface, "lcd_out")
+def test_loop(lcdOutMock):
     mainMenu = main_menu.MainMenu(Titrator())
 
     mainMenu.loop()
-    mock.assert_called_with(constants.ROUTINE_OPTIONS_1)
-    mock.reset_mock()
+    lcdOutMock.assert_has_calls(
+        [
+            mock.call("Run titration", line=1),
+            mock.call("Calibrate sensors", line=2),
+            mock.call("Prime pump", line=3),
+            mock.call("Page 2", line=4),
+        ]
+    )
+    lcdOutMock.reset_mock()
 
     mainMenu.subState = 2
     mainMenu.loop()
-    mock.assert_called_with(constants.ROUTINE_OPTIONS_2)
+    lcdOutMock.assert_has_calls(
+        [
+            mock.call("Update settings", line=1),
+            mock.call("Test mode", line=2),
+            mock.call("Exit", line=3),
+            mock.call("Page 1", line=4),
+        ]
+    )
 
 
 # Test MainMenu
-@mock.patch.object(lcd_interface, "display_list")
+@mock.patch.object(lcd_interface, "lcd_out")
 @mock.patch.object(main_menu.MainMenu, "_setNextState")
 def test_MainMenu(mock1, mock2):
     mainMenu = main_menu.MainMenu(Titrator())
 
     mainMenu.loop()
-    mock2.assert_called_with(constants.ROUTINE_OPTIONS_1)
+    mock2.assert_has_calls(
+        [
+            mock.call("Run titration", line=1),
+            mock.call("Calibrate sensors", line=2),
+            mock.call("Prime pump", line=3),
+            mock.call("Page 2", line=4),
+        ]
+    )
     mock2.reset_mock()
 
     mainMenu.handleKey("1")
@@ -85,7 +106,14 @@ def test_MainMenu(mock1, mock2):
     assert mainMenu.subState == 2
 
     mainMenu.loop()
-    mock2.assert_called_with(constants.ROUTINE_OPTIONS_2)
+    mock2.assert_has_calls(
+        [
+            mock.call("Update settings", line=1),
+            mock.call("Test mode", line=2),
+            mock.call("Exit", line=3),
+            mock.call("Page 1", line=4),
+        ]
+    )
     mock2.reset_mock()
 
     mainMenu.handleKey("4")

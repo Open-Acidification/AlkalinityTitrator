@@ -20,6 +20,7 @@ class InitialTitration(UIState):
     def loop(self):
         if self.subState == 1:
             # Manual or automatic titration
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("Bring pH to 3.5:", line=1)
             lcd_interface.lcd_out("Manual: 1", line=2)
             lcd_interface.lcd_out("Automatic: 2", line=3)
@@ -27,6 +28,7 @@ class InitialTitration(UIState):
 
         elif self.subState == 2:
             # Wait until solution is up to temperature
+            lcd_interface.lcd_clear()
             lcd_interface.lcd_out("Heating to 30 C...", line=1)
             lcd_interface.lcd_out("", line=2)
             lcd_interface.lcd_out(
