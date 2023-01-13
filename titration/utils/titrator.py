@@ -1,16 +1,12 @@
 from titration.utils.ui_state import main_menu
 from titration.utils import interfaces, constants
-import types
 from titration.utils.devices.keypad_mock import Keypad
 
-# TODO: look at ModuleType
+
 # TODO: log instead of print
 if constants.IS_TEST:
     from titration.utils.devices import board_mock
 
-board_class: types.ModuleType = board_mock
-
-if constants.IS_TEST:
     board_class = board_mock
 else:
     import board
