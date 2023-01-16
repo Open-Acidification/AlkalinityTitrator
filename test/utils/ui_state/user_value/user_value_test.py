@@ -1,3 +1,6 @@
+"""
+The file to test the UserValue class
+"""
 from unittest import mock
 from unittest.mock import ANY
 from titration.utils.titrator import Titrator
@@ -7,39 +10,40 @@ from titration.utils.ui_state.user_value.user_value import UserValue
 from titration.utils import lcd_interface
 
 
-# Test handleKey
 @mock.patch.object(UserValue, "_setNextState")
-def test_handleKey(setNextStateMock):
-    userValue = UserValue(
+def test_handle_key(set_next_state_mock):
+    """
+    The function to test UserValue's handle_key function for each keypad input
+    """
+    user_value = UserValue(
         Titrator(), UpdateSettings(Titrator(), MainMenu(Titrator())), "Volume in pump:"
     )
 
-    userValue.handleKey("A")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UpdateSettings"
-    setNextStateMock.reset_mock()
+    user_value.handleKey("A")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
 
-    userValue.handleKey("C")
-    assert userValue.decimal is False
-    assert userValue.string == "_"
+    user_value.handleKey("C")
+    assert user_value.string == ""
 
-    userValue.handleKey("1")
-    assert userValue.string[-1] == "1"
+    user_value.handleKey("1")
+    assert user_value.string[-1] == "1"
 
-    userValue.handleKey("*")
-    assert userValue.string[-1] == "."
-    assert userValue.decimal is True
+    user_value.handleKey("*")
+    assert user_value.string[-1] == "."
 
 
-# Test loop
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcdOutMock):
-    userValue = UserValue(
+def test_loop(lcd_out_mock):
+    """
+    The function to test UserValue's loop function's lcd_interface calls
+    """
+    user_value = UserValue(
         Titrator(), UpdateSettings(Titrator(), MainMenu(Titrator())), "Volume in pump:"
     )
 
-    userValue.loop()
-    lcdOutMock.assert_has_calls(
+    user_value.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Volume in pump:", line=1),
             mock.call("", style=2, line=2),
@@ -47,18 +51,28 @@ def test_loop(lcdOutMock):
             mock.call("A = accept  C = Clr", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
 
 @mock.patch.object(UserValue, "_setNextState")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_UserValue(lcdOutMock, setNextStateMock):
-    userValue = UserValue(
+def test_user_value(lcd_out_mock, set_next_state_mock):
+    """
+    The function to test a use case of the UserValue class:
+        User enters "3"
+        User enters "."
+        User enters "."
+        User enters "1"
+        User backspaces
+        User backspaces
+        User clears
+        User accepts
+    """
+    user_value = UserValue(
         Titrator(), UpdateSettings(Titrator(), MainMenu(Titrator())), "Volume in pump:"
     )
 
-    userValue.loop()
-    lcdOutMock.assert_has_calls(
+    user_value.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Volume in pump:", line=1),
             mock.call("", style=2, line=2),
@@ -66,14 +80,12 @@ def test_UserValue(lcdOutMock, setNextStateMock):
             mock.call("A = accept  C = Clr", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    userValue.handleKey("3")
-    assert userValue.string == "3"
-    assert userValue.decimal is False
+    user_value.handleKey("3")
+    assert user_value.string == "3"
 
-    userValue.loop()
-    lcdOutMock.assert_has_calls(
+    user_value.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Volume in pump:", line=1),
             mock.call("3", style=2, line=2),
@@ -81,14 +93,12 @@ def test_UserValue(lcdOutMock, setNextStateMock):
             mock.call("A = accept  C = Clr", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    userValue.handleKey("*")
-    assert userValue.string == "3."
-    assert userValue.decimal is True
+    user_value.handleKey("*")
+    assert user_value.string == "3."
 
-    userValue.loop()
-    lcdOutMock.assert_has_calls(
+    user_value.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Volume in pump:", line=1),
             mock.call("3.", style=2, line=2),
@@ -96,14 +106,12 @@ def test_UserValue(lcdOutMock, setNextStateMock):
             mock.call("A = accept  C = Clr", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    userValue.handleKey("*")
-    assert userValue.string == "3."
-    assert userValue.decimal is True
+    user_value.handleKey("*")
+    assert user_value.string == "3."
 
-    userValue.loop()
-    lcdOutMock.assert_has_calls(
+    user_value.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Volume in pump:", line=1),
             mock.call("3.", style=2, line=2),
@@ -111,14 +119,12 @@ def test_UserValue(lcdOutMock, setNextStateMock):
             mock.call("A = accept  C = Clr", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    userValue.handleKey("1")
-    assert userValue.string == "3.1"
-    assert userValue.decimal is True
+    user_value.handleKey("1")
+    assert user_value.string == "3.1"
 
-    userValue.loop()
-    lcdOutMock.assert_has_calls(
+    user_value.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Volume in pump:", line=1),
             mock.call("3.1", style=2, line=2),
@@ -126,14 +132,12 @@ def test_UserValue(lcdOutMock, setNextStateMock):
             mock.call("A = accept  C = Clr", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    userValue.handleKey("B")
-    assert userValue.string == "3."
-    assert userValue.decimal is True
+    user_value.handleKey("B")
+    assert user_value.string == "3."
 
-    userValue.loop()
-    lcdOutMock.assert_has_calls(
+    user_value.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Volume in pump:", line=1),
             mock.call("3.", style=2, line=2),
@@ -141,14 +145,12 @@ def test_UserValue(lcdOutMock, setNextStateMock):
             mock.call("A = accept  C = Clr", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    userValue.handleKey("B")
-    assert userValue.string == "3"
-    assert userValue.decimal is False
+    user_value.handleKey("B")
+    assert user_value.string == "3"
 
-    userValue.loop()
-    lcdOutMock.assert_has_calls(
+    user_value.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Volume in pump:", line=1),
             mock.call("3", style=2, line=2),
@@ -156,14 +158,12 @@ def test_UserValue(lcdOutMock, setNextStateMock):
             mock.call("A = accept  C = Clr", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    userValue.handleKey("C")
-    assert userValue.string == "_"
-    assert userValue.decimal is False
+    user_value.handleKey("C")
+    assert user_value.string == ""
 
-    userValue.loop()
-    lcdOutMock.assert_has_calls(
+    user_value.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Volume in pump:", line=1),
             mock.call("", style=2, line=2),
@@ -171,9 +171,7 @@ def test_UserValue(lcdOutMock, setNextStateMock):
             mock.call("A = accept  C = Clr", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    userValue.handleKey("A")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UpdateSettings"
-    setNextStateMock.reset_mock()
+    user_value.handleKey("A")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"

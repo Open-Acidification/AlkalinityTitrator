@@ -1,3 +1,6 @@
+"""
+The file to test the SetVolume class
+"""
 from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
@@ -6,29 +9,32 @@ from titration.utils import lcd_interface
 from titration.utils.ui_state.test_mode.set_volume import SetVolume
 
 
-# Test handleKey
 @mock.patch.object(SetVolume, "_setNextState")
-def test_handleKey(setNextStateMock):
-    setVolume = SetVolume(Titrator(), MainMenu(Titrator()))
+def test_handle_key(set_next_state_mock):
+    """
+    The function to test SetVolume's handle_key function for each keypad input
+    """
+    set_volume = SetVolume(Titrator(), MainMenu(Titrator()))
 
-    setVolume.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    setNextStateMock.reset_called()
-    assert setVolume.subState == 2
+    set_volume.handleKey("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "UserValue"
+    assert set_volume.subState == 2
 
-    setVolume.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "MainMenu"
+    set_volume.handleKey("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
 
-# Test loop
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcdOutMock):
-    setVolume = SetVolume(Titrator(), MainMenu(Titrator()))
+def test_loop(lcd_out_mock):
+    """
+    The function to test SetVolume's loop function's lcd_interface calls
+    """
+    set_volume = SetVolume(Titrator(), MainMenu(Titrator()))
 
-    setVolume.loop()
-    lcdOutMock.assert_has_calls(
+    set_volume.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Set volume in pump", line=1),
             mock.call("", line=2),
@@ -36,11 +42,10 @@ def test_loop(lcdOutMock):
             mock.call("", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    setVolume.subState += 1
-    setVolume.loop()
-    lcdOutMock.assert_has_calls(
+    set_volume.subState += 1
+    set_volume.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Volume in pump", line=1),
             mock.call("recorded", line=2),
@@ -50,14 +55,18 @@ def test_loop(lcdOutMock):
     )
 
 
-# Test SetVolume
 @mock.patch.object(lcd_interface, "lcd_out")
 @mock.patch.object(SetVolume, "_setNextState")
-def test_SetVolume(setNextStateMock, lcdOutMock):
-    setVolume = SetVolume(Titrator(), MainMenu(Titrator()))
+def test_set_volume(set_next_state_mock, lcd_out_mock):
+    """
+    The function to test a use case of the SetVolume class:
+        User enters "1" to continue setting volume in pump
+        User enters "1" to continue after the pump volume has been recorded
+    """
+    set_volume = SetVolume(Titrator(), MainMenu(Titrator()))
 
-    setVolume.loop()
-    lcdOutMock.assert_has_calls(
+    set_volume.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Set volume in pump", line=1),
             mock.call("", line=2),
@@ -65,16 +74,14 @@ def test_SetVolume(setNextStateMock, lcdOutMock):
             mock.call("", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    setVolume.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    setNextStateMock.reset_called()
-    assert setVolume.subState == 2
+    set_volume.handleKey("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "UserValue"
+    assert set_volume.subState == 2
 
-    setVolume.loop()
-    lcdOutMock.assert_has_calls(
+    set_volume.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Volume in pump", line=1),
             mock.call("recorded", line=2),
@@ -83,6 +90,6 @@ def test_SetVolume(setNextStateMock, lcdOutMock):
         ]
     )
 
-    setVolume.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "MainMenu"
+    set_volume.handleKey("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "MainMenu"

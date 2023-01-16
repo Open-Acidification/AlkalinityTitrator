@@ -1,3 +1,6 @@
+"""
+The file to test the Titrator class
+"""
 from unittest import mock
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.ui_state.titration.setup_titration import SetupTitration
@@ -5,47 +8,63 @@ from titration.utils.titrator import Titrator
 from titration.utils.devices.keypad_mock import Keypad
 
 
-# Test loop
 @mock.patch.object(Titrator, "_handleUI")
-def test_loop(handleUIMock):
+def test_loop(handle_ui_mock):
+    """
+    The function to test function calls of the loop function
+    """
     titrator = Titrator()
 
     titrator.loop()
-    handleUIMock.assert_called()
-    handleUIMock.reset_mock()
+    handle_ui_mock.assert_called()
 
 
-# Test setNextState
 @mock.patch.object(Titrator, "_updateState")
-def test_setNextState(updateStateMock):
-    titrator1 = Titrator()
+def test_set_next_state_true(update_state_mock):
+    """
+    The function to test the set_next_state function with update parameter set to True
+    """
+    titrator = Titrator()
 
-    temp = MainMenu(titrator1)
-    assert titrator1.nextState is None
-    titrator1.setNextState(temp, True)
-    assert titrator1.nextState == temp
-    updateStateMock.assert_called()
-    updateStateMock.reset_mock()
-
-    titrator2 = Titrator()
-
-    temp = MainMenu(titrator2)
-    assert titrator2.nextState is None
-    titrator2.setNextState(temp, False)
-    assert titrator2.nextState == temp
-    updateStateMock.assert_not_called()
-    updateStateMock.reset_mock()
+    temp = MainMenu(titrator)
+    assert titrator.nextState is None
+    titrator.setNextState(temp, True)
+    assert titrator.nextState == temp
+    update_state_mock.assert_called()
 
 
-# Test _updateState
+@mock.patch.object(Titrator, "_updateState")
+def test_set_next_state_false(update_state_mock):
+    """
+    The function to test the set_next_state function with update parameter set to False
+    """
+    titrator = Titrator()
+
+    temp = MainMenu(titrator)
+    assert titrator.nextState is None
+    titrator.setNextState(temp, False)
+    assert titrator.nextState == temp
+    update_state_mock.assert_not_called()
+
+
 @mock.patch.object(SetupTitration, "start")
-def test_updateState(startMock):
+def test_update_state_without_next_state(start_mock):
+    """
+    The function to test the start function when the titrator does not have a next_state
+    """
     titrator = Titrator()
 
     assert titrator.nextState is None
     titrator._updateState()
-    startMock.assert_not_called()
-    startMock.reset_mock()
+    start_mock.assert_not_called()
+
+
+@mock.patch.object(SetupTitration, "start")
+def test_update_state_with_next_state(start_mock):
+    """
+    The function to test the start function when the titrator has a next_state
+    """
+    titrator = Titrator()
 
     temp = SetupTitration(titrator)
     titrator.nextState = temp
@@ -53,26 +72,21 @@ def test_updateState(startMock):
     titrator._updateState()
     assert titrator.state == temp
     assert titrator.nextState is None
-    startMock.assert_called()
+    start_mock.assert_called()
 
 
-# Test _handleUI
 @mock.patch.object(Keypad, "get_key")
 @mock.patch.object(Titrator, "_updateState")
 @mock.patch.object(MainMenu, "handleKey")
 @mock.patch.object(MainMenu, "loop")
-def test_handleUI(getKeyMock, updateStateMock, handleKeyMock, loopMock):
+def test_handle_ui(get_key_mock, update_state_mock, handle_key_mock, loop_mock):
+    """
+    The function to test function calls of the handle_ui function
+    """
     titrator = Titrator()
 
     titrator._handleUI()
-    getKeyMock.assert_called()
-    getKeyMock.reset_mock()
-
-    handleKeyMock.assert_called()
-    handleKeyMock.reset_mock()
-
-    updateStateMock.assert_called()
-    updateStateMock.reset_mock()
-
-    loopMock.assert_called()
-    loopMock.reset_mock()
+    get_key_mock.assert_called()
+    handle_key_mock.assert_called()
+    update_state_mock.assert_called()
+    loop_mock.assert_called()
