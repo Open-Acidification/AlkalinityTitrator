@@ -81,7 +81,7 @@ def test_loop(lcd_out_mock):
 def test_calibrate_temp(lcd_out_mock, set_next_state_mock):
     """
     The function to test a use case of the CalibrateTemp class:
-        User enters "1" to continune setting reference solution
+        User enters "1" to continue setting reference solution
         User enters "1" after probe has entered solution to record value
         User enters "1" to continue setting up calibration
     """

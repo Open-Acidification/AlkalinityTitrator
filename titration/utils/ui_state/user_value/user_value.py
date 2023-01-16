@@ -21,7 +21,7 @@ class UserValue(UIState):
             self.string = ""
 
         elif key == "*":
-            if not "." in self.string:
+            if "." not in self.string:
                 self.string = self.string + "."
 
         elif key.isnumeric():

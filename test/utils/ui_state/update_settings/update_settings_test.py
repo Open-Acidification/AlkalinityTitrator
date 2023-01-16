@@ -10,7 +10,7 @@ from titration.utils import lcd_interface
 
 
 @mock.patch.object(UpdateSettings, "_setNextState")
-def test_handle_key(set_next_state_mock):
+def test_handle_key_update(set_next_state_mock):
     """
     The function to test UpdateSettings' handle_key function for each keypad input
     when a user wants to update settings
@@ -37,7 +37,7 @@ def test_handle_key(set_next_state_mock):
 
 
 @mock.patch.object(UpdateSettings, "_setNextState")
-def test_handle_key(set_next_state_mock):
+def test_handle_key_no_update(set_next_state_mock):
     """
     The function to test UpdateSettings' handle_key function for each keypad input
     when a user does not want to update settings

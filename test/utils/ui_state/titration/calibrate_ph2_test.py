@@ -1,5 +1,5 @@
 """
-The file to test the titration\CalibatePh class
+The file to test the titration CalibratePh class
 """
 from unittest import mock
 from unittest.mock import ANY
