@@ -11,7 +11,7 @@ class UserValue(UIState):
 
     Attributes:
         titrator (Titrator object): the titrator is used to move through the state machine
-        previous_state (UIState object): the previous_state is used to return the last state visited in the state machine
+        previous_state (UIState object): the previous_state is used to return the last visited state
         substate (int): the substate is used to keep track of substate of the UIState
         message (string): the message is used to display what setting you are entering
         string (string): the string is used to hold the user input
@@ -23,7 +23,7 @@ class UserValue(UIState):
 
         Parameters:
             titrator (Titrator object): the titrator is used to move through the state machine
-            previous_state (UIState object): the previous_state is used to return the last state visited in the state machine
+            previous_state (UIState object): the previous_state is used to return the last visited state
             message (string): the message is used to display what setting you are entering
         """
         super().__init__(titrator, previous_state)

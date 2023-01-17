@@ -12,9 +12,9 @@ class SetVolume(UIState):
 
     Attributes:
         titrator (Titrator object): the titrator is used to move through the state machine
-        previous_state (UIState object): the previous_state is used to return the last state visited in the state machine
+        previous_state (UIState object): the previous_state is used to return the last visited state
         substate (int): the substate is used to keep track of substate of the UIState
-        values (dict): values is a dictonary to hold the new_volume
+        values (dict): values is a dictionary to hold the new_volume
     """
 
     def __init__(self, titrator, previous_state):
@@ -23,7 +23,7 @@ class SetVolume(UIState):
 
         Parameters:
             titrator (Titrator object): the titrator is used to move through the state machine
-            previous_state (UIState object): the previous_state is used to return the last state visited in the state machine
+            previous_state (UIState object): the previous_state is used to return the last visited state
         """
         super().__init__(titrator, previous_state)
         self.values = {"new_volume": 0}

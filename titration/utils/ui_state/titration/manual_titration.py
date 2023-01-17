@@ -13,9 +13,9 @@ class ManualTitration(UIState):
 
     Attributes:
         titrator (Titrator object): the titrator is used to move through the state machine
-        previous_state (UIState object): the previous_state is used to return the last state visited in the state machine
+        previous_state (UIState object): the previous_state is used to return the last visited state
         substate (int): the substate is used to keep track of substate of the UIState
-        values (dict): values is a dictonary to hold the volume, direction, degas time, and current pH
+        values (dict): values is a dictionary to hold the volume, direction, degas time, and current pH
     """
 
     def __init__(self, titrator):
