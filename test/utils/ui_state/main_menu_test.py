@@ -8,38 +8,38 @@ from titration.utils.titrator import Titrator
 from titration.utils import lcd_interface
 
 
-@mock.patch.object(MainMenu, "_setNextState")
+@mock.patch.object(MainMenu, "_set_next_state")
 def test_handle_key(set_next_state_mock):
     """
     The function to test MainMenu's handle_key function for each keypad input
     """
     main_menu = MainMenu(Titrator())
 
-    main_menu.handleKey("1")
+    main_menu.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "SetupTitration"
 
-    main_menu.handleKey("2")
+    main_menu.handle_key("2")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "SetupCalibration"
 
-    main_menu.handleKey("3")
+    main_menu.handle_key("3")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "PrimePump"
 
-    main_menu.handleKey("*")
-    assert main_menu.subState == 2
+    main_menu.handle_key("*")
+    assert main_menu.substate == 2
 
-    main_menu.handleKey("4")
+    main_menu.handle_key("4")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
 
-    main_menu.handleKey("5")
+    main_menu.handle_key("5")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "TestMode"
 
-    main_menu.handleKey("*")
-    assert main_menu.subState == 1
+    main_menu.handle_key("*")
+    assert main_menu.substate == 1
 
 
 @mock.patch.object(lcd_interface, "lcd_out")
@@ -59,7 +59,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    main_menu.subState = 2
+    main_menu.substate = 2
     main_menu.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -72,7 +72,7 @@ def test_loop(lcd_out_mock):
 
 
 @mock.patch.object(lcd_interface, "lcd_out")
-@mock.patch.object(MainMenu, "_setNextState")
+@mock.patch.object(MainMenu, "_set_next_state")
 def test_main_menu(set_next_state_mock, lcd_out_mock):
     """
     The function to test the entire use case of the MainMenu class
@@ -89,20 +89,20 @@ def test_main_menu(set_next_state_mock, lcd_out_mock):
         ]
     )
 
-    main_menu.handleKey("1")
+    main_menu.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "SetupTitration"
 
-    main_menu.handleKey("2")
+    main_menu.handle_key("2")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "SetupCalibration"
 
-    main_menu.handleKey("3")
+    main_menu.handle_key("3")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "PrimePump"
 
-    main_menu.handleKey("*")
-    assert main_menu.subState == 2
+    main_menu.handle_key("*")
+    assert main_menu.substate == 2
 
     main_menu.loop()
     lcd_out_mock.assert_has_calls(
@@ -114,13 +114,13 @@ def test_main_menu(set_next_state_mock, lcd_out_mock):
         ]
     )
 
-    main_menu.handleKey("4")
+    main_menu.handle_key("4")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
 
-    main_menu.handleKey("5")
+    main_menu.handle_key("5")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "TestMode"
 
-    main_menu.handleKey("*")
-    assert main_menu.subState == 1
+    main_menu.handle_key("*")
+    assert main_menu.substate == 1

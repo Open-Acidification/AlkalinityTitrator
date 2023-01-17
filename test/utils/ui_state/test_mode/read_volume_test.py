@@ -10,14 +10,14 @@ from titration.utils.ui_state.test_mode.read_volume import ReadVolume
 from titration.utils.ui_state.test_mode.test_mode import TestMode
 
 
-@mock.patch.object(ReadVolume, "_setNextState")
+@mock.patch.object(ReadVolume, "_set_next_state")
 def test_handle_key(set_next_state_mock):
     """
     The function to test ReadVolume's handle_key function for each keypad input
     """
     read_volume = ReadVolume(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
-    read_volume.handleKey("1")
+    read_volume.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "TestMode"
 
@@ -44,7 +44,7 @@ def test_loop(lcd_out_mock):
     )
 
 
-@mock.patch.object(ReadVolume, "_setNextState")
+@mock.patch.object(ReadVolume, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
 def test_read_volume(lcd_out_mock, set_next_state_mock):
     """
@@ -67,6 +67,6 @@ def test_read_volume(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    read_volume.handleKey("1")
+    read_volume.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "TestMode"

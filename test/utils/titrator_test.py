@@ -8,7 +8,7 @@ from titration.utils.titrator import Titrator
 from titration.utils.devices.keypad_mock import Keypad
 
 
-@mock.patch.object(Titrator, "_handleUI")
+@mock.patch.object(Titrator, "_handle_ui")
 def test_loop(handle_ui_mock):
     """
     The function to test function calls of the loop function
@@ -19,7 +19,7 @@ def test_loop(handle_ui_mock):
     handle_ui_mock.assert_called()
 
 
-@mock.patch.object(Titrator, "_updateState")
+@mock.patch.object(Titrator, "_update_state")
 def test_set_next_state_true(update_state_mock):
     """
     The function to test the set_next_state function with update parameter set to True
@@ -27,13 +27,13 @@ def test_set_next_state_true(update_state_mock):
     titrator = Titrator()
 
     temp = MainMenu(titrator)
-    assert titrator.nextState is None
-    titrator.setNextState(temp, True)
-    assert titrator.nextState == temp
+    assert titrator.next_state is None
+    titrator.set_next_state(temp, True)
+    assert titrator.next_state == temp
     update_state_mock.assert_called()
 
 
-@mock.patch.object(Titrator, "_updateState")
+@mock.patch.object(Titrator, "_update_state")
 def test_set_next_state_false(update_state_mock):
     """
     The function to test the set_next_state function with update parameter set to False
@@ -41,9 +41,9 @@ def test_set_next_state_false(update_state_mock):
     titrator = Titrator()
 
     temp = MainMenu(titrator)
-    assert titrator.nextState is None
-    titrator.setNextState(temp, False)
-    assert titrator.nextState == temp
+    assert titrator.next_state is None
+    titrator.set_next_state(temp, False)
+    assert titrator.next_state == temp
     update_state_mock.assert_not_called()
 
 
@@ -54,8 +54,8 @@ def test_update_state_without_next_state(start_mock):
     """
     titrator = Titrator()
 
-    assert titrator.nextState is None
-    titrator._updateState()
+    assert titrator.next_state is None
+    titrator._update_state()
     start_mock.assert_not_called()
 
 
@@ -67,17 +67,17 @@ def test_update_state_with_next_state(start_mock):
     titrator = Titrator()
 
     temp = SetupTitration(titrator)
-    titrator.nextState = temp
-    assert titrator.state != titrator.nextState
-    titrator._updateState()
+    titrator.next_state = temp
+    assert titrator.state != titrator.next_state
+    titrator._update_state()
     assert titrator.state == temp
-    assert titrator.nextState is None
+    assert titrator.next_state is None
     start_mock.assert_called()
 
 
 @mock.patch.object(Keypad, "get_key")
-@mock.patch.object(Titrator, "_updateState")
-@mock.patch.object(MainMenu, "handleKey")
+@mock.patch.object(Titrator, "_update_state")
+@mock.patch.object(MainMenu, "handle_key")
 @mock.patch.object(MainMenu, "loop")
 def test_handle_ui(get_key_mock, update_state_mock, handle_key_mock, loop_mock):
     """
@@ -85,7 +85,7 @@ def test_handle_ui(get_key_mock, update_state_mock, handle_key_mock, loop_mock):
     """
     titrator = Titrator()
 
-    titrator._handleUI()
+    titrator._handle_ui()
     get_key_mock.assert_called()
     handle_key_mock.assert_called()
     update_state_mock.assert_called()

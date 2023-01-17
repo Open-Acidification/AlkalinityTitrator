@@ -9,7 +9,7 @@ from titration.utils.ui_state.update_settings.update_settings import UpdateSetti
 from titration.utils import lcd_interface
 
 
-@mock.patch.object(UpdateSettings, "_setNextState")
+@mock.patch.object(UpdateSettings, "_set_next_state")
 def test_handle_key_update(set_next_state_mock):
     """
     The function to test UpdateSettings' handle_key function for each keypad input
@@ -17,26 +17,26 @@ def test_handle_key_update(set_next_state_mock):
     """
     update_settings = UpdateSettings(Titrator(), MainMenu(Titrator()))
 
-    update_settings.handleKey("y")
-    assert update_settings.subState == 2
+    update_settings.handle_key("y")
+    assert update_settings.substate == 2
 
-    update_settings.handleKey("1")
-    assert update_settings.subState == 3
+    update_settings.handle_key("1")
+    assert update_settings.substate == 3
 
-    update_settings.handleKey("y")
-    assert update_settings.subState == 4
+    update_settings.handle_key("y")
+    assert update_settings.substate == 4
 
-    update_settings.handleKey("1")
+    update_settings.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UserValue"
-    assert update_settings.subState == 5
+    assert update_settings.substate == 5
 
-    update_settings.handleKey("1")
+    update_settings.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
 
-@mock.patch.object(UpdateSettings, "_setNextState")
+@mock.patch.object(UpdateSettings, "_set_next_state")
 def test_handle_key_no_update(set_next_state_mock):
     """
     The function to test UpdateSettings' handle_key function for each keypad input
@@ -44,10 +44,10 @@ def test_handle_key_no_update(set_next_state_mock):
     """
     update_settings = UpdateSettings(Titrator(), MainMenu(Titrator()))
 
-    update_settings.handleKey("n")
-    assert update_settings.subState == 3
+    update_settings.handle_key("n")
+    assert update_settings.substate == 3
 
-    update_settings.handleKey("n")
+    update_settings.handle_key("n")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
@@ -69,7 +69,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    update_settings.subState += 1
+    update_settings.substate += 1
     update_settings.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -80,7 +80,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    update_settings.subState += 1
+    update_settings.substate += 1
     update_settings.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -91,7 +91,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    update_settings.subState += 1
+    update_settings.substate += 1
     update_settings.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -102,7 +102,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    update_settings.subState += 1
+    update_settings.substate += 1
     update_settings.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -114,7 +114,7 @@ def test_loop(lcd_out_mock):
     )
 
 
-@mock.patch.object(UpdateSettings, "_setNextState")
+@mock.patch.object(UpdateSettings, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
 def test_prime_pump(lcd_out_mock, set_next_state_mock):
     """
@@ -137,8 +137,8 @@ def test_prime_pump(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    update_settings.handleKey("y")
-    assert update_settings.subState == 2
+    update_settings.handle_key("y")
+    assert update_settings.substate == 2
 
     update_settings.loop()
     lcd_out_mock.assert_has_calls(
@@ -150,8 +150,8 @@ def test_prime_pump(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    update_settings.handleKey("1")
-    assert update_settings.subState == 3
+    update_settings.handle_key("1")
+    assert update_settings.substate == 3
 
     update_settings.loop()
     lcd_out_mock.assert_has_calls(
@@ -163,8 +163,8 @@ def test_prime_pump(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    update_settings.handleKey("y")
-    assert update_settings.subState == 4
+    update_settings.handle_key("y")
+    assert update_settings.substate == 4
 
     update_settings.loop()
     lcd_out_mock.assert_has_calls(
@@ -176,10 +176,10 @@ def test_prime_pump(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    update_settings.handleKey("1")
+    update_settings.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UserValue"
-    assert update_settings.subState == 5
+    assert update_settings.substate == 5
 
     update_settings.loop()
     lcd_out_mock.assert_has_calls(
@@ -191,6 +191,6 @@ def test_prime_pump(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    update_settings.handleKey("1")
+    update_settings.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"

@@ -8,34 +8,34 @@ from titration.utils.titrator import Titrator
 from titration.utils import lcd_interface
 
 
-@mock.patch.object(ManualTitration, "_setNextState")
+@mock.patch.object(ManualTitration, "_set_next_state")
 def test_handle_key(set_next_state_mock):
     """
     The function to test ManualTitration's handle_key function for each keypad input
     """
     manual_titration = ManualTitration(Titrator())
 
-    manual_titration.handleKey("1")
+    manual_titration.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UserValue"
-    assert manual_titration.subState == 2
+    assert manual_titration.substate == 2
 
-    manual_titration.handleKey("1")
+    manual_titration.handle_key("1")
     assert manual_titration.values["p_direction"] == "1"
-    assert manual_titration.subState == 3
+    assert manual_titration.substate == 3
 
-    manual_titration.handleKey("0")
-    assert manual_titration.subState == 4
+    manual_titration.handle_key("0")
+    assert manual_titration.substate == 4
 
-    manual_titration.handleKey("1")
-    assert manual_titration.subState == 5
+    manual_titration.handle_key("1")
+    assert manual_titration.substate == 5
 
-    manual_titration.handleKey("1")
+    manual_titration.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UserValue"
-    assert manual_titration.subState == 6
+    assert manual_titration.substate == 6
 
-    manual_titration.handleKey("0")
+    manual_titration.handle_key("0")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
@@ -57,7 +57,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    manual_titration.subState += 1
+    manual_titration.substate += 1
     manual_titration.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -68,7 +68,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    manual_titration.subState += 1
+    manual_titration.substate += 1
     manual_titration.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -82,7 +82,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    manual_titration.subState += 1
+    manual_titration.substate += 1
     manual_titration.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -96,7 +96,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    manual_titration.subState += 1
+    manual_titration.substate += 1
     manual_titration.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -107,7 +107,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    manual_titration.subState += 1
+    manual_titration.substate += 1
     manual_titration.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -119,7 +119,7 @@ def test_loop(lcd_out_mock):
     )
 
 
-@mock.patch.object(ManualTitration, "_setNextState")
+@mock.patch.object(ManualTitration, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
 def test_manual_titration(lcd_out_mock, set_next_state_mock):
     """
@@ -144,10 +144,10 @@ def test_manual_titration(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    manual_titration.handleKey("1")
+    manual_titration.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UserValue"
-    assert manual_titration.subState == 2
+    assert manual_titration.substate == 2
 
     manual_titration.loop()
     lcd_out_mock.assert_has_calls(
@@ -159,9 +159,9 @@ def test_manual_titration(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    manual_titration.handleKey("1")
+    manual_titration.handle_key("1")
     assert manual_titration.values["p_direction"] == "1"
-    assert manual_titration.subState == 3
+    assert manual_titration.substate == 3
 
     manual_titration.loop()
     lcd_out_mock.assert_has_calls(
@@ -176,8 +176,8 @@ def test_manual_titration(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    manual_titration.handleKey("0")
-    assert manual_titration.subState == 4
+    manual_titration.handle_key("0")
+    assert manual_titration.substate == 4
 
     manual_titration.loop()
     lcd_out_mock.assert_has_calls(
@@ -192,8 +192,8 @@ def test_manual_titration(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    manual_titration.handleKey("1")
-    assert manual_titration.subState == 5
+    manual_titration.handle_key("1")
+    assert manual_titration.substate == 5
 
     manual_titration.loop()
     lcd_out_mock.assert_has_calls(
@@ -205,10 +205,10 @@ def test_manual_titration(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    manual_titration.handleKey("1")
+    manual_titration.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UserValue"
-    assert manual_titration.subState == 6
+    assert manual_titration.substate == 6
 
     manual_titration.loop()
     lcd_out_mock.assert_has_calls(
@@ -220,6 +220,6 @@ def test_manual_titration(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    manual_titration.handleKey("0")
+    manual_titration.handle_key("0")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"

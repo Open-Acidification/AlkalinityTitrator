@@ -9,24 +9,24 @@ from titration.utils.titrator import Titrator
 from titration.utils import lcd_interface
 
 
-@mock.patch.object(SetupCalibration, "_setNextState")
+@mock.patch.object(SetupCalibration, "_set_next_state")
 def test_handle_key(set_next_state_mock):
     """
     The function to test SetupCalibration's handle_key function for each keypad input
     """
     setup_calibration = SetupCalibration(Titrator(), MainMenu(Titrator()))
 
-    setup_calibration.handleKey("1")
+    setup_calibration.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "CalibratePh"
     set_next_state_mock.reset_called()
 
-    setup_calibration.handleKey("2")
+    setup_calibration.handle_key("2")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "CalibrateTemp"
     set_next_state_mock.reset_called()
 
-    setup_calibration.handleKey("3")
+    setup_calibration.handle_key("3")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
@@ -49,7 +49,7 @@ def test_loop(lcd_out_mock):
     )
 
 
-@mock.patch.object(SetupCalibration, "_setNextState")
+@mock.patch.object(SetupCalibration, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
 def test_setup_calibration(lcd_out_mock, set_next_state_mock):
     """
@@ -68,6 +68,6 @@ def test_setup_calibration(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    setup_calibration.handleKey("1")
+    setup_calibration.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "CalibratePh"

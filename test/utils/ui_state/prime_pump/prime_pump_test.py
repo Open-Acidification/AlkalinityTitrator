@@ -10,21 +10,21 @@ from titration.utils import lcd_interface
 from titration.utils.ui_state.prime_pump.prime_pump import PrimePump
 
 
-@mock.patch.object(PrimePump, "_setNextState")
+@mock.patch.object(PrimePump, "_set_next_state")
 def test_handle_key(set_next_state_mock):
     """
     The function to test PrimePump's handle_key function for each keypad input
     """
     prime_pump = PrimePump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
-    prime_pump.handleKey("3")
+    prime_pump.handle_key("3")
     assert prime_pump.values["selection"] == "3"
-    assert prime_pump.subState == 2
+    assert prime_pump.substate == 2
 
-    prime_pump.handleKey("1")
+    prime_pump.handle_key("1")
     assert prime_pump.values["selection"] == "1"
 
-    prime_pump.handleKey("0")
+    prime_pump.handle_key("0")
     assert prime_pump.values["selection"] == "0"
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "TestMode"
@@ -47,7 +47,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    prime_pump.subState += 1
+    prime_pump.substate += 1
     prime_pump.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -59,7 +59,7 @@ def test_loop(lcd_out_mock):
     )
 
 
-@mock.patch.object(PrimePump, "_setNextState")
+@mock.patch.object(PrimePump, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
 def test_prime_pump(lcd_out_mock, set_next_state_mock):
     """
@@ -80,9 +80,9 @@ def test_prime_pump(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    prime_pump.handleKey("3")
+    prime_pump.handle_key("3")
     assert prime_pump.values["selection"] == "3"
-    assert prime_pump.subState == 2
+    assert prime_pump.substate == 2
 
     prime_pump.loop()
     lcd_out_mock.assert_has_calls(
@@ -94,7 +94,7 @@ def test_prime_pump(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    prime_pump.handleKey("1")
+    prime_pump.handle_key("1")
     assert prime_pump.values["selection"] == "1"
 
     lcd_out_mock.assert_has_calls(
@@ -106,7 +106,7 @@ def test_prime_pump(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    prime_pump.handleKey("0")
+    prime_pump.handle_key("0")
     assert prime_pump.values["selection"] == "0"
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "TestMode"

@@ -10,7 +10,7 @@ from titration.utils import lcd_interface, constants
 from titration.utils.ui_state.test_mode.toggle_test_mode import ToggleTestMode
 
 
-@mock.patch.object(ToggleTestMode, "_setNextState")
+@mock.patch.object(ToggleTestMode, "_set_next_state")
 def test_handle_key(set_next_state_mock):
     """
     The function to test ToggleTestMode's handle_key function for each keypad input
@@ -19,7 +19,7 @@ def test_handle_key(set_next_state_mock):
         Titrator(), TestMode(Titrator(), MainMenu(Titrator()))
     )
 
-    toggle_test_mode.handleKey("1")
+    toggle_test_mode.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "TestMode"
 
@@ -44,7 +44,7 @@ def test_loop(lcd_out_mock):
     )
 
 
-@mock.patch.object(ToggleTestMode, "_setNextState")
+@mock.patch.object(ToggleTestMode, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
 def test_toggle_test_mode(lcd_out_mock, set_next_state_mock):
     """
@@ -65,6 +65,6 @@ def test_toggle_test_mode(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    toggle_test_mode.handleKey("1")
+    toggle_test_mode.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "TestMode"

@@ -8,22 +8,22 @@ from titration.utils.titrator import Titrator
 from titration.utils import lcd_interface
 
 
-@mock.patch.object(CalibratePh, "_setNextState")
+@mock.patch.object(CalibratePh, "_set_next_state")
 def test_handle_key(set_next_state_mock):
     """
     The function to test CalibratePh's handle_key function for each keypad input
     """
     calibrate_ph = CalibratePh(Titrator())
 
-    calibrate_ph.handleKey("1")
+    calibrate_ph.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UserValue"
-    assert calibrate_ph.subState == 2
+    assert calibrate_ph.substate == 2
 
-    calibrate_ph.handleKey("1")
-    assert calibrate_ph.subState == 3
+    calibrate_ph.handle_key("1")
+    assert calibrate_ph.substate == 3
 
-    calibrate_ph.handleKey("1")
+    calibrate_ph.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "InitialTitration"
 
@@ -45,7 +45,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    calibrate_ph.subState += 1
+    calibrate_ph.substate += 1
     calibrate_ph.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -56,7 +56,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    calibrate_ph.subState += 1
+    calibrate_ph.substate += 1
     calibrate_ph.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -74,7 +74,7 @@ def test_loop(lcd_out_mock):
     )
 
 
-@mock.patch.object(CalibratePh, "_setNextState")
+@mock.patch.object(CalibratePh, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
 def test_calibrate_ph(lcd_out_mock, set_next_state_mock):
     """
@@ -95,10 +95,10 @@ def test_calibrate_ph(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    calibrate_ph.handleKey("1")
+    calibrate_ph.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UserValue"
-    assert calibrate_ph.subState == 2
+    assert calibrate_ph.substate == 2
 
     calibrate_ph.loop()
     lcd_out_mock.assert_has_calls(
@@ -110,8 +110,8 @@ def test_calibrate_ph(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    calibrate_ph.handleKey("1")
-    assert calibrate_ph.subState == 3
+    calibrate_ph.handle_key("1")
+    assert calibrate_ph.substate == 3
 
     calibrate_ph.loop()
     lcd_out_mock.assert_has_calls(
@@ -129,6 +129,6 @@ def test_calibrate_ph(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    calibrate_ph.handleKey("1")
+    calibrate_ph.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "InitialTitration"

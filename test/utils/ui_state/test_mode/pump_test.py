@@ -10,23 +10,23 @@ from titration.utils import lcd_interface
 from titration.utils.ui_state.test_mode.pump import Pump
 
 
-@mock.patch.object(Pump, "_setNextState")
+@mock.patch.object(Pump, "_set_next_state")
 def test_handle_key(set_next_state_mock):
     """
     The function to test Pump's handle_key function for each keypad input
     """
     pump = Pump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
-    pump.handleKey("1")
+    pump.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UserValue"
-    assert pump.subState == 2
+    assert pump.substate == 2
 
-    pump.handleKey("0")
+    pump.handle_key("0")
     assert pump.values["p_direction"] == "0"
-    assert pump.subState == 3
+    assert pump.substate == 3
 
-    pump.handleKey("1")
+    pump.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "TestMode"
 
@@ -48,7 +48,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    pump.subState += 1
+    pump.substate += 1
     pump.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -59,7 +59,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    pump.subState += 1
+    pump.substate += 1
     pump.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -71,7 +71,7 @@ def test_loop(lcd_out_mock):
     )
 
 
-@mock.patch.object(Pump, "_setNextState")
+@mock.patch.object(Pump, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
 def test_Pump(lcd_out_mock, set_next_state_mock):
     """
@@ -92,10 +92,10 @@ def test_Pump(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    pump.handleKey("1")
+    pump.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UserValue"
-    assert pump.subState == 2
+    assert pump.substate == 2
 
     pump.loop()
     lcd_out_mock.assert_has_calls(
@@ -107,9 +107,9 @@ def test_Pump(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    pump.handleKey("0")
+    pump.handle_key("0")
     assert pump.values["p_direction"] == "0"
-    assert pump.subState == 3
+    assert pump.substate == 3
 
     pump.loop()
     lcd_out_mock.assert_has_calls(
@@ -121,6 +121,6 @@ def test_Pump(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    pump.handleKey("1")
+    pump.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "TestMode"

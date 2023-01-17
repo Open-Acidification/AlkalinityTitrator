@@ -10,7 +10,7 @@ from titration.utils.ui_state.user_value.user_value import UserValue
 from titration.utils import lcd_interface
 
 
-@mock.patch.object(UserValue, "_setNextState")
+@mock.patch.object(UserValue, "_set_next_state")
 def test_handle_key(set_next_state_mock):
     """
     The function to test UserValue's handle_key function for each keypad input
@@ -19,17 +19,17 @@ def test_handle_key(set_next_state_mock):
         Titrator(), UpdateSettings(Titrator(), MainMenu(Titrator())), "Volume in pump:"
     )
 
-    user_value.handleKey("A")
+    user_value.handle_key("A")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
 
-    user_value.handleKey("C")
+    user_value.handle_key("C")
     assert user_value.string == ""
 
-    user_value.handleKey("1")
+    user_value.handle_key("1")
     assert user_value.string[-1] == "1"
 
-    user_value.handleKey("*")
+    user_value.handle_key("*")
     assert user_value.string[-1] == "."
 
 
@@ -53,7 +53,7 @@ def test_loop(lcd_out_mock):
     )
 
 
-@mock.patch.object(UserValue, "_setNextState")
+@mock.patch.object(UserValue, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
 def test_user_value(lcd_out_mock, set_next_state_mock):
     """
@@ -81,7 +81,7 @@ def test_user_value(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    user_value.handleKey("3")
+    user_value.handle_key("3")
     assert user_value.string == "3"
 
     user_value.loop()
@@ -94,7 +94,7 @@ def test_user_value(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    user_value.handleKey("*")
+    user_value.handle_key("*")
     assert user_value.string == "3."
 
     user_value.loop()
@@ -107,7 +107,7 @@ def test_user_value(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    user_value.handleKey("*")
+    user_value.handle_key("*")
     assert user_value.string == "3."
 
     user_value.loop()
@@ -120,7 +120,7 @@ def test_user_value(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    user_value.handleKey("1")
+    user_value.handle_key("1")
     assert user_value.string == "3.1"
 
     user_value.loop()
@@ -133,7 +133,7 @@ def test_user_value(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    user_value.handleKey("B")
+    user_value.handle_key("B")
     assert user_value.string == "3."
 
     user_value.loop()
@@ -146,7 +146,7 @@ def test_user_value(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    user_value.handleKey("B")
+    user_value.handle_key("B")
     assert user_value.string == "3"
 
     user_value.loop()
@@ -159,7 +159,7 @@ def test_user_value(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    user_value.handleKey("C")
+    user_value.handle_key("C")
     assert user_value.string == ""
 
     user_value.loop()
@@ -172,6 +172,6 @@ def test_user_value(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    user_value.handleKey("A")
+    user_value.handle_key("A")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"

@@ -10,7 +10,7 @@ from titration.utils.titrator import Titrator
 from titration.utils import lcd_interface
 
 
-@mock.patch.object(CalibrateTemp, "_setNextState")
+@mock.patch.object(CalibrateTemp, "_set_next_state")
 def test_handle_key(set_next_state_mock):
     """
     The function to test CalibrateTemp's handle_key function for each keypad input
@@ -19,15 +19,15 @@ def test_handle_key(set_next_state_mock):
         Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator())
     )
 
-    calibrate_temp.handleKey("1")
+    calibrate_temp.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UserValue"
-    assert calibrate_temp.subState == 2
+    assert calibrate_temp.substate == 2
 
-    calibrate_temp.handleKey("1")
-    assert calibrate_temp.subState == 3
+    calibrate_temp.handle_key("1")
+    assert calibrate_temp.substate == 3
 
-    calibrate_temp.handleKey("1")
+    calibrate_temp.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "SetupCalibration"
 
@@ -51,7 +51,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    calibrate_temp.subState += 1
+    calibrate_temp.substate += 1
     calibrate_temp.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -62,7 +62,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    calibrate_temp.subState += 1
+    calibrate_temp.substate += 1
     calibrate_temp.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -76,7 +76,7 @@ def test_loop(lcd_out_mock):
     )
 
 
-@mock.patch.object(CalibrateTemp, "_setNextState")
+@mock.patch.object(CalibrateTemp, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
 def test_calibrate_temp(lcd_out_mock, set_next_state_mock):
     """
@@ -99,10 +99,10 @@ def test_calibrate_temp(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    calibrate_temp.handleKey("1")
+    calibrate_temp.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UserValue"
-    assert calibrate_temp.subState == 2
+    assert calibrate_temp.substate == 2
 
     calibrate_temp.loop()
     lcd_out_mock.assert_has_calls(
@@ -114,8 +114,8 @@ def test_calibrate_temp(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    calibrate_temp.handleKey("1")
-    assert calibrate_temp.subState == 3
+    calibrate_temp.handle_key("1")
+    assert calibrate_temp.substate == 3
 
     calibrate_temp.loop()
     lcd_out_mock.assert_has_calls(
@@ -129,6 +129,6 @@ def test_calibrate_temp(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    calibrate_temp.handleKey("1")
+    calibrate_temp.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "SetupCalibration"

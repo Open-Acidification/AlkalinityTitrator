@@ -8,28 +8,28 @@ from titration.utils.titrator import Titrator
 from titration.utils import lcd_interface, constants
 
 
-@mock.patch.object(SetupTitration, "_setNextState")
+@mock.patch.object(SetupTitration, "_set_next_state")
 def test_handle_key(set_next_state_mock):
     """
     The function to test SetupTitration's handle_key function for each keypad input
     """
     setup_titration = SetupTitration(Titrator())
 
-    setup_titration.handleKey("1")
+    setup_titration.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UserValue"
-    assert setup_titration.subState == 2
+    assert setup_titration.substate == 2
 
-    setup_titration.handleKey("1")
+    setup_titration.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UserValue"
-    assert setup_titration.subState == 3
+    assert setup_titration.substate == 3
 
-    setup_titration.handleKey("1")
+    setup_titration.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "CalibratePh"
 
-    setup_titration.handleKey("0")
+    setup_titration.handle_key("0")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "InitialTitration"
 
@@ -51,7 +51,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    setup_titration.subState += 1
+    setup_titration.substate += 1
     setup_titration.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -62,7 +62,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    setup_titration.subState += 1
+    setup_titration.substate += 1
     setup_titration.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -79,7 +79,7 @@ def test_loop(lcd_out_mock):
     )
 
 
-@mock.patch.object(SetupTitration, "_setNextState")
+@mock.patch.object(SetupTitration, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
 def test_setup_titration(lcd_out_mock, set_next_state_mock):
     """
@@ -100,10 +100,10 @@ def test_setup_titration(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    setup_titration.handleKey("1")
+    setup_titration.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UserValue"
-    assert setup_titration.subState == 2
+    assert setup_titration.substate == 2
 
     setup_titration.loop()
     lcd_out_mock.assert_has_calls(
@@ -115,10 +115,10 @@ def test_setup_titration(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    setup_titration.handleKey("1")
+    setup_titration.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UserValue"
-    assert setup_titration.subState == 3
+    assert setup_titration.substate == 3
 
     setup_titration.loop()
     lcd_out_mock.assert_has_calls(
@@ -135,6 +135,6 @@ def test_setup_titration(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    setup_titration.handleKey("1")
+    setup_titration.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "CalibratePh"

@@ -14,12 +14,12 @@ def test_handle_key():
     """
     initial_titration = InitialTitration(Titrator())
 
-    initial_titration.handleKey("1")
+    initial_titration.handle_key("1")
     assert initial_titration.choice == "1"
-    assert initial_titration.subState == 2
+    assert initial_titration.substate == 2
 
 
-@mock.patch.object(InitialTitration, "_setNextState")
+@mock.patch.object(InitialTitration, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
 def test_loop(lcd_out_mock, set_next_state_mock):
     """
@@ -37,7 +37,7 @@ def test_loop(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    initial_titration.subState += 1
+    initial_titration.substate += 1
     initial_titration.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -52,7 +52,7 @@ def test_loop(lcd_out_mock, set_next_state_mock):
 
     initial_titration = InitialTitration(Titrator())
 
-    initial_titration.subState += 1
+    initial_titration.substate += 1
     initial_titration.choice = "1"
     initial_titration.loop()
     lcd_out_mock.assert_has_calls(
@@ -67,7 +67,7 @@ def test_loop(lcd_out_mock, set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "ManualTitration"
 
 
-@mock.patch.object(InitialTitration, "_setNextState")
+@mock.patch.object(InitialTitration, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
 def test_initial_titration_manual(lcd_out_mock, set_next_state_mock):
     """
@@ -86,9 +86,9 @@ def test_initial_titration_manual(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    initial_titration.handleKey("1")
+    initial_titration.handle_key("1")
     assert initial_titration.choice == "1"
-    assert initial_titration.subState == 2
+    assert initial_titration.substate == 2
 
     initial_titration.loop()
     lcd_out_mock.assert_has_calls(
@@ -103,7 +103,7 @@ def test_initial_titration_manual(lcd_out_mock, set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "ManualTitration"
 
 
-@mock.patch.object(InitialTitration, "_setNextState")
+@mock.patch.object(InitialTitration, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
 def test_initial_titration_automatic(lcd_out_mock, set_next_state_mock):
     """
@@ -122,9 +122,9 @@ def test_initial_titration_automatic(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    initial_titration.handleKey("2")
+    initial_titration.handle_key("2")
     assert initial_titration.choice == "2"
-    assert initial_titration.subState == 2
+    assert initial_titration.substate == 2
 
     initial_titration.loop()
     lcd_out_mock.assert_has_calls(

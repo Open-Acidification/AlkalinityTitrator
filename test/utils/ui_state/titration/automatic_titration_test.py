@@ -8,23 +8,23 @@ from titration.utils.titrator import Titrator
 from titration.utils import lcd_interface
 
 
-@mock.patch.object(AutomaticTitration, "_setNextState")
+@mock.patch.object(AutomaticTitration, "_set_next_state")
 def test_handle_key(set_next_state_mock):
     """
     The function to test AutomaticTitration's handle_key function for each keypad input
     """
     automatic_titration = AutomaticTitration(Titrator())
 
-    automatic_titration.handleKey("1")
-    assert automatic_titration.subState == 2
+    automatic_titration.handle_key("1")
+    assert automatic_titration.substate == 2
 
-    automatic_titration.handleKey("1")
-    assert automatic_titration.subState == 3
+    automatic_titration.handle_key("1")
+    assert automatic_titration.substate == 3
 
-    automatic_titration.handleKey("1")
-    assert automatic_titration.subState == 4
+    automatic_titration.handle_key("1")
+    assert automatic_titration.substate == 4
 
-    automatic_titration.handleKey("0")
+    automatic_titration.handle_key("0")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
@@ -51,7 +51,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    automatic_titration.subState += 1
+    automatic_titration.substate += 1
     automatic_titration.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -62,7 +62,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    automatic_titration.subState += 1
+    automatic_titration.substate += 1
     automatic_titration.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -76,7 +76,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    automatic_titration.subState += 1
+    automatic_titration.substate += 1
     automatic_titration.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -88,7 +88,7 @@ def test_loop(lcd_out_mock):
     )
 
 
-@mock.patch.object(AutomaticTitration, "_setNextState")
+@mock.patch.object(AutomaticTitration, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
 def test_automatic_titration(lcd_out_mock, set_next_state_mock):
     """
@@ -115,8 +115,8 @@ def test_automatic_titration(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    automatic_titration.handleKey("1")
-    assert automatic_titration.subState == 2
+    automatic_titration.handle_key("1")
+    assert automatic_titration.substate == 2
 
     automatic_titration.loop()
     lcd_out_mock.assert_has_calls(
@@ -128,8 +128,8 @@ def test_automatic_titration(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    automatic_titration.handleKey("1")
-    assert automatic_titration.subState == 3
+    automatic_titration.handle_key("1")
+    assert automatic_titration.substate == 3
 
     automatic_titration.loop()
     lcd_out_mock.assert_has_calls(
@@ -144,8 +144,8 @@ def test_automatic_titration(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    automatic_titration.handleKey("1")
-    assert automatic_titration.subState == 4
+    automatic_titration.handle_key("1")
+    assert automatic_titration.substate == 4
 
     automatic_titration.loop()
     lcd_out_mock.assert_has_calls(
@@ -157,6 +157,6 @@ def test_automatic_titration(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    automatic_titration.handleKey("0")
+    automatic_titration.handle_key("0")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"

@@ -9,42 +9,42 @@ from titration.utils import lcd_interface
 from titration.utils.ui_state.test_mode.test_mode import TestMode
 
 
-@mock.patch.object(TestMode, "_setNextState")
+@mock.patch.object(TestMode, "_set_next_state")
 def test_handle_key(set_next_state_mock):
     """
     The function to test the TestMode's handle_key function for each keypad input
     """
     test_mode = TestMode(Titrator(), MainMenu(Titrator()))
 
-    test_mode.handleKey("1")
+    test_mode.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "ReadValues"
 
-    test_mode.handleKey("2")
+    test_mode.handle_key("2")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "Pump"
 
-    test_mode.handleKey("3")
+    test_mode.handle_key("3")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "SetVolume"
 
-    test_mode.handleKey("*")
-    assert test_mode.subState == 2
+    test_mode.handle_key("*")
+    assert test_mode.substate == 2
 
-    test_mode.handleKey("4")
+    test_mode.handle_key("4")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "ToggleTestMode"
 
-    test_mode.handleKey("5")
+    test_mode.handle_key("5")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "ReadVolume"
 
-    test_mode.handleKey("6")
+    test_mode.handle_key("6")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
-    test_mode.handleKey("*")
-    assert test_mode.subState == 1
+    test_mode.handle_key("*")
+    assert test_mode.substate == 1
 
 
 @mock.patch.object(lcd_interface, "lcd_out")
@@ -64,7 +64,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    test_mode.subState += 1
+    test_mode.substate += 1
     test_mode.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -76,7 +76,7 @@ def test_loop(lcd_out_mock):
     )
 
 
-@mock.patch.object(TestMode, "_setNextState")
+@mock.patch.object(TestMode, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
 def test_test_mode(lcd_out_mock, set_next_state_mock):
     """
@@ -101,7 +101,7 @@ def test_test_mode(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    test_mode.handleKey("1")
+    test_mode.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "ReadValues"
 
@@ -115,7 +115,7 @@ def test_test_mode(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    test_mode.handleKey("2")
+    test_mode.handle_key("2")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "Pump"
 
@@ -129,7 +129,7 @@ def test_test_mode(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    test_mode.handleKey("3")
+    test_mode.handle_key("3")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "SetVolume"
 
@@ -143,8 +143,8 @@ def test_test_mode(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    test_mode.handleKey("*")
-    assert test_mode.subState == 2
+    test_mode.handle_key("*")
+    assert test_mode.substate == 2
 
     test_mode.loop()
     lcd_out_mock.assert_has_calls(
@@ -156,7 +156,7 @@ def test_test_mode(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    test_mode.handleKey("4")
+    test_mode.handle_key("4")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "ToggleTestMode"
 
@@ -170,7 +170,7 @@ def test_test_mode(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    test_mode.handleKey("5")
+    test_mode.handle_key("5")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "ReadVolume"
 
@@ -184,6 +184,6 @@ def test_test_mode(lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    test_mode.handleKey("6")
+    test_mode.handle_key("6")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"

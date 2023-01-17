@@ -10,14 +10,14 @@ from titration.utils import lcd_interface, interfaces
 from titration.utils.ui_state.test_mode.read_values import ReadValues
 
 
-@mock.patch.object(ReadValues, "_setNextState")
+@mock.patch.object(ReadValues, "_set_next_state")
 def test_handle_key(set_next_state_mock):
     """
     The function to test ReadValues' handle_key function for each keypad input
     """
     read_values = ReadValues(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
-    read_values.handleKey("1")
+    read_values.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "TestMode"
 
@@ -63,7 +63,7 @@ def test_loop(delay_mock, lcd_out_mock):
     )
 
 
-@mock.patch.object(ReadValues, "_setNextState")
+@mock.patch.object(ReadValues, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
 @mock.patch.object(interfaces, "delay")
 def test_read_values(delay_mock, lcd_out_mock, set_next_state_mock):
@@ -105,6 +105,6 @@ def test_read_values(delay_mock, lcd_out_mock, set_next_state_mock):
         ]
     )
 
-    read_values.handleKey("1")
+    read_values.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "TestMode"
