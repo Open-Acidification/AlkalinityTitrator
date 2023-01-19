@@ -1,3 +1,6 @@
+"""
+The file to test the titration CalibratePh class
+"""
 from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.titration.calibrate_ph import CalibratePh
@@ -5,33 +8,35 @@ from titration.utils.titrator import Titrator
 from titration.utils import lcd_interface
 
 
-# Test handleKey
-@mock.patch.object(CalibratePh, "_setNextState")
-def test_handleKey(setNextStateMock):
-    calibratePh = CalibratePh(Titrator())
+@mock.patch.object(CalibratePh, "_set_next_state")
+def test_handle_key(set_next_state_mock):
+    """
+    The function to test CalibratePh's handle_key function for each keypad input
+    """
+    calibrate_ph = CalibratePh(Titrator())
 
-    calibratePh.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    setNextStateMock.reset_mock()
-    assert calibratePh.subState == 2
+    calibrate_ph.handle_key("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "UserValue"
+    assert calibrate_ph.substate == 2
 
-    calibratePh.handleKey("1")
-    assert calibratePh.subState == 3
+    calibrate_ph.handle_key("1")
+    assert calibrate_ph.substate == 3
 
-    calibratePh.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "InitialTitration"
-    setNextStateMock.reset_mock()
+    calibrate_ph.handle_key("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "InitialTitration"
 
 
-# Test loop
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcdOutMock):
-    calibratePh = CalibratePh(Titrator())
+def test_loop(lcd_out_mock):
+    """
+    The function to test CalibratePh's loop function's lcd_interface calls
+    """
+    calibrate_ph = CalibratePh(Titrator())
 
-    calibratePh.loop()
-    lcdOutMock.assert_has_calls(
+    calibrate_ph.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Enter buffer pH", line=1),
             mock.call("", line=2),
@@ -39,11 +44,10 @@ def test_loop(lcdOutMock):
             mock.call("", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    calibratePh.subState += 1
-    calibratePh.loop()
-    lcdOutMock.assert_has_calls(
+    calibrate_ph.substate += 1
+    calibrate_ph.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Put sensor in buffer", line=1),
             mock.call("", line=2),
@@ -51,17 +55,16 @@ def test_loop(lcdOutMock):
             mock.call("", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    calibratePh.subState += 1
-    calibratePh.loop()
-    lcdOutMock.assert_has_calls(
+    calibrate_ph.substate += 1
+    calibrate_ph.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Recorded pH, volts:", line=1),
             mock.call(
                 "{0:>2.5f} pH, {1:>3.4f} V".format(
-                    calibratePh.values["buffer1_actual_pH"],
-                    calibratePh.values["buffer1_measured_volts"],
+                    calibrate_ph.values["buffer1_actual_pH"],
+                    calibrate_ph.values["buffer1_measured_volts"],
                 ),
                 line=2,
             ),
@@ -71,13 +74,19 @@ def test_loop(lcdOutMock):
     )
 
 
-@mock.patch.object(CalibratePh, "_setNextState")
+@mock.patch.object(CalibratePh, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_CalibratePh(lcdOutMock, setNextStateMock):
-    calibratePh = CalibratePh(Titrator())
+def test_calibrate_ph(lcd_out_mock, set_next_state_mock):
+    """
+    The function to test a use case of the CalibratePh class:
+        User enters "1" to continue entering buffer pH
+        User enters "1" to continue after putting sensor in buffer
+        User enters "1" to continue to initial titration after seeing recorded pH
+    """
+    calibrate_ph = CalibratePh(Titrator())
 
-    calibratePh.loop()
-    lcdOutMock.assert_has_calls(
+    calibrate_ph.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Enter buffer pH", line=1),
             mock.call("", line=2),
@@ -85,16 +94,14 @@ def test_CalibratePh(lcdOutMock, setNextStateMock):
             mock.call("", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    calibratePh.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    setNextStateMock.reset_mock()
-    assert calibratePh.subState == 2
+    calibrate_ph.handle_key("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "UserValue"
+    assert calibrate_ph.substate == 2
 
-    calibratePh.loop()
-    lcdOutMock.assert_has_calls(
+    calibrate_ph.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Put sensor in buffer", line=1),
             mock.call("", line=2),
@@ -102,19 +109,18 @@ def test_CalibratePh(lcdOutMock, setNextStateMock):
             mock.call("", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    calibratePh.handleKey("1")
-    assert calibratePh.subState == 3
+    calibrate_ph.handle_key("1")
+    assert calibrate_ph.substate == 3
 
-    calibratePh.loop()
-    lcdOutMock.assert_has_calls(
+    calibrate_ph.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Recorded pH, volts:", line=1),
             mock.call(
                 "{0:>2.5f} pH, {1:>3.4f} V".format(
-                    calibratePh.values["buffer1_actual_pH"],
-                    calibratePh.values["buffer1_measured_volts"],
+                    calibrate_ph.values["buffer1_actual_pH"],
+                    calibrate_ph.values["buffer1_measured_volts"],
                 ),
                 line=2,
             ),
@@ -123,6 +129,6 @@ def test_CalibratePh(lcdOutMock, setNextStateMock):
         ]
     )
 
-    calibratePh.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "InitialTitration"
+    calibrate_ph.handle_key("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "InitialTitration"

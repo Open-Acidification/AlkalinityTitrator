@@ -1,9 +1,12 @@
-from titration.utils.ui_state import main_menu
+"""
+The file for the Titrator class
+"""
+from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils import interfaces, constants
-import types
 from titration.utils.devices.keypad_mock import Keypad
+import types
 
-# TODO: look at ModuleType
+
 # TODO: log instead of print
 if constants.IS_TEST:
     from titration.utils.devices import board_mock
@@ -19,9 +22,21 @@ else:
 
 
 class Titrator:
+    """
+    The Titrator class is the model for the state machine in order to move through the different titration states
+
+    Attributes:
+        state (UIState object): is used to represent the current state in the state machine
+        next_state (UIState object): is used to move to the next state in the state machine
+        keypad (Keypad object): is used to identify what keypad value was entered
+    """
+
     def __init__(self):
-        self.state = main_menu.MainMenu(self)
-        self.nextState = None
+        """
+        The constructor for the Titrator class
+        """
+        self.state = MainMenu(self)
+        self.next_state = None
         interfaces.setup_interfaces()  # TODO: look at removing, update to not call LCD and keypad
         self.keypad = Keypad(
             r0=board_class.D1,
@@ -35,39 +50,49 @@ class Titrator:
         )
 
     def loop(self):
-        self._handleUI()  # look at keypad, update LCD
+        """
+        The function used to loop through in each state
+        """
+        self._handle_ui()
 
-    def setNextState(self, newState, update):
+    def set_next_state(self, new_state, update):
+        """
+        The function used to set the next state the state machine will enter
+        """
         print(
             "Titrator::setNextState() from ",
-            self.nextState.name() if self.nextState else "nullptr",
+            self.next_state.name() if self.next_state else "nullptr",
             " to ",
-            newState.name(),
+            new_state.name(),
         )
-        assert self.nextState is None
-        self.nextState = newState
+        self.next_state = new_state
         if update:
-            self._updateState()
+            self._update_state()
 
-    def _updateState(self):
-        if self.nextState:
-            print("Titrator::updateState() to ", self.nextState.name())
-            assert self.state != self.nextState
-            self.state = self.nextState
-            self.nextState = None
+    def _update_state(self):
+        """
+        The function used to move to the next state
+        """
+        if self.next_state:
+            print("Titrator::updateState() to ", self.next_state.name())
+            self.state = self.next_state
+            self.next_state = None
             self.state.start()
 
-    def _handleUI(self):
+    def _handle_ui(self):
+        """
+        The function used to receive the keypad input and process the appropriate response
+        """
         print("Titrator::handleUI() - ", self.state.name())
         key = self.keypad.get_key()
-        print("Titrator::handleUI() - ", self.state.name(), "::handleKey(", key, ")")
-        self.state.handleKey(key)
-        self._updateState()
+        print("Titrator::handleUI() - ", self.state.name(), "::handle_key(", key, ")")
+        self.state.handle_key(key)
+        self._update_state()
         print(
             "Titrator::handleUI() - ",
             self.state.name(),
             "::substate",
-            self.state.subState,
+            self.state.substate,
             "::loop()",
         )
         self.state.loop()

@@ -1,3 +1,6 @@
+"""
+The file to test the CalibrateTemp class
+"""
 from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
@@ -7,35 +10,39 @@ from titration.utils.titrator import Titrator
 from titration.utils import lcd_interface
 
 
-# Test handleKey
-@mock.patch.object(CalibrateTemp, "_setNextState")
-def test_handleKey(setNextStateMock):
-    calibrateTemp = CalibrateTemp(
+@mock.patch.object(CalibrateTemp, "_set_next_state")
+def test_handle_key(set_next_state_mock):
+    """
+    The function to test CalibrateTemp's handle_key function for each keypad input
+    """
+    calibrate_temp = CalibrateTemp(
         Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator())
     )
 
-    calibrateTemp.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    assert calibrateTemp.subState == 2
+    calibrate_temp.handle_key("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "UserValue"
+    assert calibrate_temp.substate == 2
 
-    calibrateTemp.handleKey("1")
-    assert calibrateTemp.subState == 3
+    calibrate_temp.handle_key("1")
+    assert calibrate_temp.substate == 3
 
-    calibrateTemp.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "SetupCalibration"
+    calibrate_temp.handle_key("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "SetupCalibration"
 
 
-# Test loop
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcdOutMock):
-    calibrateTemp = CalibrateTemp(
+def test_loop(lcd_out_mock):
+    """
+    The function to test CalibrateTemp's loop function's lcd_interface calls
+    """
+    calibrate_temp = CalibrateTemp(
         Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator())
     )
 
-    calibrateTemp.loop()
-    lcdOutMock.assert_has_calls(
+    calibrate_temp.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Set Ref solution", line=1),
             mock.call("temp", line=2),
@@ -43,11 +50,10 @@ def test_loop(lcdOutMock):
             mock.call("", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    calibrateTemp.subState += 1
-    calibrateTemp.loop()
-    lcdOutMock.assert_has_calls(
+    calibrate_temp.substate += 1
+    calibrate_temp.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Put probe in sol", line=1),
             mock.call("", line=2),
@@ -55,32 +61,36 @@ def test_loop(lcdOutMock):
             mock.call("record value", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    calibrateTemp.subState += 1
-    calibrateTemp.loop()
-    lcdOutMock.assert_has_calls(
+    calibrate_temp.substate += 1
+    calibrate_temp.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Recorded temp:", line=1),
             mock.call(
-                "{0:0.3f}".format(calibrateTemp.values["actual_temperature"]), line=2
+                "{0:0.3f}".format(calibrate_temp.values["actual_temperature"]), line=2
             ),
-            mock.call("{}".format(calibrateTemp.values["new_ref_resistance"]), line=3),
+            mock.call("{}".format(calibrate_temp.values["new_ref_resistance"]), line=3),
             mock.call("", line=4),
         ]
     )
 
 
-# Test CalibrateTemp
-@mock.patch.object(CalibrateTemp, "_setNextState")
+@mock.patch.object(CalibrateTemp, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_CalibrateTemp(lcdOutMock, setNextStateMock):
-    calibrateTemp = CalibrateTemp(
+def test_calibrate_temp(lcd_out_mock, set_next_state_mock):
+    """
+    The function to test a use case of the CalibrateTemp class:
+        User enters "1" to continue setting reference solution
+        User enters "1" after probe has entered solution to record value
+        User enters "1" to continue setting up calibration
+    """
+    calibrate_temp = CalibrateTemp(
         Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator())
     )
 
-    calibrateTemp.loop()
-    lcdOutMock.assert_has_calls(
+    calibrate_temp.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Set Ref solution", line=1),
             mock.call("temp", line=2),
@@ -88,15 +98,14 @@ def test_CalibrateTemp(lcdOutMock, setNextStateMock):
             mock.call("", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    calibrateTemp.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    assert calibrateTemp.subState == 2
+    calibrate_temp.handle_key("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "UserValue"
+    assert calibrate_temp.substate == 2
 
-    calibrateTemp.loop()
-    lcdOutMock.assert_has_calls(
+    calibrate_temp.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Put probe in sol", line=1),
             mock.call("", line=2),
@@ -104,23 +113,22 @@ def test_CalibrateTemp(lcdOutMock, setNextStateMock):
             mock.call("record value", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    calibrateTemp.handleKey("1")
-    assert calibrateTemp.subState == 3
+    calibrate_temp.handle_key("1")
+    assert calibrate_temp.substate == 3
 
-    calibrateTemp.loop()
-    lcdOutMock.assert_has_calls(
+    calibrate_temp.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Recorded temp:", line=1),
             mock.call(
-                "{0:0.3f}".format(calibrateTemp.values["actual_temperature"]), line=2
+                "{0:0.3f}".format(calibrate_temp.values["actual_temperature"]), line=2
             ),
-            mock.call("{}".format(calibrateTemp.values["new_ref_resistance"]), line=3),
+            mock.call("{}".format(calibrate_temp.values["new_ref_resistance"]), line=3),
             mock.call("", line=4),
         ]
     )
 
-    calibrateTemp.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "SetupCalibration"
+    calibrate_temp.handle_key("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "SetupCalibration"

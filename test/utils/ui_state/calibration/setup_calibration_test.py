@@ -1,3 +1,6 @@
+"""
+The file to the SetupCalibration class
+"""
 from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
@@ -6,33 +9,37 @@ from titration.utils.titrator import Titrator
 from titration.utils import lcd_interface
 
 
-# Test handleKey
-@mock.patch.object(SetupCalibration, "_setNextState")
-def test_handleKey(setNextStateMock):
-    setupCalibration = SetupCalibration(Titrator(), MainMenu(Titrator()))
+@mock.patch.object(SetupCalibration, "_set_next_state")
+def test_handle_key(set_next_state_mock):
+    """
+    The function to test SetupCalibration's handle_key function for each keypad input
+    """
+    setup_calibration = SetupCalibration(Titrator(), MainMenu(Titrator()))
 
-    setupCalibration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "CalibratePh"
-    setNextStateMock.reset_called()
+    setup_calibration.handle_key("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "CalibratePh"
+    set_next_state_mock.reset_called()
 
-    setupCalibration.handleKey("2")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "CalibrateTemp"
-    setNextStateMock.reset_called()
+    setup_calibration.handle_key("2")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "CalibrateTemp"
+    set_next_state_mock.reset_called()
 
-    setupCalibration.handleKey("3")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "MainMenu"
+    setup_calibration.handle_key("3")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
 
-# Test loop
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcdOutMock):
-    setupCalibration = SetupCalibration(Titrator(), MainMenu(Titrator()))
+def test_loop(lcd_out_mock):
+    """
+    The function to test SetupCalibration's loop function's lcd_interface calls
+    """
+    setup_calibration = SetupCalibration(Titrator(), MainMenu(Titrator()))
 
-    setupCalibration.loop()
-    lcdOutMock.assert_has_calls(
+    setup_calibration.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("1. pH", line=1),
             mock.call("2. Temperature", line=2),
@@ -42,14 +49,17 @@ def test_loop(lcdOutMock):
     )
 
 
-# Test SetupCalibration
-@mock.patch.object(SetupCalibration, "_setNextState")
+@mock.patch.object(SetupCalibration, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_SetupCalibration(lcdOutMock, setNextStateMock):
-    setupCalibration = SetupCalibration(Titrator(), MainMenu(Titrator()))
+def test_setup_calibration(lcd_out_mock, set_next_state_mock):
+    """
+    The function to test a use case of the SetupCalibration class:
+        User enters "1" to calibrate pH
+    """
+    setup_calibration = SetupCalibration(Titrator(), MainMenu(Titrator()))
 
-    setupCalibration.loop()
-    lcdOutMock.assert_has_calls(
+    setup_calibration.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("1. pH", line=1),
             mock.call("2. Temperature", line=2),
@@ -58,6 +68,6 @@ def test_SetupCalibration(lcdOutMock, setNextStateMock):
         ]
     )
 
-    setupCalibration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "CalibratePh"
+    setup_calibration.handle_key("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "CalibratePh"

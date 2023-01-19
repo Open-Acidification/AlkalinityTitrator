@@ -1,3 +1,6 @@
+"""
+The file to test the ReadVolume class
+"""
 from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
@@ -7,23 +10,27 @@ from titration.utils.ui_state.test_mode.read_volume import ReadVolume
 from titration.utils.ui_state.test_mode.test_mode import TestMode
 
 
-# Test handleKey
-@mock.patch.object(ReadVolume, "_setNextState")
-def test_handleKey(setNextStateMock):
-    readVolume = ReadVolume(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
+@mock.patch.object(ReadVolume, "_set_next_state")
+def test_handle_key(set_next_state_mock):
+    """
+    The function to test ReadVolume's handle_key function for each keypad input
+    """
+    read_volume = ReadVolume(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
-    readVolume.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "TestMode"
+    read_volume.handle_key("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "TestMode"
 
 
-# Test loop
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcdOutMock):
-    readVolume = ReadVolume(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
+def test_loop(lcd_out_mock):
+    """
+    The function to test SetVolume's loop function's lcd_interface calls
+    """
+    read_volume = ReadVolume(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
-    readVolume.loop()
-    lcdOutMock.assert_has_calls(
+    read_volume.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Pump Vol: ", line=1),
             mock.call(
@@ -37,14 +44,17 @@ def test_loop(lcdOutMock):
     )
 
 
-# Test ReadVolume
-@mock.patch.object(ReadVolume, "_setNextState")
+@mock.patch.object(ReadVolume, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_ReadVolume(lcdOutMock, setNextStateMock):
-    readVolume = ReadVolume(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
+def test_read_volume(lcd_out_mock, set_next_state_mock):
+    """
+    The function to test a use case of the SetVolume class:
+        User enters "1" to continue after the pump volume is read
+    """
+    read_volume = ReadVolume(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
-    readVolume.loop()
-    lcdOutMock.assert_has_calls(
+    read_volume.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Pump Vol: ", line=1),
             mock.call(
@@ -57,6 +67,6 @@ def test_ReadVolume(lcdOutMock, setNextStateMock):
         ]
     )
 
-    readVolume.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "TestMode"
+    read_volume.handle_key("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "TestMode"

@@ -1,3 +1,6 @@
+"""
+The file to test the SetupTitration class
+"""
 from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.titration.setup_titration import SetupTitration
@@ -5,40 +8,41 @@ from titration.utils.titrator import Titrator
 from titration.utils import lcd_interface, constants
 
 
-# Test handleKey
-@mock.patch.object(SetupTitration, "_setNextState")
-def test_handleKey(setNextStateMock):
-    setupTitration = SetupTitration(Titrator())
+@mock.patch.object(SetupTitration, "_set_next_state")
+def test_handle_key(set_next_state_mock):
+    """
+    The function to test SetupTitration's handle_key function for each keypad input
+    """
+    setup_titration = SetupTitration(Titrator())
 
-    setupTitration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    assert setupTitration.subState == 2
-    setNextStateMock.reset_called()
+    setup_titration.handle_key("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "UserValue"
+    assert setup_titration.substate == 2
 
-    setupTitration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    assert setupTitration.subState == 3
-    setNextStateMock.reset_called()
+    setup_titration.handle_key("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "UserValue"
+    assert setup_titration.substate == 3
 
-    setupTitration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "CalibratePh"
-    setNextStateMock.reset_called()
+    setup_titration.handle_key("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "CalibratePh"
 
-    setupTitration.handleKey("0")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "InitialTitration"
+    setup_titration.handle_key("0")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "InitialTitration"
 
 
-# Test loop
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcdOutMock):
-    setupTitration = SetupTitration(Titrator())
+def test_loop(lcd_out_mock):
+    """
+    The function to test SetupTitration's loop function's lcd_interface calls
+    """
+    setup_titration = SetupTitration(Titrator())
 
-    setupTitration.loop()
-    lcdOutMock.assert_has_calls(
+    setup_titration.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Enter Sol.", line=1),
             mock.call("weight (g)", line=2),
@@ -46,11 +50,10 @@ def test_loop(lcdOutMock):
             mock.call("", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    setupTitration.subState += 1
-    setupTitration.loop()
-    lcdOutMock.assert_has_calls(
+    setup_titration.substate += 1
+    setup_titration.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Enter Sol.", line=1),
             mock.call("salinity (ppt)", line=2),
@@ -58,11 +61,10 @@ def test_loop(lcdOutMock):
             mock.call("", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    setupTitration.subState += 1
-    setupTitration.loop()
-    lcdOutMock.assert_has_calls(
+    setup_titration.substate += 1
+    setup_titration.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Calibrate pH probe?", line=1),
             mock.call("Yes: 1", line=2),
@@ -77,13 +79,19 @@ def test_loop(lcdOutMock):
     )
 
 
-@mock.patch.object(SetupTitration, "_setNextState")
+@mock.patch.object(SetupTitration, "_set_next_state")
 @mock.patch.object(lcd_interface, "lcd_out")
-def test_SetupTitration(lcdOutMock, setNextStateMock):
-    setupTitration = SetupTitration(Titrator())
+def test_setup_titration(lcd_out_mock, set_next_state_mock):
+    """
+    The function to test a use case of the SetupTitration class:
+        User enters "1" to continue to enter solution weight
+        User enters "1" to continue to enter solution salinity
+        User enters "1" to calibrate pH probe"
+    """
+    setup_titration = SetupTitration(Titrator())
 
-    setupTitration.loop()
-    lcdOutMock.assert_has_calls(
+    setup_titration.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Enter Sol.", line=1),
             mock.call("weight (g)", line=2),
@@ -91,16 +99,14 @@ def test_SetupTitration(lcdOutMock, setNextStateMock):
             mock.call("", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    setupTitration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    assert setupTitration.subState == 2
-    setNextStateMock.reset_called()
+    setup_titration.handle_key("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "UserValue"
+    assert setup_titration.substate == 2
 
-    setupTitration.loop()
-    lcdOutMock.assert_has_calls(
+    setup_titration.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Enter Sol.", line=1),
             mock.call("salinity (ppt)", line=2),
@@ -108,16 +114,14 @@ def test_SetupTitration(lcdOutMock, setNextStateMock):
             mock.call("", line=4),
         ]
     )
-    lcdOutMock.reset_called()
 
-    setupTitration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "UserValue"
-    assert setupTitration.subState == 3
-    setNextStateMock.reset_called()
+    setup_titration.handle_key("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "UserValue"
+    assert setup_titration.substate == 3
 
-    setupTitration.loop()
-    lcdOutMock.assert_has_calls(
+    setup_titration.loop()
+    lcd_out_mock.assert_has_calls(
         [
             mock.call("Calibrate pH probe?", line=1),
             mock.call("Yes: 1", line=2),
@@ -131,6 +135,6 @@ def test_SetupTitration(lcdOutMock, setNextStateMock):
         ]
     )
 
-    setupTitration.handleKey("1")
-    setNextStateMock.assert_called_with(ANY, True)
-    assert setNextStateMock.call_args.args[0].name() == "CalibratePh"
+    setup_titration.handle_key("1")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "CalibratePh"

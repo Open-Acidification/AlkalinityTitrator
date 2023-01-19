@@ -1,8 +1,14 @@
-from titration.utils import titrator
+"""
+The file for the Alkalinity Titrator driver
+"""
+from titration.utils.titrator import Titrator
 
-titrator_object = titrator.Titrator()
+titrator = Titrator()
 
 
 def run():
+    """
+    The function that drives the Alkalinity Titrator
+    """
     while True:
-        titrator_object.loop()
+        titrator.loop()

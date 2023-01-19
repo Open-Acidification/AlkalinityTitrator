@@ -1,19 +1,46 @@
+"""
+The file for the ReadVolume class
+"""
 from titration.utils.ui_state.ui_state import UIState
 from titration.utils import lcd_interface, constants
 
 
 class ReadVolume(UIState):
-    def __init__(self, titrator, state):
-        super().__init__(titrator, state)
+    """
+    This is a class for the ReadVolume state of the titrator
+
+    Attributes:
+        titrator (Titrator object): the titrator is used to move through the state machine
+        previous_state (UIState object): the previous_state is used to return the last visited state
+        substate (int): the substate is used to keep track of substate of the UIState
+        values (dict): values is a dictionary to hold the new_volume
+    """
+
+    def __init__(self, titrator, previous_state):
+        """
+        The constructor for the ReadVolume class
+
+        Parameters:
+            titrator (Titrator object): the titrator is used to move through the state machine
+            previous_state (UIState object): the previous_state is used to return the last visited state
+        """
+        super().__init__(titrator, previous_state)
         self.values = {"new_volume": 0}
 
-    def name(self):
-        return "ReadVolume"
+    def handle_key(self, key):
+        """
+        The function to handle keypad input. Any input will return you to the previous state
 
-    def handleKey(self, key):
-        self._setNextState(self.previousState, True)
+        Parameters:
+            key (char): the keypad input is used to move to the next state
+        """
+        self._set_next_state(self.previous_state, True)
 
     def loop(self):
+        """
+        The function to loop through and display to the LCD screen until a new keypad input
+        """
+        lcd_interface.lcd_clear()
         lcd_interface.lcd_out("Pump Vol: ", line=1)
         lcd_interface.lcd_out(
             "{0:1.2f}".format(constants.volume_in_pump),

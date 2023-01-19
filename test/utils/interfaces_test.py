@@ -1,8 +1,6 @@
 """
-This test file is primarily to test the ability to import from the
-titration package
+The file to test the lcd interface
 """
-# from titration import utils
 from titration.utils import constants, interfaces
 
 

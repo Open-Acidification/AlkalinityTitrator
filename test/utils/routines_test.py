@@ -1,3 +1,7 @@
+"""
+The file to test titrator routines
+"""
+
 from titration.utils import constants, interfaces
 
 
