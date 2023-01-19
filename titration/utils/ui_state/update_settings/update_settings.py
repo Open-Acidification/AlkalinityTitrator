@@ -30,7 +30,7 @@ class UpdateSettings(UIState):
 
     def handle_key(self, key):
         """
-        The function to respond to a input:
+        The function to respond to a keypad input:
             Substate 1:
                 Y -> Reset calibration settings to default
                 N -> Do not reset calibration settings to default
