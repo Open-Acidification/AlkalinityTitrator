@@ -48,18 +48,18 @@ class UpdateSettings(UIState):
             key (char): the keypad input is used to move through the substates
         """
         if self.substate == 1:
-            if key == "Y" or key == "y":
+            if key != "n" and key != "N":
                 self.substate += 1
-            elif key == "N" or key == "n":
+            else:
                 self.substate += 2
 
         elif self.substate == 2:
             self.substate += 1
 
         elif self.substate == 3:
-            if key == "y" or key == "Y":
+            if key != "n" and key != "N":
                 self.substate += 1
-            elif key == "n" or key == "N":
+            else:
                 self._set_next_state(self.previous_state, True)
 
         elif self.substate == 4:
