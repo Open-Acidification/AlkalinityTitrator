@@ -19,7 +19,7 @@ def test_handle_key(set_next_state_mock):
 
     pump.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "UserValue"
+    assert set_next_state_mock.call_args.args[0].name() == "PumpVolume"
     assert pump.substate == 2
 
     pump.handle_key("0")
@@ -94,7 +94,7 @@ def test_Pump(lcd_out_mock, set_next_state_mock):
 
     pump.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "UserValue"
+    assert set_next_state_mock.call_args.args[0].name() == "PumpVolume"
     assert pump.substate == 2
 
     pump.loop()

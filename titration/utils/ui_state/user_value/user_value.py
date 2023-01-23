@@ -17,7 +17,7 @@ class UserValue(UIState):
         string (string): the string is used to hold the user input
     """
 
-    def __init__(self, titrator, previous_state, message):
+    def __init__(self, titrator, previous_state):
         """
         The constructor for the UserValue state
 
@@ -27,8 +27,13 @@ class UserValue(UIState):
             message (string): the message is used to display what setting you are entering
         """
         super().__init__(titrator, previous_state)
-        self.message = message
         self.string = ""
+
+    def save_value(self):
+        """
+        The function to save photometer values
+        """
+        raise Exception(self.name() + " requires a save_value function")
 
     def handle_key(self, key):
         """
@@ -46,6 +51,7 @@ class UserValue(UIState):
         """
         if key == "A":
             self._set_next_state(self.previous_state, True)
+            self.save_value()
 
         elif key == "B":
             self.string = self.string[:-1]
@@ -53,11 +59,14 @@ class UserValue(UIState):
         elif key == "C":
             self.string = ""
 
+        elif key == "D":
+            self._set_next_state(self.previous_state)
+
         elif key == "*":
             if "." not in self.string:
                 self.string = self.string + "."
 
-        elif key.isnumeric():
+        elif str(key).isdigit():
             self.string = self.string + str(key)
 
     def loop(self):
@@ -65,7 +74,6 @@ class UserValue(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         lcd_interface.lcd_clear()
-        lcd_interface.lcd_out(self.message, line=1)
         lcd_interface.lcd_out(self.string, style=constants.LCD_CENT_JUST, line=2)
         lcd_interface.lcd_out("* = .       B = BS", line=3)
         lcd_interface.lcd_out("A = accept  C = Clr", line=4)

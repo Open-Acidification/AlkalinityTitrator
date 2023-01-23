@@ -6,7 +6,8 @@ from titration.utils import constants
 from titration.utils.ui_state.titration.initial_titration import InitialTitration
 from titration.utils.ui_state.titration.calibrate_ph import CalibratePh
 from titration.utils import lcd_interface
-from titration.utils.ui_state.user_value.user_value import UserValue
+from titration.utils.ui_state.user_value.solution_weight import SolutionWeight
+from titration.utils.ui_state.user_value.solution_salinity import SolutionSalinity
 
 
 class SetupTitration(UIState):
@@ -20,23 +21,13 @@ class SetupTitration(UIState):
         values (dict): values is a dictionary to hold the weight and salinity of the solution
     """
 
-    def __init__(self, titrator):
-        """
-        The constructor for the SetupTitration class
-
-        Parameters:
-            titrator (Titrator object): the titrator is used to move through the state machine
-        """
-        super().__init__(titrator)
-        self.values = {"weight": 0, "salinity": 0}
-
     def handle_key(self, key):
         """
         The function to respond to a keypad input:
             Substate 1:
-                Any -> Enter UserValue state to set solution weight
+                Any -> Enter Solution weight
             Substate 2:
-                Any -> Enter UserValue state to set solution salinity
+                Any -> Enter Solution salinity
             Substate 3:
                 1 -> Calibrate pH probe
                 Else -> Begin initial titration
@@ -45,15 +36,11 @@ class SetupTitration(UIState):
             key (char): the keypad input is used to move through the substates
         """
         if self.substate == 1:
-            self._set_next_state(
-                UserValue(self.titrator, self, "Sol. weight (g):"), True
-            )
+            self._set_next_state(SolutionWeight(self.titrator, self), True)
             self.substate += 1
 
         elif self.substate == 2:
-            self._set_next_state(
-                UserValue(self.titrator, self, "Sol. salinity (ppt):"), True
-            )
+            self._set_next_state(SolutionSalinity(self.titrator, self), True)
             self.substate += 1
 
         elif self.substate == 3:

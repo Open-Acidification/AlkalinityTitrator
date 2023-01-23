@@ -35,9 +35,11 @@ class Titrator:
         """
         The constructor for the Titrator class
         """
-        self.state = MainMenu(self)
-        self.next_state = None
-        interfaces.setup_interfaces()  # TODO: look at removing, update to not call LCD and keypad
+
+        # Initialize LCD
+        interfaces.setup_interfaces()
+
+        # Initialize Keypad
         self.keypad = Keypad(
             r0=board_class.D1,
             r1=board_class.D6,
@@ -48,6 +50,17 @@ class Titrator:
             c2=board_class.D20,
             c3=board_class.D21,
         )
+
+        # Initialize State
+        self.state = MainMenu(self)
+        self.next_state = None
+
+        # Initialize Titrator Values
+        self.pump_volume = "0"
+        self.solution_weight = "0"
+        self.solution_salinity = "0"
+        self.volume = "0"
+        self.buffer_ph = "0"
 
     def loop(self):
         """

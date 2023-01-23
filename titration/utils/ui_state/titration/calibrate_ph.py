@@ -4,7 +4,7 @@ The file to hold the CalibratePh class
 from titration.utils.ui_state.ui_state import UIState
 from titration.utils import lcd_interface
 from titration.utils.ui_state.titration.initial_titration import InitialTitration
-from titration.utils.ui_state.user_value.user_value import UserValue
+from titration.utils.ui_state.user_value.buffer_ph import BufferPH
 
 
 class CalibratePh(UIState):
@@ -42,9 +42,7 @@ class CalibratePh(UIState):
             key (char): the keypad input is used to move through the substates
         """
         if self.substate == 1:
-            self._set_next_state(
-                UserValue(self.titrator, self, "Enter buffer pH:"), True
-            )
+            self._set_next_state(BufferPH(self.titrator, self), True)
             self.substate += 1
 
         elif self.substate == 2:

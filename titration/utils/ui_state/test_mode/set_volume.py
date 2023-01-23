@@ -3,7 +3,7 @@ The file for the SetVolume class
 """
 from titration.utils.ui_state.ui_state import UIState
 from titration.utils import lcd_interface
-from titration.utils.ui_state.user_value.user_value import UserValue
+from titration.utils.ui_state.user_value.pump_volume import PumpVolume
 
 
 class SetVolume(UIState):
@@ -17,17 +17,6 @@ class SetVolume(UIState):
         values (dict): values is a dictionary to hold the new_volume
     """
 
-    def __init__(self, titrator, previous_state):
-        """
-        The constructor for the SetVolume class
-
-        Parameters:
-            titrator (Titrator object): the titrator is used to move through the state machine
-            previous_state (UIState object): the previous_state is used to return the last visited state
-        """
-        super().__init__(titrator, previous_state)
-        self.values = {"new_volume": 0}
-
     def handle_key(self, key):
         """
         The function to respond to a keypad input:
@@ -40,9 +29,7 @@ class SetVolume(UIState):
             key (char): the keypad input is used to move through the substates
         """
         if self.substate == 1:
-            self._set_next_state(
-                UserValue(self.titrator, self, "Volume in pump: "), True
-            )
+            self._set_next_state(PumpVolume(self.titrator, self), True)
             self.substate += 1
 
         elif self.substate == 2:

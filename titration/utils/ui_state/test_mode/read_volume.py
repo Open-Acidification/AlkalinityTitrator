@@ -16,17 +16,6 @@ class ReadVolume(UIState):
         values (dict): values is a dictionary to hold the new_volume
     """
 
-    def __init__(self, titrator, previous_state):
-        """
-        The constructor for the ReadVolume class
-
-        Parameters:
-            titrator (Titrator object): the titrator is used to move through the state machine
-            previous_state (UIState object): the previous_state is used to return the last visited state
-        """
-        super().__init__(titrator, previous_state)
-        self.values = {"new_volume": 0}
-
     def handle_key(self, key):
         """
         The function to handle keypad input. Any input will return you to the previous state

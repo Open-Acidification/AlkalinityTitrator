@@ -17,7 +17,7 @@ def test_handle_key(set_next_state_mock):
 
     calibrate_ph.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "UserValue"
+    assert set_next_state_mock.call_args.args[0].name() == "BufferPH"
     assert calibrate_ph.substate == 2
 
     calibrate_ph.handle_key("1")
@@ -45,7 +45,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    calibrate_ph.substate += 1
+    calibrate_ph.substate = 2
     calibrate_ph.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -56,7 +56,7 @@ def test_loop(lcd_out_mock):
         ]
     )
 
-    calibrate_ph.substate += 1
+    calibrate_ph.substate = 3
     calibrate_ph.loop()
     lcd_out_mock.assert_has_calls(
         [
@@ -97,7 +97,7 @@ def test_calibrate_ph(lcd_out_mock, set_next_state_mock):
 
     calibrate_ph.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "UserValue"
+    assert set_next_state_mock.call_args.args[0].name() == "BufferPH"
     assert calibrate_ph.substate == 2
 
     calibrate_ph.loop()

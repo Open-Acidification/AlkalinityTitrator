@@ -4,7 +4,8 @@ The file for the ManualTitration class
 from titration.utils.ui_state.ui_state import UIState
 from titration.utils import lcd_interface, constants
 from titration.utils.ui_state import main_menu
-from titration.utils.ui_state.user_value.user_value import UserValue
+from titration.utils.ui_state.user_value.volume import Volume
+from titration.utils.ui_state.user_value.degas_time import DegasTime
 
 
 class ManualTitration(UIState):
@@ -27,9 +28,7 @@ class ManualTitration(UIState):
         """
         super().__init__(titrator)
         self.values = {
-            "p_volume": 0,
             "p_direction": 0,
-            "degas_time": 0,
             "current_pH": 5,
         }
 
@@ -55,7 +54,7 @@ class ManualTitration(UIState):
             key (char): the keypad input is used to move through the substates
         """
         if self.substate == 1:
-            self._set_next_state(UserValue(self.titrator, self, "Volume:"), True)
+            self._set_next_state(Volume(self.titrator, self), True)
             self.substate += 1
 
         elif self.substate == 2:
@@ -75,9 +74,7 @@ class ManualTitration(UIState):
                 self.substate += 1
 
         elif self.substate == 5:
-            self._set_next_state(
-                UserValue(self.titrator, self, "Degas time (s):"), True
-            )
+            self._set_next_state(DegasTime(self.titrator, self), True)
             self.substate += 1
 
         elif self.substate == 6:
