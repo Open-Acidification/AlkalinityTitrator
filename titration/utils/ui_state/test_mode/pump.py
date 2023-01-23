@@ -3,7 +3,6 @@ The file for the Pump class
 """
 from titration.utils.ui_state.ui_state import UIState
 from titration.utils import lcd_interface, constants
-from titration.utils.ui_state.user_value.user_value import UserValue
 from titration.utils.ui_state.user_value.pump_volume import PumpVolume
 
 

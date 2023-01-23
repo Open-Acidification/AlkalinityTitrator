@@ -60,7 +60,7 @@ class UserValue(UIState):
             self.string = ""
 
         elif key == "D":
-            self._set_next_state(self.previous_state)
+            self._set_next_state(self.previous_state, True)
 
         elif key == "*":
             if "." not in self.string:
