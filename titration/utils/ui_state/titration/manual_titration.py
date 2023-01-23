@@ -139,4 +139,6 @@ class ManualTitration(UIState):
         """
         The function to display MANUAL SELECTED upon entering the ManualTitration state
         """
-        self.titrator.lcd.print("MANUAL SELECTED", style=constants.LCD_CENT_JUST, line=4)
+        self.titrator.lcd.print(
+            "MANUAL SELECTED", style=constants.LCD_CENT_JUST, line=4
+        )

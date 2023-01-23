@@ -10,17 +10,20 @@ import types
 # TODO: log instead of print
 if constants.IS_TEST:
     from titration.utils.devices import board_mock
-    from titration.utils.devices.lcd_mock import LCD
+    from titration.utils.devices.lcd_mock import LCD as lcd_mock
 
 board_class: types.ModuleType = board_mock
+lcd_class: types.ModuleType = lcd_mock
 
 if constants.IS_TEST:
     board_class = board_mock
+    lcd_class = lcd_mock
 else:
     import board
     from titration.utils.devices.lcd import LCD
 
     board_class = board
+    lcd_class = LCD
 
 
 class Titrator:
@@ -41,7 +44,7 @@ class Titrator:
         self.next_state = None
 
         # Initialize LCD
-        self.lcd = LCD(
+        self.lcd = lcd_class(
             rs=board_class.D27,
             backlight=board_class.D15,
             enable=board_class.D22,

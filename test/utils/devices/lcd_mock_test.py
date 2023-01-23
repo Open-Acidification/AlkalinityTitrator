@@ -2,7 +2,6 @@
 Module to create a mock LCD
 """
 
-import pytest
 import titration.utils.devices.board_mock as board
 import titration.utils.devices.lcd_mock as lcd_mock
 from titration.utils import constants

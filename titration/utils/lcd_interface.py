@@ -19,8 +19,9 @@ ui_lcd = lcd_class.LCD(
     d5=board_class.D23,
     d6=board_class.D24,
     d7=board_class.D25,
+    cols=constants.LCD_HEIGHT,
+    rows=constants.LCD_WIDTH,
 )
-ui_lcd.begin(constants.LCD_WIDTH, constants.LCD_HEIGHT)
 
 ui_keypad = keypad_class.Keypad(
     r0=board_class.D1,
