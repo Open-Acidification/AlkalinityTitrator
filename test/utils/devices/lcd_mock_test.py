@@ -5,6 +5,7 @@ Module to create a mock LCD
 import pytest
 import titration.utils.devices.board_mock as board
 import titration.utils.devices.lcd_mock as lcd_mock
+from titration.utils import constants
 
 
 def test_lcd_create():
@@ -20,6 +21,8 @@ def test_lcd_create():
         d5=board.D23,
         d6=board.D24,
         d7=board.D25,
+        cols=constants.LCD_WIDTH,
+        rows=constants.LCD_HEIGHT,
     )
 
     assert lcd is not None
@@ -29,7 +32,17 @@ def test_lcd_create_null():
     """
     Function to create a mock null LCD for testing
     """
-    lcd = lcd_mock.LCD(None, None, None, None, None, None, None)
+    lcd = lcd_mock.LCD(
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        constants.LCD_WIDTH,
+        constants.LCD_HEIGHT,
+    )
     assert lcd is not None
 
 
@@ -45,9 +58,10 @@ def test_lcd_begin_large(capsys):
         d5=board.D23,
         d6=board.D24,
         d7=board.D25,
+        cols=constants.LCD_WIDTH,
+        rows=constants.LCD_HEIGHT,
     )
 
-    lcd.begin(20, 4)
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -66,9 +80,18 @@ def test_lcd_begin_large_null(capsys):
     """
     Function to test startup of a large null mock LCD
     """
-    lcd = lcd_mock.LCD(None, None, None, None, None, None, None)
+    lcd = lcd_mock.LCD(
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        constants.LCD_WIDTH,
+        constants.LCD_HEIGHT,
+    )
 
-    lcd.begin(20, 4)
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -95,9 +118,10 @@ def test_lcd_begin_small(capsys):
         d5=board.D23,
         d6=board.D24,
         d7=board.D25,
+        cols=10,
+        rows=2,
     )
 
-    lcd.begin(10, 2)
     captured = capsys.readouterr()
     assert captured.out == (
         "*==========*\n" + "|          |\n" + "|          |\n" + "*==========*\n"
@@ -111,9 +135,8 @@ def test_lcd_begin_small_null(capsys):
     """
     Function to test startup of a small null mock LCD
     """
-    lcd = lcd_mock.LCD(None, None, None, None, None, None, None)
+    lcd = lcd_mock.LCD(None, None, None, None, None, None, None, 10, 2)
 
-    lcd.begin(10, 2)
     captured = capsys.readouterr()
     assert captured.out == (
         "*==========*\n" + "|          |\n" + "|          |\n" + "*==========*\n"
@@ -121,36 +144,6 @@ def test_lcd_begin_small_null(capsys):
 
     assert lcd.cols == 10
     assert lcd.rows == 2
-
-
-def test_lcd_no_begin():
-    """
-    Function to test a mock LCD with no startup
-    """
-    lcd = lcd_mock.LCD(
-        rs=board.D27,
-        backlight=board.D15,
-        enable=board.D22,
-        d4=board.D18,
-        d5=board.D23,
-        d6=board.D24,
-        d7=board.D25,
-    )
-
-    # print without using begin() first
-    with pytest.raises(ValueError):
-        lcd.print("This should fail", 1, 1)
-
-
-def test_lcd_no_begin_null():
-    """
-    Function to test a null mock LCD with no startup
-    """
-    lcd = lcd_mock.LCD(None, None, None, None, None, None, None)
-
-    # print without using begin() first
-    with pytest.raises(ValueError):
-        lcd.print("This should fail", 1, 1)
 
 
 def test_lcd_print_left(capsys):
@@ -165,9 +158,9 @@ def test_lcd_print_left(capsys):
         d5=board.D23,
         d6=board.D24,
         d7=board.D25,
+        cols=constants.LCD_WIDTH,
+        rows=constants.LCD_HEIGHT,
     )
-
-    lcd.begin(20, 4)
 
     # Flush the current stdout buffer from begin() output
     _ = capsys.readouterr()
@@ -245,9 +238,9 @@ def test_lcd_print_center(capsys):
         d5=board.D23,
         d6=board.D24,
         d7=board.D25,
+        cols=constants.LCD_WIDTH,
+        rows=constants.LCD_HEIGHT,
     )
-
-    lcd.begin(20, 4)
 
     # Flush the current stdout buffer from begin() output
     _ = capsys.readouterr()
@@ -325,9 +318,9 @@ def test_lcd_print_right(capsys):
         d5=board.D23,
         d6=board.D24,
         d7=board.D25,
+        cols=constants.LCD_WIDTH,
+        rows=constants.LCD_HEIGHT,
     )
-
-    lcd.begin(20, 4)
 
     # Flush the current stdout buffer from begin() output
     _ = capsys.readouterr()
@@ -405,9 +398,9 @@ def test_lcd_print_long(capsys):
         d5=board.D23,
         d6=board.D24,
         d7=board.D25,
+        cols=constants.LCD_WIDTH,
+        rows=constants.LCD_HEIGHT,
     )
-
-    lcd.begin(20, 4)
 
     # Flush the current stdout buffer from begin() and prints
     _ = capsys.readouterr()
@@ -429,10 +422,9 @@ def test_lcd_clear(capsys):
     """
     Function to test a mock LCD clear call
     """
-    lcd = lcd_mock.LCD(None, None, None, None, None, None, None)
+    lcd = lcd_mock.LCD(None, None, None, None, None, None, None, 20, 4)
 
     # test that a 20x4 empty box is properly shown on
-    lcd.begin(20, 4)
     lcd.print("test string", 1, 2)
     lcd.print("test string", 2, 2)
     lcd.print("test string", 3, 2)

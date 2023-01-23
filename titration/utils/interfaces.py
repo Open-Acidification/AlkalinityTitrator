@@ -109,9 +109,9 @@ def setup_lcd():
         d5=board_class.D23,
         d6=board_class.D24,
         d7=board_class.D25,
+        cols=constants.LCD_WIDTH,
+        rows=constants.LCD_HEIGHT,
     )
-
-    temp_lcd.begin(constants.LCD_WIDTH, constants.LCD_HEIGHT)
 
     return temp_lcd
 

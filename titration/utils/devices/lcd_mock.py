@@ -5,16 +5,12 @@ from os import name, system
 
 
 class LCD:
-    def __init__(self, rs, backlight, enable, d4, d5, d6, d7):
-        self.cols = -1
-        self.rows = -1
+    def __init__(self, rs, backlight, enable, d4, d5, d6, d7, cols, rows):
+        self.cols = cols
+        self.rows = rows
 
         self.strings = []
         self.clear_flag = True
-
-    def begin(self, cols, rows):
-        self.cols = cols
-        self.rows = rows
 
         # Clear any existing rows
         self.strings.clear()
