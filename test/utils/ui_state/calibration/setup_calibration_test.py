@@ -6,7 +6,7 @@ from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.ui_state.calibration.setup_calibration import SetupCalibration
 from titration.utils.titrator import Titrator
-from titration.utils import lcd_interface
+from titration.utils.devices.lcd_mock import LCD
 
 
 @mock.patch.object(SetupCalibration, "_set_next_state")
@@ -31,15 +31,15 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
 
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcd_out_mock):
+@mock.patch.object(LCD, "print")
+def test_loop(print_mock):
     """
-    The function to test SetupCalibration's loop function's lcd_interface calls
+    The function to test SetupCalibration's loop function's LCD calls
     """
     setup_calibration = SetupCalibration(Titrator(), MainMenu(Titrator()))
 
     setup_calibration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("1. pH", line=1),
             mock.call("2. Temperature", line=2),
@@ -50,8 +50,8 @@ def test_loop(lcd_out_mock):
 
 
 @mock.patch.object(SetupCalibration, "_set_next_state")
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_setup_calibration(lcd_out_mock, set_next_state_mock):
+@mock.patch.object(LCD, "print")
+def test_setup_calibration(print_mock, set_next_state_mock):
     """
     The function to test a use case of the SetupCalibration class:
         User enters "1" to calibrate pH
@@ -59,7 +59,7 @@ def test_setup_calibration(lcd_out_mock, set_next_state_mock):
     setup_calibration = SetupCalibration(Titrator(), MainMenu(Titrator()))
 
     setup_calibration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("1. pH", line=1),
             mock.call("2. Temperature", line=2),

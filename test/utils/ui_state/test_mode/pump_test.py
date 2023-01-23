@@ -6,7 +6,7 @@ from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.ui_state.test_mode.test_mode import TestMode
 from titration.utils.titrator import Titrator
-from titration.utils import lcd_interface
+from titration.utils.devices.lcd_mock import LCD
 from titration.utils.ui_state.test_mode.pump import Pump
 
 
@@ -31,15 +31,15 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "TestMode"
 
 
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcd_out_mock):
+@mock.patch.object(LCD, "print")
+def test_loop(print_mock):
     """
-    The function to test Pump's loop function's lcd_interface calls
+    The function to test Pump's loop function's LCD calls
     """
     pump = Pump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     pump.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Set Volume", line=1),
             mock.call("", line=2),
@@ -50,7 +50,7 @@ def test_loop(lcd_out_mock):
 
     pump.substate += 1
     pump.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("In/Out (0/1):", line=1),
             mock.call("", line=2),
@@ -61,7 +61,7 @@ def test_loop(lcd_out_mock):
 
     pump.substate += 1
     pump.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Pumping volume", line=1),
             mock.call("", line=2),
@@ -72,8 +72,8 @@ def test_loop(lcd_out_mock):
 
 
 @mock.patch.object(Pump, "_set_next_state")
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_Pump(lcd_out_mock, set_next_state_mock):
+@mock.patch.object(LCD, "print")
+def test_Pump(print_mock, set_next_state_mock):
     """
     The function to test a use case of the Pump class:
         User enters "1" to continue setting volume
@@ -83,7 +83,7 @@ def test_Pump(lcd_out_mock, set_next_state_mock):
     pump = Pump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     pump.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Set Volume", line=1),
             mock.call("", line=2),
@@ -98,7 +98,7 @@ def test_Pump(lcd_out_mock, set_next_state_mock):
     assert pump.substate == 2
 
     pump.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("In/Out (0/1):", line=1),
             mock.call("", line=2),
@@ -112,7 +112,7 @@ def test_Pump(lcd_out_mock, set_next_state_mock):
     assert pump.substate == 3
 
     pump.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Pumping volume", line=1),
             mock.call("", line=2),

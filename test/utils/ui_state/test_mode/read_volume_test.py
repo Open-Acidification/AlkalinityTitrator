@@ -5,7 +5,8 @@ from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.titrator import Titrator
-from titration.utils import lcd_interface, constants
+from titration.utils import constants
+from titration.utils.devices.lcd_mock import LCD
 from titration.utils.ui_state.test_mode.read_volume import ReadVolume
 from titration.utils.ui_state.test_mode.test_mode import TestMode
 
@@ -22,15 +23,15 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "TestMode"
 
 
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcd_out_mock):
+@mock.patch.object(LCD, "print")
+def test_loop(print_mock):
     """
-    The function to test SetVolume's loop function's lcd_interface calls
+    The function to test SetVolume's loop function's LCD calls
     """
     read_volume = ReadVolume(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     read_volume.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Pump Vol: ", line=1),
             mock.call(
@@ -45,8 +46,8 @@ def test_loop(lcd_out_mock):
 
 
 @mock.patch.object(ReadVolume, "_set_next_state")
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_read_volume(lcd_out_mock, set_next_state_mock):
+@mock.patch.object(LCD, "print")
+def test_read_volume(print_mock, set_next_state_mock):
     """
     The function to test a use case of the SetVolume class:
         User enters "1" to continue after the pump volume is read
@@ -54,7 +55,7 @@ def test_read_volume(lcd_out_mock, set_next_state_mock):
     read_volume = ReadVolume(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
     read_volume.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Pump Vol: ", line=1),
             mock.call(

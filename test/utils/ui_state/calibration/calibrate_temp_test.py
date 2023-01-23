@@ -7,7 +7,7 @@ from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.ui_state.calibration.calibrate_temp import CalibrateTemp
 from titration.utils.ui_state.calibration.setup_calibration import SetupCalibration
 from titration.utils.titrator import Titrator
-from titration.utils import lcd_interface
+from titration.utils.devices.lcd_mock import LCD
 
 
 @mock.patch.object(CalibrateTemp, "_set_next_state")
@@ -32,17 +32,17 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "SetupCalibration"
 
 
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcd_out_mock):
+@mock.patch.object(LCD, "print")
+def test_loop(print_mock):
     """
-    The function to test CalibrateTemp's loop function's lcd_interface calls
+    The function to test CalibrateTemp's loop function's LCD calls
     """
     calibrate_temp = CalibrateTemp(
         Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator())
     )
 
     calibrate_temp.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Set Ref solution", line=1),
             mock.call("temp", line=2),
@@ -53,7 +53,7 @@ def test_loop(lcd_out_mock):
 
     calibrate_temp.substate += 1
     calibrate_temp.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Put probe in sol", line=1),
             mock.call("", line=2),
@@ -64,7 +64,7 @@ def test_loop(lcd_out_mock):
 
     calibrate_temp.substate += 1
     calibrate_temp.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Recorded temp:", line=1),
             mock.call(
@@ -77,8 +77,8 @@ def test_loop(lcd_out_mock):
 
 
 @mock.patch.object(CalibrateTemp, "_set_next_state")
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_calibrate_temp(lcd_out_mock, set_next_state_mock):
+@mock.patch.object(LCD, "print")
+def test_calibrate_temp(print_mock, set_next_state_mock):
     """
     The function to test a use case of the CalibrateTemp class:
         User enters "1" to continue setting reference solution
@@ -90,7 +90,7 @@ def test_calibrate_temp(lcd_out_mock, set_next_state_mock):
     )
 
     calibrate_temp.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Set Ref solution", line=1),
             mock.call("temp", line=2),
@@ -105,7 +105,7 @@ def test_calibrate_temp(lcd_out_mock, set_next_state_mock):
     assert calibrate_temp.substate == 2
 
     calibrate_temp.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Put probe in sol", line=1),
             mock.call("", line=2),
@@ -118,7 +118,7 @@ def test_calibrate_temp(lcd_out_mock, set_next_state_mock):
     assert calibrate_temp.substate == 3
 
     calibrate_temp.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Recorded temp:", line=1),
             mock.call(

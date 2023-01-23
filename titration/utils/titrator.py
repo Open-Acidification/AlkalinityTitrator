@@ -2,7 +2,7 @@
 The file for the Titrator class
 """
 from titration.utils.ui_state.main_menu import MainMenu
-from titration.utils import interfaces, constants
+from titration.utils import constants
 from titration.utils.devices.keypad_mock import Keypad
 import types
 
@@ -10,6 +10,7 @@ import types
 # TODO: log instead of print
 if constants.IS_TEST:
     from titration.utils.devices import board_mock
+    from titration.utils.devices.lcd_mock import LCD
 
 board_class: types.ModuleType = board_mock
 
@@ -17,6 +18,7 @@ if constants.IS_TEST:
     board_class = board_mock
 else:
     import board
+    from titration.utils.devices.lcd import LCD
 
     board_class = board
 
@@ -37,7 +39,21 @@ class Titrator:
         """
         self.state = MainMenu(self)
         self.next_state = None
-        interfaces.setup_interfaces()  # TODO: look at removing, update to not call LCD and keypad
+
+        # Initialize LCD
+        self.lcd = LCD(
+            rs=board_class.D27,
+            backlight=board_class.D15,
+            enable=board_class.D22,
+            d4=board_class.D18,
+            d5=board_class.D23,
+            d6=board_class.D24,
+            d7=board_class.D25,
+        )
+
+        self.lcd.begin(constants.LCD_WIDTH, constants.LCD_HEIGHT)
+
+        # Initialize Keypad
         self.keypad = Keypad(
             r0=board_class.D1,
             r1=board_class.D6,

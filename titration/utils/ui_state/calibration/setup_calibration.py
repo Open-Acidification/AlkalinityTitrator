@@ -2,7 +2,7 @@
 The file for the SetupCalibration class
 """
 from titration.utils.ui_state.ui_state import UIState
-from titration.utils import lcd_interface, constants
+from titration.utils import constants
 from titration.utils.ui_state.calibration.calibrate_ph import CalibratePh
 from titration.utils.ui_state.calibration.calibrate_temp import CalibrateTemp
 
@@ -40,8 +40,8 @@ class SetupCalibration(UIState):
         """
         The function to loop through and display to the LCD screen until a new keypad input
         """
-        lcd_interface.lcd_clear()
-        lcd_interface.lcd_out("1. pH", line=1)
-        lcd_interface.lcd_out("2. Temperature", line=2)
-        lcd_interface.lcd_out("3. Return", line=3)
-        lcd_interface.lcd_out("", line=4)
+        self.titrator.lcd.clear()
+        self.titrator.lcd.print("1. pH", line=1)
+        self.titrator.lcd.print("2. Temperature", line=2)
+        self.titrator.lcd.print("3. Return", line=3)
+        self.titrator.lcd.print("", line=4)

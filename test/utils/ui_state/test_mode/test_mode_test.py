@@ -5,7 +5,7 @@ from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.titrator import Titrator
-from titration.utils import lcd_interface
+from titration.utils.devices.lcd_mock import LCD
 from titration.utils.ui_state.test_mode.test_mode import TestMode
 
 
@@ -47,15 +47,15 @@ def test_handle_key(set_next_state_mock):
     assert test_mode.substate == 1
 
 
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcd_out_mock):
+@mock.patch.object(LCD, "print")
+def test_loop(print_mock):
     """
-    The function to test TestMode's loop function's lcd_interface calls
+    The function to test TestMode's loop function's LCD calls
     """
     test_mode = TestMode(Titrator(), MainMenu(Titrator()))
 
     test_mode.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("1: Read Values", line=1),
             mock.call("2: Pump", line=2),
@@ -66,7 +66,7 @@ def test_loop(lcd_out_mock):
 
     test_mode.substate += 1
     test_mode.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("4: Toggle Test Mode", line=1),
             mock.call("5: Read Volume", line=2),
@@ -77,8 +77,8 @@ def test_loop(lcd_out_mock):
 
 
 @mock.patch.object(TestMode, "_set_next_state")
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_test_mode(lcd_out_mock, set_next_state_mock):
+@mock.patch.object(LCD, "print")
+def test_test_mode(print_mock, set_next_state_mock):
     """
     The function to test a use case of the TestMode class:
         User enters "1" to read values
@@ -92,7 +92,7 @@ def test_test_mode(lcd_out_mock, set_next_state_mock):
     test_mode = TestMode(Titrator(), MainMenu(Titrator()))
 
     test_mode.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("1: Read Values", line=1),
             mock.call("2: Pump", line=2),
@@ -106,7 +106,7 @@ def test_test_mode(lcd_out_mock, set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "ReadValues"
 
     test_mode.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("1: Read Values", line=1),
             mock.call("2: Pump", line=2),
@@ -120,7 +120,7 @@ def test_test_mode(lcd_out_mock, set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "Pump"
 
     test_mode.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("1: Read Values", line=1),
             mock.call("2: Pump", line=2),
@@ -134,7 +134,7 @@ def test_test_mode(lcd_out_mock, set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "SetVolume"
 
     test_mode.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("1: Read Values", line=1),
             mock.call("2: Pump", line=2),
@@ -147,7 +147,7 @@ def test_test_mode(lcd_out_mock, set_next_state_mock):
     assert test_mode.substate == 2
 
     test_mode.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("4: Toggle Test Mode", line=1),
             mock.call("5: Read Volume", line=2),
@@ -161,7 +161,7 @@ def test_test_mode(lcd_out_mock, set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "ToggleTestMode"
 
     test_mode.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("4: Toggle Test Mode", line=1),
             mock.call("5: Read Volume", line=2),
@@ -175,7 +175,7 @@ def test_test_mode(lcd_out_mock, set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "ReadVolume"
 
     test_mode.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("4: Toggle Test Mode", line=1),
             mock.call("5: Read Volume", line=2),
