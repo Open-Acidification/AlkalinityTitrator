@@ -27,5 +27,5 @@ class SolutionSalinity(UserValue):
         """
         The function to loop through and display to the LCD screen until a new keypad input
         """
-        super().loop()
         lcd_interface.lcd_out("Sol. salinity (ppt):", line=1)
+        super().loop()

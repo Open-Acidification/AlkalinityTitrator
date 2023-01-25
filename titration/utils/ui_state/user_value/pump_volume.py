@@ -27,5 +27,5 @@ class PumpVolume(UserValue):
         """
         The function to loop through and display to the LCD screen until a new keypad input
         """
-        super().loop()
         lcd_interface.lcd_out("Volume in pump:", line=1)
+        super().loop()

@@ -27,5 +27,5 @@ class ReferenceTemperature(UserValue):
         """
         The function to loop through and display to the LCD screen until a new keypad input
         """
-        super().loop()
         lcd_interface.lcd_out("Ref solution temp:", line=1)
+        super().loop()
