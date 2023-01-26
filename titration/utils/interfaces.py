@@ -101,7 +101,7 @@ def setup_module_classes():
 
 
 def setup_lcd():
-    temp_lcd = lcd_class.LCD(
+    temp_lcd = lcd_class.LiquidCrystal(
         rs=board_class.D27,
         backlight=board_class.D15,
         enable=board_class.D22,

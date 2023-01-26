@@ -3,7 +3,7 @@ Module to create a mock LCD
 """
 
 import titration.utils.devices.board_mock as board
-import titration.utils.devices.lcd_mock as lcd_mock
+from titration.utils.devices.lcd_mock import LiquidCrystal
 from titration.utils import constants
 
 
@@ -12,7 +12,7 @@ def test_lcd_create():
     Function to create a mock LCD for testing
     """
     # the mock LCD doesn't use it's inputs, real or None inputs should work
-    lcd = lcd_mock.LCD(
+    lcd = LiquidCrystal(
         rs=board.D27,
         backlight=board.D15,
         enable=board.D22,
@@ -31,7 +31,7 @@ def test_lcd_create_null():
     """
     Function to create a mock null LCD for testing
     """
-    lcd = lcd_mock.LCD(
+    lcd = LiquidCrystal(
         None,
         None,
         None,
@@ -49,7 +49,7 @@ def test_lcd_begin_large(capsys):
     """
     Function to test startup of a large mock LCD
     """
-    lcd = lcd_mock.LCD(
+    lcd = LiquidCrystal(
         rs=board.D27,
         backlight=board.D15,
         enable=board.D22,
@@ -79,7 +79,7 @@ def test_lcd_begin_large_null(capsys):
     """
     Function to test startup of a large null mock LCD
     """
-    lcd = lcd_mock.LCD(
+    lcd = LiquidCrystal(
         None,
         None,
         None,
@@ -109,7 +109,7 @@ def test_lcd_begin_small(capsys):
     """
     Function to test startup of a small mock LCD
     """
-    lcd = lcd_mock.LCD(
+    lcd = LiquidCrystal(
         rs=board.D27,
         backlight=board.D15,
         enable=board.D22,
@@ -134,7 +134,7 @@ def test_lcd_begin_small_null(capsys):
     """
     Function to test startup of a small null mock LCD
     """
-    lcd = lcd_mock.LCD(None, None, None, None, None, None, None, 10, 2)
+    lcd = LiquidCrystal(None, None, None, None, None, None, None, 10, 2)
 
     captured = capsys.readouterr()
     assert captured.out == (
@@ -149,7 +149,7 @@ def test_lcd_print_left(capsys):
     """
     Function to test mock LCD printing from the left
     """
-    lcd = lcd_mock.LCD(
+    lcd = LiquidCrystal(
         rs=board.D27,
         backlight=board.D15,
         enable=board.D22,
@@ -229,7 +229,7 @@ def test_lcd_print_center(capsys):
     """
     Function to test mock LCD printing from the center
     """
-    lcd = lcd_mock.LCD(
+    lcd = LiquidCrystal(
         rs=board.D27,
         backlight=board.D15,
         enable=board.D22,
@@ -309,7 +309,7 @@ def test_lcd_print_right(capsys):
     """
     Function to test mock LCD printing from the right
     """
-    lcd = lcd_mock.LCD(
+    lcd = LiquidCrystal(
         rs=board.D27,
         backlight=board.D15,
         enable=board.D22,
@@ -389,7 +389,7 @@ def test_lcd_print_long(capsys):
     """
     Function to test mock LCD when a print call is too long
     """
-    lcd = lcd_mock.LCD(
+    lcd = LiquidCrystal(
         rs=board.D27,
         backlight=board.D15,
         enable=board.D22,
@@ -421,7 +421,7 @@ def test_lcd_clear(capsys):
     """
     Function to test a mock LCD clear call
     """
-    lcd = lcd_mock.LCD(None, None, None, None, None, None, None, 20, 4)
+    lcd = LiquidCrystal(None, None, None, None, None, None, None, 20, 4)
 
     # test that a 20x4 empty box is properly shown on
     lcd.print("test string", 1, 2)
