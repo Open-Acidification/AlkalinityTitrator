@@ -11,7 +11,7 @@ lcd_class: types.ModuleType = lcd_mock
 board_class: types.ModuleType = board_mock
 keypad_class: types.ModuleType = keypad_mock
 
-ui_lcd = lcd_class.LCD(
+ui_lcd = lcd_class.LiquidCrystal(
     rs=board_class.D27,
     backlight=board_class.D15,
     enable=board_class.D22,
