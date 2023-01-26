@@ -10,8 +10,8 @@ if constants.IS_TEST:
     from titration.utils.devices import board_mock as board_class
     from titration.utils.devices.lcd_mock import LiquidCrystal
 else:
-    import board as board_class
-    from titration.utils.devices.lcd import LiquidCrystal
+    import board as board_class  # type: ignore
+    from titration.utils.devices.lcd import LiquidCrystal  # type: ignore
 
 
 class Titrator:
