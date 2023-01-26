@@ -5,7 +5,7 @@ from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.titration.manual_titration import ManualTitration
 from titration.utils.titrator import Titrator
-from titration.utils.devices.lcd_mock import LCD
+from titration.utils.devices.lcd_mock import LiquidCrystal
 
 
 @mock.patch.object(ManualTitration, "_set_next_state")
@@ -40,10 +40,10 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
 
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_loop(print_mock):
     """
-    The function to test ManualTitration's loop function's LCD calls
+    The function to test ManualTitration's loop function's LiquidCrystal calls
     """
     manual_titration = ManualTitration(Titrator())
 
@@ -120,7 +120,7 @@ def test_loop(print_mock):
 
 
 @mock.patch.object(ManualTitration, "_set_next_state")
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_manual_titration(print_mock, set_next_state_mock):
     """
     The function to test a use case of the ManualTitration class:

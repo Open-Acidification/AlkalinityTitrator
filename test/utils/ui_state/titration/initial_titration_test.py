@@ -6,7 +6,7 @@ from unittest.mock import ANY
 from titration.utils.ui_state.titration.initial_titration import InitialTitration
 from titration.utils.titrator import Titrator
 from titration.utils import constants
-from titration.utils.devices.lcd_mock import LCD
+from titration.utils.devices.lcd_mock import LiquidCrystal
 
 
 def test_handle_key():
@@ -21,10 +21,10 @@ def test_handle_key():
 
 
 @mock.patch.object(InitialTitration, "_set_next_state")
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_loop(print_mock, set_next_state_mock):
     """
-    The function to test InitialTitration's loop function's LCD calls
+    The function to test InitialTitration's loop function's LiquidCrystal calls
     """
     initial_titration = InitialTitration(Titrator())
 
@@ -44,7 +44,7 @@ def test_loop(print_mock, set_next_state_mock):
         [
             mock.call("Heating to 30 C...", line=1),
             mock.call("", line=2),
-            mock.call("Please wait...", style=constants.LCD_CENT_JUST, line=3),
+            mock.call("Please wait...", style=constants.LiquidCrystal_CENT_JUST, line=3),
             mock.call("", line=4),
         ]
     )
@@ -60,7 +60,7 @@ def test_loop(print_mock, set_next_state_mock):
         [
             mock.call("Heating to 30 C...", line=1),
             mock.call("", line=2),
-            mock.call("Please wait...", style=constants.LCD_CENT_JUST, line=3),
+            mock.call("Please wait...", style=constants.LiquidCrystal_CENT_JUST, line=3),
             mock.call("", line=4),
         ]
     )
@@ -69,7 +69,7 @@ def test_loop(print_mock, set_next_state_mock):
 
 
 @mock.patch.object(InitialTitration, "_set_next_state")
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_initial_titration_manual(print_mock, set_next_state_mock):
     """
     The function to test a use case of the InitialTitration class:
@@ -96,7 +96,7 @@ def test_initial_titration_manual(print_mock, set_next_state_mock):
         [
             mock.call("Heating to 30 C...", line=1),
             mock.call("", line=2),
-            mock.call("Please wait...", style=constants.LCD_CENT_JUST, line=3),
+            mock.call("Please wait...", style=constants.LiquidCrystal_CENT_JUST, line=3),
             mock.call("", line=4),
         ]
     )
@@ -105,7 +105,7 @@ def test_initial_titration_manual(print_mock, set_next_state_mock):
 
 
 @mock.patch.object(InitialTitration, "_set_next_state")
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_initial_titration_automatic(print_mock, set_next_state_mock):
     """
     The function to test a use case of the InitialTitration class:
@@ -132,7 +132,7 @@ def test_initial_titration_automatic(print_mock, set_next_state_mock):
         [
             mock.call("Heating to 30 C...", line=1),
             mock.call("", line=2),
-            mock.call("Please wait...", style=constants.LCD_CENT_JUST, line=3),
+            mock.call("Please wait...", style=constants.LiquidCrystal_CENT_JUST, line=3),
             mock.call("", line=4),
         ]
     )

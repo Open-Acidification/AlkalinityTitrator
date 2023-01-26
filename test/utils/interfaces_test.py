@@ -15,7 +15,7 @@ def test_interfaces_lcd(capsys):
     # flush stdout
     _ = capsys.readouterr()
 
-    interfaces.lcd_out("Test string", 1, constants.LCD_LEFT_JUST)
+    interfaces.lcd_out("Test string", 1, constants.LiquidCrystal_LEFT_JUST)
 
     captured = capsys.readouterr()
     assert captured.out == (

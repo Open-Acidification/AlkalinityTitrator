@@ -5,7 +5,7 @@ import digitalio
 from titration.utils import constants
 
 
-class LCD:
+class LiquidCrystal:
     """Sunfire LCD 20x04 Char Display Module"""
 
     def __init__(self, rs, backlight, enable, d4, d5, d6, d7, cols, rows):

@@ -6,7 +6,7 @@ from unittest.mock import ANY
 from titration.utils.ui_state.titration.setup_titration import SetupTitration
 from titration.utils.titrator import Titrator
 from titration.utils import constants
-from titration.utils.devices.lcd_mock import LCD
+from titration.utils.devices.lcd_mock import LiquidCrystal
 
 
 @mock.patch.object(SetupTitration, "_set_next_state")
@@ -35,10 +35,10 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "InitialTitration"
 
 
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_loop(print_mock):
     """
-    The function to test SetupTitration's loop function's LCD calls
+    The function to test SetupTitration's loop function's LiquidCrystal calls
     """
     setup_titration = SetupTitration(Titrator())
 
@@ -81,7 +81,7 @@ def test_loop(print_mock):
 
 
 @mock.patch.object(SetupTitration, "_set_next_state")
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_setup_titration(print_mock, set_next_state_mock):
     """
     The function to test a use case of the SetupTitration class:

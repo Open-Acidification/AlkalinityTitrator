@@ -7,7 +7,7 @@ from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.ui_state.test_mode.test_mode import TestMode
 from titration.utils.titrator import Titrator
 from titration.utils import interfaces
-from titration.utils.devices.lcd_mock import LCD
+from titration.utils.devices.lcd_mock import LiquidCrystal
 from titration.utils.ui_state.test_mode.read_values import ReadValues
 
 
@@ -23,11 +23,11 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "TestMode"
 
 
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 @mock.patch.object(interfaces, "delay")
 def test_loop(delay_mock, print_mock):
     """
-    The function to test ReadValues' loop function's LCD calls and delay calls
+    The function to test ReadValues' loop function's LiquidCrystal calls and delay calls
     """
     read_values = ReadValues(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
@@ -65,7 +65,7 @@ def test_loop(delay_mock, print_mock):
 
 
 @mock.patch.object(ReadValues, "_set_next_state")
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 @mock.patch.object(interfaces, "delay")
 def test_read_values(delay_mock, print_mock, set_next_state_mock):
     """

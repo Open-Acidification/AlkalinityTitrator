@@ -5,7 +5,7 @@ from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.titrator import Titrator
-from titration.utils.devices.lcd_mock import LCD
+from titration.utils.devices.lcd_mock import LiquidCrystal
 from titration.utils.ui_state.test_mode.set_volume import SetVolume
 
 
@@ -26,10 +26,10 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
 
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_loop(print_mock):
     """
-    The function to test SetVolume's loop function's LCD calls
+    The function to test SetVolume's loop function's LiquidCrystal calls
     """
     set_volume = SetVolume(Titrator(), MainMenu(Titrator()))
 
@@ -55,7 +55,7 @@ def test_loop(print_mock):
     )
 
 
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 @mock.patch.object(SetVolume, "_set_next_state")
 def test_set_volume(set_next_state_mock, print_mock):
     """

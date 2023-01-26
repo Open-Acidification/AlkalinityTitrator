@@ -6,7 +6,7 @@ from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.titrator import Titrator
 from titration.utils import constants
-from titration.utils.devices.lcd_mock import LCD
+from titration.utils.devices.lcd_mock import LiquidCrystal
 from titration.utils.ui_state.test_mode.read_volume import ReadVolume
 from titration.utils.ui_state.test_mode.test_mode import TestMode
 
@@ -23,10 +23,10 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "TestMode"
 
 
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_loop(print_mock):
     """
-    The function to test SetVolume's loop function's LCD calls
+    The function to test SetVolume's loop function's LiquidCrystal calls
     """
     read_volume = ReadVolume(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
@@ -36,7 +36,7 @@ def test_loop(print_mock):
             mock.call("Pump Vol: ", line=1),
             mock.call(
                 "{0:1.2f}".format(constants.volume_in_pump),
-                style=constants.LCD_CENT_JUST,
+                style=constants.LiquidCrystal_CENT_JUST,
                 line=2,
             ),
             mock.call("Press any to cont.", line=3),
@@ -46,7 +46,7 @@ def test_loop(print_mock):
 
 
 @mock.patch.object(ReadVolume, "_set_next_state")
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_read_volume(print_mock, set_next_state_mock):
     """
     The function to test a use case of the SetVolume class:
@@ -60,7 +60,7 @@ def test_read_volume(print_mock, set_next_state_mock):
             mock.call("Pump Vol: ", line=1),
             mock.call(
                 "{0:1.2f}".format(constants.volume_in_pump),
-                style=constants.LCD_CENT_JUST,
+                style=constants.LiquidCrystal_CENT_JUST,
                 line=2,
             ),
             mock.call("Press any to cont.", line=3),

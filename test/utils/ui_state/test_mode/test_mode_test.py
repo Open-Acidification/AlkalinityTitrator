@@ -5,7 +5,7 @@ from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.titrator import Titrator
-from titration.utils.devices.lcd_mock import LCD
+from titration.utils.devices.lcd_mock import LiquidCrystal
 from titration.utils.ui_state.test_mode.test_mode import TestMode
 
 
@@ -47,10 +47,10 @@ def test_handle_key(set_next_state_mock):
     assert test_mode.substate == 1
 
 
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_loop(print_mock):
     """
-    The function to test TestMode's loop function's LCD calls
+    The function to test TestMode's loop function's LiquidCrystal calls
     """
     test_mode = TestMode(Titrator(), MainMenu(Titrator()))
 
@@ -77,7 +77,7 @@ def test_loop(print_mock):
 
 
 @mock.patch.object(TestMode, "_set_next_state")
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_test_mode(print_mock, set_next_state_mock):
     """
     The function to test a use case of the TestMode class:

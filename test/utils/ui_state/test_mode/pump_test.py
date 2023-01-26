@@ -6,7 +6,7 @@ from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.ui_state.test_mode.test_mode import TestMode
 from titration.utils.titrator import Titrator
-from titration.utils.devices.lcd_mock import LCD
+from titration.utils.devices.lcd_mock import LiquidCrystal
 from titration.utils.ui_state.test_mode.pump import Pump
 
 
@@ -31,10 +31,10 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "TestMode"
 
 
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_loop(print_mock):
     """
-    The function to test Pump's loop function's LCD calls
+    The function to test Pump's loop function's LiquidCrystal calls
     """
     pump = Pump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 
@@ -72,7 +72,7 @@ def test_loop(print_mock):
 
 
 @mock.patch.object(Pump, "_set_next_state")
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_Pump(print_mock, set_next_state_mock):
     """
     The function to test a use case of the Pump class:

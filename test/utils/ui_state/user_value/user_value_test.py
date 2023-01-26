@@ -7,7 +7,7 @@ from titration.utils.titrator import Titrator
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.ui_state.update_settings.update_settings import UpdateSettings
 from titration.utils.ui_state.user_value.user_value import UserValue
-from titration.utils.devices.lcd_mock import LCD
+from titration.utils.devices.lcd_mock import LiquidCrystal
 
 
 @mock.patch.object(UserValue, "_set_next_state")
@@ -33,7 +33,7 @@ def test_handle_key(set_next_state_mock):
     assert user_value.string[-1] == "."
 
 
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_loop(print_mock):
     """
     The function to test UserValue's loop function's lcd_interface calls
@@ -54,7 +54,7 @@ def test_loop(print_mock):
 
 
 @mock.patch.object(UserValue, "_set_next_state")
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_user_value(print_mock, set_next_state_mock):
     """
     The function to test a use case of the UserValue class:

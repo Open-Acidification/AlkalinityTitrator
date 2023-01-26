@@ -5,7 +5,7 @@ from unittest.mock import ANY
 from unittest import mock
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.titrator import Titrator
-from titration.utils.devices.lcd_mock import LCD
+from titration.utils.devices.lcd_mock import LiquidCrystal
 
 
 @mock.patch.object(MainMenu, "_set_next_state")
@@ -42,10 +42,10 @@ def test_handle_key(set_next_state_mock):
     assert main_menu.substate == 1
 
 
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_loop(print_mock):
     """
-    The function to test MainMenu's loop function's LCD calls
+    The function to test MainMenu's loop function's LiquidCrystal calls
     """
     main_menu = MainMenu(Titrator())
 
@@ -71,7 +71,7 @@ def test_loop(print_mock):
     )
 
 
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 @mock.patch.object(MainMenu, "_set_next_state")
 def test_main_menu(set_next_state_mock, print_mock):
     """

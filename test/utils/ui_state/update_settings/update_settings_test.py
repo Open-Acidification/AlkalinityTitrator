@@ -6,7 +6,7 @@ from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.titrator import Titrator
 from titration.utils.ui_state.update_settings.update_settings import UpdateSettings
-from titration.utils.devices.lcd_mock import LCD
+from titration.utils.devices.lcd_mock import LiquidCrystal
 
 
 @mock.patch.object(UpdateSettings, "_set_next_state")
@@ -52,7 +52,7 @@ def test_handle_key_no_update(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
 
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_loop(print_mock):
     """
     The function to test UpdateSettings' loop function's lcd_interface calls
@@ -115,7 +115,7 @@ def test_loop(print_mock):
 
 
 @mock.patch.object(UpdateSettings, "_set_next_state")
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_prime_pump(print_mock, set_next_state_mock):
     """
     The function to test a use case of the PrimePump class:

@@ -4,7 +4,7 @@ Module for mocking the lcd.py class for testing purposes
 from os import name, system
 
 
-class LCD:
+class LiquidCrystal:
     def __init__(self, rs, backlight, enable, d4, d5, d6, d7, cols, rows):
         self.cols = cols
         self.rows = rows

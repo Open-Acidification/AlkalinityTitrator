@@ -7,7 +7,7 @@ from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.ui_state.calibration.calibrate_ph import CalibratePh
 from titration.utils.ui_state.calibration.setup_calibration import SetupCalibration
 from titration.utils.titrator import Titrator
-from titration.utils.devices.lcd_mock import LCD
+from titration.utils.devices.lcd_mock import LiquidCrystal
 
 
 @mock.patch.object(CalibratePh, "_set_next_state")
@@ -32,10 +32,10 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "SetupCalibration"
 
 
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_loop(print_mock):
     """
-    The function to test CalibratePh's loop function's LCD calls
+    The function to test CalibratePh's loop function's LiquidCrystal calls
     """
     calibrate_ph = CalibratePh(
         Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator())
@@ -81,7 +81,7 @@ def test_loop(print_mock):
 
 
 @mock.patch.object(CalibratePh, "_set_next_state")
-@mock.patch.object(LCD, "print")
+@mock.patch.object(LiquidCrystal, "print")
 def test_calibrate_ph(print_mock, set_next_state_mock):
     """
     The function to test a use case of the CalibratePh class:

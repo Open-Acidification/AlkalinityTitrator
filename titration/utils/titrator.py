@@ -4,26 +4,14 @@ The file for the Titrator class
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils import constants
 from titration.utils.devices.keypad_mock import Keypad
-import types
 
-
-# TODO: log instead of print
-if constants.IS_TEST:
-    from titration.utils.devices import board_mock
-    from titration.utils.devices import lcd_mock
-
-board_class: types.ModuleType = board_mock
-lcd_class: types.ModuleType = lcd_mock
 
 if constants.IS_TEST:
-    board_class = board_mock
-    lcd_class = lcd_mock
+    from titration.utils.devices import board_mock as board_class
+    from titration.utils.devices.lcd_mock import LiquidCrystal
 else:
-    import board
-    from titration.utils.devices import lcd
-
-    board_class = board
-    lcd_class = lcd
+    import board as board_class
+    from titration.utils.devices.lcd import LiquidCrystal
 
 
 class Titrator:
@@ -44,7 +32,7 @@ class Titrator:
         self.next_state = None
 
         # Initialize LCD
-        self.lcd = lcd_class.LCD(
+        self.lcd = LiquidCrystal(
             rs=board_class.D27,
             backlight=board_class.D15,
             enable=board_class.D22,
