@@ -2,16 +2,27 @@
 The file for the Titrator class
 """
 from titration.utils.ui_state.main_menu import MainMenu
+<<<<<<< HEAD
 from titration.utils import constants
 from titration.utils.devices.keypad_mock import Keypad
+=======
+from titration.utils import interfaces, constants
+>>>>>>> main
 
 
 if constants.IS_TEST:
     from titration.utils.devices import board_mock as board_class
+<<<<<<< HEAD
     from titration.utils.devices.lcd_mock import LiquidCrystal
 else:
     import board as board_class  # type: ignore
     from titration.utils.devices.lcd import LiquidCrystal  # type: ignore
+=======
+    from titration.utils.devices.keypad_mock import Keypad
+else:
+    import board as board_class  # type: ignore
+    from titration.utils.devices.keypad import Keypad  # type: ignore
+>>>>>>> main
 
 
 class Titrator:
@@ -30,6 +41,7 @@ class Titrator:
         """
         self.state = MainMenu(self)
         self.next_state = None
+<<<<<<< HEAD
 
         # Initialize LCD
         self.lcd = LiquidCrystal(
@@ -45,6 +57,12 @@ class Titrator:
         )
 
         # Initialize Keypad
+=======
+        interfaces.setup_interfaces()  # TODO: look at removing, update to not call LCD and keypad
+
+        # Initialize Keypad
+        self.key = "A"
+>>>>>>> main
         self.keypad = Keypad(
             r0=board_class.D1,
             r1=board_class.D6,
@@ -91,9 +109,16 @@ class Titrator:
         The function used to receive the keypad input and process the appropriate response
         """
         print("Titrator::handleUI() - ", self.state.name())
-        key = self.keypad.get_key()
-        print("Titrator::handleUI() - ", self.state.name(), "::handle_key(", key, ")")
-        self.state.handle_key(key)
+        if self.key != self.keypad.keypad_poll():
+            self.key = self.keypad.keypad_poll()  # pylint: disable = E1128
+            print(
+                "Titrator::handleUI() - ",
+                self.state.name(),
+                "::handle_key(",
+                self.key,
+                ")",
+            )
+            self.state.handle_key(self.key)
         self._update_state()
         print(
             "Titrator::handleUI() - ",
