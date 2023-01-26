@@ -2,6 +2,33 @@ import digitalio
 
 from titration.utils import constants
 
+KEY_VALUES = {
+    0: {
+        0: constants.KEY_1,
+        1: constants.KEY_2,
+        2: constants.KEY_3,
+        3: constants.KEY_A,
+    },
+    1: {
+        0: constants.KEY_4,
+        1: constants.KEY_5,
+        2: constants.KEY_6,
+        3: constants.KEY_B,
+    },
+    2: {
+        0: constants.KEY_7,
+        1: constants.KEY_8,
+        2: constants.KEY_9,
+        3: constants.KEY_C,
+    },
+    3: {
+        0: constants.KEY_STAR,
+        1: constants.KEY_0,
+        2: constants.KEY_HASH,
+        3: constants.KEY_D,
+    },
+}
+
 
 class Keypad:
     def __init__(self, r0, r1, r2, r3, c0, c1, c2, c3):

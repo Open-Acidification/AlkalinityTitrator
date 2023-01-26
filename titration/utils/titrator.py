@@ -3,26 +3,14 @@ The file for the Titrator class
 """
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils import interfaces, constants
-import types
 
-
-# TODO: log instead of print
-if constants.IS_TEST:
-    from titration.utils.devices import board_mock
-    from titration.utils.devices import keypad_mock
-
-board_class: types.ModuleType = board_mock
-keypad_class: types.ModuleType = keypad_mock
 
 if constants.IS_TEST:
-    board_class = board_mock
-    keypad_class = keypad_mock
+    from titration.utils.devices import board_mock as board_class
+    from titration.utils.devices.keypad_mock import Keypad
 else:
-    import board
-    from titration.utils.devices import keypad
-
-    board_class = board
-    keypad_class = keypad
+    import board as board_class  # type: ignore
+    from titration.utils.devices.keypad import Keypad  # type: ignore
 
 
 class Titrator:
@@ -45,7 +33,7 @@ class Titrator:
 
         # Initialize Keypad
         self.key = "A"
-        self.keypad = keypad_class.Keypad(
+        self.keypad = Keypad(
             r0=board_class.D1,
             r1=board_class.D6,
             r2=board_class.D5,
@@ -101,12 +89,12 @@ class Titrator:
                 ")",
             )
             self.state.handle_key(self.key)
-            self._update_state()
-            print(
-                "Titrator::handleUI() - ",
-                self.state.name(),
-                "::substate",
-                self.state.substate,
-                "::loop()",
-            )
-            self.state.loop()
+        self._update_state()
+        print(
+            "Titrator::handleUI() - ",
+            self.state.name(),
+            "::substate",
+            self.state.substate,
+            "::loop()",
+        )
+        self.state.loop()

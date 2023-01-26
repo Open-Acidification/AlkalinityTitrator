@@ -38,33 +38,6 @@ ROUTINE_OPTIONS_2 = {
 
 SENSOR_OPTIONS = {KEY_1: "pH", KEY_2: "Temperature"}
 
-KEY_VALUES = {
-    0: {
-        0: KEY_1,
-        1: KEY_2,
-        2: KEY_3,
-        3: KEY_A,
-    },
-    1: {
-        0: KEY_4,
-        1: KEY_5,
-        2: KEY_6,
-        3: KEY_B,
-    },
-    2: {
-        0: KEY_7,
-        1: KEY_8,
-        2: KEY_9,
-        3: KEY_C,
-    },
-    3: {
-        0: KEY_STAR,
-        1: KEY_0,
-        2: KEY_HASH,
-        3: KEY_D,
-    },
-}
-
 # Small times steps (s) in the delay function
 DELAY_STEP = 0.0001
 
