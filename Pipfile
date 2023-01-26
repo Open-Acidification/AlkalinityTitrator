@@ -20,6 +20,3 @@ gpiozero = "*"
 pandas = "*"
 "rpi.gpio" = "*"
 click = "*"
-
-[requires]
-python_version = "3.11.1"
