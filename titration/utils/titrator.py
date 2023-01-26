@@ -2,7 +2,7 @@
 The file for the Titrator class
 """
 from titration.utils.ui_state.main_menu import MainMenu
-from titration.utils import interfaces, constants
+from titration.utils import constants
 
 
 if constants.IS_TEST:
