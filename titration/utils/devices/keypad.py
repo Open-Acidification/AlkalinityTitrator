@@ -71,7 +71,7 @@ class Keypad:
                 if self.cols[col].value:
                     self.rows[row].value = False
                     # print("Button: ", row, " ", col)
-                    return constants.KEY_VALUES[row][col]
+                    return KEY_VALUES[row][col]
             self.rows[row].value = False
 
         # No buttons were pressed
