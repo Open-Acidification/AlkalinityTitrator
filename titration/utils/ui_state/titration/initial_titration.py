@@ -62,7 +62,6 @@ class InitialTitration(UIState):
             )
             self.titrator.lcd.print("", line=4)
 
-
             while not interfaces.temperature_controller.at_temperature():
                 interfaces.temperature_controller.update()
                 temperature = interfaces.temperature_controller.get_last_temperature()
