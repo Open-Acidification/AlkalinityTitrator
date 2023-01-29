@@ -1,5 +1,5 @@
 """
-Module for mocking the lcd.py class for testing purposes
+Module for mocking the liquid_crystal.py class for testing purposes
 """
 from os import name, system
 

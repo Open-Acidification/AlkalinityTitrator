@@ -7,7 +7,7 @@ from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.ui_state.test_mode.test_mode import TestMode
 from titration.utils.titrator import Titrator
 from titration.utils import constants
-from titration.utils.devices.lcd_mock import LiquidCrystal
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 from titration.utils.ui_state.test_mode.toggle_test_mode import ToggleTestMode
 
 

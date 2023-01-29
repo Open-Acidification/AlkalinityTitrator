@@ -5,7 +5,7 @@ from unittest.mock import ANY
 from unittest import mock
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.titrator import Titrator
-from titration.utils.devices.lcd_mock import LiquidCrystal
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 @mock.patch.object(MainMenu, "_set_next_state")

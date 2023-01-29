@@ -6,7 +6,7 @@ from unittest.mock import ANY
 from titration.utils.ui_state.titration.setup_titration import SetupTitration
 from titration.utils.titrator import Titrator
 from titration.utils import constants
-from titration.utils.devices.lcd_mock import LiquidCrystal
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 @mock.patch.object(SetupTitration, "_set_next_state")

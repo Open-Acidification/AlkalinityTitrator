@@ -7,7 +7,7 @@ from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.ui_state.calibration.calibrate_ph import CalibratePh
 from titration.utils.ui_state.calibration.setup_calibration import SetupCalibration
 from titration.utils.titrator import Titrator
-from titration.utils.devices.lcd_mock import LiquidCrystal
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 @mock.patch.object(CalibratePh, "_set_next_state")

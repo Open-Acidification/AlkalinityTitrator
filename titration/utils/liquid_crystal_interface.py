@@ -4,10 +4,10 @@ import types
 from titration.utils.devices import (
     board_mock,
     keypad_mock,
-    lcd_mock,
+    liquid_crystal_mock,
 )
 
-lcd_class: types.ModuleType = lcd_mock
+lcd_class: types.ModuleType = liquid_crystal_mock
 board_class: types.ModuleType = board_mock
 keypad_class: types.ModuleType = keypad_mock
 

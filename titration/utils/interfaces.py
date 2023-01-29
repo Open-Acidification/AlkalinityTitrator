@@ -8,7 +8,7 @@ from titration.utils import analysis, constants
 if constants.IS_TEST is False:  # See conftest.py for configuration of pytest
     from titration.utils.devices import (
         keypad,
-        lcd,
+        liquid_crystal,
         ph_probe,
         syringe_pump,
         temperature_control,
@@ -17,7 +17,7 @@ if constants.IS_TEST is False:  # See conftest.py for configuration of pytest
 from titration.utils.devices import (
     board_mock,
     keypad_mock,
-    lcd_mock,
+    liquid_crystal_mock,
     ph_probe_mock,
     stir_control_mock,
     syringe_pump_mock,
@@ -28,13 +28,13 @@ from titration.utils.devices import (
 ph_class: types.ModuleType = ph_probe_mock
 temperature_class: types.ModuleType = temperature_probe_mock
 board_class: types.ModuleType = board_mock
-lcd_class: types.ModuleType = lcd_mock
+lcd_class: types.ModuleType = liquid_crystal_mock
 keypad_class: types.ModuleType = keypad_mock
 temperature_control_class: types.ModuleType = temperature_control_mock
 syringe_class: types.ModuleType = syringe_pump_mock
 stir_class: types.ModuleType = stir_control_mock
 
-# global, pH, lcd, and temperature probes
+# global, pH, liquid_crystal, and temperature probes
 ph_sensor = None
 temperature_sensor = None
 arduino = None
@@ -76,7 +76,7 @@ def setup_module_classes():
         ph_class = ph_probe_mock
         temperature_class = temperature_probe_mock
         board_class = board_mock
-        lcd_class = lcd_mock
+        lcd_class = liquid_crystal_mock
         keypad_class = keypad_mock
         temperature_control_class = temperature_control_mock
         syringe_class = syringe_pump_mock
@@ -93,7 +93,7 @@ def setup_module_classes():
         ph_class = ph_probe
         temperature_class = temperature_probe
         board_class = board
-        lcd_class = lcd
+        lcd_class = liquid_crystal
         keypad_class = keypad
         temperature_control_class = temperature_control
         syringe_class = syringe_pump

@@ -7,7 +7,7 @@ from titration.utils.titrator import Titrator
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.ui_state.update_settings.update_settings import UpdateSettings
 from titration.utils.ui_state.user_value.user_value import UserValue
-from titration.utils.devices.lcd_mock import LiquidCrystal
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 @mock.patch.object(UserValue, "_set_next_state")

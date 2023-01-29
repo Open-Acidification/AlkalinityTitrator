@@ -5,7 +5,7 @@ from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.titrator import Titrator
-from titration.utils.devices.lcd_mock import LiquidCrystal
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 from titration.utils.ui_state.test_mode.set_volume import SetVolume
 
 

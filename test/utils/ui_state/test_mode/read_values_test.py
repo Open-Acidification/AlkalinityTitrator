@@ -7,7 +7,7 @@ from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.ui_state.test_mode.test_mode import TestMode
 from titration.utils.titrator import Titrator
 from titration.utils import interfaces
-from titration.utils.devices.lcd_mock import LiquidCrystal
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 from titration.utils.ui_state.test_mode.read_values import ReadValues
 
 
@@ -70,7 +70,7 @@ def test_loop(delay_mock, print_mock):
 def test_read_values(delay_mock, print_mock, set_next_state_mock):
     """
     The function to test a use case of the ReadValues class:
-        User enters "1" after the lcd reads values for temp, res, pH, and pH_volts
+        User enters "1" after the liquid_crystal reads values for temp, res, pH, and pH_volts
     """
     read_values = ReadValues(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
 

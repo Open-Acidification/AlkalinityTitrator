@@ -6,7 +6,7 @@ from unittest.mock import ANY
 from titration.utils.ui_state.titration.initial_titration import InitialTitration
 from titration.utils.titrator import Titrator
 from titration.utils import constants
-from titration.utils.devices.lcd_mock import LiquidCrystal
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 def test_handle_key():
