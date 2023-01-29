@@ -3,22 +3,14 @@ The file for the Titrator class
 """
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils import interfaces, constants
-from titration.utils.devices.keypad_mock import Keypad
-import types
 
-
-# TODO: log instead of print
-if constants.IS_TEST:
-    from titration.utils.devices import board_mock
-
-board_class: types.ModuleType = board_mock
 
 if constants.IS_TEST:
-    board_class = board_mock
+    from titration.utils.devices import board_mock as board_class
+    from titration.utils.devices.keypad_mock import Keypad
 else:
-    import board
-
-    board_class = board
+    import board as board_class  # type: ignore
+    from titration.utils.devices.keypad import Keypad  # type: ignore
 
 
 class Titrator:
@@ -40,6 +32,7 @@ class Titrator:
         interfaces.setup_interfaces()
 
         # Initialize Keypad
+        self.key = "A"
         self.keypad = Keypad(
             r0=board_class.D1,
             r1=board_class.D6,
@@ -97,9 +90,16 @@ class Titrator:
         The function used to receive the keypad input and process the appropriate response
         """
         print("Titrator::handleUI() - ", self.state.name())
-        key = self.keypad.get_key()
-        print("Titrator::handleUI() - ", self.state.name(), "::handle_key(", key, ")")
-        self.state.handle_key(key)
+        if self.key != self.keypad.keypad_poll():
+            self.key = self.keypad.keypad_poll()  # pylint: disable = E1128
+            print(
+                "Titrator::handleUI() - ",
+                self.state.name(),
+                "::handle_key(",
+                self.key,
+                ")",
+            )
+            self.state.handle_key(self.key)
         self._update_state()
         print(
             "Titrator::handleUI() - ",
