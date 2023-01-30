@@ -13,8 +13,7 @@ class UserValue(UIState):
         titrator (Titrator object): the titrator is used to move through the state machine
         previous_state (UIState object): the previous_state is used to return the last visited state
         substate (int): the substate is used to keep track of substate of the UIState
-        message (string): the message is used to display what setting you are entering
-        string (string): the string is used to hold the user input
+        value (string): the value is used to hold the user input
     """
 
     def __init__(self, titrator, previous_state):
@@ -24,16 +23,21 @@ class UserValue(UIState):
         Parameters:
             titrator (Titrator object): the titrator is used to move through the state machine
             previous_state (UIState object): the previous_state is used to return the last visited state
-            message (string): the message is used to display what setting you are entering
         """
         super().__init__(titrator, previous_state)
-        self.string = ""
+        self.value = ""
 
-    def save_value(self):
+    def save_value(self, value):
         """
         The function to save photometer values
         """
         raise Exception(self.name() + " requires a save_value function")
+
+    def get_label(self):
+        """
+        The function to return the label printed on the LCD Screen
+        """
+        raise Exception(self.name() + " requires a get_label funciton")
 
     def handle_key(self, key):
         """
@@ -51,29 +55,30 @@ class UserValue(UIState):
         """
         if key == "A":
             self._set_next_state(self.previous_state, True)
-            self.save_value()
+            self.save_value(self.value)
 
         elif key == "B":
-            self.string = self.string[:-1]
+            self.value = self.value[:-1]
 
         elif key == "C":
-            self.string = ""
+            self.value = ""
 
         elif key == "D":
             self._set_next_state(self.previous_state, True)
 
         elif key == "*":
-            if "." not in self.string:
-                self.string = self.string + "."
+            if "." not in self.value:
+                self.value = self.value + "."
 
         elif str(key).isdigit():
-            self.string = self.string + str(key)
+            self.value = self.value + str(key)
 
     def loop(self):
         """
         The function to loop through and display to the LCD screen until a new keypad input
         """
         lcd_interface.lcd_clear()
-        lcd_interface.lcd_out(self.string, style=constants.LCD_CENT_JUST, line=2)
+        lcd_interface.lcd_clear(self.get_label, line=1)
+        lcd_interface.lcd_out(self.value, style=constants.LCD_CENT_JUST, line=2)
         lcd_interface.lcd_out("* = .       B = BS", line=3)
         lcd_interface.lcd_out("A = accept  C = Clr", line=4)
