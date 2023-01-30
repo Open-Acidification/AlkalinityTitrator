@@ -5,7 +5,7 @@ from unittest.mock import ANY
 from unittest import mock
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.titrator import Titrator
-from titration.utils import lcd_interface
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 @mock.patch.object(MainMenu, "_set_next_state")
@@ -42,15 +42,15 @@ def test_handle_key(set_next_state_mock):
     assert main_menu.substate == 1
 
 
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcd_out_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_loop(print_mock):
     """
-    The function to test MainMenu's loop function's lcd_interface calls
+    The function to test MainMenu's loop function's LiquidCrystal calls
     """
     main_menu = MainMenu(Titrator())
 
     main_menu.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Run titration", line=1),
             mock.call("Calibrate sensors", line=2),
@@ -61,7 +61,7 @@ def test_loop(lcd_out_mock):
 
     main_menu.substate = 2
     main_menu.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Update settings", line=1),
             mock.call("Test mode", line=2),
@@ -71,16 +71,16 @@ def test_loop(lcd_out_mock):
     )
 
 
-@mock.patch.object(lcd_interface, "lcd_out")
+@mock.patch.object(LiquidCrystal, "print")
 @mock.patch.object(MainMenu, "_set_next_state")
-def test_main_menu(set_next_state_mock, lcd_out_mock):
+def test_main_menu(set_next_state_mock, print_mock):
     """
     The function to test the entire use case of the MainMenu class
     """
     main_menu = MainMenu(Titrator())
 
     main_menu.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Run titration", line=1),
             mock.call("Calibrate sensors", line=2),
@@ -105,7 +105,7 @@ def test_main_menu(set_next_state_mock, lcd_out_mock):
     assert main_menu.substate == 2
 
     main_menu.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Update settings", line=1),
             mock.call("Test mode", line=2),

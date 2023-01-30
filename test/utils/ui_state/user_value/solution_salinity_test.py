@@ -7,7 +7,7 @@ from titration.utils.titrator import Titrator
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.ui_state.update_settings.update_settings import UpdateSettings
 from titration.utils.ui_state.user_value.solution_salinity import SolutionSalinity
-from titration.utils import lcd_interface
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 @mock.patch.object(SolutionSalinity, "_set_next_state")
@@ -33,17 +33,17 @@ def test_handle_key(set_next_state_mock):
     assert solution_salinity.value[-1] == "."
 
 
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcd_out_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_loop(print_mock):
     """
-    The function to test SolutionSalinity's loop function's lcd_interface calls
+    The function to test SolutionSalinity's loop function's LiquidCrystal calls
     """
     solution_salinity = SolutionSalinity(
         Titrator(), UpdateSettings(Titrator(), MainMenu(Titrator()))
     )
 
     solution_salinity.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Sol. salinity (ppt):", line=1),
             mock.call("", style=2, line=2),
@@ -54,8 +54,8 @@ def test_loop(lcd_out_mock):
 
 
 @mock.patch.object(SolutionSalinity, "_set_next_state")
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_solution_salinity(lcd_out_mock, set_next_state_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_solution_salinity(print_mock, set_next_state_mock):
     """
     The function to test a use case of the SolutionSalinity class:
         User enters "3"
@@ -72,7 +72,7 @@ def test_solution_salinity(lcd_out_mock, set_next_state_mock):
     )
 
     solution_salinity.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Sol. salinity (ppt):", line=1),
             mock.call("", style=2, line=2),
@@ -85,7 +85,7 @@ def test_solution_salinity(lcd_out_mock, set_next_state_mock):
     assert solution_salinity.value == "3"
 
     solution_salinity.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Sol. salinity (ppt):", line=1),
             mock.call("3", style=2, line=2),
@@ -98,7 +98,7 @@ def test_solution_salinity(lcd_out_mock, set_next_state_mock):
     assert solution_salinity.value == "3."
 
     solution_salinity.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Sol. salinity (ppt):", line=1),
             mock.call("3.", style=2, line=2),
@@ -111,7 +111,7 @@ def test_solution_salinity(lcd_out_mock, set_next_state_mock):
     assert solution_salinity.value == "3."
 
     solution_salinity.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Sol. salinity (ppt):", line=1),
             mock.call("3.", style=2, line=2),
@@ -124,7 +124,7 @@ def test_solution_salinity(lcd_out_mock, set_next_state_mock):
     assert solution_salinity.value == "3.1"
 
     solution_salinity.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Sol. salinity (ppt):", line=1),
             mock.call("3.1", style=2, line=2),
@@ -137,7 +137,7 @@ def test_solution_salinity(lcd_out_mock, set_next_state_mock):
     assert solution_salinity.value == "3."
 
     solution_salinity.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Sol. salinity (ppt):", line=1),
             mock.call("3.", style=2, line=2),
@@ -150,7 +150,7 @@ def test_solution_salinity(lcd_out_mock, set_next_state_mock):
     assert solution_salinity.value == "3"
 
     solution_salinity.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Sol. salinity (ppt):", line=1),
             mock.call("3", style=2, line=2),
@@ -163,7 +163,7 @@ def test_solution_salinity(lcd_out_mock, set_next_state_mock):
     assert solution_salinity.value == ""
 
     solution_salinity.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Sol. salinity (ppt):", line=1),
             mock.call("", style=2, line=2),

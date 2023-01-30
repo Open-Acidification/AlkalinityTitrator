@@ -9,7 +9,7 @@ from titration.utils.ui_state.update_settings.update_settings import UpdateSetti
 from titration.utils.ui_state.user_value.degas_time import (
     DegasTime,
 )
-from titration.utils import lcd_interface
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 @mock.patch.object(DegasTime, "_set_next_state")
@@ -33,15 +33,15 @@ def test_handle_key(set_next_state_mock):
     assert degas_time.value[-1] == "."
 
 
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcd_out_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_loop(print_mock):
     """
-    The function to test DegasTime's loop function's lcd_interface calls
+    The function to test DegasTime's loop function's LiquidCrystal calls
     """
     degas_time = DegasTime(Titrator(), UpdateSettings(Titrator(), MainMenu(Titrator())))
 
     degas_time.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Degas time (s):", line=1),
             mock.call("", style=2, line=2),
@@ -52,8 +52,8 @@ def test_loop(lcd_out_mock):
 
 
 @mock.patch.object(DegasTime, "_set_next_state")
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_degas_time(lcd_out_mock, set_next_state_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_degas_time(print_mock, set_next_state_mock):
     """
     The function to test a use case of the DegasTime class:
         User enters "3"
@@ -68,7 +68,7 @@ def test_degas_time(lcd_out_mock, set_next_state_mock):
     degas_time = DegasTime(Titrator(), UpdateSettings(Titrator(), MainMenu(Titrator())))
 
     degas_time.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Degas time (s):", line=1),
             mock.call("", style=2, line=2),
@@ -81,7 +81,7 @@ def test_degas_time(lcd_out_mock, set_next_state_mock):
     assert degas_time.value == "3"
 
     degas_time.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Degas time (s):", line=1),
             mock.call("3", style=2, line=2),
@@ -94,7 +94,7 @@ def test_degas_time(lcd_out_mock, set_next_state_mock):
     assert degas_time.value == "3."
 
     degas_time.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Degas time (s):", line=1),
             mock.call("3.", style=2, line=2),
@@ -107,7 +107,7 @@ def test_degas_time(lcd_out_mock, set_next_state_mock):
     assert degas_time.value == "3."
 
     degas_time.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Degas time (s):", line=1),
             mock.call("3.", style=2, line=2),
@@ -120,7 +120,7 @@ def test_degas_time(lcd_out_mock, set_next_state_mock):
     assert degas_time.value == "3.1"
 
     degas_time.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Degas time (s):", line=1),
             mock.call("3.1", style=2, line=2),
@@ -133,7 +133,7 @@ def test_degas_time(lcd_out_mock, set_next_state_mock):
     assert degas_time.value == "3."
 
     degas_time.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Degas time (s):", line=1),
             mock.call("3.", style=2, line=2),
@@ -146,7 +146,7 @@ def test_degas_time(lcd_out_mock, set_next_state_mock):
     assert degas_time.value == "3"
 
     degas_time.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Degas time (s):", line=1),
             mock.call("3", style=2, line=2),
@@ -159,7 +159,7 @@ def test_degas_time(lcd_out_mock, set_next_state_mock):
     assert degas_time.value == ""
 
     degas_time.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Degas time (s):", line=1),
             mock.call("", style=2, line=2),

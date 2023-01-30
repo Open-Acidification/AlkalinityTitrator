@@ -2,7 +2,6 @@
 The file for the PrimePump class
 """
 from titration.utils.ui_state.ui_state import UIState
-from titration.utils import lcd_interface
 
 
 class PrimePump(UIState):
@@ -54,15 +53,15 @@ class PrimePump(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("How many pumps?", line=1)
-            lcd_interface.lcd_out("Choose a number", line=2)
-            lcd_interface.lcd_out("Choose 0 to return", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("How many pumps?", line=1)
+            self.titrator.lcd.print("Choose a number", line=2)
+            self.titrator.lcd.print("Choose 0 to return", line=3)
+            self.titrator.lcd.print("", line=4)
 
         elif self.substate == 2:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("How many more?", line=1)
-            lcd_interface.lcd_out("Choose a number", line=2)
-            lcd_interface.lcd_out("Choose 0 to return", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("How many more?", line=1)
+            self.titrator.lcd.print("Choose a number", line=2)
+            self.titrator.lcd.print("Choose 0 to return", line=3)
+            self.titrator.lcd.print("", line=4)

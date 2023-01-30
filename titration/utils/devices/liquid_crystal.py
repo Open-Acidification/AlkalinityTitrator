@@ -5,10 +5,10 @@ import digitalio
 from titration.utils import constants
 
 
-class LCD:
+class LiquidCrystal:
     """Sunfire LCD 20x04 Char Display Module"""
 
-    def __init__(self, rs, backlight, enable, d4, d5, d6, d7):
+    def __init__(self, rs, backlight, enable, d4, d5, d6, d7, cols, rows):
         # Set up pins
         self.pin_RS = digitalio.DigitalInOut(rs)  # RS
         self.pin_E = digitalio.DigitalInOut(enable)  # E
@@ -26,8 +26,8 @@ class LCD:
         self.pin_D7.direction = digitalio.Direction.OUTPUT
         self.pin_ON.direction = digitalio.Direction.OUTPUT
 
-        self.cols = -1
-        self.rows = -1
+        self.cols = cols
+        self.rows = rows
 
         # Initialise display
         self.__lcd_byte(0x33, constants.LCD_CMD)  # 110011 Initialise
@@ -49,10 +49,6 @@ class LCD:
         time.sleep(0.5)
         self.lcd_backlight(True)
         time.sleep(0.5)
-
-    def begin(self, cols, rows):
-        self.cols = cols
-        self.rows = rows
 
     def clear(self):
         # Clear the screen

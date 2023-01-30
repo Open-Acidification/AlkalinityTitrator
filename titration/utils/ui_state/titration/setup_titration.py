@@ -5,7 +5,6 @@ from titration.utils.ui_state.ui_state import UIState
 from titration.utils import constants
 from titration.utils.ui_state.titration.initial_titration import InitialTitration
 from titration.utils.ui_state.titration.calibrate_ph import CalibratePh
-from titration.utils import lcd_interface
 from titration.utils.ui_state.user_value.solution_weight import SolutionWeight
 from titration.utils.ui_state.user_value.solution_salinity import SolutionSalinity
 
@@ -54,25 +53,25 @@ class SetupTitration(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Enter Sol.", line=1)
-            lcd_interface.lcd_out("weight (g)", line=2)
-            lcd_interface.lcd_out("Press any to cont", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Enter Sol.", line=1)
+            self.titrator.lcd.print("weight (g)", line=2)
+            self.titrator.lcd.print("Press any to cont", line=3)
+            self.titrator.lcd.print("", line=4)
 
         elif self.substate == 2:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Enter Sol.", line=1)
-            lcd_interface.lcd_out("salinity (ppt)", line=2)
-            lcd_interface.lcd_out("Press any to cont", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Enter Sol.", line=1)
+            self.titrator.lcd.print("salinity (ppt)", line=2)
+            self.titrator.lcd.print("Press any to cont", line=3)
+            self.titrator.lcd.print("", line=4)
 
         elif self.substate == 3:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Calibrate pH probe?", line=1)
-            lcd_interface.lcd_out("Yes: 1", line=2)
-            lcd_interface.lcd_out("No (use old): 0", line=3)
-            lcd_interface.lcd_out(
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Calibrate pH probe?", line=1)
+            self.titrator.lcd.print("Yes: 1", line=2)
+            self.titrator.lcd.print("No (use old): 0", line=3)
+            self.titrator.lcd.print(
                 "{0:>2.3f} pH: {1:>2.4f} V".format(
                     constants.PH_REF_PH, constants.PH_REF_VOLTAGE
                 ),

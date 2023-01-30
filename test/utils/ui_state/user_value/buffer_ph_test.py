@@ -9,7 +9,7 @@ from titration.utils.ui_state.update_settings.update_settings import UpdateSetti
 from titration.utils.ui_state.user_value.buffer_ph import (
     BufferPH,
 )
-from titration.utils import lcd_interface
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 @mock.patch.object(BufferPH, "_set_next_state")
@@ -33,15 +33,15 @@ def test_handle_key(set_next_state_mock):
     assert buffer_ph.value[-1] == "."
 
 
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcd_out_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_loop(print_mock):
     """
-    The function to test BufferPH's loop function's lcd_interface calls
+    The function to test BufferPH's loop function's LiquidCrystal calls
     """
     buffer_ph = BufferPH(Titrator(), UpdateSettings(Titrator(), MainMenu(Titrator())))
 
     buffer_ph.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Enter buffer pH:", line=1),
             mock.call("", style=2, line=2),
@@ -52,8 +52,8 @@ def test_loop(lcd_out_mock):
 
 
 @mock.patch.object(BufferPH, "_set_next_state")
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_buffer_ph(lcd_out_mock, set_next_state_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_buffer_ph(print_mock, set_next_state_mock):
     """
     The function to test a use case of the BufferPH class:
         User enters "3"
@@ -68,7 +68,7 @@ def test_buffer_ph(lcd_out_mock, set_next_state_mock):
     buffer_ph = BufferPH(Titrator(), UpdateSettings(Titrator(), MainMenu(Titrator())))
 
     buffer_ph.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Enter buffer pH:", line=1),
             mock.call("", style=2, line=2),
@@ -81,7 +81,7 @@ def test_buffer_ph(lcd_out_mock, set_next_state_mock):
     assert buffer_ph.value == "3"
 
     buffer_ph.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Enter buffer pH:", line=1),
             mock.call("3", style=2, line=2),
@@ -94,7 +94,7 @@ def test_buffer_ph(lcd_out_mock, set_next_state_mock):
     assert buffer_ph.value == "3."
 
     buffer_ph.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Enter buffer pH:", line=1),
             mock.call("3.", style=2, line=2),
@@ -107,7 +107,7 @@ def test_buffer_ph(lcd_out_mock, set_next_state_mock):
     assert buffer_ph.value == "3."
 
     buffer_ph.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Enter buffer pH:", line=1),
             mock.call("3.", style=2, line=2),
@@ -120,7 +120,7 @@ def test_buffer_ph(lcd_out_mock, set_next_state_mock):
     assert buffer_ph.value == "3.1"
 
     buffer_ph.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Enter buffer pH:", line=1),
             mock.call("3.1", style=2, line=2),
@@ -133,7 +133,7 @@ def test_buffer_ph(lcd_out_mock, set_next_state_mock):
     assert buffer_ph.value == "3."
 
     buffer_ph.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Enter buffer pH:", line=1),
             mock.call("3.", style=2, line=2),
@@ -146,7 +146,7 @@ def test_buffer_ph(lcd_out_mock, set_next_state_mock):
     assert buffer_ph.value == "3"
 
     buffer_ph.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Enter buffer pH:", line=1),
             mock.call("3", style=2, line=2),
@@ -159,7 +159,7 @@ def test_buffer_ph(lcd_out_mock, set_next_state_mock):
     assert buffer_ph.value == ""
 
     buffer_ph.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Enter buffer pH:", line=1),
             mock.call("", style=2, line=2),

@@ -2,7 +2,7 @@
 The file for the ReadValues class
 """
 from titration.utils.ui_state.ui_state import UIState
-from titration.utils import lcd_interface, interfaces
+from titration.utils import interfaces
 
 
 class ReadValues(UIState):
@@ -48,23 +48,23 @@ class ReadValues(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         for i in range(self.values["numVals"]):
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out(
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print(
                 "Temp: {0:>4.3f} C".format(self.values["temp"]), line=1
             )
-            lcd_interface.lcd_out(
+            self.titrator.lcd.print(
                 "Res:  {0:>4.3f} Ohms".format(self.values["res"]), line=2
             )
-            lcd_interface.lcd_out(
+            self.titrator.lcd.print(
                 "pH:   {0:>4.5f} pH".format(self.values["pH_reading"]), line=3
             )
-            lcd_interface.lcd_out(
+            self.titrator.lcd.print(
                 "pH V: {0:>3.4f} mV".format(self.values["pH_volts"] * 1000), line=4
             )
-            lcd_interface.lcd_out("Reading: {}".format(i), 1, console=True)
+            self.titrator.lcd.print("Reading: {}".format(i), 1, console=True)
             interfaces.delay(self.values["timeStep"])
-        lcd_interface.lcd_clear()
-        lcd_interface.lcd_out("Press any to cont", line=1)
-        lcd_interface.lcd_out("", line=2)
-        lcd_interface.lcd_out("", line=3)
-        lcd_interface.lcd_out("", line=4)
+        self.titrator.lcd.clear()
+        self.titrator.lcd.print("Press any to cont", line=1)
+        self.titrator.lcd.print("", line=2)
+        self.titrator.lcd.print("", line=3)
+        self.titrator.lcd.print("", line=4)

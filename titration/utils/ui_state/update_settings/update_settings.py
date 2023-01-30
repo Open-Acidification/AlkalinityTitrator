@@ -2,7 +2,6 @@
 The file to for the UpdateSetting class
 """
 from titration.utils.ui_state.ui_state import UIState
-from titration.utils import lcd_interface
 from titration.utils.ui_state.user_value.pump_volume import PumpVolume
 
 
@@ -63,36 +62,36 @@ class UpdateSettings(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Reset calibration", line=1)
-            lcd_interface.lcd_out("settings to default?", line=2)
-            lcd_interface.lcd_out("(y/n)", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Reset calibration", line=1)
+            self.titrator.lcd.print("settings to default?", line=2)
+            self.titrator.lcd.print("(y/n)", line=3)
+            self.titrator.lcd.print("", line=4)
 
         elif self.substate == 2:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Default constants", line=1)
-            lcd_interface.lcd_out("restored", line=2)
-            lcd_interface.lcd_out("Press any to cont.", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Default constants", line=1)
+            self.titrator.lcd.print("restored", line=2)
+            self.titrator.lcd.print("Press any to cont.", line=3)
+            self.titrator.lcd.print("", line=4)
 
         elif self.substate == 3:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Set volume in pump?", line=1)
-            lcd_interface.lcd_out("", line=2)
-            lcd_interface.lcd_out("(y/n)", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Set volume in pump?", line=1)
+            self.titrator.lcd.print("", line=2)
+            self.titrator.lcd.print("(y/n)", line=3)
+            self.titrator.lcd.print("", line=4)
 
         elif self.substate == 4:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Enter Volume in pump", line=1)
-            lcd_interface.lcd_out("", line=2)
-            lcd_interface.lcd_out("Press any to cont", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Enter Volume in pump", line=1)
+            self.titrator.lcd.print("", line=2)
+            self.titrator.lcd.print("Press any to cont", line=3)
+            self.titrator.lcd.print("", line=4)
 
         elif self.substate == 5:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Volume in pump set", line=1)
-            lcd_interface.lcd_out("", line=2)
-            lcd_interface.lcd_out("Press any to cont", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Volume in pump set", line=1)
+            self.titrator.lcd.print("", line=2)
+            self.titrator.lcd.print("Press any to cont", line=3)
+            self.titrator.lcd.print("", line=4)

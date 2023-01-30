@@ -2,7 +2,7 @@
 The file for the ManualTitration class
 """
 from titration.utils.ui_state.ui_state import UIState
-from titration.utils import lcd_interface, constants
+from titration.utils import constants
 from titration.utils.ui_state import main_menu
 from titration.utils.ui_state.user_value.volume import Volume
 from titration.utils.ui_state.user_value.degas_time import DegasTime
@@ -85,55 +85,57 @@ class ManualTitration(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Enter Volume", line=1)
-            lcd_interface.lcd_out("", line=2)
-            lcd_interface.lcd_out("Press any to cont", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Enter Volume", line=1)
+            self.titrator.lcd.print("", line=2)
+            self.titrator.lcd.print("Press any to cont", line=3)
+            self.titrator.lcd.print("", line=4)
 
         elif self.substate == 2:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Direction (0/1):", line=1)
-            lcd_interface.lcd_out("", line=2)
-            lcd_interface.lcd_out("", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Direction (0/1):", line=1)
+            self.titrator.lcd.print("", line=2)
+            self.titrator.lcd.print("", line=3)
+            self.titrator.lcd.print("", line=4)
 
         elif self.substate == 3:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out(
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print(
                 "Current pH: {0:>4.5f}".format(self.values["current_pH"]), line=1
             )  # TODO: change current pH value from 5
-            lcd_interface.lcd_out("Add more HCl?", line=2)
-            lcd_interface.lcd_out("(0 - No, 1 - Yes)", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.print("Add more HCl?", line=2)
+            self.titrator.lcd.print("(0 - No, 1 - Yes)", line=3)
+            self.titrator.lcd.print("", line=4)
 
         elif self.substate == 4:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out(
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print(
                 "Current pH: {0:>4.5f}".format(self.values["current_pH"]), line=1
             )  # TODO: change current pH value from 5
-            lcd_interface.lcd_out("Degas?", line=2)
-            lcd_interface.lcd_out("(0 - No, 1 - Yes)", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.print("Degas?", line=2)
+            self.titrator.lcd.print("(0 - No, 1 - Yes)", line=3)
+            self.titrator.lcd.print("", line=4)
 
         elif self.substate == 5:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Enter Degas time", line=1)
-            lcd_interface.lcd_out("", line=2)
-            lcd_interface.lcd_out("Press any to cont", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Enter Degas time", line=1)
+            self.titrator.lcd.print("", line=2)
+            self.titrator.lcd.print("Press any to cont", line=3)
+            self.titrator.lcd.print("", line=4)
 
         elif self.substate == 6:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Return to", line=1)
-            lcd_interface.lcd_out("main menu", line=2)
-            lcd_interface.lcd_out(
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Return to", line=1)
+            self.titrator.lcd.print("main menu", line=2)
+            self.titrator.lcd.print(
                 "Press any to cont", line=3
             )  # TODO: change exit and go to main menu
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.print("", line=4)
 
     def start(self):
         """
         The function to display MANUAL SELECTED upon entering the ManualTitration state
         """
-        lcd_interface.lcd_out("MANUAL SELECTED", style=constants.LCD_CENT_JUST, line=4)
+        self.titrator.lcd.print(
+            "MANUAL SELECTED", style=constants.LCD_CENT_JUST, line=4
+        )

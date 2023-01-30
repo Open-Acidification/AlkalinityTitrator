@@ -2,15 +2,17 @@
 The file for the Titrator class
 """
 from titration.utils.ui_state.main_menu import MainMenu
-from titration.utils import interfaces, constants
+from titration.utils import constants, interfaces
 
 
 if constants.IS_TEST:
     from titration.utils.devices import board_mock as board_class
+    from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
     from titration.utils.devices.keypad_mock import Keypad
 else:
     import board as board_class  # type: ignore
     from titration.utils.devices.keypad import Keypad  # type: ignore
+    from titration.utils.devices.liquid_crystal import LiquidCrystal  # type: ignore
 
 
 class Titrator:
@@ -27,9 +29,21 @@ class Titrator:
         """
         The constructor for the Titrator class
         """
+        # Initialize Other Devices
+        interfaces.setup_interfaces()
 
         # Initialize LCD
-        interfaces.setup_interfaces()
+        self.lcd = LiquidCrystal(
+            rs=board_class.D27,
+            backlight=board_class.D15,
+            enable=board_class.D22,
+            d4=board_class.D18,
+            d5=board_class.D23,
+            d6=board_class.D24,
+            d7=board_class.D25,
+            cols=constants.LCD_WIDTH,
+            rows=constants.LCD_HEIGHT,
+        )
 
         # Initialize Keypad
         self.key = "A"

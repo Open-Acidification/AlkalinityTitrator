@@ -2,7 +2,7 @@
 The file for the UserValue class
 """
 from titration.utils.ui_state.ui_state import UIState
-from titration.utils import lcd_interface, constants
+from titration.utils import constants
 
 
 class UserValue(UIState):
@@ -77,8 +77,8 @@ class UserValue(UIState):
         """
         The function to loop through and display to the LCD screen until a new keypad input
         """
-        lcd_interface.lcd_clear()
-        lcd_interface.lcd_out(self.get_label(), line=1)
-        lcd_interface.lcd_out(self.value, style=constants.LCD_CENT_JUST, line=2)
-        lcd_interface.lcd_out("* = .       B = BS", line=3)
-        lcd_interface.lcd_out("A = accept  C = Clr", line=4)
+        self.titrator.lcd.clear()
+        self.titrator.lcd.print(self.get_label(), line=1)
+        self.titrator.lcd.print(self.value, style=constants.LCD_CENT_JUST, line=2)
+        self.titrator.lcd.print("* = .       B = BS", line=3)
+        self.titrator.lcd.print("A = accept  C = Clr", line=4)
