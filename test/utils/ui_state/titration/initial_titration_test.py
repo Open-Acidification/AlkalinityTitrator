@@ -5,7 +5,8 @@ from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.titration.initial_titration import InitialTitration
 from titration.utils.titrator import Titrator
-from titration.utils import lcd_interface, constants
+from titration.utils import constants
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 def test_handle_key():
@@ -20,15 +21,15 @@ def test_handle_key():
 
 
 @mock.patch.object(InitialTitration, "_set_next_state")
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcd_out_mock, set_next_state_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_loop(print_mock, set_next_state_mock):
     """
-    The function to test InitialTitration's loop function's lcd_interface calls
+    The function to test InitialTitration's loop function's LiquidCrystal calls
     """
     initial_titration = InitialTitration(Titrator())
 
     initial_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Bring pH to 3.5:", line=1),
             mock.call("Manual: 1", line=2),
@@ -39,7 +40,7 @@ def test_loop(lcd_out_mock, set_next_state_mock):
 
     initial_titration.substate += 1
     initial_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Heating to 30 C...", line=1),
             mock.call("", line=2),
@@ -55,7 +56,7 @@ def test_loop(lcd_out_mock, set_next_state_mock):
     initial_titration.substate += 1
     initial_titration.choice = "1"
     initial_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Heating to 30 C...", line=1),
             mock.call("", line=2),
@@ -68,8 +69,8 @@ def test_loop(lcd_out_mock, set_next_state_mock):
 
 
 @mock.patch.object(InitialTitration, "_set_next_state")
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_initial_titration_manual(lcd_out_mock, set_next_state_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_initial_titration_manual(print_mock, set_next_state_mock):
     """
     The function to test a use case of the InitialTitration class:
         User enters "1" to perform a manual titration
@@ -77,7 +78,7 @@ def test_initial_titration_manual(lcd_out_mock, set_next_state_mock):
     initial_titration = InitialTitration(Titrator())
 
     initial_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Bring pH to 3.5:", line=1),
             mock.call("Manual: 1", line=2),
@@ -91,7 +92,7 @@ def test_initial_titration_manual(lcd_out_mock, set_next_state_mock):
     assert initial_titration.substate == 2
 
     initial_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Heating to 30 C...", line=1),
             mock.call("", line=2),
@@ -104,8 +105,8 @@ def test_initial_titration_manual(lcd_out_mock, set_next_state_mock):
 
 
 @mock.patch.object(InitialTitration, "_set_next_state")
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_initial_titration_automatic(lcd_out_mock, set_next_state_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_initial_titration_automatic(print_mock, set_next_state_mock):
     """
     The function to test a use case of the InitialTitration class:
         User enters "2" to perform a manual titration
@@ -113,7 +114,7 @@ def test_initial_titration_automatic(lcd_out_mock, set_next_state_mock):
     initial_titration = InitialTitration(Titrator())
 
     initial_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Bring pH to 3.5:", line=1),
             mock.call("Manual: 1", line=2),
@@ -127,7 +128,7 @@ def test_initial_titration_automatic(lcd_out_mock, set_next_state_mock):
     assert initial_titration.substate == 2
 
     initial_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Heating to 30 C...", line=1),
             mock.call("", line=2),

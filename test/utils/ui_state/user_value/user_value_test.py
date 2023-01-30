@@ -7,7 +7,7 @@ from titration.utils.titrator import Titrator
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.ui_state.update_settings.update_settings import UpdateSettings
 from titration.utils.ui_state.user_value.user_value import UserValue
-from titration.utils import lcd_interface
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 @mock.patch.object(UserValue, "_set_next_state")
@@ -33,8 +33,8 @@ def test_handle_key(set_next_state_mock):
     assert user_value.string[-1] == "."
 
 
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcd_out_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_loop(print_mock):
     """
     The function to test UserValue's loop function's lcd_interface calls
     """
@@ -43,7 +43,7 @@ def test_loop(lcd_out_mock):
     )
 
     user_value.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Volume in pump:", line=1),
             mock.call("", style=2, line=2),
@@ -54,8 +54,8 @@ def test_loop(lcd_out_mock):
 
 
 @mock.patch.object(UserValue, "_set_next_state")
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_user_value(lcd_out_mock, set_next_state_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_user_value(print_mock, set_next_state_mock):
     """
     The function to test a use case of the UserValue class:
         User enters "3"
@@ -72,7 +72,7 @@ def test_user_value(lcd_out_mock, set_next_state_mock):
     )
 
     user_value.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Volume in pump:", line=1),
             mock.call("", style=2, line=2),
@@ -85,7 +85,7 @@ def test_user_value(lcd_out_mock, set_next_state_mock):
     assert user_value.string == "3"
 
     user_value.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Volume in pump:", line=1),
             mock.call("3", style=2, line=2),
@@ -98,7 +98,7 @@ def test_user_value(lcd_out_mock, set_next_state_mock):
     assert user_value.string == "3."
 
     user_value.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Volume in pump:", line=1),
             mock.call("3.", style=2, line=2),
@@ -111,7 +111,7 @@ def test_user_value(lcd_out_mock, set_next_state_mock):
     assert user_value.string == "3."
 
     user_value.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Volume in pump:", line=1),
             mock.call("3.", style=2, line=2),
@@ -124,7 +124,7 @@ def test_user_value(lcd_out_mock, set_next_state_mock):
     assert user_value.string == "3.1"
 
     user_value.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Volume in pump:", line=1),
             mock.call("3.1", style=2, line=2),
@@ -137,7 +137,7 @@ def test_user_value(lcd_out_mock, set_next_state_mock):
     assert user_value.string == "3."
 
     user_value.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Volume in pump:", line=1),
             mock.call("3.", style=2, line=2),
@@ -150,7 +150,7 @@ def test_user_value(lcd_out_mock, set_next_state_mock):
     assert user_value.string == "3"
 
     user_value.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Volume in pump:", line=1),
             mock.call("3", style=2, line=2),
@@ -163,7 +163,7 @@ def test_user_value(lcd_out_mock, set_next_state_mock):
     assert user_value.string == ""
 
     user_value.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Volume in pump:", line=1),
             mock.call("", style=2, line=2),

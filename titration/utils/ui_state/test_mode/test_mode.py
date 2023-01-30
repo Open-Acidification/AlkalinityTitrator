@@ -2,7 +2,7 @@
 The file for the TestMode class
 """
 from titration.utils.ui_state.ui_state import UIState
-from titration.utils import lcd_interface, constants
+from titration.utils import constants
 from titration.utils.ui_state.test_mode.pump import Pump
 from titration.utils.ui_state.test_mode.read_values import ReadValues
 from titration.utils.ui_state.test_mode.read_volume import ReadVolume
@@ -65,15 +65,15 @@ class TestMode(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("1: Read Values", line=1)
-            lcd_interface.lcd_out("2: Pump", line=2)
-            lcd_interface.lcd_out("3: Set Volume", line=3)
-            lcd_interface.lcd_out("*: Page 2", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("1: Read Values", line=1)
+            self.titrator.lcd.print("2: Pump", line=2)
+            self.titrator.lcd.print("3: Set Volume", line=3)
+            self.titrator.lcd.print("*: Page 2", line=4)
 
         elif self.substate == 2:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("4: Toggle Test Mode", line=1)
-            lcd_interface.lcd_out("5: Read Volume", line=2)
-            lcd_interface.lcd_out("6: Exit Test Mode", line=3)
-            lcd_interface.lcd_out("*: Page 1", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("4: Toggle Test Mode", line=1)
+            self.titrator.lcd.print("5: Read Volume", line=2)
+            self.titrator.lcd.print("6: Exit Test Mode", line=3)
+            self.titrator.lcd.print("*: Page 1", line=4)

@@ -2,7 +2,6 @@
 The file for the CalibratePh class
 """
 from titration.utils.ui_state.ui_state import UIState
-from titration.utils import lcd_interface
 from titration.utils.ui_state.user_value.user_value import UserValue
 
 
@@ -58,28 +57,28 @@ class CalibratePh(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Enter Sol weight", line=1)
-            lcd_interface.lcd_out("", line=2)
-            lcd_interface.lcd_out("Press any to cont", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Enter Sol weight", line=1)
+            self.titrator.lcd.print("", line=2)
+            self.titrator.lcd.print("Press any to cont", line=3)
+            self.titrator.lcd.print("", line=4)
 
         elif self.substate == 2:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Put sensor in buffer", line=1)
-            lcd_interface.lcd_out("", line=2)
-            lcd_interface.lcd_out("Press any to cont", line=3)
-            lcd_interface.lcd_out("to record value", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Put sensor in buffer", line=1)
+            self.titrator.lcd.print("", line=2)
+            self.titrator.lcd.print("Press any to cont", line=3)
+            self.titrator.lcd.print("to record value", line=4)
 
         elif self.substate == 3:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Recorded pH and volts:", line=1)
-            lcd_interface.lcd_out(
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Recorded pH and volts:", line=1)
+            self.titrator.lcd.print(
                 "{0:>2.5f} pH, {1:>3.4f} V".format(
                     self.values["buffer1_actual_pH"],
                     self.values["buffer1_measured_volts"],
                 ),
                 line=2,
             )
-            lcd_interface.lcd_out("Press any to cont", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.print("Press any to cont", line=3)
+            self.titrator.lcd.print("", line=4)

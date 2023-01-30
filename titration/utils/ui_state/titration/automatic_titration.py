@@ -2,7 +2,7 @@
 The file for the AutomaticTitration class
 """
 from titration.utils.ui_state.ui_state import UIState
-from titration.utils import lcd_interface, constants
+from titration.utils import constants
 from titration.utils.ui_state import main_menu
 
 
@@ -59,42 +59,42 @@ class AutomaticTitration(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out(
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print(
                 "Titrating to {} pH".format(
                     str(self.values["pH_target"])
                 ),  # TODO: Change pH_target
                 line=1,
             )
-            lcd_interface.lcd_out("", line=2)
-            lcd_interface.lcd_out("Press any to cont", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.print("", line=2)
+            self.titrator.lcd.print("Press any to cont", line=3)
+            self.titrator.lcd.print("", line=4)
 
         elif self.substate == 2:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Mixing...", line=1)
-            lcd_interface.lcd_out("", line=2)
-            lcd_interface.lcd_out("Press any to cont", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Mixing...", line=1)
+            self.titrator.lcd.print("", line=2)
+            self.titrator.lcd.print("Press any to cont", line=3)
+            self.titrator.lcd.print("", line=4)
 
         elif self.substate == 3:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out(
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print(
                 "pH value {} reached".format(self.values["current_pH"]), line=1
             )  # TODO: Change current_pH
-            lcd_interface.lcd_out("", line=2)
-            lcd_interface.lcd_out("Press any to cont", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.print("", line=2)
+            self.titrator.lcd.print("Press any to cont", line=3)
+            self.titrator.lcd.print("", line=4)
 
         elif self.substate == 4:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Return to", line=1)
-            lcd_interface.lcd_out("main menu", line=2)
-            lcd_interface.lcd_out("Press any to cont", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Return to", line=1)
+            self.titrator.lcd.print("main menu", line=2)
+            self.titrator.lcd.print("Press any to cont", line=3)
+            self.titrator.lcd.print("", line=4)
 
     def start(self):
         """
         The function to display AUTO SELECTED upon entering the AutomaticTitration state
         """
-        lcd_interface.lcd_out("AUTO SELECTED", style=constants.LCD_CENT_JUST, line=4)
+        self.titrator.lcd.print("AUTO SELECTED", style=constants.LCD_CENT_JUST, line=4)
