@@ -37,7 +37,7 @@ class Syringe_Pump:
         elif direction == 1:
             # volume greater than max capacity of pump
             if volume_to_add > self.max_pump_capacity:
-                interfaces.lcd_out(
+                interfaces.lcd.print(
                     "Volume > pumpable", style=constants.LCD_CENT_JUST, line=4
                 )
 
@@ -74,17 +74,17 @@ class Syringe_Pump:
         if direction == 0:
             space_in_pump = self.max_pump_capacity - self.volume_in_pump
             if volume > space_in_pump:
-                interfaces.lcd_out("Filling Error", line=4)
+                interfaces.lcd.print("Filling Error", line=4)
             else:
-                interfaces.lcd_out("Filling {0:1.2f} ml".format(volume), line=4)
+                interfaces.lcd.print("Filling {0:1.2f} ml".format(volume), line=4)
                 cycles = analysis.determine_pump_cycles(volume)
                 self.drive_step_stick(cycles, direction)
                 self.volume_in_pump += volume
         elif direction == 1:
             if volume > self.volume_in_pump:
-                interfaces.lcd_out("Pumping Error", line=4)
+                interfaces.lcd.print("Pumping Error", line=4)
             else:
-                interfaces.lcd_out("Pumping {0:1.2f} ml".format(volume), line=4)
+                interfaces.lcd.print("Pumping {0:1.2f} ml".format(volume), line=4)
                 cycles = analysis.determine_pump_cycles(volume)
                 offset = self.drive_step_stick(cycles, direction)
                 # offset is what is returned from drive_step_stick which originally is returned from the arduino
@@ -93,7 +93,9 @@ class Syringe_Pump:
                     self.drive_step_stick(offset, 1)
                 self.volume_in_pump -= volume
 
-        interfaces.lcd_out("Pump Vol: {0:1.2f} ml".format(self.volume_in_pump), line=4)
+        interfaces.lcd.print(
+            "Pump Vol: {0:1.2f} ml".format(self.volume_in_pump), line=4
+        )
 
     def drive_step_stick(self, cycles, direction):
         """
@@ -115,4 +117,4 @@ class Syringe_Pump:
             else:
                 return int(temp)
         else:
-            interfaces.lcd_out("Arduino Unavailable", 4, constants.LCD_CENT_JUST)
+            interfaces.print("Arduino Unavailable", 4, constants.LCD_CENT_JUST)

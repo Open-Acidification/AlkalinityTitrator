@@ -455,3 +455,28 @@ def test_lcd_clear(capsys):
         + "|                    |\n"
         + "*====================*\n"
     )
+
+
+def test_interfaces_lcd(capsys):
+    # flush stdout
+    _ = capsys.readouterr()
+
+    liquid_crystal = LiquidCrystal(None, None, None, None, None, None, None, 20, 4)
+
+    liquid_crystal.print("           ", 1, constants.LCD_LEFT_JUST)
+
+    captured = capsys.readouterr()
+    assert captured.out == (
+        "*====================*\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "*====================*\n"
+        + "*====================*\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "*====================*\n"
+    )
