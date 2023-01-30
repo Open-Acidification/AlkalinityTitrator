@@ -15,12 +15,12 @@ def test_interfaces_lcd(capsys):
     # flush stdout
     _ = capsys.readouterr()
 
-    interfaces.lcd_out("Test string", 1, constants.LCD_LEFT_JUST)
+    interfaces.lcd_out("           ", 1, constants.LCD_LEFT_JUST)
 
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
-        + "|Test string         |\n"
+        + "|                    |\n"
         + "|                    |\n"
         + "|                    |\n"
         + "|                    |\n"

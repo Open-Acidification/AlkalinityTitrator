@@ -5,7 +5,7 @@ from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.titrator import Titrator
-from titration.utils import lcd_interface
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 from titration.utils.ui_state.test_mode.set_volume import SetVolume
 
 
@@ -26,15 +26,15 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
 
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcd_out_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_loop(print_mock):
     """
-    The function to test SetVolume's loop function's lcd_interface calls
+    The function to test SetVolume's loop function's LiquidCrystal calls
     """
     set_volume = SetVolume(Titrator(), MainMenu(Titrator()))
 
     set_volume.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Set volume in pump", line=1),
             mock.call("", line=2),
@@ -45,7 +45,7 @@ def test_loop(lcd_out_mock):
 
     set_volume.substate += 1
     set_volume.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Volume in pump", line=1),
             mock.call("recorded", line=2),
@@ -55,9 +55,9 @@ def test_loop(lcd_out_mock):
     )
 
 
-@mock.patch.object(lcd_interface, "lcd_out")
+@mock.patch.object(LiquidCrystal, "print")
 @mock.patch.object(SetVolume, "_set_next_state")
-def test_set_volume(set_next_state_mock, lcd_out_mock):
+def test_set_volume(set_next_state_mock, print_mock):
     """
     The function to test a use case of the SetVolume class:
         User enters "1" to continue setting volume in pump
@@ -66,7 +66,7 @@ def test_set_volume(set_next_state_mock, lcd_out_mock):
     set_volume = SetVolume(Titrator(), MainMenu(Titrator()))
 
     set_volume.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Set volume in pump", line=1),
             mock.call("", line=2),
@@ -81,7 +81,7 @@ def test_set_volume(set_next_state_mock, lcd_out_mock):
     assert set_volume.substate == 2
 
     set_volume.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Volume in pump", line=1),
             mock.call("recorded", line=2),

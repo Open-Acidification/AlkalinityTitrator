@@ -7,7 +7,7 @@ from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.ui_state.calibration.calibrate_ph import CalibratePh
 from titration.utils.ui_state.calibration.setup_calibration import SetupCalibration
 from titration.utils.titrator import Titrator
-from titration.utils import lcd_interface
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 @mock.patch.object(CalibratePh, "_set_next_state")
@@ -32,17 +32,17 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "SetupCalibration"
 
 
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcd_out_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_loop(print_mock):
     """
-    The function to test CalibratePh's loop function's lcd_interface calls
+    The function to test CalibratePh's loop function's LiquidCrystal calls
     """
     calibrate_ph = CalibratePh(
         Titrator(), SetupCalibration(MainMenu(Titrator()), Titrator())
     )
 
     calibrate_ph.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Enter Sol weight", line=1),
             mock.call("", line=2),
@@ -53,7 +53,7 @@ def test_loop(lcd_out_mock):
 
     calibrate_ph.substate += 1
     calibrate_ph.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Put sensor in buffer", line=1),
             mock.call("", line=2),
@@ -64,7 +64,7 @@ def test_loop(lcd_out_mock):
 
     calibrate_ph.substate += 1
     calibrate_ph.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Recorded pH and volts:", line=1),
             mock.call(
@@ -81,8 +81,8 @@ def test_loop(lcd_out_mock):
 
 
 @mock.patch.object(CalibratePh, "_set_next_state")
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_calibrate_ph(lcd_out_mock, set_next_state_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_calibrate_ph(print_mock, set_next_state_mock):
     """
     The function to test a use case of the CalibratePh class:
         User enters "1" to continue entering solution weight
@@ -94,7 +94,7 @@ def test_calibrate_ph(lcd_out_mock, set_next_state_mock):
     )
 
     calibrate_ph.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Enter Sol weight", line=1),
             mock.call("", line=2),
@@ -109,7 +109,7 @@ def test_calibrate_ph(lcd_out_mock, set_next_state_mock):
     assert calibrate_ph.substate == 2
 
     calibrate_ph.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Put sensor in buffer", line=1),
             mock.call("", line=2),
@@ -122,7 +122,7 @@ def test_calibrate_ph(lcd_out_mock, set_next_state_mock):
     assert calibrate_ph.substate == 3
 
     calibrate_ph.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Recorded pH and volts:", line=1),
             mock.call(

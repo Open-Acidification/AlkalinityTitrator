@@ -5,7 +5,7 @@ from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.titration.automatic_titration import AutomaticTitration
 from titration.utils.titrator import Titrator
-from titration.utils import lcd_interface
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 @mock.patch.object(AutomaticTitration, "_set_next_state")
@@ -29,15 +29,15 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
 
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcd_out_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_loop(print_mock):
     """
-    The function to test AutomaticTitration's loop function's lcd_interface calls
+    The function to test AutomaticTitration's loop function's LiquidCrystal calls
     """
     automatic_titration = AutomaticTitration(Titrator())
 
     automatic_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call(
                 "Titrating to {} pH".format(
@@ -53,7 +53,7 @@ def test_loop(lcd_out_mock):
 
     automatic_titration.substate += 1
     automatic_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Mixing...", line=1),
             mock.call("", line=2),
@@ -64,7 +64,7 @@ def test_loop(lcd_out_mock):
 
     automatic_titration.substate += 1
     automatic_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call(
                 "pH value {} reached".format(automatic_titration.values["current_pH"]),
@@ -78,7 +78,7 @@ def test_loop(lcd_out_mock):
 
     automatic_titration.substate += 1
     automatic_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Return to", line=1),
             mock.call("main menu", line=2),
@@ -89,8 +89,8 @@ def test_loop(lcd_out_mock):
 
 
 @mock.patch.object(AutomaticTitration, "_set_next_state")
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_automatic_titration(lcd_out_mock, set_next_state_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_automatic_titration(print_mock, set_next_state_mock):
     """
     The function to test a use case of the AutomaticTitration class:
         User enters "1" to continue after titrating to desired pH target
@@ -101,7 +101,7 @@ def test_automatic_titration(lcd_out_mock, set_next_state_mock):
     automatic_titration = AutomaticTitration(Titrator())
 
     automatic_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call(
                 "Titrating to {} pH".format(
@@ -119,7 +119,7 @@ def test_automatic_titration(lcd_out_mock, set_next_state_mock):
     assert automatic_titration.substate == 2
 
     automatic_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Mixing...", line=1),
             mock.call("", line=2),
@@ -132,7 +132,7 @@ def test_automatic_titration(lcd_out_mock, set_next_state_mock):
     assert automatic_titration.substate == 3
 
     automatic_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call(
                 "pH value {} reached".format(automatic_titration.values["current_pH"]),
@@ -148,7 +148,7 @@ def test_automatic_titration(lcd_out_mock, set_next_state_mock):
     assert automatic_titration.substate == 4
 
     automatic_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Return to", line=1),
             mock.call("main menu", line=2),

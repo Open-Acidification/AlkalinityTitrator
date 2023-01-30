@@ -4,14 +4,14 @@ import types
 from titration.utils.devices import (
     board_mock,
     keypad_mock,
-    lcd_mock,
+    liquid_crystal_mock,
 )
 
-lcd_class: types.ModuleType = lcd_mock
+lcd_class: types.ModuleType = liquid_crystal_mock
 board_class: types.ModuleType = board_mock
 keypad_class: types.ModuleType = keypad_mock
 
-ui_lcd = lcd_class.LCD(
+ui_lcd = lcd_class.LiquidCrystal(
     rs=board_class.D27,
     backlight=board_class.D15,
     enable=board_class.D22,
@@ -19,8 +19,9 @@ ui_lcd = lcd_class.LCD(
     d5=board_class.D23,
     d6=board_class.D24,
     d7=board_class.D25,
+    cols=constants.LCD_HEIGHT,
+    rows=constants.LCD_WIDTH,
 )
-ui_lcd.begin(constants.LCD_WIDTH, constants.LCD_HEIGHT)
 
 ui_keypad = keypad_class.Keypad(
     r0=board_class.D1,

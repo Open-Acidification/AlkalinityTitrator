@@ -5,7 +5,7 @@ from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.titration.manual_titration import ManualTitration
 from titration.utils.titrator import Titrator
-from titration.utils import lcd_interface
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 @mock.patch.object(ManualTitration, "_set_next_state")
@@ -40,15 +40,15 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
 
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_loop(lcd_out_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_loop(print_mock):
     """
-    The function to test ManualTitration's loop function's lcd_interface calls
+    The function to test ManualTitration's loop function's LiquidCrystal calls
     """
     manual_titration = ManualTitration(Titrator())
 
     manual_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Enter Volume", line=1),
             mock.call("", line=2),
@@ -59,7 +59,7 @@ def test_loop(lcd_out_mock):
 
     manual_titration.substate += 1
     manual_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Direction (0/1):", line=1),
             mock.call("", line=2),
@@ -70,7 +70,7 @@ def test_loop(lcd_out_mock):
 
     manual_titration.substate += 1
     manual_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call(
                 "Current pH: {0:>4.5f}".format(manual_titration.values["current_pH"]),
@@ -84,7 +84,7 @@ def test_loop(lcd_out_mock):
 
     manual_titration.substate += 1
     manual_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call(
                 "Current pH: {0:>4.5f}".format(manual_titration.values["current_pH"]),
@@ -98,7 +98,7 @@ def test_loop(lcd_out_mock):
 
     manual_titration.substate += 1
     manual_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Enter Degas time", line=1),
             mock.call("", line=2),
@@ -109,7 +109,7 @@ def test_loop(lcd_out_mock):
 
     manual_titration.substate += 1
     manual_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Return to", line=1),
             mock.call("main menu", line=2),
@@ -120,8 +120,8 @@ def test_loop(lcd_out_mock):
 
 
 @mock.patch.object(ManualTitration, "_set_next_state")
-@mock.patch.object(lcd_interface, "lcd_out")
-def test_manual_titration(lcd_out_mock, set_next_state_mock):
+@mock.patch.object(LiquidCrystal, "print")
+def test_manual_titration(print_mock, set_next_state_mock):
     """
     The function to test a use case of the ManualTitration class:
         User enters "1" to continue to entering volume
@@ -135,7 +135,7 @@ def test_manual_titration(lcd_out_mock, set_next_state_mock):
     manual_titration = ManualTitration(Titrator())
 
     manual_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Enter Volume", line=1),
             mock.call("", line=2),
@@ -150,7 +150,7 @@ def test_manual_titration(lcd_out_mock, set_next_state_mock):
     assert manual_titration.substate == 2
 
     manual_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Direction (0/1):", line=1),
             mock.call("", line=2),
@@ -164,7 +164,7 @@ def test_manual_titration(lcd_out_mock, set_next_state_mock):
     assert manual_titration.substate == 3
 
     manual_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call(
                 "Current pH: {0:>4.5f}".format(manual_titration.values["current_pH"]),
@@ -180,7 +180,7 @@ def test_manual_titration(lcd_out_mock, set_next_state_mock):
     assert manual_titration.substate == 4
 
     manual_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call(
                 "Current pH: {0:>4.5f}".format(manual_titration.values["current_pH"]),
@@ -196,7 +196,7 @@ def test_manual_titration(lcd_out_mock, set_next_state_mock):
     assert manual_titration.substate == 5
 
     manual_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Enter Degas time", line=1),
             mock.call("", line=2),
@@ -211,7 +211,7 @@ def test_manual_titration(lcd_out_mock, set_next_state_mock):
     assert manual_titration.substate == 6
 
     manual_titration.loop()
-    lcd_out_mock.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Return to", line=1),
             mock.call("main menu", line=2),

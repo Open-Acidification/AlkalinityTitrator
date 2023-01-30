@@ -2,7 +2,7 @@
 The file for the Pump class
 """
 from titration.utils.ui_state.ui_state import UIState
-from titration.utils import lcd_interface, constants
+from titration.utils import constants
 from titration.utils.ui_state.user_value.user_value import UserValue
 
 
@@ -58,22 +58,22 @@ class Pump(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Set Volume", line=1)
-            lcd_interface.lcd_out("", line=2)
-            lcd_interface.lcd_out("Press any to cont", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Set Volume", line=1)
+            self.titrator.lcd.print("", line=2)
+            self.titrator.lcd.print("Press any to cont", line=3)
+            self.titrator.lcd.print("", line=4)
 
         elif self.substate == 2:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("In/Out (0/1):", line=1)
-            lcd_interface.lcd_out("", line=2)
-            lcd_interface.lcd_out("", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("In/Out (0/1):", line=1)
+            self.titrator.lcd.print("", line=2)
+            self.titrator.lcd.print("", line=3)
+            self.titrator.lcd.print("", line=4)
 
         elif self.substate == 3:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Pumping volume", line=1)
-            lcd_interface.lcd_out("", line=2)
-            lcd_interface.lcd_out("Press any to cont", line=3)
-            lcd_interface.lcd_out("", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Pumping volume", line=1)
+            self.titrator.lcd.print("", line=2)
+            self.titrator.lcd.print("Press any to cont", line=3)
+            self.titrator.lcd.print("", line=4)

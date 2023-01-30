@@ -8,7 +8,6 @@ from titration.utils.ui_state.test_mode.test_mode import TestMode
 from titration.utils.ui_state.titration.setup_titration import SetupTitration
 from titration.utils.ui_state.calibration.setup_calibration import SetupCalibration
 from titration.utils.ui_state.update_settings.update_settings import UpdateSettings
-from titration.utils import lcd_interface
 
 
 class MainMenu(UIState):
@@ -66,15 +65,15 @@ class MainMenu(UIState):
         """
 
         if self.substate == 1:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Run titration", line=1)
-            lcd_interface.lcd_out("Calibrate sensors", line=2)
-            lcd_interface.lcd_out("Prime pump", line=3)
-            lcd_interface.lcd_out("Page 2", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Run titration", line=1)
+            self.titrator.lcd.print("Calibrate sensors", line=2)
+            self.titrator.lcd.print("Prime pump", line=3)
+            self.titrator.lcd.print("Page 2", line=4)
 
         elif self.substate == 2:
-            lcd_interface.lcd_clear()
-            lcd_interface.lcd_out("Update settings", line=1)
-            lcd_interface.lcd_out("Test mode", line=2)
-            lcd_interface.lcd_out("Exit", line=3)
-            lcd_interface.lcd_out("Page 1", line=4)
+            self.titrator.lcd.clear()
+            self.titrator.lcd.print("Update settings", line=1)
+            self.titrator.lcd.print("Test mode", line=2)
+            self.titrator.lcd.print("Exit", line=3)
+            self.titrator.lcd.print("Page 1", line=4)
