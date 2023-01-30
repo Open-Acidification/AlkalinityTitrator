@@ -78,7 +78,7 @@ class UserValue(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         lcd_interface.lcd_clear()
-        lcd_interface.lcd_out(self.get_label, line=1)
+        lcd_interface.lcd_out(self.get_label(), line=1)
         lcd_interface.lcd_out(self.value, style=constants.LCD_CENT_JUST, line=2)
         lcd_interface.lcd_out("* = .       B = BS", line=3)
         lcd_interface.lcd_out("A = accept  C = Clr", line=4)

@@ -47,7 +47,7 @@ def test_loop(lcd_out_mock):
     reference_temperature.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call(reference_temperature.get_label, line=1),
+            mock.call("Ref solution temp:", line=1),
             mock.call("", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -76,7 +76,7 @@ def test_reference_temperature(lcd_out_mock, set_next_state_mock):
     reference_temperature.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call(reference_temperature.get_label, line=1),
+            mock.call("Ref solution temp:", line=1),
             mock.call("", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -89,7 +89,7 @@ def test_reference_temperature(lcd_out_mock, set_next_state_mock):
     reference_temperature.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call(reference_temperature.get_label, line=1),
+            mock.call("Ref solution temp:", line=1),
             mock.call("3", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -102,7 +102,7 @@ def test_reference_temperature(lcd_out_mock, set_next_state_mock):
     reference_temperature.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call(reference_temperature.get_label, line=1),
+            mock.call("Ref solution temp:", line=1),
             mock.call("3.", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -115,7 +115,7 @@ def test_reference_temperature(lcd_out_mock, set_next_state_mock):
     reference_temperature.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call(reference_temperature.get_label, line=1),
+            mock.call("Ref solution temp:", line=1),
             mock.call("3.", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -128,7 +128,7 @@ def test_reference_temperature(lcd_out_mock, set_next_state_mock):
     reference_temperature.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call(reference_temperature.get_label, line=1),
+            mock.call("Ref solution temp:", line=1),
             mock.call("3.1", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -141,7 +141,7 @@ def test_reference_temperature(lcd_out_mock, set_next_state_mock):
     reference_temperature.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call(reference_temperature.get_label, line=1),
+            mock.call("Ref solution temp:", line=1),
             mock.call("3.", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -154,7 +154,7 @@ def test_reference_temperature(lcd_out_mock, set_next_state_mock):
     reference_temperature.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call(reference_temperature.get_label, line=1),
+            mock.call("Ref solution temp:", line=1),
             mock.call("3", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -167,7 +167,7 @@ def test_reference_temperature(lcd_out_mock, set_next_state_mock):
     reference_temperature.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call(reference_temperature.get_label, line=1),
+            mock.call("Ref solution temp:", line=1),
             mock.call("", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
