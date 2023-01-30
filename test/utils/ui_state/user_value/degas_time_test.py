@@ -24,13 +24,13 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
 
     degas_time.handle_key("C")
-    assert degas_time.string == ""
+    assert degas_time.value == ""
 
     degas_time.handle_key("1")
-    assert degas_time.string[-1] == "1"
+    assert degas_time.value[-1] == "1"
 
     degas_time.handle_key("*")
-    assert degas_time.string[-1] == "."
+    assert degas_time.value[-1] == "."
 
 
 @mock.patch.object(lcd_interface, "lcd_out")
@@ -43,7 +43,7 @@ def test_loop(lcd_out_mock):
     degas_time.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call("Degas time (s):", line=1),
+            mock.call(degas_time.get_label, line=1),
             mock.call("", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -70,7 +70,7 @@ def test_degas_time(lcd_out_mock, set_next_state_mock):
     degas_time.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call("Degas time (s):", line=1),
+            mock.call(degas_time.get_label, line=1),
             mock.call("", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -78,12 +78,12 @@ def test_degas_time(lcd_out_mock, set_next_state_mock):
     )
 
     degas_time.handle_key("3")
-    assert degas_time.string == "3"
+    assert degas_time.value == "3"
 
     degas_time.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call("Degas time (s):", line=1),
+            mock.call(degas_time.get_label, line=1),
             mock.call("3", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -91,12 +91,12 @@ def test_degas_time(lcd_out_mock, set_next_state_mock):
     )
 
     degas_time.handle_key("*")
-    assert degas_time.string == "3."
+    assert degas_time.value == "3."
 
     degas_time.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call("Degas time (s):", line=1),
+            mock.call(degas_time.get_label, line=1),
             mock.call("3.", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -104,12 +104,12 @@ def test_degas_time(lcd_out_mock, set_next_state_mock):
     )
 
     degas_time.handle_key("*")
-    assert degas_time.string == "3."
+    assert degas_time.value == "3."
 
     degas_time.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call("Degas time (s):", line=1),
+            mock.call(degas_time.get_label, line=1),
             mock.call("3.", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -117,12 +117,12 @@ def test_degas_time(lcd_out_mock, set_next_state_mock):
     )
 
     degas_time.handle_key("1")
-    assert degas_time.string == "3.1"
+    assert degas_time.value == "3.1"
 
     degas_time.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call("Degas time (s):", line=1),
+            mock.call(degas_time.get_label, line=1),
             mock.call("3.1", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -130,12 +130,12 @@ def test_degas_time(lcd_out_mock, set_next_state_mock):
     )
 
     degas_time.handle_key("B")
-    assert degas_time.string == "3."
+    assert degas_time.value == "3."
 
     degas_time.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call("Degas time (s):", line=1),
+            mock.call(degas_time.get_label, line=1),
             mock.call("3.", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -143,12 +143,12 @@ def test_degas_time(lcd_out_mock, set_next_state_mock):
     )
 
     degas_time.handle_key("B")
-    assert degas_time.string == "3"
+    assert degas_time.value == "3"
 
     degas_time.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call("Degas time (s):", line=1),
+            mock.call(degas_time.get_label, line=1),
             mock.call("3", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -156,12 +156,12 @@ def test_degas_time(lcd_out_mock, set_next_state_mock):
     )
 
     degas_time.handle_key("C")
-    assert degas_time.string == ""
+    assert degas_time.value == ""
 
     degas_time.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call("Degas time (s):", line=1),
+            mock.call(degas_time.get_label, line=1),
             mock.call("", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),

@@ -24,13 +24,13 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
 
     solution_salinity.handle_key("C")
-    assert solution_salinity.string == ""
+    assert solution_salinity.value == ""
 
     solution_salinity.handle_key("1")
-    assert solution_salinity.string[-1] == "1"
+    assert solution_salinity.value[-1] == "1"
 
     solution_salinity.handle_key("*")
-    assert solution_salinity.string[-1] == "."
+    assert solution_salinity.value[-1] == "."
 
 
 @mock.patch.object(lcd_interface, "lcd_out")
@@ -45,7 +45,7 @@ def test_loop(lcd_out_mock):
     solution_salinity.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call("Sol. salinity (ppt):", line=1),
+            mock.call(solution_salinity.get_label, line=1),
             mock.call("", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -74,7 +74,7 @@ def test_solution_salinity(lcd_out_mock, set_next_state_mock):
     solution_salinity.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call("Sol. salinity (ppt):", line=1),
+            mock.call(solution_salinity.get_label, line=1),
             mock.call("", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -82,12 +82,12 @@ def test_solution_salinity(lcd_out_mock, set_next_state_mock):
     )
 
     solution_salinity.handle_key("3")
-    assert solution_salinity.string == "3"
+    assert solution_salinity.value == "3"
 
     solution_salinity.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call("Sol. salinity (ppt):", line=1),
+            mock.call(solution_salinity.get_label, line=1),
             mock.call("3", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -95,12 +95,12 @@ def test_solution_salinity(lcd_out_mock, set_next_state_mock):
     )
 
     solution_salinity.handle_key("*")
-    assert solution_salinity.string == "3."
+    assert solution_salinity.value == "3."
 
     solution_salinity.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call("Sol. salinity (ppt):", line=1),
+            mock.call(solution_salinity.get_label, line=1),
             mock.call("3.", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -108,12 +108,12 @@ def test_solution_salinity(lcd_out_mock, set_next_state_mock):
     )
 
     solution_salinity.handle_key("*")
-    assert solution_salinity.string == "3."
+    assert solution_salinity.value == "3."
 
     solution_salinity.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call("Sol. salinity (ppt):", line=1),
+            mock.call(solution_salinity.get_label, line=1),
             mock.call("3.", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -121,12 +121,12 @@ def test_solution_salinity(lcd_out_mock, set_next_state_mock):
     )
 
     solution_salinity.handle_key("1")
-    assert solution_salinity.string == "3.1"
+    assert solution_salinity.value == "3.1"
 
     solution_salinity.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call("Sol. salinity (ppt):", line=1),
+            mock.call(solution_salinity.get_label, line=1),
             mock.call("3.1", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -134,12 +134,12 @@ def test_solution_salinity(lcd_out_mock, set_next_state_mock):
     )
 
     solution_salinity.handle_key("B")
-    assert solution_salinity.string == "3."
+    assert solution_salinity.value == "3."
 
     solution_salinity.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call("Sol. salinity (ppt):", line=1),
+            mock.call(solution_salinity.get_label, line=1),
             mock.call("3.", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -147,12 +147,12 @@ def test_solution_salinity(lcd_out_mock, set_next_state_mock):
     )
 
     solution_salinity.handle_key("B")
-    assert solution_salinity.string == "3"
+    assert solution_salinity.value == "3"
 
     solution_salinity.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call("Sol. salinity (ppt):", line=1),
+            mock.call(solution_salinity.get_label, line=1),
             mock.call("3", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
@@ -160,12 +160,12 @@ def test_solution_salinity(lcd_out_mock, set_next_state_mock):
     )
 
     solution_salinity.handle_key("C")
-    assert solution_salinity.string == ""
+    assert solution_salinity.value == ""
 
     solution_salinity.loop()
     lcd_out_mock.assert_has_calls(
         [
-            mock.call("Sol. salinity (ppt):", line=1),
+            mock.call(solution_salinity.get_label, line=1),
             mock.call("", style=2, line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
