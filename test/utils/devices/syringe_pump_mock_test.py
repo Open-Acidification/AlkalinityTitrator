@@ -10,8 +10,6 @@ def setup_module():
     """
     Function to setup syringe test module
     """
-    constants.IS_TEST = True
-    interfaces.setup_module_classes()
     interfaces.setup_lcd()
 
 
