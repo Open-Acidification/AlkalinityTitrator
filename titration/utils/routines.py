@@ -95,7 +95,7 @@ def test_mode_read_values(numVals=60, timestep=0.5):
         interfaces.lcd.print("Res:  {0:>4.3f} Ohms".format(res), line=2)
         interfaces.lcd.print("pH:   {0:>4.5f} pH".format(pH_reading), line=3)
         interfaces.lcd.print("pH V: {0:>3.4f} mV".format(pH_volts * 1000), line=4)
-        interfaces.lcd.print("Reading: {}".format(i), 1, console=True)
+        interfaces.lcd.print("Reading: {}".format(i), line=1)
         timeVals[i] = timestep * i
         tempVals[i] = temp
         resVals[i] = res
