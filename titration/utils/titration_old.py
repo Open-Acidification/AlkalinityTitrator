@@ -23,9 +23,9 @@ def run():
                 else:
                     page = 1
             if page == 1:
-                interfaces.display_list(constants.ROUTINE_OPTIONS_1)
+                interfaces.lcd.display_list(constants.ROUTINE_OPTIONS_1)
             else:
-                interfaces.display_list(constants.ROUTINE_OPTIONS_2)
+                interfaces.lcd.display_list(constants.ROUTINE_OPTIONS_2)
 
             # wait for user input to select which routine (polling should be fine here)
             routine_selection = interfaces.read_user_input()

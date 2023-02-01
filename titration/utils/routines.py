@@ -50,9 +50,9 @@ def test_mode():
                 page = 1
         # Display the proper page
         if page == 1:
-            interfaces.display_list(constants.ROUTINE_OPTIONS_1)
+            interfaces.lcd.display_list(constants.ROUTINE_OPTIONS_1)
         else:
-            interfaces.display_list(constants.ROUTINE_OPTIONS_2)
+            interfaces.lcd.display_list(constants.ROUTINE_OPTIONS_2)
 
         user_choice = interfaces.read_user_input()
 
@@ -151,7 +151,7 @@ def _test_temperature():
 
 def calibration():
     """Routine for letting the user pick the sensor to calibrate. Call another routine to calibrate the sensor"""
-    interfaces.display_list(constants.SENSOR_OPTIONS)
+    interfaces.lcd.display_list(constants.SENSOR_OPTIONS)
     sensor_selection = interfaces.read_user_input()
     if sensor_selection == "1" or sensor_selection == constants.KEY_1:
         _calibrate_pH()

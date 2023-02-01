@@ -60,7 +60,7 @@ def setup_interfaces():
     Initializes components for interfacing with pH probe,
     temperature probe, and stepper motor/syringe pump
     """
-    global ph_sensor, temperature_sensor, arduino, ui_lcd, ui_keypad, temperature_controller, stir_controller
+    global ph_sensor, temperature_sensor, arduino, ui_keypad, temperature_controller, stir_controller
 
     # set module classes
     setup_module_classes()
@@ -165,25 +165,6 @@ def delay(seconds, countdown=False):
         if countdown and int(timeLeft) % 5 == 0:
             lcd.print("Time Left: {}".format(int(timeLeft)), line=4)
         timeNow = time.time()
-
-
-def display_list(dict_to_display):
-    """
-    Display a list of options from a dictionary. Only the first four
-    options will be displayed due to only four screen rows.
-    :param list_to_display: list to be displayed on LCD screen
-    """
-    lcd.clear()
-    keys = list(dict_to_display.keys())
-    values = list(dict_to_display.values())
-    lines = [1, 2, 3, 4]
-
-    for i in range(min(len(keys), 4)):
-        lcd.print(str(keys[i]) + ". " + values[i], lines[i])
-
-    # Original method, slow due to screen scrolling
-    # for key, value in list_to_display.items():
-    #   print(str(key) + '. ' + value)
 
 
 def read_user_input(valid_inputs=None, console=False):
