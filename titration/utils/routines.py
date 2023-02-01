@@ -89,7 +89,7 @@ def test_mode_read_values(numVals=60, timestep=0.5):
     voltVals = np.zeros(numVals)
 
     for i in range(numVals):
-        temp, res = interfaces.read_temperature()
+        temp, res = interfaces.temperature_sensor.read_temperature()
         pH_reading, pH_volts = interfaces.read_pH()
         interfaces.lcd_out("Temp: {0:>4.3f} C".format(temp), line=1)
         interfaces.lcd_out("Res:  {0:>4.3f} Ohms".format(res), line=2)
@@ -143,7 +143,7 @@ def test_mode_read_volume():
 def _test_temperature():
     """Tests the temperature probe"""
     for i in range(5):
-        temperature, res = interfaces.read_temperature()
+        temperature, res = interfaces.temperature_sensor.read_temperature()
         interfaces.lcd_out("Temperature: {0:0.3f}C".format(temperature), 1)
         interfaces.lcd_out("Res: {0:0.3f} Ohms".format(res), 2)
         interfaces.delay(0.5)
@@ -197,7 +197,10 @@ def _calibrate_temperature():
     interfaces.read_user_input()
     expected_resistance = analysis.calculate_expected_resistance(expected_temperature)
 
-    actual_temperature, actual_resistance = interfaces.read_temperature()
+    (
+        actual_temperature,
+        actual_resistance,
+    ) = interfaces.temperature_sensor.read_temperature()
     interfaces.lcd_clear()
     interfaces.lcd_out(
         "Recorded temperature: {0:0.3f}".format(actual_temperature), line=1
@@ -401,7 +404,7 @@ def wait_pH_stable(total_sol, data):
 
     while True:
         pH_reading, pH_volts = interfaces.read_pH()
-        temperature_reading = interfaces.read_temperature()[0]
+        temperature_reading = interfaces.temperature_sensor()[0]
         interfaces.lcd_out("pH:   {0:>4.5f} pH".format(pH_reading), line=1)
         interfaces.lcd_out("pH V: {0:>3.4f} mV".format(pH_volts * 1000), line=2)
         interfaces.lcd_out("Temp: {0:>4.3f} C".format(temperature_reading), line=3)
@@ -439,7 +442,7 @@ def degas(seconds):
     interfaces.lcd_out("seconds", line=2)
     interfaces.stir_controller.motor_speed_fast()
     interfaces.delay(seconds, countdown=True)
-    interfaces.stir_speed_slow()
+    interfaces.stir_controller.motor_speed_slow()
 
 
 # TODO FIX LCD LINES
