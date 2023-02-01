@@ -25,3 +25,8 @@ class pH_Probe:
 
     def mock_set_voltage(self, voltage):
         self.volt = voltage
+
+    def read_raw_pH(self):
+        # Read pH registers; pH_val is raw value from pH probe
+        volts = self.voltage()
+        return volts
