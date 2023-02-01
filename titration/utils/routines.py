@@ -111,13 +111,13 @@ def test_mode_pump():
         p_direction = interfaces.read_user_value("In/Out (0/1):")
         if p_direction == 0 or p_direction == 1:
             interfaces.lcd_clear()
-            interfaces.pump_volume(float(p_volume), int(p_direction))
+            interfaces.pump.pump_volume(float(p_volume), int(p_direction))
             break
 
 
 def test_mode_set_volume():
     new_volume = interfaces.read_user_value("Volume in pump: ")
-    interfaces.set_pump_volume(new_volume)
+    interfaces.pump.set_volume_in_pump(new_volume)
 
 
 def test_mode_toggle_test_mode():
@@ -219,7 +219,7 @@ def total_alkalinity_titration():
     # pull in 1 ml of solution into pump for use in titration
     if constants.volume_in_pump < 1.0:
         p_volume = 1.0 - constants.volume_in_pump
-        interfaces.pump_volume(float(p_volume), 0)
+        interfaces.pump.pump_volume(float(p_volume), 0)
     # data object to hold recorded data
     data = [
         (
@@ -296,7 +296,7 @@ def total_alkalinity_titration():
             if p_direction == 1:
                 total_sol += p_volume
             if p_direction == 0 or p_direction == 1:
-                interfaces.pump_volume(p_volume, p_direction)
+                interfaces.pump.pump_volume(p_volume, p_direction)
             current_pH = wait_pH_stable(total_sol, data)
             interfaces.lcd_out("Current pH: {0:>4.5f}".format(current_pH), line=1)
             interfaces.lcd_out("Add more HCl?", line=2)
@@ -365,10 +365,10 @@ def titration(
     current_pH = wait_pH_stable(total_sol, data)
 
     while current_pH - pH_target > constants.PH_ACCURACY:
-        interfaces.pump_volume(solution_increment_amount, 1)
+        interfaces.pump.pump_volume(solution_increment_amount, 1)
         if constants.volume_in_pump < 0.05:
             # pump in 1 mL
-            interfaces.pump_volume(1.0, 0)
+            interfaces.pump.pump_volume(1.0, 0)
         total_sol += solution_increment_amount
 
         # TESTING SETTLING
@@ -479,8 +479,8 @@ def prime_pump():
     sel = int(selection)
     while sel > 0:
         while sel > 0:
-            interfaces.pump_volume(1, 0)
-            interfaces.pump_volume(1, 1)
+            interfaces.pump.pump_volume(1, 0)
+            interfaces.pump.pump_volume(1, 1)
             sel = sel - 1
         interfaces.lcd_out("How many more?", 1)
         selection = interfaces.read_user_input()
@@ -492,4 +492,4 @@ def auto_home():
     Homes syringe to 0 mL upon calling.
     Runs on startup in titration.run(), depends on limit switches
     """
-    interfaces.pump_volume(1, 1)
+    interfaces.pump.pump_volume(1, 1)

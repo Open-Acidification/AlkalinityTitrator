@@ -39,10 +39,12 @@ ph_sensor = ph_class.pH_Probe(board_class.SCL, board_class.SDA, gain=8)
 temperature_sensor = temperature_class.Temperature_Probe(
     board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D4, wires=3
 )
-arduino = None
+pump = syringe_class.Syringe_Pump()
 ui_lcd = None
 ui_keypad = None
-temperature_controller = temperature_control_class.Temperature_Control(constants.RELAY_PIN, temperature_sensor)
+temperature_controller = temperature_control_class.Temperature_Control(
+    constants.RELAY_PIN, temperature_sensor
+)
 stir_controller = stir_class.Stir_Control(board_class.D13, debug=False)
 
 
@@ -51,7 +53,7 @@ def setup_interfaces():
     Initializes components for interfacing with pH probe,
     temperature probe, and stepper motor/syringe pump
     """
-    global arduino, ui_lcd, ui_keypad
+    global ui_lcd, ui_keypad
 
     # set module classes
     setup_module_classes()
@@ -59,8 +61,6 @@ def setup_interfaces():
     # LCD and ui_keypad setup
     ui_lcd = setup_lcd()
     ui_keypad = setup_keypad()
-
-    arduino = setup_syringe_pump()
 
 
 def setup_module_classes():
@@ -126,10 +126,6 @@ def setup_keypad():
     )
 
     return temp_keypad
-
-
-def setup_syringe_pump():
-    return syringe_class.Syringe_Pump()
 
 
 def delay(seconds, countdown=False):
@@ -331,16 +327,3 @@ def read_pH():
     temperature = temperature_sensor.read_temperature()[0]
     pH_val = analysis.calculate_pH(volts, temperature)
     return pH_val, volts
-
-
-def pump_volume(volume, direction):
-    """
-    Moves volume of solution through pump
-    :param volume: amount of volume to move (float)
-    :param direction: 0 to pull solution in, 1 to pump out
-    """
-    arduino.pump_volume(volume, direction)
-
-
-def set_pump_volume(volume):
-    arduino.set_volume_in_pump(volume)
