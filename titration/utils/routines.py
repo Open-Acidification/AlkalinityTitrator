@@ -170,7 +170,7 @@ def _calibrate_pH():
     interfaces.lcd_out("to record value", style=constants.LCD_CENT_JUST, line=4)
     # Waits for user to press enter
     interfaces.read_user_input()
-    buffer1_measured_volts = float(interfaces.read_raw_pH())
+    buffer1_measured_volts = float(interfaces.ph_sensor.read_raw_pH())
     interfaces.lcd_clear()
     interfaces.lcd_out("Recorded pH and volts:", line=1)
     interfaces.lcd_out(

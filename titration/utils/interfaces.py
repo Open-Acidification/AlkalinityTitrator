@@ -35,7 +35,7 @@ syringe_class: types.ModuleType = syringe_pump_mock
 stir_class: types.ModuleType = stir_control_mock
 
 # global, pH, liquid_crystal, and temperature probes
-ph_sensor = None
+ph_sensor = ph_class.pH_Probe(board_class.SCL, board_class.SDA, gain=8)
 temperature_sensor = None
 arduino = None
 ui_lcd = None
@@ -49,7 +49,7 @@ def setup_interfaces():
     Initializes components for interfacing with pH probe,
     temperature probe, and stepper motor/syringe pump
     """
-    global ph_sensor, temperature_sensor, arduino, ui_lcd, ui_keypad, temperature_controller, stir_controller
+    global temperature_sensor, arduino, ui_lcd, ui_keypad, temperature_controller, stir_controller
 
     # set module classes
     setup_module_classes()
@@ -61,7 +61,6 @@ def setup_interfaces():
     # Temperature Control Setup
     temperature_sensor = setup_temperature_probe()
     temperature_controller = setup_temperature_control()
-    ph_sensor = setup_ph_probe()
     arduino = setup_syringe_pump()
     stir_controller = setup_stir_control()
 
@@ -143,10 +142,6 @@ def setup_temperature_control():
         board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D0, wires=3
     )
     return temperature_control_class.Temperature_Control(constants.RELAY_PIN, sensor)
-
-
-def setup_ph_probe():
-    return ph_class.pH_Probe(board_class.SCL, board_class.SDA, gain=8)
 
 
 def setup_syringe_pump():
@@ -352,27 +347,10 @@ def read_pH():
     Reads calibration-adjusted value for pH
     :returns: adjusted pH value in units of pH, raw V reading from probe
     """
-    volts = read_raw_pH()
+    volts = ph_sensor.read_raw_pH()
     temperature = read_temperature()[0]
     pH_val = analysis.calculate_pH(volts, temperature)
     return pH_val, volts
-
-
-def _test_read_pH():
-    """Test function for pH"""
-    constants.pH_call_iter += 1
-    return constants.test_pH_vals[constants.hcl_call_iter][constants.pH_call_iter], 1
-
-
-def read_raw_pH():
-    """
-    Reads and pH value pH probe in V
-    :return: raw V reading from probe
-    """
-    # Read pH registers; pH_val is raw value from pH probe
-    volts = ph_sensor.voltage()
-
-    return volts
 
 
 def read_temperature():
@@ -381,10 +359,6 @@ def read_temperature():
     :returns: temperature in celsius, resistance in ohms
     """
     return temperature_sensor.get_temperature(), temperature_sensor.get_resistance()
-
-
-def _test_read_temperature():
-    return 29.9, 200
 
 
 def pump_volume(volume, direction):
@@ -414,10 +388,3 @@ def stir_speed(pwm_speed, gradual=False):
 
 def stir_stop():
     stir_controller.motor_stop()
-
-
-def _test_add_HCl():
-    constants.hcl_call_iter += (
-        1  # value only used for testing while reading pH doesn't work
-    )
-    constants.pH_call_iter = -1
