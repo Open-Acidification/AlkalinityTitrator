@@ -233,13 +233,6 @@ class Temperature_Control:
         else:
             self.relay.off()
 
-    def read_temperature(self):
-        """
-        Reads and returns the temperature from GPIO
-        :returns: temperature in celsius, resistance in ohms
-        """
-        return self.get_temperature(), self.get_resistance()
-
 
 """
 TODO: add comment
