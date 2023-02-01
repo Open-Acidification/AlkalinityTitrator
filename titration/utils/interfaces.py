@@ -42,7 +42,7 @@ temperature_sensor = temperature_class.Temperature_Probe(
 arduino = None
 ui_lcd = None
 ui_keypad = None
-temperature_controller = None
+temperature_controller = temperature_control_class.Temperature_Control(constants.RELAY_PIN, temperature_sensor)
 stir_controller = stir_class.Stir_Control(board_class.D13, debug=False)
 
 
@@ -51,7 +51,7 @@ def setup_interfaces():
     Initializes components for interfacing with pH probe,
     temperature probe, and stepper motor/syringe pump
     """
-    global arduino, ui_lcd, ui_keypad, temperature_controller
+    global arduino, ui_lcd, ui_keypad
 
     # set module classes
     setup_module_classes()
@@ -60,8 +60,6 @@ def setup_interfaces():
     ui_lcd = setup_lcd()
     ui_keypad = setup_keypad()
 
-    # Temperature Control Setup
-    temperature_controller = setup_temperature_control()
     arduino = setup_syringe_pump()
 
 
@@ -128,14 +126,6 @@ def setup_keypad():
     )
 
     return temp_keypad
-
-
-def setup_temperature_control():
-    # Create a new sensor attached to the 2nd probe (D0) for the temperature controller alone
-    sensor = temperature_class.Temperature_Probe(
-        board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D0, wires=3
-    )
-    return temperature_control_class.Temperature_Control(constants.RELAY_PIN, sensor)
 
 
 def setup_syringe_pump():
