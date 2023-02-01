@@ -36,7 +36,9 @@ stir_class: types.ModuleType = stir_control_mock
 
 # global, pH, liquid_crystal, and temperature probes
 ph_sensor = ph_class.pH_Probe(board_class.SCL, board_class.SDA, gain=8)
-temperature_sensor = None
+temperature_sensor = temperature_class.Temperature_Probe(
+    board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D4, wires=3
+)
 arduino = None
 ui_lcd = None
 ui_keypad = None
@@ -49,7 +51,7 @@ def setup_interfaces():
     Initializes components for interfacing with pH probe,
     temperature probe, and stepper motor/syringe pump
     """
-    global temperature_sensor, arduino, ui_lcd, ui_keypad, temperature_controller
+    global arduino, ui_lcd, ui_keypad, temperature_controller
 
     # set module classes
     setup_module_classes()
@@ -59,7 +61,6 @@ def setup_interfaces():
     ui_keypad = setup_keypad()
 
     # Temperature Control Setup
-    temperature_sensor = setup_temperature_probe()
     temperature_controller = setup_temperature_control()
     arduino = setup_syringe_pump()
 
@@ -127,12 +128,6 @@ def setup_keypad():
     )
 
     return temp_keypad
-
-
-def setup_temperature_probe():
-    return temperature_class.Temperature_Probe(
-        board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D4, wires=3
-    )
 
 
 def setup_temperature_control():
@@ -343,17 +338,9 @@ def read_pH():
     :returns: adjusted pH value in units of pH, raw V reading from probe
     """
     volts = ph_sensor.read_raw_pH()
-    temperature = read_temperature()[0]
+    temperature = temperature_sensor.read_temperature()[0]
     pH_val = analysis.calculate_pH(volts, temperature)
     return pH_val, volts
-
-
-def read_temperature():
-    """
-    Reads and returns the temperature from GPIO
-    :returns: temperature in celsius, resistance in ohms
-    """
-    return temperature_sensor.get_temperature(), temperature_sensor.get_resistance()
 
 
 def pump_volume(volume, direction):
