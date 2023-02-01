@@ -263,7 +263,7 @@ def total_alkalinity_titration():
     interfaces.lcd_out("Manual: 1", line=2)
     interfaces.lcd_out("Automatic: 2", line=3)
     interfaces.lcd_out("Stir speed: slow", line=4)
-    interfaces.stir_speed_slow()
+    interfaces.stir_controller.motor_speed_slow()
     user_choice = interfaces.read_user_input()
 
     # wait until solution is up to temperature
@@ -338,7 +338,7 @@ def total_alkalinity_titration():
 
     # save the current syringe position
     analysis.save_calibration_data()
-    interfaces.stir_stop()
+    interfaces.stir_controller.motor_stop()
     interfaces.temperature_controller.deactivate()
 
 
@@ -437,7 +437,7 @@ def degas(seconds):
     interfaces.lcd_clear()
     interfaces.lcd_out("Degassing {0:.0f}".format(seconds), line=1)
     interfaces.lcd_out("seconds", line=2)
-    interfaces.stir_speed_fast()
+    interfaces.stir_controller.motor_speed_fast()
     interfaces.delay(seconds, countdown=True)
     interfaces.stir_speed_slow()
 

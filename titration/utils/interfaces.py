@@ -41,7 +41,7 @@ arduino = None
 ui_lcd = None
 ui_keypad = None
 temperature_controller = None
-stir_controller = None
+stir_controller = stir_class.Stir_Control(board_class.D13, debug=False)
 
 
 def setup_interfaces():
@@ -49,7 +49,7 @@ def setup_interfaces():
     Initializes components for interfacing with pH probe,
     temperature probe, and stepper motor/syringe pump
     """
-    global temperature_sensor, arduino, ui_lcd, ui_keypad, temperature_controller, stir_controller
+    global temperature_sensor, arduino, ui_lcd, ui_keypad, temperature_controller
 
     # set module classes
     setup_module_classes()
@@ -62,7 +62,6 @@ def setup_interfaces():
     temperature_sensor = setup_temperature_probe()
     temperature_controller = setup_temperature_control()
     arduino = setup_syringe_pump()
-    stir_controller = setup_stir_control()
 
 
 def setup_module_classes():
@@ -146,10 +145,6 @@ def setup_temperature_control():
 
 def setup_syringe_pump():
     return syringe_class.Syringe_Pump()
-
-
-def setup_stir_control(debug=False):
-    return stir_class.Stir_Control(board_class.D13, debug=debug)
 
 
 def delay(seconds, countdown=False):
@@ -372,19 +367,3 @@ def pump_volume(volume, direction):
 
 def set_pump_volume(volume):
     arduino.set_volume_in_pump(volume)
-
-
-def stir_speed_fast():
-    stir_controller.motor_speed_fast()
-
-
-def stir_speed_slow():
-    stir_controller.motor_speed_slow()
-
-
-def stir_speed(pwm_speed, gradual=False):
-    stir_controller.set_motor_speed(pwm_speed, gradual)
-
-
-def stir_stop():
-    stir_controller.motor_stop()
