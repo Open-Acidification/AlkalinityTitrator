@@ -17,12 +17,12 @@ if constants.IS_TEST:
     )
 else:
     from titration.utils.devices import (
-        keypad as keypad_class,
-        liquid_crystal as lcd_class,
-        ph_probe as ph_class,
-        syringe_pump as syringe_class,
-        temperature_control as temperature_control_class,
-        temperature_probe as temperature_class,
+        keypad as keypad_class,  # type: ignore
+        liquid_crystal as lcd_class,  # type: ignore
+        ph_probe as ph_class,  # type: ignore
+        syringe_pump as syringe_class,  # type: ignore
+        temperature_control as temperature_control_class,  # type: ignore
+        temperature_probe as temperature_class,  # type: ignore
     )
 
 
