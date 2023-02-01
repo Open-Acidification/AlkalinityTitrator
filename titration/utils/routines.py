@@ -404,7 +404,7 @@ def wait_pH_stable(total_sol, data):
 
     while True:
         pH_reading, pH_volts = interfaces.read_pH()
-        temperature_reading = interfaces.temperature_sensor()[0]
+        temperature_reading = interfaces.temperature_sensor.read_temperature()[0]
         interfaces.lcd_out("pH:   {0:>4.5f} pH".format(pH_reading), line=1)
         interfaces.lcd_out("pH V: {0:>3.4f} mV".format(pH_volts * 1000), line=2)
         interfaces.lcd_out("Temp: {0:>4.3f} C".format(temperature_reading), line=3)
