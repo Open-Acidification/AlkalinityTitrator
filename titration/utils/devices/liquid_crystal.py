@@ -149,7 +149,3 @@ class LiquidCrystal:
 
         for i in range(min(len(keys), 4)):
             self.print(str(keys[i]) + ". " + values[i], lines[i])
-
-        # Original method, slow due to screen scrolling
-        # for key, value in list_to_display.items():
-        #   print(str(key) + '. ' + value)
