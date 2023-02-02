@@ -76,4 +76,3 @@ def run():
 def initialize_components():
     """Initializes external interfaces and saved calibration data"""
     analysis.setup_calibration()
-    interfaces.setup_interfaces()

@@ -213,7 +213,6 @@ def _calibrate_temperature():
 
     # reinitialize sensors with calibrated values
     interfaces.lcd.print("{}".format(new_ref_resistance), line=2)
-    interfaces.setup_interfaces()
 
 
 def total_alkalinity_titration():
