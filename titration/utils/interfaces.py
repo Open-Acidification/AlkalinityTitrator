@@ -38,7 +38,19 @@ stir_class: types.ModuleType = stir_control_mock
 ph_sensor = None
 temperature_sensor = None
 arduino = None
-ui_keypad = None
+
+global_keypad = keypad_class.Keypad(
+    r0=board_class.D1,
+    r1=board_class.D6,
+    r2=board_class.D5,
+    r3=board_class.D19,
+    c0=board_class.D16,
+    c1=board_class.D26,
+    c2=board_class.D20,
+    c3=board_class.D21,
+)
+
+
 temperature_controller = None
 stir_controller = None
 
@@ -60,13 +72,11 @@ def setup_interfaces():
     Initializes components for interfacing with pH probe,
     temperature probe, and stepper motor/syringe pump
     """
-    global ph_sensor, temperature_sensor, arduino, ui_keypad, temperature_controller, stir_controller
+
+    global ph_sensor, temperature_sensor, arduino, temperature_controller, stir_controller
 
     # set module classes
     setup_module_classes()
-
-    # ui_keypad setup
-    ui_keypad = setup_keypad()
 
     # Temperature Control Setup
     temperature_sensor = setup_temperature_probe()
@@ -108,21 +118,6 @@ def setup_module_classes():
         temperature_control_class = temperature_control
         syringe_class = syringe_pump
         stir_class = stir_control
-
-
-def setup_keypad():
-    temp_keypad = keypad_class.Keypad(
-        r0=board_class.D1,
-        r1=board_class.D6,
-        r2=board_class.D5,
-        r3=board_class.D19,
-        c0=board_class.D16,
-        c1=board_class.D26,
-        c2=board_class.D20,
-        c3=board_class.D21,
-    )
-
-    return temp_keypad
 
 
 def setup_temperature_probe():
@@ -183,7 +178,7 @@ def read_user_input(valid_inputs=None, console=False):
         if console:
             user_input = input()  # Poll keypad
         else:
-            user_input = ui_keypad.keypad_poll()
+            user_input = global_keypad.keypad_poll()
 
         if user_input is None:
             pass
@@ -199,7 +194,7 @@ def read_user_input(valid_inputs=None, console=False):
             )
 
     while True:
-        if ui_keypad.keypad_poll() is None:
+        if global_keypad.keypad_poll() is None:
             break
     return user_input
 
@@ -254,7 +249,6 @@ def read_user_value(message):
 
         # Else, the value will be '.' or a number
         elif user_input.isnumeric() or user_input == "*":
-
             # Check for decimal. If there is already one, do nothing
             if user_input == "*":
                 if not decimal:
