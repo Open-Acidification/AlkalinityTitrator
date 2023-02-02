@@ -1,5 +1,5 @@
 """
-The file for mock Keypad class 
+The file for mock Keypad class
 """
 import click
 
