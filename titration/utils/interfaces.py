@@ -75,7 +75,6 @@ def setup_interfaces():
 
     global ph_sensor, temperature_sensor, arduino, temperature_controller, stir_controller
 
-
     # set module classes
     setup_module_classes()
 
@@ -250,7 +249,6 @@ def read_user_value(message):
 
         # Else, the value will be '.' or a number
         elif user_input.isnumeric() or user_input == "*":
-
             # Check for decimal. If there is already one, do nothing
             if user_input == "*":
                 if not decimal:
