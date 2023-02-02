@@ -28,7 +28,7 @@ def test_handle_key_update(set_next_state_mock):
 
     update_settings.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "UserValue"
+    assert set_next_state_mock.call_args.args[0].name() == "PumpVolume"
     assert update_settings.substate == 5
 
     update_settings.handle_key("1")
@@ -178,7 +178,7 @@ def test_prime_pump(print_mock, set_next_state_mock):
 
     update_settings.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "UserValue"
+    assert set_next_state_mock.call_args.args[0].name() == "PumpVolume"
     assert update_settings.substate == 5
 
     update_settings.loop()

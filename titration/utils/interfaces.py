@@ -34,11 +34,10 @@ temperature_control_class: types.ModuleType = temperature_control_mock
 syringe_class: types.ModuleType = syringe_pump_mock
 stir_class: types.ModuleType = stir_control_mock
 
-# global, pH, liquid_crystal, and temperature probes
+# global, pH, and temperature probes
 ph_sensor = None
 temperature_sensor = None
 arduino = None
-ui_lcd = None
 
 global_keypad = keypad_class.Keypad(
     r0=board_class.D1,
@@ -51,8 +50,21 @@ global_keypad = keypad_class.Keypad(
     c3=board_class.D21,
 )
 
+
 temperature_controller = None
 stir_controller = None
+
+lcd = lcd_class.LiquidCrystal(
+    rs=board_class.D27,
+    backlight=board_class.D15,
+    enable=board_class.D22,
+    d4=board_class.D18,
+    d5=board_class.D23,
+    d6=board_class.D24,
+    d7=board_class.D25,
+    cols=constants.LCD_WIDTH,
+    rows=constants.LCD_HEIGHT,
+)
 
 
 def setup_interfaces():
@@ -60,13 +72,12 @@ def setup_interfaces():
     Initializes components for interfacing with pH probe,
     temperature probe, and stepper motor/syringe pump
     """
-    global ph_sensor, temperature_sensor, arduino, ui_lcd, temperature_controller, stir_controller
+
+    global ph_sensor, temperature_sensor, arduino, temperature_controller, stir_controller
+
 
     # set module classes
     setup_module_classes()
-
-    # LCD and ui_keypad setup
-    ui_lcd = setup_lcd()
 
     # Temperature Control Setup
     temperature_sensor = setup_temperature_probe()
@@ -110,22 +121,6 @@ def setup_module_classes():
         stir_class = stir_control
 
 
-def setup_lcd():
-    temp_lcd = lcd_class.LiquidCrystal(
-        rs=board_class.D27,
-        backlight=board_class.D15,
-        enable=board_class.D22,
-        d4=board_class.D18,
-        d5=board_class.D23,
-        d6=board_class.D24,
-        d7=board_class.D25,
-        cols=constants.LCD_WIDTH,
-        rows=constants.LCD_HEIGHT,
-    )
-
-    return temp_lcd
-
-
 def setup_temperature_probe():
     return temperature_class.Temperature_Probe(
         board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D4, wires=3
@@ -164,47 +159,8 @@ def delay(seconds, countdown=False):
         temperature_controller.update()
         timeLeft = timeEnd - timeNow
         if countdown and int(timeLeft) % 5 == 0:
-            lcd_out("Time Left: {}".format(int(timeLeft)), line=4)
+            lcd.print("Time Left: {}".format(int(timeLeft)), line=4)
         timeNow = time.time()
-
-
-def lcd_out(
-    message,
-    line,
-    style=constants.LCD_LEFT_JUST,
-    console=False,
-):
-    """
-    Outputs given string to LCD screen
-    :param info: string to be displayed on LCD screen
-    """
-    if constants.LCD_CONSOLE or console:
-        print(message)
-    else:
-        ui_lcd.print(message, line, style)
-
-
-def lcd_clear():
-    ui_lcd.clear()
-
-
-def display_list(dict_to_display):
-    """
-    Display a list of options from a dictionary. Only the first four
-    options will be displayed due to only four screen rows.
-    :param list_to_display: list to be displayed on LCD screen
-    """
-    lcd_clear()
-    keys = list(dict_to_display.keys())
-    values = list(dict_to_display.values())
-    lines = [1, 2, 3, 4]
-
-    for i in range(min(len(keys), 4)):
-        ui_lcd.print(str(keys[i]) + ". " + values[i], lines[i])
-
-    # Original method, slow due to screen scrolling
-    # for key, value in list_to_display.items():
-    #   lcd_out(str(key) + '. ' + value)
 
 
 def read_user_input(valid_inputs=None, console=False):
@@ -232,7 +188,7 @@ def read_user_input(valid_inputs=None, console=False):
             break
         else:
             print("Input: ", user_input, type(user_input))
-            lcd_out(
+            lcd.print(
                 constants.VALID_INPUT_WARNING,
                 constants.LCD_LINE_1,
                 constants.LCD_LEFT_JUST,
@@ -250,10 +206,10 @@ def read_user_value(message):
     instructions_2 = "A = accept  C = Clr"
     inputs = []
 
-    lcd_out(message, line=1)
-    lcd_out("_", style=constants.LCD_CENT_JUST, line=2)
-    lcd_out(instructions_1, line=3)
-    lcd_out(instructions_2, line=4)
+    lcd.print(message, line=1)
+    lcd.print("_", style=constants.LCD_CENT_JUST, line=2)
+    lcd.print(instructions_1, line=3)
+    lcd.print(instructions_2, line=4)
 
     # Take inputs until # is pressed
     user_input = None
@@ -311,9 +267,9 @@ def read_user_value(message):
 
         # Display updated input
         if len(inputs) == 0:
-            lcd_out("_", style=constants.LCD_CENT_JUST, line=2)
+            lcd.print("_", style=constants.LCD_CENT_JUST, line=2)
         else:
-            lcd_out(string, style=constants.LCD_CENT_JUST, line=2)
+            lcd.print(string, style=constants.LCD_CENT_JUST, line=2)
 
         # DEBUG
         # print("Inputs: ", inputs)

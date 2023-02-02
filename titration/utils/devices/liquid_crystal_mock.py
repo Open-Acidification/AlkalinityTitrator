@@ -39,7 +39,7 @@ class LiquidCrystal:
         elif style == 3:
             message = message.rjust(self.cols, " ")
 
-        self.strings[line - 1] = message
+        self.strings[line - 1] = message[0 : self.cols]
 
         self.__draw()
 
@@ -67,3 +67,17 @@ class LiquidCrystal:
 
     def mock_enable_clear(self):
         self.clear_flag = True
+
+    def display_list(self, dict_to_display):
+        """
+        Display a list of options from a dictionary. Only the first four
+        options will be displayed due to only four screen rows.
+        :param list_to_display: list to be displayed on LCD screen
+        """
+        self.clear()
+        keys = list(dict_to_display.keys())
+        values = list(dict_to_display.values())
+        lines = [1, 2, 3, 4]
+
+        for i in range(min(len(keys), 4)):
+            self.print(str(keys[i]) + ". " + values[i], lines[i])
