@@ -23,9 +23,9 @@ def run():
                 else:
                     page = 1
             if page == 1:
-                interfaces.display_list(constants.ROUTINE_OPTIONS_1)
+                interfaces.lcd.display_list(constants.ROUTINE_OPTIONS_1)
             else:
-                interfaces.display_list(constants.ROUTINE_OPTIONS_2)
+                interfaces.lcd.display_list(constants.ROUTINE_OPTIONS_2)
 
             # wait for user input to select which routine (polling should be fine here)
             routine_selection = interfaces.read_user_input()
@@ -33,8 +33,8 @@ def run():
 
         analysis.save_calibration_data()
         interfaces.temperature_controller.deactivate()
-        interfaces.lcd_clear()
-        interfaces.ui_lcd.lcd_backlight(False)
+        interfaces.lcd.clear()
+        interfaces.lcd.lcd_backlight(False)
     except (BaseException, Exception):
         # Deactivate the SSR if any crash occurs
         if interfaces.temperature_controller is not None:
@@ -42,11 +42,11 @@ def run():
         print("\n************************\nDeactivated SSR\n************************\n")
 
         try:
-            interfaces.lcd_clear()
+            interfaces.lcd.clear()
         except BaseException:
             pass
         try:
-            interfaces.lcd_out("Deactivated SSR", 1)
+            interfaces.lcd.print("Deactivated SSR", 1)
         except BaseException:
             pass
 
@@ -58,7 +58,7 @@ def run():
                 "\n************************\nCalibration Saved\n************************\n"
             )
             try:
-                interfaces.lcd_out("Calibration Saved", 2)
+                interfaces.lcd.print("Calibration Saved", 2)
             except Exception:
                 pass
         except Exception:
@@ -66,7 +66,7 @@ def run():
                 "\n!!!!!!!!!!!!!!!!!!!!!!!!\nUnable to save calibration data\n!!!!!!!!!!!!!!!!!!!!!!!!\n"
             )
             try:
-                interfaces.lcd_out("Calibration UNSAVED", 2)
+                interfaces.lcd.print("Calibration UNSAVED", 2)
             except Exception:
                 pass
         print(sys.exc_info()[0])

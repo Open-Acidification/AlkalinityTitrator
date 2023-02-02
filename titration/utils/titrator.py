@@ -29,9 +29,6 @@ class Titrator:
         """
         The constructor for the Titrator class
         """
-        self.state = MainMenu(self)
-        self.next_state = None
-
         # Initialize Other Devices
         interfaces.setup_interfaces()
 
@@ -60,6 +57,17 @@ class Titrator:
             c2=board_class.D20,
             c3=board_class.D21,
         )
+
+        # Initialize State
+        self.state = MainMenu(self)
+        self.next_state = None
+
+        # Initialize Titrator Values
+        self.pump_volume = "0"
+        self.solution_weight = "0"
+        self.solution_salinity = "0"
+        self.volume = "0"
+        self.buffer_ph = "0"
 
     def loop(self):
         """

@@ -135,3 +135,17 @@ class LiquidCrystal:
         time.sleep(constants.E_PULSE)
         self.pin_E.value = False
         time.sleep(constants.E_DELAY)
+
+    def display_list(self, dict_to_display):
+        """
+        Display a list of options from a dictionary. Only the first four
+        options will be displayed due to only four screen rows.
+        :param list_to_display: list to be displayed on LCD screen
+        """
+        self.clear()
+        keys = list(dict_to_display.keys())
+        values = list(dict_to_display.values())
+        lines = [1, 2, 3, 4]
+
+        for i in range(min(len(keys), 4)):
+            self.print(str(keys[i]) + ". " + values[i], lines[i])

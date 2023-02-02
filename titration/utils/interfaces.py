@@ -26,14 +26,37 @@ else:
     )
 
 
-# global, pH, liquid_crystal, and temperature probes
+# global, pH, and temperature probes
 ph_sensor = None
 temperature_sensor = None
 arduino = None
-ui_lcd = None
-ui_keypad = None
+
+global_keypad = keypad_class.Keypad(
+    r0=board_class.D1,
+    r1=board_class.D6,
+    r2=board_class.D5,
+    r3=board_class.D19,
+    c0=board_class.D16,
+    c1=board_class.D26,
+    c2=board_class.D20,
+    c3=board_class.D21,
+)
+
+
 temperature_controller = None
 stir_controller = None
+
+lcd = lcd_class.LiquidCrystal(
+    rs=board_class.D27,
+    backlight=board_class.D15,
+    enable=board_class.D22,
+    d4=board_class.D18,
+    d5=board_class.D23,
+    d6=board_class.D24,
+    d7=board_class.D25,
+    cols=constants.LCD_WIDTH,
+    rows=constants.LCD_HEIGHT,
+)
 
 
 def setup_interfaces():
@@ -41,11 +64,8 @@ def setup_interfaces():
     Initializes components for interfacing with pH probe,
     temperature probe, and stepper motor/syringe pump
     """
-    global ph_sensor, temperature_sensor, arduino, ui_lcd, ui_keypad, temperature_controller, stir_controller
 
-    # LCD and ui_keypad setup
-    ui_lcd = setup_lcd()
-    ui_keypad = setup_keypad()
+    global ph_sensor, temperature_sensor, arduino, temperature_controller, stir_controller
 
     # Temperature Control Setup
     temperature_sensor = setup_temperature_probe()
@@ -53,37 +73,6 @@ def setup_interfaces():
     ph_sensor = setup_ph_probe()
     arduino = setup_syringe_pump()
     stir_controller = setup_stir_control()
-
-
-def setup_lcd():
-    temp_lcd = lcd_class.LiquidCrystal(
-        rs=board_class.D27,
-        backlight=board_class.D15,
-        enable=board_class.D22,
-        d4=board_class.D18,
-        d5=board_class.D23,
-        d6=board_class.D24,
-        d7=board_class.D25,
-        cols=constants.LCD_WIDTH,
-        rows=constants.LCD_HEIGHT,
-    )
-
-    return temp_lcd
-
-
-def setup_keypad():
-    temp_keypad = keypad_class.Keypad(
-        r0=board_class.D1,
-        r1=board_class.D6,
-        r2=board_class.D5,
-        r3=board_class.D19,
-        c0=board_class.D16,
-        c1=board_class.D26,
-        c2=board_class.D20,
-        c3=board_class.D21,
-    )
-
-    return temp_keypad
 
 
 def setup_temperature_probe():
@@ -124,47 +113,8 @@ def delay(seconds, countdown=False):
         temperature_controller.update()
         timeLeft = timeEnd - timeNow
         if countdown and int(timeLeft) % 5 == 0:
-            lcd_out("Time Left: {}".format(int(timeLeft)), line=4)
+            lcd.print("Time Left: {}".format(int(timeLeft)), line=4)
         timeNow = time.time()
-
-
-def lcd_out(
-    message,
-    line,
-    style=constants.LCD_LEFT_JUST,
-    console=False,
-):
-    """
-    Outputs given string to LCD screen
-    :param info: string to be displayed on LCD screen
-    """
-    if constants.LCD_CONSOLE or console:
-        print(message)
-    else:
-        ui_lcd.print(message, line, style)
-
-
-def lcd_clear():
-    ui_lcd.clear()
-
-
-def display_list(dict_to_display):
-    """
-    Display a list of options from a dictionary. Only the first four
-    options will be displayed due to only four screen rows.
-    :param list_to_display: list to be displayed on LCD screen
-    """
-    lcd_clear()
-    keys = list(dict_to_display.keys())
-    values = list(dict_to_display.values())
-    lines = [1, 2, 3, 4]
-
-    for i in range(min(len(keys), 4)):
-        ui_lcd.print(str(keys[i]) + ". " + values[i], lines[i])
-
-    # Original method, slow due to screen scrolling
-    # for key, value in list_to_display.items():
-    #   lcd_out(str(key) + '. ' + value)
 
 
 def read_user_input(valid_inputs=None, console=False):
@@ -183,7 +133,7 @@ def read_user_input(valid_inputs=None, console=False):
         if console:
             user_input = input()  # Poll keypad
         else:
-            user_input = ui_keypad.keypad_poll()
+            user_input = global_keypad.keypad_poll()
 
         if user_input is None:
             pass
@@ -192,14 +142,14 @@ def read_user_input(valid_inputs=None, console=False):
             break
         else:
             print("Input: ", user_input, type(user_input))
-            lcd_out(
+            lcd.print(
                 constants.VALID_INPUT_WARNING,
                 constants.LCD_LINE_1,
                 constants.LCD_LEFT_JUST,
             )
 
     while True:
-        if ui_keypad.keypad_poll() is None:
+        if global_keypad.keypad_poll() is None:
             break
     return user_input
 
@@ -210,10 +160,10 @@ def read_user_value(message):
     instructions_2 = "A = accept  C = Clr"
     inputs = []
 
-    lcd_out(message, line=1)
-    lcd_out("_", style=constants.LCD_CENT_JUST, line=2)
-    lcd_out(instructions_1, line=3)
-    lcd_out(instructions_2, line=4)
+    lcd.print(message, line=1)
+    lcd.print("_", style=constants.LCD_CENT_JUST, line=2)
+    lcd.print(instructions_1, line=3)
+    lcd.print(instructions_2, line=4)
 
     # Take inputs until # is pressed
     user_input = None
@@ -254,7 +204,6 @@ def read_user_value(message):
 
         # Else, the value will be '.' or a number
         elif user_input.isnumeric() or user_input == "*":
-
             # Check for decimal. If there is already one, do nothing
             if user_input == "*":
                 if not decimal:
@@ -271,9 +220,9 @@ def read_user_value(message):
 
         # Display updated input
         if len(inputs) == 0:
-            lcd_out("_", style=constants.LCD_CENT_JUST, line=2)
+            lcd.print("_", style=constants.LCD_CENT_JUST, line=2)
         else:
-            lcd_out(string, style=constants.LCD_CENT_JUST, line=2)
+            lcd.print(string, style=constants.LCD_CENT_JUST, line=2)
 
         # DEBUG
         # print("Inputs: ", inputs)
