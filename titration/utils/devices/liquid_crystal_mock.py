@@ -39,7 +39,7 @@ class LiquidCrystal:
         elif style == 3:
             message = message.rjust(self.cols, " ")
 
-        self.strings[line - 1] = message[0: self.cols]
+        self.strings[line - 1] = message[0 : self.cols]
 
         self.__draw()
 
