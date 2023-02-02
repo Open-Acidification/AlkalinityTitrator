@@ -21,7 +21,7 @@ def test_handle_key(set_next_state_mock):
 
     calibrate_temp.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "UserValue"
+    assert set_next_state_mock.call_args.args[0].name() == "ReferenceTemperature"
     assert calibrate_temp.substate == 2
 
     calibrate_temp.handle_key("1")
@@ -101,7 +101,7 @@ def test_calibrate_temp(print_mock, set_next_state_mock):
 
     calibrate_temp.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "UserValue"
+    assert set_next_state_mock.call_args.args[0].name() == "ReferenceTemperature"
     assert calibrate_temp.substate == 2
 
     calibrate_temp.loop()

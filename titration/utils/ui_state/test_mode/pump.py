@@ -3,7 +3,7 @@ The file for the Pump class
 """
 from titration.utils.ui_state.ui_state import UIState
 from titration.utils import constants
-from titration.utils.ui_state.user_value.user_value import UserValue
+from titration.utils.ui_state.user_value.pump_volume import PumpVolume
 
 
 class Pump(UIState):
@@ -42,7 +42,7 @@ class Pump(UIState):
             key (char): the keypad input is used to move through the substates
         """
         if self.substate == 1:
-            self._set_next_state(UserValue(self.titrator, self, "Volume: "), True)
+            self._set_next_state(PumpVolume(self.titrator, self), True)
             self.substate += 1
 
         elif self.substate == 2:

@@ -2,7 +2,7 @@
 The file to for the UpdateSetting class
 """
 from titration.utils.ui_state.ui_state import UIState
-from titration.utils.ui_state.user_value.user_value import UserValue
+from titration.utils.ui_state.user_value.pump_volume import PumpVolume
 
 
 class UpdateSettings(UIState):
@@ -15,17 +15,6 @@ class UpdateSettings(UIState):
         substate (int): the substate is used to keep track of substate of the UIState
         values (dict): values is a dictionary to hold the volume in the pump
     """
-
-    def __init__(self, titrator, previous_state):
-        """
-        The constructor for the UpdateSettings class
-
-        Parameters:
-            titrator (Titrator object): the titrator is used to move through the state machine
-            previous_state (UIState object): the previous_state is used to return the last visited state
-        """
-        super().__init__(titrator, previous_state)
-        self.values = {"vol_in_pump": 0}
 
     def handle_key(self, key):
         """
@@ -62,9 +51,7 @@ class UpdateSettings(UIState):
                 self._set_next_state(self.previous_state, True)
 
         elif self.substate == 4:
-            self._set_next_state(
-                UserValue(self.titrator, self, "Volume in pump:"), True
-            )
+            self._set_next_state(PumpVolume(self.titrator, self), True)
             self.substate += 1
 
         elif self.substate == 5:
