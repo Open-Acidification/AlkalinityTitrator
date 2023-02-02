@@ -1,5 +1,5 @@
 """
-Module to create a mock LCD
+The file to test the mock liquid crystal display
 """
 
 import titration.utils.devices.board_mock as board
@@ -7,11 +7,11 @@ from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 from titration.utils import constants
 
 
-def test_lcd_create():
+def create_lcd(cols=constants.LCD_WIDTH, rows=constants.LCD_HEIGHT):
     """
-    Function to create a mock LCD for testing
+    The function to create a mock LCD for testing
     """
-    # the mock LCD doesn't use it's inputs, real or None inputs should work
+
     liquid_crystal = LiquidCrystal(
         rs=board.D27,
         backlight=board.D15,
@@ -20,16 +20,28 @@ def test_lcd_create():
         d5=board.D23,
         d6=board.D24,
         d7=board.D25,
-        cols=constants.LCD_WIDTH,
-        rows=constants.LCD_HEIGHT,
+        cols=cols,
+        rows=rows,
     )
 
+    return liquid_crystal
+
+
+def test_lcd_create():
+    """
+    The function to test initializing the mock LCD
+    """
+
+    liquid_crystal = create_lcd()
+
     assert liquid_crystal is not None
+    assert liquid_crystal.cols == 20
+    assert liquid_crystal.rows == 4
 
 
 def test_lcd_create_null():
     """
-    Function to create a mock null LCD for testing
+    The function to test creating a mock null LCD for testing
     """
     liquid_crystal = LiquidCrystal(
         None,
@@ -43,23 +55,15 @@ def test_lcd_create_null():
         constants.LCD_HEIGHT,
     )
     assert liquid_crystal is not None
+    assert liquid_crystal.cols == 20
+    assert liquid_crystal.rows == 4
 
 
-def test_lcd_begin_large(capsys):
+def test_lcd_init_out(capsys):
     """
-    Function to test startup of a large mock LCD
+    The function to test the startup of a large mock LCD
     """
-    liquid_crystal = LiquidCrystal(
-        rs=board.D27,
-        backlight=board.D15,
-        enable=board.D22,
-        d4=board.D18,
-        d5=board.D23,
-        d6=board.D24,
-        d7=board.D25,
-        cols=constants.LCD_WIDTH,
-        rows=constants.LCD_HEIGHT,
-    )
+    create_lcd()
 
     captured = capsys.readouterr()
     assert captured.out == (
@@ -71,15 +75,12 @@ def test_lcd_begin_large(capsys):
         + "*====================*\n"
     )
 
-    assert liquid_crystal.cols == 20
-    assert liquid_crystal.rows == 4
 
-
-def test_lcd_begin_large_null(capsys):
+def test_lcd_init_null_out(capsys):
     """
-    Function to test startup of a large null mock LCD
+    The function to test startup of a null mock LCD
     """
-    liquid_crystal = LiquidCrystal(
+    LiquidCrystal(
         None,
         None,
         None,
@@ -101,25 +102,12 @@ def test_lcd_begin_large_null(capsys):
         + "*====================*\n"
     )
 
-    assert liquid_crystal.cols == 20
-    assert liquid_crystal.rows == 4
 
-
-def test_lcd_begin_small(capsys):
+def test_lcd_init_small_out(capsys):
     """
-    Function to test startup of a small mock LCD
+    The function to test startup of a small mock LCD
     """
-    liquid_crystal = LiquidCrystal(
-        rs=board.D27,
-        backlight=board.D15,
-        enable=board.D22,
-        d4=board.D18,
-        d5=board.D23,
-        d6=board.D24,
-        d7=board.D25,
-        cols=10,
-        rows=2,
-    )
+    liquid_crystal = create_lcd(10, 2)
 
     captured = capsys.readouterr()
     assert captured.out == (
@@ -130,9 +118,9 @@ def test_lcd_begin_small(capsys):
     assert liquid_crystal.rows == 2
 
 
-def test_lcd_begin_small_null(capsys):
+def test_lcd_init_small_null_out(capsys):
     """
-    Function to test startup of a small null mock LCD
+    The function to test startup of a small null mock LCD
     """
     liquid_crystal = LiquidCrystal(None, None, None, None, None, None, None, 10, 2)
 
@@ -147,24 +135,12 @@ def test_lcd_begin_small_null(capsys):
 
 def test_lcd_print_left(capsys):
     """
-    Function to test mock LCD printing from the left
+    The function to test mock LCD printing from the left
     """
-    liquid_crystal = LiquidCrystal(
-        rs=board.D27,
-        backlight=board.D15,
-        enable=board.D22,
-        d4=board.D18,
-        d5=board.D23,
-        d6=board.D24,
-        d7=board.D25,
-        cols=constants.LCD_WIDTH,
-        rows=constants.LCD_HEIGHT,
-    )
+    liquid_crystal = create_lcd()
 
-    # Flush the current stdout buffer from begin() output
     _ = capsys.readouterr()
 
-    # print into the first line
     liquid_crystal.print("test string 1", 1, 1)
     captured = capsys.readouterr()
     assert captured.out == (
@@ -176,7 +152,6 @@ def test_lcd_print_left(capsys):
         + "*====================*\n"
     )
 
-    # print into the first line again
     liquid_crystal.print("test string 1 (2)", 1, 1)
     captured = capsys.readouterr()
     assert captured.out == (
@@ -188,7 +163,6 @@ def test_lcd_print_left(capsys):
         + "*====================*\n"
     )
 
-    # print into the second line
     liquid_crystal.print("test string 2", 2, 1)
     captured = capsys.readouterr()
     assert captured.out == (
@@ -200,7 +174,6 @@ def test_lcd_print_left(capsys):
         + "*====================*\n"
     )
 
-    # print into the third line
     liquid_crystal.print("test string 3", 3, 1)
     captured = capsys.readouterr()
     assert captured.out == (
@@ -212,7 +185,6 @@ def test_lcd_print_left(capsys):
         + "*====================*\n"
     )
 
-    # print into the fourth line, too long
     liquid_crystal.print("test string 4", 4, 1)
     captured = capsys.readouterr()
     assert captured.out == (
@@ -227,24 +199,12 @@ def test_lcd_print_left(capsys):
 
 def test_lcd_print_center(capsys):
     """
-    Function to test mock LCD printing from the center
+    The function to test mock LCD printing from the center
     """
-    liquid_crystal = LiquidCrystal(
-        rs=board.D27,
-        backlight=board.D15,
-        enable=board.D22,
-        d4=board.D18,
-        d5=board.D23,
-        d6=board.D24,
-        d7=board.D25,
-        cols=constants.LCD_WIDTH,
-        rows=constants.LCD_HEIGHT,
-    )
+    liquid_crystal = create_lcd()
 
-    # Flush the current stdout buffer from begin() output
     _ = capsys.readouterr()
 
-    # print into the first line
     liquid_crystal.print("test string 1", 1, 2)
     captured = capsys.readouterr()
     assert captured.out == (
@@ -256,7 +216,6 @@ def test_lcd_print_center(capsys):
         + "*====================*\n"
     )
 
-    # print into the first line again
     liquid_crystal.print("test string 1 (2)", 1, 2)
     captured = capsys.readouterr()
     assert captured.out == (
@@ -268,7 +227,6 @@ def test_lcd_print_center(capsys):
         + "*====================*\n"
     )
 
-    # print into the second line
     liquid_crystal.print("test string 2", 2, 2)
     captured = capsys.readouterr()
     assert captured.out == (
@@ -280,7 +238,6 @@ def test_lcd_print_center(capsys):
         + "*====================*\n"
     )
 
-    # print into the third line
     liquid_crystal.print("test string 3", 3, 2)
     captured = capsys.readouterr()
     assert captured.out == (
@@ -292,7 +249,6 @@ def test_lcd_print_center(capsys):
         + "*====================*\n"
     )
 
-    # print into the fourth line, too long
     liquid_crystal.print("test string 4", 4, 2)
     captured = capsys.readouterr()
     assert captured.out == (
@@ -307,24 +263,12 @@ def test_lcd_print_center(capsys):
 
 def test_lcd_print_right(capsys):
     """
-    Function to test mock LCD printing from the right
+    The function to test mock LCD printing from the right
     """
-    liquid_crystal = LiquidCrystal(
-        rs=board.D27,
-        backlight=board.D15,
-        enable=board.D22,
-        d4=board.D18,
-        d5=board.D23,
-        d6=board.D24,
-        d7=board.D25,
-        cols=constants.LCD_WIDTH,
-        rows=constants.LCD_HEIGHT,
-    )
+    liquid_crystal = create_lcd()
 
-    # Flush the current stdout buffer from begin() output
     _ = capsys.readouterr()
 
-    # print into the first line
     liquid_crystal.print("test string 1", 1, 3)
     captured = capsys.readouterr()
     assert captured.out == (
@@ -336,7 +280,6 @@ def test_lcd_print_right(capsys):
         + "*====================*\n"
     )
 
-    # print into the first line again
     liquid_crystal.print("test string 1 (2)", 1, 3)
     captured = capsys.readouterr()
     assert captured.out == (
@@ -348,7 +291,6 @@ def test_lcd_print_right(capsys):
         + "*====================*\n"
     )
 
-    # print into the second line
     liquid_crystal.print("test string 2", 2, 3)
     captured = capsys.readouterr()
     assert captured.out == (
@@ -360,7 +302,6 @@ def test_lcd_print_right(capsys):
         + "*====================*\n"
     )
 
-    # print into the third line
     liquid_crystal.print("test string 3", 3, 3)
     captured = capsys.readouterr()
     assert captured.out == (
@@ -372,7 +313,6 @@ def test_lcd_print_right(capsys):
         + "*====================*\n"
     )
 
-    # print into the fourth line, too long
     liquid_crystal.print("test string 4", 4, 3)
     captured = capsys.readouterr()
     assert captured.out == (
@@ -387,29 +327,17 @@ def test_lcd_print_right(capsys):
 
 def test_lcd_print_long(capsys):
     """
-    Function to test mock LCD when a print call is too long
+    The function to test mock LCD when a print call is too long
     """
-    liquid_crystal = LiquidCrystal(
-        rs=board.D27,
-        backlight=board.D15,
-        enable=board.D22,
-        d4=board.D18,
-        d5=board.D23,
-        d6=board.D24,
-        d7=board.D25,
-        cols=constants.LCD_WIDTH,
-        rows=constants.LCD_HEIGHT,
-    )
+    liquid_crystal = create_lcd()
 
-    # Flush the current stdout buffer from begin() and prints
     _ = capsys.readouterr()
 
-    # print into the first line, too long
     liquid_crystal.print("test string that's too long", 1, 1)
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
-        + "|test string that's too long|\n"
+        + "|test string that's t|\n"
         + "|                    |\n"
         + "|                    |\n"
         + "|                    |\n"
@@ -419,20 +347,28 @@ def test_lcd_print_long(capsys):
 
 def test_lcd_clear(capsys):
     """
-    Function to test a mock LCD clear call
+    The function to test a mock LCD clear call
     """
-    liquid_crystal = LiquidCrystal(None, None, None, None, None, None, None, 20, 4)
+    liquid_crystal = create_lcd()
 
-    # test that a 20x4 empty box is properly shown on
-    liquid_crystal.print("test string", 1, 2)
-    liquid_crystal.print("test string", 2, 2)
-    liquid_crystal.print("test string", 3, 2)
-    liquid_crystal.print("test string", 4, 2)
+    liquid_crystal.print("test string", 1, 1)
+    liquid_crystal.print("test string", 2, 1)
+    liquid_crystal.print("test string", 3, 1)
 
-    # Flush the current stdout buffer from begin() and prints
     _ = capsys.readouterr()
 
-    # clear the LCD
+    liquid_crystal.print("test string", 4, 1)
+
+    captured = capsys.readouterr()
+    assert captured.out == (
+        "*====================*\n"
+        + "|test string         |\n"
+        + "|test string         |\n"
+        + "|test string         |\n"
+        + "|test string         |\n"
+        + "*====================*\n"
+    )
+
     liquid_crystal.clear()
     captured = capsys.readouterr()
     assert captured.out == (
@@ -444,7 +380,6 @@ def test_lcd_clear(capsys):
         + "*====================*\n"
     )
 
-    # clear the LCD again
     liquid_crystal.clear()
     captured = capsys.readouterr()
     assert captured.out == (
