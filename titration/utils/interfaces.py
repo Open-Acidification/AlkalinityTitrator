@@ -75,7 +75,6 @@ def setup_interfaces():
 
     global ph_sensor, temperature_sensor, arduino, temperature_controller, stir_controller
 
-
     # set module classes
     setup_module_classes()
 
