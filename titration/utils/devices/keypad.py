@@ -32,7 +32,6 @@ KEY_VALUES = {
 
 class Keypad:
     def __init__(self, r0, r1, r2, r3, c0, c1, c2, c3):
-
         self.pin_R0 = digitalio.DigitalInOut(r0)  # Top Row
         self.pin_R1 = digitalio.DigitalInOut(r1)
         self.pin_R2 = digitalio.DigitalInOut(r2)
