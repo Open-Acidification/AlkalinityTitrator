@@ -5,8 +5,6 @@ from titration.utils import constants, interfaces
 
 
 def setup_module(module):
-    constants.IS_TEST = True
-    interfaces.setup_module_classes()
     interfaces.ui_lcd = interfaces.setup_lcd()
 
 

@@ -1,10 +1,24 @@
+"""
+The file to test the mock stir controller class
+"""
 from titration.utils.devices.stir_control_mock import Stir_Control
 from titration.utils.devices import board_mock as board_class
 
-stir_controller = Stir_Control(board_class.D13, debug=True)
+
+def create_stir_controller():
+    """
+    The function to create a mock stir controller
+    """
+    return Stir_Control(board_class.D13, debug=True)
 
 
 def test_stir_controller_stir_fast(capsys):
+    """
+    The function to test the speed up of the stir controller
+    """
+
+    stir_controller = create_stir_controller()
+
     _ = capsys.readouterr()
 
     stir_controller.motor_speed_fast()
@@ -60,6 +74,11 @@ def test_stir_controller_stir_fast(capsys):
 
 
 def test_stir_controller_stir_slow(capsys):
+    """
+    The function to test the slow speed of the mock stir controller
+    """
+    stir_controller = create_stir_controller()
+
     _ = capsys.readouterr()
 
     stir_controller.motor_speed_slow()
@@ -95,6 +114,12 @@ def test_stir_controller_stir_slow(capsys):
 
 
 def test_stir_controller_stir_set(capsys):
+    """
+    The function to test setting the mock stir controller speed
+    """
+
+    stir_controller = create_stir_controller()
+
     _ = capsys.readouterr()
 
     stir_controller.set_motor_speed(5000, gradual=True)
