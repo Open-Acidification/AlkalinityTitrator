@@ -1,34 +1,64 @@
 """
-Module for mocking the liquid_crystal.py class for testing purposes
+The file for mocking the LiquidCrystal class for testing purposes
 """
 from os import name, system
 
 
 class LiquidCrystal:
+    """
+    The class for the mock of the Sunfire LCD 20x04 Char Display
+    """
+
     def __init__(self, rs, backlight, enable, d4, d5, d6, d7, cols, rows):
+        """
+        The constructor for the mock LiquidCrystal class.
+        The parameters are the board pins that the LCD uses
+        """
+
+        self.pin_RS = rs
+        self.pin_E = enable
+        self.pin_D4 = d4
+        self.pin_D5 = d5
+        self.pin_D6 = d6
+        self.pin_D7 = d7
+        self.pin_ON = backlight
+
+        self.pin_ON = True
+
         self.cols = cols
         self.rows = rows
 
-        self.strings = []
         self.clear_flag = True
 
-        # Clear any existing rows
-        self.strings.clear()
+        self.strings = []
+        self.blank = "".ljust(self.cols)
+        for _ in range(0, self.rows):
+            self.strings.append(self.blank)
 
-        # Create empty arrays for strings
-        for i in range(0, rows):
-            self.strings.append("".ljust(cols))
-
-        # Draw mock display
-        self.__draw()
+        self.clear()
 
     def clear(self):
-        for i in range(len(self.strings)):
-            self.strings[i] = "".ljust(self.cols, " ")
-        self.__draw()
+        """
+        The function to clear the mock LCD
+        """
+        self.__clear_sys_out()
+
+        if self.pin_ON is True:
+            for i in range(-1, self.rows + 1):
+                if i == -1 or i == self.rows:
+                    print("*", "".ljust(self.cols, "="), "*", sep="")
+                else:
+                    print("|", self.blank, "|", sep="")
 
     def print(self, message, line, style=1):
-        # Check if begin() has been run
+        """
+        The function to send a string to the LCD on a given line and type
+
+        Parameters:
+            message (string): the message to be displayed on the screen
+            line (int): the line to display the message on
+            styles (int): 1=left centered, 2=centered , 3=right centered
+        """
         if self.cols == -1 or self.rows == -1:
             raise ValueError("The LCD has not be initialized with begin()")
 
@@ -39,22 +69,28 @@ class LiquidCrystal:
         elif style == 3:
             message = message.rjust(self.cols, " ")
 
+        self.__write(message, line)
+
+    def lcd_backlight(self, enable):
+        """
+        The function to turn the mock LCD backlight on or off
+
+        Parameters:
+            enable (bool): enable is whether the lcd_backlight is on or off
+        """
+        self.pin_ON = enable
+
+    def __write(self, message, line):
+        """
+        The function to write characters to the mock LCD
+
+        Parameters:
+            message (string): the message to be displayed on the screen
+            line (int): the line to display the message on
+        """
+        self.__clear_sys_out()
+
         self.strings[line - 1] = message[0 : self.cols]
-
-        self.__draw()
-
-    def lcd_backlight(self, flag):
-        pass
-
-    def __draw(self):
-        """
-        Draws the mock display
-        """
-        if self.clear_flag:
-            if name == "nt":
-                _ = system("cls")
-            else:
-                _ = system("clear")
 
         for i in range(-1, self.rows + 1):
             if i == -1 or i == self.rows:
@@ -62,17 +98,13 @@ class LiquidCrystal:
             else:
                 print("|", self.strings[i], "|", sep="")
 
-    def mock_disable_clear(self):
-        self.clear_flag = False
-
-    def mock_enable_clear(self):
-        self.clear_flag = True
-
     def display_list(self, dict_to_display):
         """
-        Display a list of options from a dictionary. Only the first four
-        options will be displayed due to only four screen rows.
-        :param list_to_display: list to be displayed on LCD screen
+        The function to display a list of options from a dictionary.
+        Only the first four options will be displayed due to only four screen rows.
+
+        Parameters:
+            dict_to_display (dict): list to be displayed on LCD screen
         """
         self.clear()
         keys = list(dict_to_display.keys())
@@ -81,3 +113,20 @@ class LiquidCrystal:
 
         for i in range(min(len(keys), 4)):
             self.print(str(keys[i]) + ". " + values[i], lines[i])
+
+    def mock_disable_clear(self):
+        """
+        The function to disable the system clear call.
+        This function is only used for testing
+        """
+        self.clear_flag = False
+
+    def __clear_sys_out(self):
+        """
+        The function to clear the console output
+        """
+        if self.clear_flag:
+            if name == "nt":
+                system("cls")
+            else:
+                system("clear")
