@@ -1,7 +1,8 @@
 """
 The file to test the mock liquid crystal display
 """
-
+import digitalio
+import pytest
 import titration.utils.devices.board_mock as board
 from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 from titration.utils import constants
@@ -13,15 +14,15 @@ def create_lcd(cols=constants.LCD_WIDTH, rows=constants.LCD_HEIGHT):
     """
 
     liquid_crystal = LiquidCrystal(
-        rs=board.D27,
-        backlight=board.D15,
-        enable=board.D22,
-        d4=board.D18,
-        d5=board.D23,
-        d6=board.D24,
-        d7=board.D25,
-        cols=cols,
-        rows=rows,
+        board.D27,
+        board.D15,
+        board.D22,
+        board.D18,
+        board.D23,
+        board.D24,
+        board.D25,
+        cols,
+        rows,
     )
 
     return liquid_crystal
@@ -34,29 +35,52 @@ def test_lcd_create():
 
     liquid_crystal = create_lcd()
 
-    assert liquid_crystal is not None
+    assert liquid_crystal.pin_RS == board.D27
+    assert liquid_crystal.pin_ON == board.D15
+    assert liquid_crystal.pin_E == board.D22
+    assert liquid_crystal.pin_D4 == board.D18
+    assert liquid_crystal.pin_D5 == board.D23
+    assert liquid_crystal.pin_D6 == board.D24
+    assert liquid_crystal.pin_D7 == board.D25
+
+    assert liquid_crystal.pin_RS.direction == digitalio.Direction.OUTPUT
+    assert liquid_crystal.pin_E.direction == digitalio.Direction.OUTPUT
+    assert liquid_crystal.pin_D4.direction == digitalio.Direction.OUTPUT
+    assert liquid_crystal.pin_D5.direction == digitalio.Direction.OUTPUT
+    assert liquid_crystal.pin_D6.direction == digitalio.Direction.OUTPUT
+    assert liquid_crystal.pin_D7.direction == digitalio.Direction.OUTPUT
+    assert liquid_crystal.pin_ON.direction == digitalio.Direction.OUTPUT
+
+    assert liquid_crystal.pin_ON.value == True
+
     assert liquid_crystal.cols == 20
     assert liquid_crystal.rows == 4
+
+    assert liquid_crystal.clear_flag == True
+    assert liquid_crystal.strings == [
+        "".ljust(liquid_crystal.cols),
+        "".ljust(liquid_crystal.cols),
+        "".ljust(liquid_crystal.cols),
+        "".ljust(liquid_crystal.cols),
+    ]
 
 
 def test_lcd_create_null():
     """
     The function to test creating a mock null LCD for testing
     """
-    liquid_crystal = LiquidCrystal(
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        constants.LCD_WIDTH,
-        constants.LCD_HEIGHT,
-    )
-    assert liquid_crystal is not None
-    assert liquid_crystal.cols == 20
-    assert liquid_crystal.rows == 4
+    with pytest.raises(Exception):
+        LiquidCrystal(
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            constants.LCD_WIDTH,
+            constants.LCD_HEIGHT,
+        )
 
 
 def test_lcd_init_out(capsys):
@@ -80,27 +104,18 @@ def test_lcd_init_null_out(capsys):
     """
     The function to test startup of a null mock LCD
     """
-    LiquidCrystal(
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        constants.LCD_WIDTH,
-        constants.LCD_HEIGHT,
-    )
-
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "*====================*\n"
-    )
+    with pytest.raises(Exception):
+        LiquidCrystal(
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            constants.LCD_WIDTH,
+            constants.LCD_HEIGHT,
+        )
 
 
 def test_lcd_init_small_out(capsys):
@@ -122,15 +137,8 @@ def test_lcd_init_small_null_out(capsys):
     """
     The function to test startup of a small null mock LCD
     """
-    liquid_crystal = LiquidCrystal(None, None, None, None, None, None, None, 10, 2)
-
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*==========*\n" + "|          |\n" + "|          |\n" + "*==========*\n"
-    )
-
-    assert liquid_crystal.cols == 10
-    assert liquid_crystal.rows == 2
+    with pytest.raises(Exception):
+        LiquidCrystal(None, None, None, None, None, None, None, 10, 2)
 
 
 def test_lcd_print_left(capsys):
@@ -347,7 +355,7 @@ def test_lcd_print_long(capsys):
 
 def test_lcd_clear(capsys):
     """
-    The function to test a mock LCD clear call
+    The function to test a mock LCD clear
     """
     liquid_crystal = create_lcd()
 
@@ -390,3 +398,50 @@ def test_lcd_clear(capsys):
         + "|                    |\n"
         + "*====================*\n"
     )
+
+
+def test_lcd_backlight(capsys):
+    """
+    The function to test the mock LCD lcd_backlight function
+    """
+    liquid_crystal = create_lcd()
+
+    _ = capsys.readouterr()
+
+    assert liquid_crystal.pin_ON.value == True
+
+    liquid_crystal.lcd_backlight(False)
+
+    assert liquid_crystal.pin_ON.value == False
+
+    liquid_crystal.print("test string", 1, 1)
+    captured = capsys.readouterr()
+    assert captured.out == ""
+
+    liquid_crystal.lcd_backlight(True)
+
+    assert liquid_crystal.pin_ON.value == True
+
+    liquid_crystal.print("test string", 1, 1)
+    captured = capsys.readouterr()
+    assert captured.out == (
+        "*====================*\n"
+        + "|test string         |\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "|                    |\n"
+        + "*====================*\n"
+    )
+
+
+def test_mock_disable_clear():
+    """
+    The function to test the LCD mock_disable_clear function
+    """
+    liquid_crystal = create_lcd()
+
+    assert liquid_crystal.clear_flag == True
+
+    liquid_crystal.mock_disable_clear()
+
+    assert liquid_crystal.clear_flag == False

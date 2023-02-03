@@ -2,6 +2,7 @@
 The file for mocking the LiquidCrystal class for testing purposes
 """
 from os import name, system
+import digitalio
 
 
 class LiquidCrystal:
@@ -16,14 +17,22 @@ class LiquidCrystal:
         """
 
         self.pin_RS = rs
+        self.pin_ON = backlight
         self.pin_E = enable
         self.pin_D4 = d4
         self.pin_D5 = d5
         self.pin_D6 = d6
         self.pin_D7 = d7
-        self.pin_ON = backlight
 
-        self.pin_ON = True
+        self.pin_RS.direction = digitalio.Direction.OUTPUT
+        self.pin_E.direction = digitalio.Direction.OUTPUT
+        self.pin_D4.direction = digitalio.Direction.OUTPUT
+        self.pin_D5.direction = digitalio.Direction.OUTPUT
+        self.pin_D6.direction = digitalio.Direction.OUTPUT
+        self.pin_D7.direction = digitalio.Direction.OUTPUT
+        self.pin_ON.direction = digitalio.Direction.OUTPUT
+
+        self.pin_ON.value = True
 
         self.cols = cols
         self.rows = rows
@@ -43,7 +52,7 @@ class LiquidCrystal:
         """
         self.__clear_sys_out()
 
-        if self.pin_ON is True:
+        if self.pin_ON.value is True:
             for i in range(-1, self.rows + 1):
                 if i == -1 or i == self.rows:
                     print("*", "".ljust(self.cols, "="), "*", sep="")
@@ -78,7 +87,7 @@ class LiquidCrystal:
         Parameters:
             enable (bool): enable is whether the lcd_backlight is on or off
         """
-        self.pin_ON = enable
+        self.pin_ON.value = enable
 
     def __write(self, message, line):
         """
@@ -92,11 +101,12 @@ class LiquidCrystal:
 
         self.strings[line - 1] = message[0 : self.cols]
 
-        for i in range(-1, self.rows + 1):
-            if i == -1 or i == self.rows:
-                print("*", "".ljust(self.cols, "="), "*", sep="")
-            else:
-                print("|", self.strings[i], "|", sep="")
+        if self.pin_ON.value is True:
+            for i in range(-1, self.rows + 1):
+                if i == -1 or i == self.rows:
+                    print("*", "".ljust(self.cols, "="), "*", sep="")
+                else:
+                    print("|", self.strings[i], "|", sep="")
 
     def display_list(self, dict_to_display):
         """

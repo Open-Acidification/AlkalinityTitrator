@@ -2,6 +2,7 @@
 The file for mock Keypad class
 """
 import click
+import digitalio
 
 
 class Keypad:
@@ -26,19 +27,19 @@ class Keypad:
         self.rows = [self.pin_R0, self.pin_R1, self.pin_R2, self.pin_R3]
         self.cols = [self.pin_C0, self.pin_C1, self.pin_C2, self.pin_C3]
 
-        self.rows[0] = "OUTPUT"
-        self.rows[1] = "OUTPUT"
-        self.rows[2] = "OUTPUT"
-        self.rows[3] = "OUTPUT"
-        self.cols[0] = "INPUT"
-        self.cols[1] = "INPUT"
-        self.cols[2] = "INPUT"
-        self.cols[3] = "INPUT"
+        self.rows[0].direction = digitalio.Direction.OUTPUT
+        self.rows[1].direction = digitalio.Direction.OUTPUT
+        self.rows[2].direction = digitalio.Direction.OUTPUT
+        self.rows[3].direction = digitalio.Direction.OUTPUT
+        self.cols[0].direction = digitalio.Direction.INPUT
+        self.cols[1].direction = digitalio.Direction.INPUT
+        self.cols[2].direction = digitalio.Direction.INPUT
+        self.cols[3].direction = digitalio.Direction.INPUT
 
-        self.cols[0] = "Pull Down"
-        self.cols[1] = "Pull Down"
-        self.cols[2] = "Pull Down"
-        self.cols[3] = "Pull Down"
+        self.cols[0].pull = digitalio.Pull.DOWN
+        self.cols[1].pull = digitalio.Pull.DOWN
+        self.cols[2].pull = digitalio.Pull.DOWN
+        self.cols[3].pull = digitalio.Pull.DOWN
 
     def keypad_poll(self):
         """
