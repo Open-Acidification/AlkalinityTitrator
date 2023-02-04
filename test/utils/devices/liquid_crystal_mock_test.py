@@ -51,12 +51,12 @@ def test_lcd_create():
     assert liquid_crystal.pin_D7.direction == digitalio.Direction.OUTPUT
     assert liquid_crystal.pin_ON.direction == digitalio.Direction.OUTPUT
 
-    assert liquid_crystal.pin_ON.value == True
+    assert liquid_crystal.pin_ON.value is True
 
     assert liquid_crystal.cols == 20
     assert liquid_crystal.rows == 4
 
-    assert liquid_crystal.clear_flag == True
+    assert liquid_crystal.clear_flag is True
     assert liquid_crystal.strings == [
         "".ljust(liquid_crystal.cols),
         "".ljust(liquid_crystal.cols),
@@ -408,11 +408,11 @@ def test_lcd_backlight(capsys):
 
     _ = capsys.readouterr()
 
-    assert liquid_crystal.pin_ON.value == True
+    assert liquid_crystal.pin_ON.value is True
 
     liquid_crystal.lcd_backlight(False)
 
-    assert liquid_crystal.pin_ON.value == False
+    assert liquid_crystal.pin_ON.value is False
 
     liquid_crystal.print("test string", 1, 1)
     captured = capsys.readouterr()
@@ -420,7 +420,7 @@ def test_lcd_backlight(capsys):
 
     liquid_crystal.lcd_backlight(True)
 
-    assert liquid_crystal.pin_ON.value == True
+    assert liquid_crystal.pin_ON.value is True
 
     liquid_crystal.print("test string", 1, 1)
     captured = capsys.readouterr()
@@ -440,8 +440,8 @@ def test_mock_disable_clear():
     """
     liquid_crystal = create_lcd()
 
-    assert liquid_crystal.clear_flag == True
+    assert liquid_crystal.clear_flag is True
 
     liquid_crystal.mock_disable_clear()
 
-    assert liquid_crystal.clear_flag == False
+    assert liquid_crystal.clear_flag is False
