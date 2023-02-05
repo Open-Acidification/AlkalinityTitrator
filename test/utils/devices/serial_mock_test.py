@@ -2,17 +2,18 @@
 Module to test mock serial communication with arduino
 """
 
-import titration.utils.constants as c
 import titration.utils.devices.serial_mock as serial
 
 ARDUINO_PORT = "/dev/ttyACM0"
 ARDUINO_BAUD = 9600
 ARDUINO_TIMEOUT = 5
 
+
 def create_serial():
     return serial.Serial(
         port=ARDUINO_PORT, baudrate=ARDUINO_BAUD, timeout=ARDUINO_TIMEOUT
     )
+
 
 def test_serial_create():
     """
