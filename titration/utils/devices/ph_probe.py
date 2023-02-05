@@ -15,6 +15,11 @@ class pH_Probe:
         """
         The constructor for the pH_Probe class
         Initializes I2C pins, gain, and voltage
+
+        Parameters:
+            scl (Pin object): I2C clock pin
+            sda (Pin object): I2C data pin
+            gain (int): gain of the pH_Probe
         """
         self.i2c = busio.I2C(scl, sda)
         self.ads = ADS.ADS1115(self.i2c)
@@ -32,6 +37,9 @@ class pH_Probe:
     def set_gain(self, gain):
         """
         The function to set the pH probe's gain
+
+        Parameters:
+            gain (int): the gain of the pH_Probe
         """
         if gain not in self.gain_options:
             raise ValueError("Gain must be one of: {}".format(self.gain_options))
