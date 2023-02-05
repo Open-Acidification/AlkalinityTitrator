@@ -139,7 +139,7 @@ def setup_ph_probe():
 
 
 def setup_syringe_pump():
-    return syringe_class.Syringe_Pump()
+    return syringe_class.SyringePump()
 
 
 def setup_stir_control(debug=False):

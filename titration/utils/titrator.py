@@ -9,10 +9,12 @@ if constants.IS_TEST:
     from titration.utils.devices import board_mock as board_class
     from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
     from titration.utils.devices.keypad_mock import Keypad
+    from titration.utils.devices.syringe_pump_mock import SyringePump
 else:
     import board as board_class  # type: ignore
     from titration.utils.devices.keypad import Keypad  # type: ignore
     from titration.utils.devices.liquid_crystal import LiquidCrystal  # type: ignore
+    from titration.utils.devices.syringe_pump import SyringePump  # type: ignore
 
 
 class Titrator:
@@ -31,6 +33,9 @@ class Titrator:
         """
         # Initialize Other Devices
         interfaces.setup_interfaces()
+
+        # Initialize Syringe Pump
+        self.pump = SyringePump()
 
         # Initialize LCD
         self.lcd = LiquidCrystal(

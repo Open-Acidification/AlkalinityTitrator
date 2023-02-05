@@ -177,7 +177,7 @@ def determine_pump_cycles(volume_to_add):
     """
     if volume_to_add in constants.NUM_CYCLES:
         return constants.NUM_CYCLES[volume_to_add]
-    if volume_to_add > constants.MAX_PUMP_CAPACITY:
+    if volume_to_add > 1.1:
         return 0
     pump_cycles = constants.CYCLES_VOLUME_RATIO * volume_to_add
     # NOTE rounds down

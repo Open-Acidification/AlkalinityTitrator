@@ -1,9 +1,9 @@
 """
-The file for StirControl
+The file for the StirControl class
 """
 import math
 import pwmio
-import titration.utils.interfaces as interfaces
+from titration.utils import interfaces
 
 STIR_PWM_FAST = 5000
 STIR_PWM_SLOW = 3000

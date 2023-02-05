@@ -32,7 +32,7 @@ class ReadVolume(UIState):
         self.titrator.lcd.clear()
         self.titrator.lcd.print("Pump Vol: ", line=1)
         self.titrator.lcd.print(
-            "{0:1.2f}".format(constants.volume_in_pump),
+            "{0:1.2f}".format(self.titrator.pump.get_volume_in_pump()),
             style=constants.LCD_CENT_JUST,
             line=2,
         )

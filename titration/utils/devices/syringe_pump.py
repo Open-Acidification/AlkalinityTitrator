@@ -1,36 +1,62 @@
-import serial
+"""
+The file for the SyringePump class
+"""
+from serial import Serial
+from titration.utils import analysis
+from titration.utils import constants
+from titration.utils import interfaces
 
-import titration.utils.analysis as analysis
-import titration.utils.constants as constants
-import titration.utils.interfaces as interfaces
+ARDUINO_PORT = "/dev/ttyACM0"
+ARDUINO_BAUD = 9600
+ARDUINO_TIMEOUT = 5
+
+MAX_PUMP_CAPACITY = 1.1
 
 
-class Syringe_Pump:
+class SyringePump:
+    """
+    The class for the syringe pump device
+    """
+
     def __init__(self):
-        self.serial = serial.Serial(
-            port=constants.ARDUINO_PORT,
-            baudrate=constants.ARDUINO_BAUD,
-            timeout=constants.ARDUINO_TIMEOUT,
+        """
+        The constructor function for the syringe pump
+        Initializes the arduino to control the pump motor
+        """
+        self.serial = Serial(
+            port=ARDUINO_PORT,
+            baudrate=ARDUINO_BAUD,
+            timeout=ARDUINO_TIMEOUT,
         )
 
-        self.volume_in_pump = constants.volume_in_pump
-        self.max_pump_capacity = constants.MAX_PUMP_CAPACITY
+        self.volume_in_pump = 0
+        self.max_pump_capacity = MAX_PUMP_CAPACITY
 
         self.serial.reset_input_buffer()
         self.serial.reset_output_buffer()
 
     def set_volume_in_pump(self, volume):
+        """
+        The function to set the mock pump's volume
+
+        Parameters:
+            volume (float): amount of volume in the pump
+        """
         self.volume_in_pump = volume
-        constants.volume_in_pump = volume
 
     def get_volume_in_pump(self):
+        """
+        The function to get the mock pump's volume
+        """
         return self.volume_in_pump
 
     def pump_volume(self, volume, direction):
         """
-        Moves volume of solution through pump
-        :param volume: amount of volume to move (float)
-        :param direction: 0 to pull solution in, 1 to pump out
+        Moves volume of solution through mock pump
+
+        Parameters:
+            volume (float): amount of volume to move
+            direction (int): 0 to pull solution in, 1 to pump out
         """
         volume_to_add = volume
 
@@ -80,7 +106,14 @@ class Syringe_Pump:
                 self.drive_pump(volume_to_add, direction)
 
     def drive_pump(self, volume, direction):
-        """Converts volume to cycles and ensures and checks pump level and values"""
+        """
+        The function to convert volume to cycles
+        and ensures and checks pump level and values
+
+        Parameters:
+            volume (float): the volume to add
+            direction (int): the direction the pump moves
+        """
         if direction == 0:
             space_in_pump = self.max_pump_capacity - self.volume_in_pump
             if volume > space_in_pump:
@@ -109,10 +142,11 @@ class Syringe_Pump:
 
     def drive_step_stick(self, cycles, direction):
         """
-        cycles and direction are integers
-        Communicates with arduino to add HCl through pump
-        :param cycles: number of rising edges for the pump
-        :param direction: direction of pump
+        The function that communicates with the arduino to add HCl through pump
+
+        Parameters:
+            cycles (int): number of rising edges for the pump
+            direction (int): direction of pump
         """
         if cycles == 0:
             return 0
