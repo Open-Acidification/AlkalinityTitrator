@@ -319,7 +319,7 @@ def read_raw_pH():
     :return: raw V reading from probe
     """
     # Read pH registers; pH_val is raw value from pH probe
-    volts = ph_sensor.voltage()
+    volts = ph_sensor.get_voltage()
 
     return volts
 
