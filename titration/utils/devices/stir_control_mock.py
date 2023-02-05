@@ -26,6 +26,7 @@ class StirControl:
         Initializes the pump's motor
         """
         self.motor = (pwm_pin, duty_cycle, frequency)
+        self.duty_cycle = duty_cycle
         self.debug = debug
 
     def set_motor_speed(self, target, gradual=False):
