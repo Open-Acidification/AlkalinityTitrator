@@ -1,48 +1,65 @@
+"""
+The file for StirControl
+"""
 import math
-
 import pwmio
-
-import titration.utils.constants as constants
 import titration.utils.interfaces as interfaces
 
+STIR_PWM_FAST = 5000
+STIR_PWM_SLOW = 3000
+STIR_FREQUENCY = 100
+STIR_DUTY_CYCLE = 0
 
-class Stir_Control:
+
+class StirControl:
+    """
+    The class for the stir controller device
+    """
+
     def __init__(
         self,
         pwm_pin,
-        duty_cycle=constants.STIR_DUTY_CYCLE,
-        frequency=constants.STIR_FREQUENCY,
+        duty_cycle=STIR_DUTY_CYCLE,
+        frequency=STIR_FREQUENCY,
         debug=False,
     ):
+        """
+        The constructor for the mock stir controller class
+        Initializes the pump's motor
+        """
         self.motor = pwmio.PWMOut(pwm_pin, duty_cycle=duty_cycle, frequency=frequency)
-        self.debug = False
 
     def set_motor_speed(self, target, gradual=False):
+        """
+        The function to set the motor speed
+        """
         if gradual is True:
             direction = math.copysign(1, target - self.motor.duty_cycle)
 
-            # It won't move under 1000, so this speeds up the process
             if direction == 1 and self.motor.duty_cycle < 1000:
                 self.motor.duty_cycle = 1000
-                if self.debug:
-                    print("Stirrer set to {0:.0f}".format(self.motor.duty_cycle))
 
             while self.motor.duty_cycle != target:
                 next_step = min(abs(target - self.motor.duty_cycle), 100)
                 self.motor.duty_cycle = self.motor.duty_cycle + (next_step * direction)
-                if self.debug:
-                    print("Stirrer set to {0:.0f}".format(self.motor.duty_cycle))
                 interfaces.delay(0.1)
         else:
             self.motor.duty_cycle = target
-            if self.debug:
-                print("Stirrer set to {0:.0f}".format(self.motor.duty_cycle))
 
     def motor_speed_fast(self):
-        self.set_motor_speed(constants.STIR_PWM_FAST, gradual=True)
+        """
+        The function to set the motor speed to a fast setting
+        """
+        self.set_motor_speed(STIR_PWM_FAST, gradual=True)
 
     def motor_speed_slow(self):
-        self.set_motor_speed(constants.STIR_PWM_SLOW, gradual=True)
+        """
+        The function to set the motor speed to a slow setting
+        """
+        self.set_motor_speed(STIR_PWM_SLOW, gradual=True)
 
     def motor_stop(self):
+        """
+        The function to stop the motor
+        """
         self.set_motor_speed(0)

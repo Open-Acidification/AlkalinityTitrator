@@ -143,7 +143,7 @@ def setup_syringe_pump():
 
 
 def setup_stir_control(debug=False):
-    return stir_class.Stir_Control(board_class.D13, debug=debug)
+    return stir_class.StirControl(board_class.D13, debug=debug)
 
 
 def delay(seconds, countdown=False):

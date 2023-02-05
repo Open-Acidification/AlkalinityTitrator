@@ -94,12 +94,6 @@ TARGET_STD_DEVIATION = 0.15
 # Temperature Control
 RELAY_PIN = 12
 
-# Stir Control
-STIR_PWM_FAST = 5000
-STIR_PWM_SLOW = 3000
-STIR_FREQUENCY = 100
-STIR_DUTY_CYCLE = 0
-
 # pump settings
 # ARDUINO_PORT = "/dev/ttyUSB0"
 ARDUINO_PORT = "/dev/ttyACM0"

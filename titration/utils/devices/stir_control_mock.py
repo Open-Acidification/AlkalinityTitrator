@@ -1,24 +1,40 @@
+"""
+The file for the mock StirControl Class
+"""
 import math
 
-import titration.utils.constants as constants
+STIR_PWM_FAST = 5000
+STIR_PWM_SLOW = 3000
+STIR_FREQUENCY = 100
+STIR_DUTY_CYCLE = 0
 
 
-class Stir_Control:
+class StirControl:
+    """
+    The class for the mock stir controller
+    """
+
     def __init__(
         self,
         pwm_pin,
-        duty_cycle=constants.STIR_DUTY_CYCLE,
-        frequency=constants.STIR_FREQUENCY,
+        duty_cycle=STIR_DUTY_CYCLE,
+        frequency=STIR_FREQUENCY,
         debug=False,
     ):
-        self.duty_cycle = 0
+        """
+        The constructor for the mock stir controller class
+        Initializes the pump's motor
+        """
+        self.motor = (pwm_pin, duty_cycle, frequency)
         self.debug = debug
 
     def set_motor_speed(self, target, gradual=False):
+        """
+        The function to set the motor speed
+        """
         if gradual is True:
             direction = math.copysign(1, target - self.duty_cycle)
 
-            # It won't move under 1000, so this speeds up the process
             if direction == 1 and self.duty_cycle < 1000:
                 self.duty_cycle = 1000
                 if self.debug:
@@ -35,10 +51,19 @@ class Stir_Control:
                 print("Stirrer set to {0:.0f}".format(self.duty_cycle))
 
     def motor_speed_fast(self):
-        self.set_motor_speed(constants.STIR_PWM_FAST, gradual=True)
+        """
+        The function to set the motor speed to a fast setting
+        """
+        self.set_motor_speed(STIR_PWM_FAST, gradual=True)
 
     def motor_speed_slow(self):
-        self.set_motor_speed(constants.STIR_PWM_SLOW, gradual=True)
+        """
+        The function to set the motor speed to a slow setting
+        """
+        self.set_motor_speed(STIR_PWM_SLOW, gradual=True)
 
     def motor_stop(self):
+        """
+        The function to stop the motor
+        """
         self.set_motor_speed(0)
