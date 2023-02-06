@@ -6,14 +6,6 @@ from titration.utils import constants, interfaces
 from titration.utils.devices import syringe_pump_mock as syringe
 
 
-def setup_module():
-    """
-    Function to setup syringe test module
-    """
-    constants.IS_TEST = True
-    interfaces.setup_module_classes()
-
-
 def test_syringe_mock_create():
     """
     Function to test creating mock syringe
