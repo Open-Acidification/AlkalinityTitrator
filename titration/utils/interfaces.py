@@ -291,13 +291,17 @@ def _test_read_temperature():
     return 29.9, 200
 
 
-def pump_volume(volume, direction):
+def pump_volume_in(volume):
     """
     Moves volume of solution through pump
     :param volume: amount of volume to move (float)
     :param direction: 0 to pull solution in, 1 to pump out
     """
-    arduino.pump_volume(volume, direction)
+    arduino.pump_volume_in(volume)
+
+
+def pump_volume_out(volume):
+    arduino.pump_volume_out(volume)
 
 
 def set_pump_volume(volume):

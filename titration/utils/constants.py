@@ -94,10 +94,6 @@ TARGET_STD_DEVIATION = 0.15
 # Temperature Control
 RELAY_PIN = 12
 
-# pump settings
-# maps vol to number of pulses needed
-NUM_CYCLES = {0.05: 470, 1: 9550}
-CYCLES_VOLUME_RATIO = 9550  # 1 mL is 9550 pump cycles
 # defaults
 DEFAULT_TEMPERATURE_REF_RESISTANCE = 4300.0
 DEFAULT_TEMPERATURE_NOMINAL_RESISTANCE = 1000.0
