@@ -1,6 +1,7 @@
 """
 The file for the mock pH_Probe class
 """
+from titration.utils.devices import board_mock as board
 
 
 class pH_Probe:
@@ -8,17 +9,15 @@ class pH_Probe:
     The class for the mock pH Probe
     """
 
-    def __init__(self, scl, sda, gain=1):
+    def __init__(self, gain=1):
         """
         The constructor for the mock pH_Probe class
         Initializes I2C pins, gain, and voltage
 
         Parameters:
-            scl (Pin object): I2C clock pin
-            sda (Pin object): I2C data pin
-            gain (int): gain of the pH_Probe
+            gain (float): gain of the pH_Probe
         """
-        self.i2c = (scl, sda)
+        self.i2c = (board.SCL, board.SDA)
         self.ads = self.i2c
         self.channel = (self.ads, "ADS.P0", "ADS.P1")
 

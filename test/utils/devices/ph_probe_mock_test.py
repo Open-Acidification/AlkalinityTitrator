@@ -6,11 +6,11 @@ from titration.utils.devices import board_mock
 from titration.utils.devices.ph_probe_mock import pH_Probe
 
 
-def create_ph_probe(pin_one=board_mock.SCL, pin_two=board_mock.SDA):
+def create_ph_probe():
     """
     The function to create a mock pH probe for testing
     """
-    return pH_Probe(pin_one, pin_two)
+    return pH_Probe()
 
 
 def test_ph_create():
@@ -23,16 +23,6 @@ def test_ph_create():
     assert ph_test.ads == ph_test.i2c
     assert ph_test.channel == (ph_test.ads, "ADS.P0", "ADS.P1")
     assert ph_test.gain == 1
-    assert ph_test.volt == 0
-    assert ph_test is not None
-
-
-def test_ph_create_null():
-    """
-    The function to test creating a null mock pH probe
-    """
-    ph_test = create_ph_probe(None, None)
-
     assert ph_test.volt == 0
     assert ph_test is not None
 

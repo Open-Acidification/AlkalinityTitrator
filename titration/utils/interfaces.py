@@ -135,7 +135,7 @@ def setup_temperature_control():
 
 
 def setup_ph_probe():
-    return ph_class.pH_Probe(board_class.SCL, board_class.SDA, gain=8)
+    return ph_class.pH_Probe(gain=8)
 
 
 def setup_syringe_pump():
@@ -143,7 +143,7 @@ def setup_syringe_pump():
 
 
 def setup_stir_control(debug=False):
-    return stir_class.StirControl(board_class.D13, debug=debug)
+    return stir_class.StirControl(debug=debug)
 
 
 def delay(seconds, countdown=False):

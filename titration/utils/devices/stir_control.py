@@ -3,6 +3,7 @@ The file for the StirControl class
 """
 import math
 import pwmio
+import board
 from titration.utils import interfaces
 
 STIR_PWM_FAST = 5000
@@ -18,16 +19,15 @@ class StirControl:
 
     def __init__(
         self,
-        pwm_pin,
-        duty_cycle=STIR_DUTY_CYCLE,
-        frequency=STIR_FREQUENCY,
         debug=False,
     ):
         """
         The constructor for the mock stir controller class
         Initializes the pump's motor
         """
-        self.motor = pwmio.PWMOut(pwm_pin, duty_cycle=duty_cycle, frequency=frequency)
+        self.motor = pwmio.PWMOut(
+            board.D13, duty_cycle=STIR_DUTY_CYCLE, frequency=STIR_FREQUENCY
+        )
 
     def set_motor_speed(self, target, gradual=False):
         """

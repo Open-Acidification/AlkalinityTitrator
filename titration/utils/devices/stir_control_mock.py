@@ -2,6 +2,7 @@
 The file for the mock StirControl Class
 """
 import math
+from titration.utils.devices import board_mock as board
 
 STIR_PWM_FAST = 5000
 STIR_PWM_SLOW = 3000
@@ -16,17 +17,14 @@ class StirControl:
 
     def __init__(
         self,
-        pwm_pin,
-        duty_cycle=STIR_DUTY_CYCLE,
-        frequency=STIR_FREQUENCY,
         debug=False,
     ):
         """
         The constructor for the mock stir controller class
         Initializes the pump's motor
         """
-        self.motor = (pwm_pin, duty_cycle, frequency)
-        self.duty_cycle = duty_cycle
+        self.motor = (board.D13, STIR_DUTY_CYCLE, STIR_FREQUENCY)
+        self.duty_cycle = STIR_DUTY_CYCLE
         self.debug = debug
 
     def set_motor_speed(self, target, gradual=False):

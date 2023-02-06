@@ -4,6 +4,7 @@ The file for the pH_Probe class
 import adafruit_ads1x15.ads1115 as ADS
 import adafruit_ads1x15.analog_in as analog_in
 import busio
+import board
 
 
 class pH_Probe:
@@ -11,17 +12,15 @@ class pH_Probe:
     The class for the pH Probe device
     """
 
-    def __init__(self, scl, sda, gain=1):
+    def __init__(self, gain=1):
         """
         The constructor for the pH_Probe class
         Initializes I2C pins, gain, and voltage
 
         Parameters:
-            scl (Pin object): I2C clock pin
-            sda (Pin object): I2C data pin
-            gain (int): gain of the pH_Probe
+            gain (float): gain of the pH_Probe
         """
-        self.i2c = busio.I2C(scl, sda)
+        self.i2c = busio.I2C(board.SCL, board.SDA)
         self.ads = ADS.ADS1115(self.i2c)
         self.channel = analog_in.AnalogIn(self.ads, ADS.P0, ADS.P1)
 
