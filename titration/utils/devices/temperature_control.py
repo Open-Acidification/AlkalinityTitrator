@@ -1,5 +1,7 @@
+"""
+The file for the temperature control class
+"""
 import time
-
 import adafruit_max31865
 import busio
 import digitalio
@@ -13,17 +15,26 @@ PID_ANTIWINDUP_KP = 0.04
 PID_ANTIWINDUP_TI = 0.004
 PID_ANTIWINDUP_TD = 9
 
+RELAY_PIN = 12
 
-class Temperature_Control:
+
+class TemperatureControl:
     """
-    Temperature Control class for running the PID control on the Alkalinity
-    Titrator using a SSR and Heated Beaker Jacket
-
+    The class for the mock Temperature Controller
+    running the PID control on the Alkalinity Titrator
+    using a SSR and Heated Beaker Jacket
     """
 
-    def __init__(self, relay_pin, sensor):
+    def __init__(self, sensor):
+        """
+        The constructor for the TemperatureControl class 
+
+        Parameters:
+            relay_pin (Pin object): the pin for the relay
+            sensor (Pin object): the pin for the temperature sensor
+        """
         self.sensor = sensor
-        self.relay = LED(relay_pin)
+        self.relay = LED(RELAY_PIN)
 
     # Flag - print data to console or not
     printData = False
@@ -246,7 +257,7 @@ if __name__ == "__main__":
         spi, cs, rtd_nominal=1000, ref_resistor=4300, wires=3
     )
 
-    temperature_control = Temperature_Control(sensor, 12)
+    temperature_control = TemperatureControl(sensor, 12)
     temperature_control.enable_print()
 
     # 10min time

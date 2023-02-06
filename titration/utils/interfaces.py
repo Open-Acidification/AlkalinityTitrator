@@ -131,7 +131,7 @@ def setup_temperature_control():
     sensor = temperature_class.Temperature_Probe(
         board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D0, wires=3
     )
-    return temperature_control_class.Temperature_Control(constants.RELAY_PIN, sensor)
+    return temperature_control_class.TemperatureControl(sensor)
 
 
 def setup_ph_probe():
