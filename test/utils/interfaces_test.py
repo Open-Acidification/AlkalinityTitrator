@@ -1,12 +1,10 @@
 """
 The file to test the lcd interface
 """
-from titration.utils import constants, interfaces
+from titration.utils import interfaces
 
 
 def setup_module(module):
-    constants.IS_TEST = True
-    interfaces.setup_module_classes()
     interfaces.stir_controller = interfaces.setup_stir_control(debug=True)
 
 

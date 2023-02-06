@@ -1,38 +1,30 @@
 """Functions to interface with sensors and peripherals"""
 
-import time  # time.sleep()
-import types
+import time
 
 from titration.utils import analysis, constants
 
-if constants.IS_TEST is False:  # See conftest.py for configuration of pytest
+if constants.IS_TEST:
     from titration.utils.devices import (
-        keypad,
-        liquid_crystal,
-        ph_probe,
-        syringe_pump,
-        temperature_control,
-        temperature_probe,
+        board_mock as board_class,
+        keypad_mock as keypad_class,
+        liquid_crystal_mock as lcd_class,
+        ph_probe_mock as ph_class,
+        stir_control_mock as stir_class,
+        syringe_pump_mock as syringe_class,
+        temperature_control_mock as temperature_control_class,
+        temperature_probe_mock as temperature_class,
     )
-from titration.utils.devices import (
-    board_mock,
-    keypad_mock,
-    liquid_crystal_mock,
-    ph_probe_mock,
-    stir_control_mock,
-    syringe_pump_mock,
-    temperature_control_mock,
-    temperature_probe_mock,
-)
+else:
+    from titration.utils.devices import (  # type: ignore
+        keypad as keypad_class,
+        liquid_crystal as lcd_class,
+        ph_probe as ph_class,
+        syringe_pump as syringe_class,
+        temperature_control as temperature_control_class,
+        temperature_probe as temperature_class,
+    )
 
-ph_class: types.ModuleType = ph_probe_mock
-temperature_class: types.ModuleType = temperature_probe_mock
-board_class: types.ModuleType = board_mock
-lcd_class: types.ModuleType = liquid_crystal_mock
-keypad_class: types.ModuleType = keypad_mock
-temperature_control_class: types.ModuleType = temperature_control_mock
-syringe_class: types.ModuleType = syringe_pump_mock
-stir_class: types.ModuleType = stir_control_mock
 
 # global, pH, and temperature probes
 ph_sensor = None
@@ -75,49 +67,12 @@ def setup_interfaces():
 
     global ph_sensor, temperature_sensor, arduino, temperature_controller, stir_controller
 
-    # set module classes
-    setup_module_classes()
-
     # Temperature Control Setup
     temperature_sensor = setup_temperature_probe()
     temperature_controller = setup_temperature_control()
     ph_sensor = setup_ph_probe()
     arduino = setup_syringe_pump()
     stir_controller = setup_stir_control()
-
-
-def setup_module_classes():
-    """
-    Checks constants.IS_TEST and determines if classes should be
-    mocked or
-    """
-    global ph_class, temperature_class, board_class, lcd_class, keypad_class, temperature_control_class, syringe_class, stir_class  # noqa: E501
-    if constants.IS_TEST:
-        ph_class = ph_probe_mock
-        temperature_class = temperature_probe_mock
-        board_class = board_mock
-        lcd_class = liquid_crystal_mock
-        keypad_class = keypad_mock
-        temperature_control_class = temperature_control_mock
-        syringe_class = syringe_pump_mock
-        stir_class = stir_control_mock
-    elif constants.IS_TEST is False:
-        # NOTE: The board module can only be imported if
-        # running on specific hardware (i.e. Raspberry Pi)
-        # It will fail on regular Windows/Linux computers
-        import board  # All hardware (see above note)
-
-        # Similarly, stir_control imports pwmio which will fail
-        from titration.utils.devices import stir_control
-
-        ph_class = ph_probe
-        temperature_class = temperature_probe
-        board_class = board
-        lcd_class = liquid_crystal
-        keypad_class = keypad
-        temperature_control_class = temperature_control
-        syringe_class = syringe_pump
-        stir_class = stir_control
 
 
 def setup_temperature_probe():
