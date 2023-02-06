@@ -2,6 +2,7 @@
 The file for the Keypad class
 """
 import digitalio
+import board
 from titration.utils import constants
 
 KEY_VALUES = {
@@ -37,19 +38,19 @@ class Keypad:
     The class for the Keypad
     """
 
-    def __init__(self, r0, r1, r2, r3, c0, c1, c2, c3):
+    def __init__(self):
         """
         The constructor for the mock Keypad class.
-        The parameters are the board pins that the keypad uses
         """
-        self.pin_R0 = digitalio.DigitalInOut(r0)
-        self.pin_R1 = digitalio.DigitalInOut(r1)
-        self.pin_R2 = digitalio.DigitalInOut(r2)
-        self.pin_R3 = digitalio.DigitalInOut(r3)
-        self.pin_C0 = digitalio.DigitalInOut(c0)
-        self.pin_C1 = digitalio.DigitalInOut(c1)
-        self.pin_C2 = digitalio.DigitalInOut(c2)
-        self.pin_C3 = digitalio.DigitalInOut(c3)
+
+        self.pin_R0 = digitalio.DigitalInOut(board.D1)
+        self.pin_R1 = digitalio.DigitalInOut(board.D6)
+        self.pin_R2 = digitalio.DigitalInOut(board.D5)
+        self.pin_R3 = digitalio.DigitalInOut(board.D19)
+        self.pin_C0 = digitalio.DigitalInOut(board.D16)
+        self.pin_C1 = digitalio.DigitalInOut(board.D26)
+        self.pin_C2 = digitalio.DigitalInOut(board.D20)
+        self.pin_C3 = digitalio.DigitalInOut(board.D21)
 
         self.rows = [self.pin_R0, self.pin_R1, self.pin_R2, self.pin_R3]
         self.cols = [self.pin_C0, self.pin_C1, self.pin_C2, self.pin_C3]

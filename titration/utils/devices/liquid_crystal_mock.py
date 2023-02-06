@@ -3,6 +3,7 @@ The file for mocking the LiquidCrystal class for testing purposes
 """
 from os import name, system
 import digitalio
+from titration.utils.devices import board_mock as board
 
 
 class LiquidCrystal:
@@ -10,19 +11,19 @@ class LiquidCrystal:
     The class for the mock of the Sunfire LCD 20x04 Char Display
     """
 
-    def __init__(self, rs, backlight, enable, d4, d5, d6, d7, cols, rows):
+    def __init__(self, cols, rows):
         """
         The constructor for the mock LiquidCrystal class.
         The parameters are the board pins that the LCD uses
         """
 
-        self.pin_RS = rs
-        self.pin_ON = backlight
-        self.pin_E = enable
-        self.pin_D4 = d4
-        self.pin_D5 = d5
-        self.pin_D6 = d6
-        self.pin_D7 = d7
+        self.pin_RS = board.D27
+        self.pin_E = board.D22
+        self.pin_D4 = board.D18
+        self.pin_D5 = board.D23
+        self.pin_D6 = board.D24
+        self.pin_D7 = board.D25
+        self.pin_ON = board.D15
 
         self.pin_RS.direction = digitalio.Direction.OUTPUT
         self.pin_E.direction = digitalio.Direction.OUTPUT

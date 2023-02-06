@@ -2,7 +2,6 @@
 The file for the AutomaticTitration class
 """
 from titration.utils.ui_state.ui_state import UIState
-from titration.utils import constants
 from titration.utils.ui_state import main_menu
 
 
@@ -97,4 +96,4 @@ class AutomaticTitration(UIState):
         """
         The function to display AUTO SELECTED upon entering the AutomaticTitration state
         """
-        self.titrator.lcd.print("AUTO SELECTED", style=constants.LCD_CENT_JUST, line=4)
+        self.titrator.lcd.print("AUTO SELECTED", style=2, line=4)

@@ -2,7 +2,6 @@
 The file to test the mock liquid crystal display
 """
 import digitalio
-import pytest
 import titration.utils.devices.board_mock as board
 from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 from titration.utils import constants
@@ -13,19 +12,7 @@ def create_lcd(cols=constants.LCD_WIDTH, rows=constants.LCD_HEIGHT):
     The function to create a mock LCD for testing
     """
 
-    liquid_crystal = LiquidCrystal(
-        board.D27,
-        board.D15,
-        board.D22,
-        board.D18,
-        board.D23,
-        board.D24,
-        board.D25,
-        cols,
-        rows,
-    )
-
-    return liquid_crystal
+    return LiquidCrystal(cols, rows)
 
 
 def test_lcd_create():
@@ -65,24 +52,6 @@ def test_lcd_create():
     ]
 
 
-def test_lcd_create_null():
-    """
-    The function to test creating a mock null LCD for testing
-    """
-    with pytest.raises(Exception):
-        LiquidCrystal(
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            constants.LCD_WIDTH,
-            constants.LCD_HEIGHT,
-        )
-
-
 def test_lcd_init_out(capsys):
     """
     The function to test the startup of a large mock LCD
@@ -100,24 +69,6 @@ def test_lcd_init_out(capsys):
     )
 
 
-def test_lcd_init_null_out(capsys):
-    """
-    The function to test startup of a null mock LCD
-    """
-    with pytest.raises(Exception):
-        LiquidCrystal(
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            constants.LCD_WIDTH,
-            constants.LCD_HEIGHT,
-        )
-
-
 def test_lcd_init_small_out(capsys):
     """
     The function to test startup of a small mock LCD
@@ -131,14 +82,6 @@ def test_lcd_init_small_out(capsys):
 
     assert liquid_crystal.cols == 10
     assert liquid_crystal.rows == 2
-
-
-def test_lcd_init_small_null_out(capsys):
-    """
-    The function to test startup of a small null mock LCD
-    """
-    with pytest.raises(Exception):
-        LiquidCrystal(None, None, None, None, None, None, None, 10, 2)
 
 
 def test_lcd_print_left(capsys):

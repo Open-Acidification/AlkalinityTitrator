@@ -39,29 +39,13 @@ ph_sensor = None
 temperature_sensor = None
 arduino = None
 
-global_keypad = keypad_class.Keypad(
-    r0=board_class.D1,
-    r1=board_class.D6,
-    r2=board_class.D5,
-    r3=board_class.D19,
-    c0=board_class.D16,
-    c1=board_class.D26,
-    c2=board_class.D20,
-    c3=board_class.D21,
-)
+global_keypad = keypad_class.Keypad()
 
 
 temperature_controller = None
 stir_controller = None
 
 lcd = lcd_class.LiquidCrystal(
-    rs=board_class.D27,
-    backlight=board_class.D15,
-    enable=board_class.D22,
-    d4=board_class.D18,
-    d5=board_class.D23,
-    d6=board_class.D24,
-    d7=board_class.D25,
     cols=constants.LCD_WIDTH,
     rows=constants.LCD_HEIGHT,
 )
@@ -188,9 +172,8 @@ def read_user_input(valid_inputs=None, console=False):
         else:
             print("Input: ", user_input, type(user_input))
             lcd.print(
-                constants.VALID_INPUT_WARNING,
-                constants.LCD_LINE_1,
-                constants.LCD_LEFT_JUST,
+                "Input Invalid",
+                1,
             )
 
     while True:
@@ -206,7 +189,7 @@ def read_user_value(message):
     inputs = []
 
     lcd.print(message, line=1)
-    lcd.print("_", style=constants.LCD_CENT_JUST, line=2)
+    lcd.print("_", style=2, line=2)
     lcd.print(instructions_1, line=3)
     lcd.print(instructions_2, line=4)
 
@@ -265,9 +248,9 @@ def read_user_value(message):
 
         # Display updated input
         if len(inputs) == 0:
-            lcd.print("_", style=constants.LCD_CENT_JUST, line=2)
+            lcd.print("_", style=2, line=2)
         else:
-            lcd.print(string, style=constants.LCD_CENT_JUST, line=2)
+            lcd.print(string, style=2, line=2)
 
         # DEBUG
         # print("Inputs: ", inputs)

@@ -3,7 +3,24 @@ The file for the Sunfire LCD 20x04 Char Display, LiquidCrystal Class
 """
 import time
 import digitalio
-from titration.utils import constants
+import board
+
+# LCD Device Constants
+LCD_CHR = True
+LCD_CMD = False
+
+LCD_LEFT_JUST = 1
+LCD_CENT_JUST = 2
+LCD_RIGHT_JUST = 3
+
+LCD_LINE_1 = 0x80
+LCD_LINE_2 = 0xC0
+LCD_LINE_3 = 0x94
+LCD_LINE_4 = 0xD4
+
+# LCD Timing constants
+E_PULSE = 0.0005
+E_DELAY = 0.0005
 
 
 class LiquidCrystal:
@@ -11,19 +28,19 @@ class LiquidCrystal:
     The class for the Sunfire LCD 20x04 Char Display
     """
 
-    def __init__(self, rs, backlight, enable, d4, d5, d6, d7, cols, rows):
+    def __init__(self, cols, rows):
         """
         The constructor for the mock LiquidCrystal class.
         The parameters are the board pins that the LCD uses
         """
 
-        self.pin_RS = digitalio.DigitalInOut(rs)
-        self.pin_E = digitalio.DigitalInOut(enable)
-        self.pin_D4 = digitalio.DigitalInOut(d4)
-        self.pin_D5 = digitalio.DigitalInOut(d5)
-        self.pin_D6 = digitalio.DigitalInOut(d6)
-        self.pin_D7 = digitalio.DigitalInOut(d7)
-        self.pin_ON = digitalio.DigitalInOut(backlight)
+        self.pin_RS = digitalio.DigitalInOut(board.D27)
+        self.pin_E = digitalio.DigitalInOut(board.D22)
+        self.pin_D4 = digitalio.DigitalInOut(board.D18)
+        self.pin_D5 = digitalio.DigitalInOut(board.D23)
+        self.pin_D6 = digitalio.DigitalInOut(board.D24)
+        self.pin_D7 = digitalio.DigitalInOut(board.D25)
+        self.pin_ON = digitalio.DigitalInOut(board.D15)
 
         self.pin_E.direction = digitalio.Direction.OUTPUT
         self.pin_RS.direction = digitalio.Direction.OUTPUT
@@ -37,17 +54,13 @@ class LiquidCrystal:
         self.rows = rows
 
         # Initialise display
-        self.__lcd_byte(0x33, constants.LCD_CMD)  # 110011 Initialise
-        self.__lcd_byte(0x32, constants.LCD_CMD)  # 110010 Initialise
-        self.__lcd_byte(0x06, constants.LCD_CMD)  # 000110 Cursor move direction
-        self.__lcd_byte(
-            0x0C, constants.LCD_CMD
-        )  # 001100 Display On,Cursor Off, Blink Off
-        self.__lcd_byte(
-            0x28, constants.LCD_CMD
-        )  # 101000 Data length, number of lines, font size
-        self.__lcd_byte(0x01, constants.LCD_CMD)  # 000001 Clear display
-        time.sleep(constants.E_DELAY)
+        self.__lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
+        self.__lcd_byte(0x32, LCD_CMD)  # 110010 Initialise
+        self.__lcd_byte(0x06, LCD_CMD)  # 000110 Cursor move direction
+        self.__lcd_byte(0x0C, LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
+        self.__lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
+        self.__lcd_byte(0x01, LCD_CMD)  # 000001 Clear display
+        time.sleep(E_DELAY)
 
         # Toggle backlight on-off-on
         self.lcd_backlight(True)
@@ -63,10 +76,10 @@ class LiquidCrystal:
         """
         blank = "".ljust(self.cols, " ")
 
-        self.__write(blank, constants.LCD_LINE_1)
-        self.__write(blank, constants.LCD_LINE_2)
-        self.__write(blank, constants.LCD_LINE_3)
-        self.__write(blank, constants.LCD_LINE_4)
+        self.__write(blank, LCD_LINE_1)
+        self.__write(blank, LCD_LINE_2)
+        self.__write(blank, LCD_LINE_3)
+        self.__write(blank, LCD_LINE_4)
 
     def print(self, message, line, style=1):
         """
@@ -88,13 +101,13 @@ class LiquidCrystal:
             message = message.rjust(self.cols, " ")
 
         if line == 1:
-            line = constants.LCD_LINE_1
+            line = LCD_LINE_1
         elif line == 2:
-            line = constants.LCD_LINE_2
+            line = LCD_LINE_2
         elif line == 3:
-            line = constants.LCD_LINE_3
+            line = LCD_LINE_3
         elif line == 4:
-            line = constants.LCD_LINE_4
+            line = LCD_LINE_4
 
         self.__write(message, line)
 
@@ -115,10 +128,10 @@ class LiquidCrystal:
             message (string): the message to be displayed on the screen
             line (int): the line to display the message on
         """
-        self.__lcd_byte(line, constants.LCD_CMD)
+        self.__lcd_byte(line, LCD_CMD)
 
         for i in range(self.rows):
-            self.__lcd_byte(ord(message[i]), constants.LCD_CHR)
+            self.__lcd_byte(ord(message[i]), LCD_CHR)
 
     def __lcd_byte(self, bits, mode):
         """
@@ -150,11 +163,11 @@ class LiquidCrystal:
         """
         The function to toggle the LCD enable pin
         """
-        time.sleep(constants.E_DELAY)
+        time.sleep(E_DELAY)
         self.pin_E.value = True
-        time.sleep(constants.E_PULSE)
+        time.sleep(E_PULSE)
         self.pin_E.value = False
-        time.sleep(constants.E_DELAY)
+        time.sleep(E_DELAY)
 
     def display_list(self, dict_to_display):
         """
