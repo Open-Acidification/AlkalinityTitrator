@@ -1,29 +1,15 @@
 """Functions to interface with sensors and peripherals"""
 
 import time
-
+import board as board_class
 from titration.utils import analysis, constants
-
-if constants.IS_TEST:
-    from titration.utils.devices import (
-        board_mock as board_class,
-        keypad_mock as keypad_class,
-        liquid_crystal_mock as lcd_class,
-        ph_probe_mock as ph_class,
-        stir_control_mock as stir_class,
-        syringe_pump_mock as syringe_class,
-        temperature_control_mock as temperature_control_class,
-        temperature_probe_mock as temperature_class,
-    )
-else:
-    from titration.utils.devices import (  # type: ignore
-        keypad as keypad_class,
-        liquid_crystal as lcd_class,
-        ph_probe as ph_class,
-        syringe_pump as syringe_class,
-        temperature_control as temperature_control_class,
-        temperature_probe as temperature_class,
-    )
+from titration.utils.devices.keypad import Keypad
+from titration.utils.devices.liquid_crystal import LiquidCrystal
+from titration.utils.devices.ph_probe import pH_Probe
+from titration.utils.devices.syringe_pump import Syringe_Pump
+from titration.utils.devices.temperature_control import Temperature_Control
+from titration.utils.devices.temperature_probe import Temperature_Probe
+from titration.utils.devices.stir_control import Stir_Control
 
 
 # global, pH, and temperature probes
@@ -31,7 +17,7 @@ ph_sensor = None
 temperature_sensor = None
 arduino = None
 
-global_keypad = keypad_class.Keypad(
+global_keypad = Keypad(
     r0=board_class.D1,
     r1=board_class.D6,
     r2=board_class.D5,
@@ -46,7 +32,7 @@ global_keypad = keypad_class.Keypad(
 temperature_controller = None
 stir_controller = None
 
-lcd = lcd_class.LiquidCrystal(
+lcd = LiquidCrystal(
     rs=board_class.D27,
     backlight=board_class.D15,
     enable=board_class.D22,
@@ -76,29 +62,29 @@ def setup_interfaces():
 
 
 def setup_temperature_probe():
-    return temperature_class.Temperature_Probe(
+    return Temperature_Probe(
         board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D4, wires=3
     )
 
 
 def setup_temperature_control():
     # Create a new sensor attached to the 2nd probe (D0) for the temperature controller alone
-    sensor = temperature_class.Temperature_Probe(
+    sensor = Temperature_Probe(
         board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D0, wires=3
     )
-    return temperature_control_class.Temperature_Control(constants.RELAY_PIN, sensor)
+    return Temperature_Control(constants.RELAY_PIN, sensor)
 
 
 def setup_ph_probe():
-    return ph_class.pH_Probe(board_class.SCL, board_class.SDA, gain=8)
+    return pH_Probe(board_class.SCL, board_class.SDA, gain=8)
 
 
 def setup_syringe_pump():
-    return syringe_class.Syringe_Pump()
+    return Syringe_Pump()
 
 
 def setup_stir_control(debug=False):
-    return stir_class.Stir_Control(board_class.D13, debug=debug)
+    return Stir_Control(board_class.D13, debug=debug)
 
 
 def delay(seconds, countdown=False):

@@ -1,17 +1,22 @@
 """
 The file to test the lcd interface
 """
-from titration.utils import interfaces
+from titration.utils.devices.stir_control_mock import Stir_Control
+from titration.utils.devices import board_mock as board_class
 
 
-def setup_module(module):
-    interfaces.stir_controller = interfaces.setup_stir_control(debug=True)
+def create_test_stir_controller():
+    """
+    The function to create a mock stir controller
+    """
+    return Stir_Control(board_class.D13, debug=True)
 
 
 def test_interfaces_stir_fast(capsys):
     _ = capsys.readouterr()
 
-    interfaces.stir_speed_fast()
+    stir_controller = create_test_stir_controller()
+    stir_controller.motor_speed_fast()
 
     captured = capsys.readouterr()
     assert captured.out == (
@@ -58,7 +63,7 @@ def test_interfaces_stir_fast(capsys):
         + "Stirrer set to 5000\n"
     )
 
-    interfaces.stir_stop()
+    stir_controller.motor_stop()
     captured = capsys.readouterr()
     assert captured.out == ("Stirrer set to 0\n")
 
@@ -66,7 +71,8 @@ def test_interfaces_stir_fast(capsys):
 def test_interfaces_stir_slow(capsys):
     _ = capsys.readouterr()
 
-    interfaces.stir_speed_slow()
+    stir_controller = create_test_stir_controller()
+    stir_controller.motor_speed_slow()
 
     captured = capsys.readouterr()
     assert captured.out == (
@@ -93,7 +99,7 @@ def test_interfaces_stir_slow(capsys):
         + "Stirrer set to 3000\n"
     )
 
-    interfaces.stir_stop()
+    stir_controller.motor_stop()
     captured = capsys.readouterr()
     assert captured.out == ("Stirrer set to 0\n")
 
@@ -101,7 +107,8 @@ def test_interfaces_stir_slow(capsys):
 def test_interfaces_stir_set(capsys):
     _ = capsys.readouterr()
 
-    interfaces.stir_speed(5000, gradual=True)
+    stir_controller = create_test_stir_controller()
+    stir_controller.set_motor_speed(5000, gradual=True)
 
     captured = capsys.readouterr()
     assert captured.out == (
@@ -148,7 +155,7 @@ def test_interfaces_stir_set(capsys):
         + "Stirrer set to 5000\n"
     )
 
-    interfaces.stir_speed(8000, gradual=True)
+    stir_controller.set_motor_speed(8000, gradual=True)
     captured = capsys.readouterr()
     assert captured.out == (
         "Stirrer set to 5100\n"
@@ -183,7 +190,7 @@ def test_interfaces_stir_set(capsys):
         + "Stirrer set to 8000\n"
     )
 
-    interfaces.stir_speed(3000, gradual=True)
+    stir_controller.set_motor_speed(3000, gradual=True)
     captured = capsys.readouterr()
     assert captured.out == (
         "Stirrer set to 7900\n"
@@ -238,6 +245,6 @@ def test_interfaces_stir_set(capsys):
         + "Stirrer set to 3000\n"
     )
 
-    interfaces.stir_stop()
+    stir_controller.motor_stop()
     captured = capsys.readouterr()
     assert captured.out == ("Stirrer set to 0\n")
