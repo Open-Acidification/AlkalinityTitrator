@@ -126,7 +126,7 @@ def test_pump_volume_out_exact():
 
 def test_pump_volume_out_above_max_capacity():
     """
-    The function to test pumping more than the max amout of volume the pump can hold
+    The function to test pumping more than the max amount of volume the pump can hold
 
     Testing line 81: volume is greater than max pump capacity
     """
