@@ -1,0 +1,79 @@
+"""
+The file to test the mock StirControl class
+"""
+from titration.utils.devices.stir_control_mock import StirControl
+from titration.utils.devices import board_mock as board
+
+
+def create_stir_controller():
+    """
+    The function to create a test mock stir controller
+    """
+    return StirControl()
+
+
+def test_create_stir_controller():
+    """
+    The function to test the creation of a mock stir controller
+    """
+    stir_controller = create_stir_controller()
+
+    assert stir_controller.motor == (board.D13, 0, 100)
+    assert stir_controller.duty_cycle == 0
+
+
+def test_set_motor_speed_gradual():
+    """
+    The function to test the set motor speed function with the gradual option
+    """
+    stir_controller = create_stir_controller()
+
+    stir_controller.set_motor_speed(4000, gradual=True)
+
+    assert stir_controller.duty_cycle == 4000
+
+
+def test_set_motor_speed_not_gradual():
+    """
+    The function to test the set motor speed function without the gradual option
+    """
+    stir_controller = create_stir_controller()
+
+    stir_controller.set_motor_speed(4000)
+
+    assert stir_controller.duty_cycle == 4000
+
+
+def test_motor_speed_fast():
+    """
+    The function to test the set motor speed fast function
+    """
+    stir_controller = create_stir_controller()
+
+    stir_controller.motor_speed_fast()
+
+    assert stir_controller.duty_cycle == 5000
+
+
+def test_motor_speed_fast():
+    """
+    The function to test the set motor speed slow function
+    """
+    stir_controller = create_stir_controller()
+
+    stir_controller.motor_speed_slow()
+
+    assert stir_controller.duty_cycle == 3000
+
+
+def test_motor_speed_fast():
+    """
+    The function to test the set motor speed slow function
+    """
+    stir_controller = create_stir_controller()
+
+    stir_controller.duty_cycle = 5000
+
+    stir_controller.motor_stop()
+
+    assert stir_controller.duty_cycle == 0

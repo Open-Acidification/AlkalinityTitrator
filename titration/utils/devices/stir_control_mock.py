@@ -15,17 +15,13 @@ class StirControl:
     The class for the mock stir controller
     """
 
-    def __init__(
-        self,
-        debug=False,
-    ):
+    def __init__(self):
         """
         The constructor for the mock stir controller class
         Initializes the pump's motor
         """
         self.motor = (board.D13, STIR_DUTY_CYCLE, STIR_FREQUENCY)
         self.duty_cycle = STIR_DUTY_CYCLE
-        self.debug = debug
 
     def set_motor_speed(self, target, gradual=False):
         """
@@ -36,18 +32,12 @@ class StirControl:
 
             if direction == 1 and self.duty_cycle < 1000:
                 self.duty_cycle = 1000
-                if self.debug:
-                    print("Stirrer set to {0:.0f}".format(self.duty_cycle))
 
             while self.duty_cycle != target:
                 next_step = min(abs(target - self.duty_cycle), 100)
                 self.duty_cycle = self.duty_cycle + (next_step * direction)
-                if self.debug:
-                    print("Stirrer set to {0:.0f}".format(self.duty_cycle))
         else:
             self.duty_cycle = target
-            if self.debug:
-                print("Stirrer set to {0:.0f}".format(self.duty_cycle))
 
     def motor_speed_fast(self):
         """

@@ -97,8 +97,8 @@ def setup_syringe_pump():
     return syringe_class.SyringePump()
 
 
-def setup_stir_control(debug=False):
-    return stir_class.StirControl(debug=debug)
+def setup_stir_control():
+    return stir_class.StirControl()
 
 
 def delay(seconds, countdown=False):
