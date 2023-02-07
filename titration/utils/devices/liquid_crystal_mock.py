@@ -60,7 +60,7 @@ class LiquidCrystal:
                 else:
                     print("|", self.blank, "|", sep="")
 
-    def print(self, message, line, style=1):
+    def print(self, message, line, style="left"):
         """
         The function to send a string to the LCD on a given line and type
 
@@ -72,11 +72,11 @@ class LiquidCrystal:
         if self.cols == -1 or self.rows == -1:
             raise ValueError("The LCD has not be initialized with begin()")
 
-        if style == 1:
+        if style == "left":
             message = message.ljust(self.cols, " ")
-        elif style == 2:
+        elif style == "center":
             message = message.center(self.cols, " ")
-        elif style == 3:
+        elif style == "right":
             message = message.rjust(self.cols, " ")
 
         self.__write(message, line)

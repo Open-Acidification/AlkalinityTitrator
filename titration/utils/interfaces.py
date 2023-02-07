@@ -144,7 +144,7 @@ def read_user_value(message):
     inputs = []
 
     lcd.print(message, line=1)
-    lcd.print("_", style=2, line=2)
+    lcd.print("_", style="center", line=2)
     lcd.print(instructions_1, line=3)
     lcd.print(instructions_2, line=4)
 
@@ -203,9 +203,9 @@ def read_user_value(message):
 
         # Display updated input
         if len(inputs) == 0:
-            lcd.print("_", style=2, line=2)
+            lcd.print("_", style="center", line=2)
         else:
-            lcd.print(string, style=2, line=2)
+            lcd.print(string, style="center", line=2)
 
         # DEBUG
         # print("Inputs: ", inputs)

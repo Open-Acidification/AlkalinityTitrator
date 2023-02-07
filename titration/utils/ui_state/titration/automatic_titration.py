@@ -96,4 +96,4 @@ class AutomaticTitration(UIState):
         """
         The function to display AUTO SELECTED upon entering the AutomaticTitration state
         """
-        self.titrator.lcd.print("AUTO SELECTED", style=2, line=4)
+        self.titrator.lcd.print("AUTO SELECTED", style="center", line=4)

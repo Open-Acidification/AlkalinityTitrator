@@ -43,7 +43,7 @@ def test_loop(print_mock, set_next_state_mock):
         [
             mock.call("Heating to 30 C...", line=1),
             mock.call("", line=2),
-            mock.call("Please wait...", style=2, line=3),
+            mock.call("Please wait...", style="center", line=3),
             mock.call("", line=4),
         ]
     )
@@ -59,7 +59,7 @@ def test_loop(print_mock, set_next_state_mock):
         [
             mock.call("Heating to 30 C...", line=1),
             mock.call("", line=2),
-            mock.call("Please wait...", style=2, line=3),
+            mock.call("Please wait...", style="center", line=3),
             mock.call("", line=4),
         ]
     )
@@ -95,7 +95,7 @@ def test_initial_titration_manual(print_mock, set_next_state_mock):
         [
             mock.call("Heating to 30 C...", line=1),
             mock.call("", line=2),
-            mock.call("Please wait...", style=2, line=3),
+            mock.call("Please wait...", style="center", line=3),
             mock.call("", line=4),
         ]
     )
@@ -131,7 +131,7 @@ def test_initial_titration_automatic(print_mock, set_next_state_mock):
         [
             mock.call("Heating to 30 C...", line=1),
             mock.call("", line=2),
-            mock.call("Please wait...", style=2, line=3),
+            mock.call("Please wait...", style="center", line=3),
             mock.call("", line=4),
         ]
     )

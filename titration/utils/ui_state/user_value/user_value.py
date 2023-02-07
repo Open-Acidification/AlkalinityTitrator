@@ -78,6 +78,6 @@ class UserValue(UIState):
         """
         self.titrator.lcd.clear()
         self.titrator.lcd.print(self.get_label(), line=1)
-        self.titrator.lcd.print(self.value, style=2, line=2)
+        self.titrator.lcd.print(self.value, style="center", line=2)
         self.titrator.lcd.print("* = .       B = BS", line=3)
         self.titrator.lcd.print("A = accept  C = Clr", line=4)

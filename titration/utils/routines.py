@@ -133,7 +133,7 @@ def test_mode_read_volume():
     interfaces.lcd.print("Pump Vol: ", line=1)
     interfaces.lcd.print(
         "{0:1.2f}".format(constants.volume_in_pump),
-        style=2,
+        style="center",
         line=2,
     )
     interfaces.lcd.print("Press any to cont.", line=3)
@@ -164,10 +164,10 @@ def _calibrate_pH():
     """Routine for calibrating pH sensor."""
     # get first buffer pH
     buffer1_actual_pH = interfaces.read_user_value("Enter buffer pH:")
-    interfaces.lcd.print("Put sensor in buffer", style=2, line=1)
+    interfaces.lcd.print("Put sensor in buffer", style="center", line=1)
     interfaces.lcd.print("", line=2)
-    interfaces.lcd.print("Press any button", style=2, line=3)
-    interfaces.lcd.print("to record value", style=2, line=4)
+    interfaces.lcd.print("Press any button", style="center", line=3)
+    interfaces.lcd.print("to record value", style="center", line=4)
     # Waits for user to press enter
     interfaces.read_user_input()
     buffer1_measured_volts = float(interfaces.read_raw_pH())
@@ -177,8 +177,8 @@ def _calibrate_pH():
         "{0:>2.5f} pH, {1:>3.4f} V".format(buffer1_actual_pH, buffer1_measured_volts),
         line=2,
     )
-    interfaces.lcd.print("Press any button", style=2, line=3)
-    interfaces.lcd.print("to continue", style=2, line=4)
+    interfaces.lcd.print("Press any button", style="center", line=3)
+    interfaces.lcd.print("to continue", style="center", line=4)
     interfaces.read_user_input()
 
     # set calibration constants
@@ -189,10 +189,10 @@ def _calibrate_pH():
 def _calibrate_temperature():
     """Routine for calibrating the temperature probe."""
     expected_temperature = interfaces.read_user_value("Ref solution temperature?")
-    interfaces.lcd.print("Put probe in sol", style=2, line=1)
+    interfaces.lcd.print("Put probe in sol", style="center", line=1)
     interfaces.lcd.print("", line=2)
-    interfaces.lcd.print("Press 1 to", style=2, line=3)
-    interfaces.lcd.print("record value", style=2, line=4)
+    interfaces.lcd.print("Press 1 to", style="center", line=3)
+    interfaces.lcd.print("record value", style="center", line=4)
     # Waits for user to press enter
     interfaces.read_user_input()
     expected_resistance = analysis.calculate_expected_resistance(expected_temperature)
@@ -272,17 +272,17 @@ def total_alkalinity_titration():
     interfaces.temperature_controller.activate()
     interfaces.lcd.clear()
     interfaces.lcd.print("Heating to 30 C...", line=1)
-    interfaces.lcd.print("Please wait...", style=2, line=3)
+    interfaces.lcd.print("Please wait...", style="center", line=3)
     if user_choice == "1" or user_choice == constants.KEY_1:
-        interfaces.lcd.print("MANUAL SELECTED", style=2, line=4)
+        interfaces.lcd.print("MANUAL SELECTED", style="center", line=4)
     else:
-        interfaces.lcd.print("AUTO SELECTED", style=2, line=4)
+        interfaces.lcd.print("AUTO SELECTED", style="center", line=4)
     while not interfaces.temperature_controller.at_temperature():
         interfaces.temperature_controller.update()
         temperature = interfaces.temperature_controller.get_last_temperature()
         interfaces.lcd.print(
             "Temp: {0:>4.3f} C".format(temperature),
-            style=2,
+            style="center",
             line=2,
         )
 
@@ -358,7 +358,7 @@ def titration(
     """
     interfaces.lcd.print(
         "Titrating to {} pH".format(str(pH_target)),
-        style=2,
+        style="center",
         line=4,
     )
     # total HCl added
@@ -374,7 +374,7 @@ def titration(
         total_sol += solution_increment_amount
 
         # TESTING SETTLING
-        interfaces.lcd.print("Mixing...", style=2, line=4)
+        interfaces.lcd.print("Mixing...", style="center", line=4)
         interfaces.delay(10)  # allow it to mix before taking measurements
 
         current_pH = wait_pH_stable(total_sol, data)

@@ -46,7 +46,7 @@ class Syringe_Pump:
         elif direction == 1:
             # volume greater than max capacity of pump
             if volume_to_add > self.max_pump_capacity:
-                interfaces.lcd.print("Volume > pumpable", style=2, line=4)
+                interfaces.lcd.print("Volume > pumpable", style="center", line=4)
 
                 # pump out all current volume
                 next_volume = self.volume_in_pump

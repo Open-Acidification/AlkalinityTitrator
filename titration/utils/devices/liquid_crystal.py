@@ -9,10 +9,6 @@ import board
 LCD_CHR = True
 LCD_CMD = False
 
-LCD_LEFT_JUST = 1
-LCD_CENT_JUST = 2
-LCD_RIGHT_JUST = 3
-
 LCD_LINE_1 = 0x80
 LCD_LINE_2 = 0xC0
 LCD_LINE_3 = 0x94
@@ -81,7 +77,7 @@ class LiquidCrystal:
         self.__write(blank, LCD_LINE_3)
         self.__write(blank, LCD_LINE_4)
 
-    def print(self, message, line, style=1):
+    def print(self, message, line, style="left"):
         """
         The function to send a string to the LCD on a given line and type
 
@@ -93,11 +89,11 @@ class LiquidCrystal:
         if self.cols == -1 or self.rows == -1:
             raise ValueError("The LCD has not be initialized with begin()")
 
-        if style == 1:
+        if style == "left":
             message = message.ljust(self.cols, " ")
-        elif style == 2:
+        elif style == "center":
             message = message.center(self.cols, " ")
-        elif style == 3:
+        elif style == "right":
             message = message.rjust(self.cols, " ")
 
         if line == 1:

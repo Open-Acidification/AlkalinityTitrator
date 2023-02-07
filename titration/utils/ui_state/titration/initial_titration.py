@@ -57,7 +57,7 @@ class InitialTitration(UIState):
             self.titrator.lcd.clear()
             self.titrator.lcd.print("Heating to 30 C...", line=1)
             self.titrator.lcd.print("", line=2)
-            self.titrator.lcd.print("Please wait...", style=2, line=3)
+            self.titrator.lcd.print("Please wait...", style="center", line=3)
             self.titrator.lcd.print("", line=4)
 
             while not interfaces.temperature_controller.at_temperature():
@@ -65,7 +65,7 @@ class InitialTitration(UIState):
                 temperature = interfaces.temperature_controller.get_last_temperature()
                 self.titrator.lcd.print(
                     "Temp: {0:>4.3f} C".format(temperature),
-                    style=2,
+                    style="center",
                     line=2,
                 )
                 break  # TODO: fix mock temperature controller and remove break

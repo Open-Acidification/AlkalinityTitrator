@@ -92,7 +92,7 @@ def test_lcd_print_left(capsys):
 
     _ = capsys.readouterr()
 
-    liquid_crystal.print("test string 1", 1, 1)
+    liquid_crystal.print("test string 1", 1, "left")
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -103,7 +103,7 @@ def test_lcd_print_left(capsys):
         + "*====================*\n"
     )
 
-    liquid_crystal.print("test string 1 (2)", 1, 1)
+    liquid_crystal.print("test string 1 (2)", 1, "left")
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -114,7 +114,7 @@ def test_lcd_print_left(capsys):
         + "*====================*\n"
     )
 
-    liquid_crystal.print("test string 2", 2, 1)
+    liquid_crystal.print("test string 2", 2, "left")
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -125,7 +125,7 @@ def test_lcd_print_left(capsys):
         + "*====================*\n"
     )
 
-    liquid_crystal.print("test string 3", 3, 1)
+    liquid_crystal.print("test string 3", 3, "left")
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -136,7 +136,7 @@ def test_lcd_print_left(capsys):
         + "*====================*\n"
     )
 
-    liquid_crystal.print("test string 4", 4, 1)
+    liquid_crystal.print("test string 4", 4, "left")
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -156,7 +156,7 @@ def test_lcd_print_center(capsys):
 
     _ = capsys.readouterr()
 
-    liquid_crystal.print("test string 1", 1, 2)
+    liquid_crystal.print("test string 1", 1, "center")
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -167,7 +167,7 @@ def test_lcd_print_center(capsys):
         + "*====================*\n"
     )
 
-    liquid_crystal.print("test string 1 (2)", 1, 2)
+    liquid_crystal.print("test string 1 (2)", 1, "center")
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -178,7 +178,7 @@ def test_lcd_print_center(capsys):
         + "*====================*\n"
     )
 
-    liquid_crystal.print("test string 2", 2, 2)
+    liquid_crystal.print("test string 2", 2, "center")
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -189,7 +189,7 @@ def test_lcd_print_center(capsys):
         + "*====================*\n"
     )
 
-    liquid_crystal.print("test string 3", 3, 2)
+    liquid_crystal.print("test string 3", 3, "center")
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -200,7 +200,7 @@ def test_lcd_print_center(capsys):
         + "*====================*\n"
     )
 
-    liquid_crystal.print("test string 4", 4, 2)
+    liquid_crystal.print("test string 4", 4, "center")
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -220,7 +220,7 @@ def test_lcd_print_right(capsys):
 
     _ = capsys.readouterr()
 
-    liquid_crystal.print("test string 1", 1, 3)
+    liquid_crystal.print("test string 1", 1, "right")
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -231,7 +231,7 @@ def test_lcd_print_right(capsys):
         + "*====================*\n"
     )
 
-    liquid_crystal.print("test string 1 (2)", 1, 3)
+    liquid_crystal.print("test string 1 (2)", 1, "right")
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -242,7 +242,7 @@ def test_lcd_print_right(capsys):
         + "*====================*\n"
     )
 
-    liquid_crystal.print("test string 2", 2, 3)
+    liquid_crystal.print("test string 2", 2, "right")
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -253,7 +253,7 @@ def test_lcd_print_right(capsys):
         + "*====================*\n"
     )
 
-    liquid_crystal.print("test string 3", 3, 3)
+    liquid_crystal.print("test string 3", 3, "right")
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -264,7 +264,7 @@ def test_lcd_print_right(capsys):
         + "*====================*\n"
     )
 
-    liquid_crystal.print("test string 4", 4, 3)
+    liquid_crystal.print("test string 4", 4, "right")
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -284,7 +284,7 @@ def test_lcd_print_long(capsys):
 
     _ = capsys.readouterr()
 
-    liquid_crystal.print("test string that's too long", 1, 1)
+    liquid_crystal.print("test string that's too long", 1, "left")
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
@@ -302,13 +302,13 @@ def test_lcd_clear(capsys):
     """
     liquid_crystal = create_lcd()
 
-    liquid_crystal.print("test string", 1, 1)
-    liquid_crystal.print("test string", 2, 1)
-    liquid_crystal.print("test string", 3, 1)
+    liquid_crystal.print("test string", 1, "left")
+    liquid_crystal.print("test string", 2, "left")
+    liquid_crystal.print("test string", 3, "left")
 
     _ = capsys.readouterr()
 
-    liquid_crystal.print("test string", 4, 1)
+    liquid_crystal.print("test string", 4, "left")
 
     captured = capsys.readouterr()
     assert captured.out == (
@@ -357,7 +357,7 @@ def test_lcd_backlight(capsys):
 
     assert liquid_crystal.pin_ON.value is False
 
-    liquid_crystal.print("test string", 1, 1)
+    liquid_crystal.print("test string", 1, "left")
     captured = capsys.readouterr()
     assert captured.out == ""
 
@@ -365,7 +365,7 @@ def test_lcd_backlight(capsys):
 
     assert liquid_crystal.pin_ON.value is True
 
-    liquid_crystal.print("test string", 1, 1)
+    liquid_crystal.print("test string", 1, "left")
     captured = capsys.readouterr()
     assert captured.out == (
         "*====================*\n"
