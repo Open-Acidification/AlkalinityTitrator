@@ -165,7 +165,7 @@ class SyringePump:
         else:
             raise Exception("Arduino Unavailable")
 
-    def __determine_pump_cycles(volume_to_add):
+    def __determine_pump_cycles(self, volume_to_add):
         """
         The function to determines the number of cycles to move given volume
 
