@@ -55,7 +55,7 @@ def test_motor_speed_fast():
     assert stir_controller.duty_cycle == 5000
 
 
-def test_motor_speed_fast():
+def test_motor_speed_slow():
     """
     The function to test the set motor speed slow function
     """
@@ -66,9 +66,9 @@ def test_motor_speed_fast():
     assert stir_controller.duty_cycle == 3000
 
 
-def test_motor_speed_fast():
+def test_motor_stop():
     """
-    The function to test the set motor speed slow function
+    The function to test the motor stop function
     """
     stir_controller = create_stir_controller()
 

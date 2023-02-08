@@ -163,7 +163,7 @@ class SyringePump:
             else:
                 return int(temp)
         else:
-            raise Exception("Aduino Unavailable")
+            raise Exception("Arduino Unavailable")
 
     def __determine_pump_cycles(volume_to_add):
         """
