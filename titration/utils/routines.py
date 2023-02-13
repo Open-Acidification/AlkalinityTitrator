@@ -7,7 +7,7 @@ ROUTINE_OPTIONS = {
     2: "Calibrate sensors",
     3: "Prime Pump",
     4: "Update settings",
-    5: "Test Mode",
+    5: "Demo Mode",
     6: "Exit",
 }
 
@@ -31,13 +31,13 @@ def run_routine(selection):
         edit_settings()
     elif selection == "5" or selection == constants.KEY_5:
         # testing mode
-        test_mode()
+        demo_mode()
     else:
         # exit
         pass
 
 
-def test_mode():
+def demo_mode():
     """Function for running specific tests for the program"""
     page = 1
     user_choice = None
@@ -59,27 +59,27 @@ def test_mode():
         if user_choice == "6" or user_choice == constants.KEY_6:
             break
         else:
-            test_mode_selection(user_choice)
+            demo_mode_selection(user_choice)
 
 
-def test_mode_selection(user_choice):
+def demo_mode_selection(user_choice):
     if user_choice == "1" or user_choice == constants.KEY_1:
-        test_mode_read_values()
+        demo_mode_read_values()
 
     elif user_choice == "2" or user_choice == constants.KEY_2:
-        test_mode_pump()
+        demo_mode_pump()
 
     elif user_choice == "3" or user_choice == constants.KEY_3:
-        test_mode_set_volume()
+        demo_mode_set_volume()
 
     elif user_choice == "4" or user_choice == constants.KEY_4:
-        test_mode_toggle_test_mode()
+        demo_mode_toggle_demo_mode()
 
     elif user_choice == "5" or user_choice == constants.KEY_5:
-        test_mode_read_volume()
+        demo_mode_read_volume()
 
 
-def test_mode_read_values(numVals=60, timestep=0.5):
+def demo_mode_read_values(numVals=60, timestep=0.5):
     numVals = numVals
     timestep = timestep
     timeVals = np.zeros(numVals)
@@ -104,7 +104,7 @@ def test_mode_read_values(numVals=60, timestep=0.5):
         interfaces.delay(timestep)
 
 
-def test_mode_pump():
+def demo_mode_pump():
     p_volume = interfaces.read_user_value("Volume: ")
 
     while True:
@@ -115,12 +115,12 @@ def test_mode_pump():
             break
 
 
-def test_mode_set_volume():
+def demo_mode_set_volume():
     new_volume = interfaces.read_user_value("Volume in pump: ")
     interfaces.set_pump_volume(new_volume)
 
 
-def test_mode_toggle_test_mode():
+def demo_mode_toggle_demo_mode():
     constants.IS_TEST = not constants.IS_TEST
     interfaces.lcd.clear()
     interfaces.lcd.print("Testing: {}".format(constants.IS_TEST), line=1)
@@ -128,7 +128,7 @@ def test_mode_toggle_test_mode():
     interfaces.read_user_input()
 
 
-def test_mode_read_volume():
+def demo_mode_read_volume():
     interfaces.lcd.clear()
     interfaces.lcd.print("Pump Vol: ", line=1)
     interfaces.lcd.print(

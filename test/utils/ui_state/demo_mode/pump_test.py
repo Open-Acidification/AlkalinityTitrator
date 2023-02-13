@@ -4,10 +4,10 @@ The file to test the Pump class
 from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
-from titration.utils.ui_state.test_mode.test_mode import TestMode
+from titration.utils.ui_state.demo_mode.demo_mode import DemoMode
 from titration.utils.titrator import Titrator
 from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
-from titration.utils.ui_state.test_mode.pump import Pump
+from titration.utils.ui_state.demo_mode.pump import Pump
 
 
 @mock.patch.object(Pump, "_set_next_state")
@@ -15,7 +15,7 @@ def test_handle_key(set_next_state_mock):
     """
     The function to test Pump's handle_key function for each keypad input
     """
-    pump = Pump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
+    pump = Pump(Titrator(), DemoMode(Titrator(), MainMenu(Titrator())))
 
     pump.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
@@ -28,7 +28,7 @@ def test_handle_key(set_next_state_mock):
 
     pump.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "TestMode"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoMode"
 
 
 @mock.patch.object(LiquidCrystal, "print")
@@ -36,7 +36,7 @@ def test_loop(print_mock):
     """
     The function to test Pump's loop function's LiquidCrystal calls
     """
-    pump = Pump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
+    pump = Pump(Titrator(), DemoMode(Titrator(), MainMenu(Titrator())))
 
     pump.loop()
     print_mock.assert_has_calls(
@@ -80,7 +80,7 @@ def test_Pump(print_mock, set_next_state_mock):
         User enters "0" to set in/out
         User enters "1" to set pumping volume
     """
-    pump = Pump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
+    pump = Pump(Titrator(), DemoMode(Titrator(), MainMenu(Titrator())))
 
     pump.loop()
     print_mock.assert_has_calls(
@@ -123,4 +123,4 @@ def test_Pump(print_mock, set_next_state_mock):
 
     pump.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "TestMode"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoMode"
