@@ -1,80 +1,64 @@
 """
-Module to test mock serial communication with arduino
+The file to test the mock serial peripheral
 """
+from titration.utils import constants
+from titration.utils.devices.serial_mock import Serial
 
-import titration.utils.constants as c
-import titration.utils.devices.serial_mock as serial
+
+def create_arduino():
+    """
+    The function to create a mock arduino peripheral
+    """
+    return Serial(
+        port=constants.ARDUINO_PORT,
+        baudrate=constants.ARDUINO_BAUD,
+        timeout=constants.ARDUINO_TIMEOUT,
+    )
 
 
 def test_serial_create():
     """
-    Function to test mock serial creation
+    The function to test mock serial creation
     """
-    arduino = serial.Serial(
-        port=c.ARDUINO_PORT, baudrate=c.ARDUINO_BAUD, timeout=c.ARDUINO_TIMEOUT
-    )
+    arduino = create_arduino()
     assert arduino is not None
 
 
 def test_serial_output_buffer():
     """
-    Function to test mock serial output buffer
+    The function to test mock serial output buffer
     """
-    arduino = serial.Serial(
-        port=c.ARDUINO_PORT, baudrate=c.ARDUINO_BAUD, timeout=c.ARDUINO_TIMEOUT
-    )
+    arduino = create_arduino()
     arduino.reset_output_buffer()
 
 
 def test_serial_input_buffer():
     """
-    Function to test mock serial input buffer
+    The function to test mock serial input buffer
     """
-    arduino = serial.Serial(
-        port=c.ARDUINO_PORT, baudrate=c.ARDUINO_BAUD, timeout=c.ARDUINO_TIMEOUT
-    )
+    arduino = create_arduino()
     arduino.reset_input_buffer()
 
 
 def test_serial_writeable():
     """
-    Function to test if mock serial is writeable
+    The function to test if mock serial is writeable
     """
-    arduino = serial.Serial(
-        port=c.ARDUINO_PORT, baudrate=c.ARDUINO_BAUD, timeout=c.ARDUINO_TIMEOUT
-    )
+    arduino = create_arduino()
     assert arduino.writable()
-
-
-# def test_serial_write(capsys):
-#    """
-#    Function to test a mock serial write
-#    """
-#    arduino = serial.Serial(
-#        port=c.ARDUINO_PORT, baudrate=c.ARDUINO_BAUD, timeout=c.ARDUINO_TIMEOUT
-#    )
-#    arduino.write("test string")
-
-# disabled due to printing on syringe_pump calls
-# captured = capsys.readouterr()
-# assert captured.out == "test string\n"
 
 
 def test_serial_flush():
     """
-    Function to test mock serial flush
+    The function to test mock serial flush
     """
-    arduino = serial.Serial(
-        port=c.ARDUINO_PORT, baudrate=c.ARDUINO_BAUD, timeout=c.ARDUINO_TIMEOUT
-    )
+    arduino = create_arduino()
     arduino.flush()
 
 
 def test_serial_readline():
     """
-    Function to test serial readline
+    The function to test serial readline
     """
-    arduino = serial.Serial(
-        port=c.ARDUINO_PORT, baudrate=c.ARDUINO_BAUD, timeout=c.ARDUINO_TIMEOUT
-    )
+    arduino = create_arduino()
     assert arduino.readline() == b"DONE\r\n"
