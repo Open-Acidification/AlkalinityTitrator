@@ -1,16 +1,34 @@
 """
-Module to test mock syringe pump
+The file to test the mock syringe
 """
+from titration.utils import constants
+from titration.utils.devices.syringe_pump_mock import Syringe_Pump
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
+from titration.utils.devices import board_mock as board_class
 
-from titration.utils import constants, interfaces
-from titration.utils.devices import syringe_pump_mock as syringe
+
+def create_lcd():
+    """
+    The function to create a lcd mock for the mock syringe tests
+    """
+    return LiquidCrystal(
+        rs=board_class.D27,
+        backlight=board_class.D15,
+        enable=board_class.D22,
+        d4=board_class.D18,
+        d5=board_class.D23,
+        d6=board_class.D24,
+        d7=board_class.D25,
+        cols=constants.LCD_WIDTH,
+        rows=constants.LCD_HEIGHT,
+    )
 
 
 def test_syringe_mock_create():
     """
-    Function to test creating mock syringe
+    The function to test creating mock syringe
     """
-    pump = syringe.Syringe_Pump()
+    pump = Syringe_Pump()
     assert pump is not None
     assert pump.volume_in_pump == constants.volume_in_pump
     assert pump.max_pump_capacity == constants.MAX_PUMP_CAPACITY
@@ -19,10 +37,11 @@ def test_syringe_mock_create():
 
 def test_syringe_mock_pump_volume_out_less_than(capsys):
     """
-    Function to test mock syringe pump volume out less than
+    The function to test mock syringe pump volume out less than
     """
-    pump = syringe.Syringe_Pump()
-    interfaces.lcd.mock_disable_clear()
+    pump = Syringe_Pump()
+    lcd = create_lcd()
+    lcd.mock_disable_clear()
     pump.set_volume_in_pump(1.0)
     _ = capsys.readouterr()
     pump.pump_volume(0.5, 1)
@@ -45,10 +64,11 @@ def test_syringe_mock_pump_volume_out_less_than(capsys):
 
 def test_syringe_mock_pump_volume_out_greater_than_current(capsys):
     """
-    Function to test mock syringe pump volume out greater than
+    The function to test mock syringe pump volume out greater than
     """
-    pump = syringe.Syringe_Pump()
-    interfaces.lcd.mock_disable_clear()
+    pump = Syringe_Pump()
+    lcd = create_lcd()
+    lcd.mock_disable_clear()
     pump.set_volume_in_pump(0.5)
     _ = capsys.readouterr()
     pump.pump_volume(1, 1)
@@ -95,10 +115,11 @@ def test_syringe_mock_pump_volume_out_greater_than_current(capsys):
 
 def test_syringe_mock_pump_volume_out_greater_than_max(capsys):
     """
-    Function to test mock syringe pump volume out greater than max
+    The function to test mock syringe pump volume out greater than max
     """
-    pump = syringe.Syringe_Pump()
-    interfaces.lcd.mock_disable_clear()
+    pump = Syringe_Pump()
+    lcd = create_lcd()
+    lcd.mock_disable_clear()
     pump.set_volume_in_pump(1.0)
     _ = capsys.readouterr()
     pump.pump_volume(2, 1)

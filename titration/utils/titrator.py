@@ -2,7 +2,7 @@
 The file for the Titrator class
 """
 from titration.utils.ui_state.main_menu import MainMenu
-from titration.utils import constants, interfaces
+from titration.utils import constants
 
 
 if constants.IS_TEST:
@@ -27,8 +27,6 @@ class Titrator:
         """
         The constructor for the Titrator class
         """
-        # Initialize Other Devices
-        interfaces.setup_interfaces()
 
         # Initialize LCD
         self.lcd = LiquidCrystal(
