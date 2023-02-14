@@ -4,7 +4,6 @@ The file to test the mock syringe
 from titration.utils import constants
 from titration.utils.devices.syringe_pump_mock import Syringe_Pump
 from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
-from titration.utils.devices import board_mock as board_class
 
 
 def create_lcd():
