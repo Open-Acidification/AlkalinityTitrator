@@ -58,8 +58,3 @@ class PHProbe:
         The function to return the pH probe's gain
         """
         return self.ads.gain
-
-    def read_raw_pH(self):
-        # Read pH registers; pH_val is raw value from pH probe
-        volts = self.voltage()
-        return volts
