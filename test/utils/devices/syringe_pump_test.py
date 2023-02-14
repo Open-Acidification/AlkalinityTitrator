@@ -1,20 +1,20 @@
 """
-The file to test the mock syringe pump
+The file to test the syringe pump
 """
 import pytest
-from titration.utils.devices.syringe_pump_mock import SyringePump
+from titration.utils.devices.syringe_pump import SyringePump
 
 
 def create_syringe_pump():
     """
-    The function to create a test mock syringe pump
+    The function to create a test syringe pump
     """
     return SyringePump()
 
 
-def test_syringe_mock_create():
+def test_syringe_create():
     """
-    The function to test creating mock syringe
+    The function to test creating syringe
     """
     pump = create_syringe_pump()
 
@@ -23,9 +23,9 @@ def test_syringe_mock_create():
     assert pump is not None
 
 
-def test_syringe_mock_set_volume_above_max():
+def test_syringe_set_volume_above_max():
     """
-    The function to test setting the mock syringe volume
+    The function to test setting the syringe volume
     """
     pump = create_syringe_pump()
 
@@ -38,9 +38,9 @@ def test_syringe_mock_set_volume_above_max():
     assert pump.volume_in_pump == 0
 
 
-def test_syringe_mock_set_volume_negative():
+def test_syringe_set_volume_negative():
     """
-    The function to test setting the mock syringe volume below zero
+    The function to test setting the syringe volume below zero
     """
     pump = create_syringe_pump()
 
@@ -53,9 +53,9 @@ def test_syringe_mock_set_volume_negative():
     assert pump.volume_in_pump == 0
 
 
-def test_syringe_mock_set_volume():
+def test_syringe_set_volume():
     """
-    The function to test setting the mock syringe volume correctly
+    The function to test setting the syringe volume correctly
     """
     pump = create_syringe_pump()
 
@@ -64,9 +64,9 @@ def test_syringe_mock_set_volume():
     assert pump.volume_in_pump == 0.5
 
 
-def test_syringe_mock_get_volume():
+def test_syringe_get_volume():
     """
-    The function to test getting the mock syringe volume
+    The function to test getting the syringe volume
     """
     pump = create_syringe_pump()
 
@@ -77,7 +77,7 @@ def test_syringe_mock_get_volume():
 
 def test_pump_volume_in():
     """
-    The function to test pulling liquid into the mock syringe
+    The function to test pulling liquid into the syringe
     """
     pump = create_syringe_pump()
 

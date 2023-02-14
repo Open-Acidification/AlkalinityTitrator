@@ -1,25 +1,25 @@
 """
-The file to test the mock StirControl class
+The file to test the StirControl class
 """
-from titration.utils.devices.stir_control_mock import StirControl
-from titration.utils.devices import board_mock as board
+from titration.utils.devices.stir_control import StirControl
 
 
 def create_stir_controller():
     """
-    The function to create a test mock stir controller
+    The function to create a test stir controller
     """
     return StirControl()
 
 
 def test_create_stir_controller():
     """
-    The function to test the creation of a mock stir controller
+    The function to test the creation of a stir controller
     """
     stir_controller = create_stir_controller()
 
-    assert stir_controller.motor == (board.D13, 0, 100)
-    assert stir_controller.duty_cycle == 0
+    assert stir_controller.motor is not None
+    assert stir_controller.motor.duty_cycle == 0
+    assert stir_controller.motor.frequency == 100
 
 
 def test_set_motor_speed_gradual():
@@ -30,7 +30,7 @@ def test_set_motor_speed_gradual():
 
     stir_controller.set_motor_speed(4000, gradual=True)
 
-    assert stir_controller.duty_cycle == 4000
+    assert stir_controller.motor.duty_cycle == 4000
 
 
 def test_set_motor_speed_not_gradual():
@@ -41,7 +41,7 @@ def test_set_motor_speed_not_gradual():
 
     stir_controller.set_motor_speed(4000)
 
-    assert stir_controller.duty_cycle == 4000
+    assert stir_controller.motor.duty_cycle == 4000
 
 
 def test_motor_speed_fast():
@@ -52,7 +52,7 @@ def test_motor_speed_fast():
 
     stir_controller.motor_speed_fast()
 
-    assert stir_controller.duty_cycle == 5000
+    assert stir_controller.motor.duty_cycle == 5000
 
 
 def test_motor_speed_slow():
@@ -63,7 +63,7 @@ def test_motor_speed_slow():
 
     stir_controller.motor_speed_slow()
 
-    assert stir_controller.duty_cycle == 3000
+    assert stir_controller.motor.duty_cycle == 3000
 
 
 def test_motor_stop():
@@ -72,8 +72,8 @@ def test_motor_stop():
     """
     stir_controller = create_stir_controller()
 
-    stir_controller.duty_cycle = 5000
+    stir_controller.motor.duty_cycle = 5000
 
     stir_controller.motor_stop()
 
-    assert stir_controller.duty_cycle == 0
+    assert stir_controller.motor.duty_cycle == 0

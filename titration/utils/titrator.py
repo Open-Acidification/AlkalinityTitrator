@@ -3,18 +3,17 @@ The file for the Titrator class
 """
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils import constants, interfaces
+from titration.utils.devices.syringe_pump import SyringePump
 
 
 if constants.IS_TEST:
     from titration.utils.devices import board_mock as board_class
     from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
     from titration.utils.devices.keypad_mock import Keypad
-    from titration.utils.devices.syringe_pump_mock import SyringePump
 else:
     import board as board_class  # type: ignore
     from titration.utils.devices.keypad import Keypad  # type: ignore
     from titration.utils.devices.liquid_crystal import LiquidCrystal  # type: ignore
-    from titration.utils.devices.syringe_pump import SyringePump  # type: ignore
 
 
 class Titrator:

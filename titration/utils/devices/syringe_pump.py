@@ -1,7 +1,12 @@
 """
 The file for the SyringePump class
 """
-from serial import Serial
+from titration.utils import constants
+
+if constants.IS_TEST:
+    from titration.utils.devices.serial_mock import Serial
+else:
+    from serial import Serial  # type: ignore
 
 ARDUINO_PORT = "/dev/ttyACM0"
 ARDUINO_BAUD = 9600

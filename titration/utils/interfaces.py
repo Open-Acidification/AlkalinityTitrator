@@ -3,15 +3,15 @@
 import time
 
 from titration.utils import analysis, constants
+from titration.utils.devices import syringe_pump as syringe_class
+from titration.utils.devices import stir_control as stir_class
+from titration.utils.devices import ph_probe as ph_class
 
 if constants.IS_TEST:
     from titration.utils.devices import (
         board_mock as board_class,
         keypad_mock as keypad_class,
         liquid_crystal_mock as lcd_class,
-        ph_probe_mock as ph_class,
-        stir_control_mock as stir_class,
-        syringe_pump_mock as syringe_class,
         temperature_control_mock as temperature_control_class,
         temperature_probe_mock as temperature_class,
     )
@@ -19,8 +19,6 @@ else:
     from titration.utils.devices import (  # type: ignore
         keypad as keypad_class,
         liquid_crystal as lcd_class,
-        ph_probe as ph_class,
-        syringe_pump as syringe_class,
         temperature_control as temperature_control_class,
         temperature_probe as temperature_class,
     )
@@ -90,7 +88,7 @@ def setup_temperature_control():
 
 
 def setup_ph_probe():
-    return ph_class.pH_Probe(gain=8)
+    return ph_class.PHProbe(gain=8)
 
 
 def setup_syringe_pump():

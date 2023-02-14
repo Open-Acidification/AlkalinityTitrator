@@ -2,8 +2,14 @@
 The file for the StirControl class
 """
 import math
-import pwmio
-import board
+from titration.utils import constants
+
+if constants.IS_TEST:
+    from titration.utils.devices import board_mock as board
+    from titration.utils.devices import pwm_out_mock as pwmio
+else:
+    import board  # type: ignore
+    import pwmio  # type: ignore
 
 STIR_PWM_FAST = 5000
 STIR_PWM_SLOW = 3000

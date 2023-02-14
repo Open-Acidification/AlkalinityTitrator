@@ -1,24 +1,32 @@
 """
-The file for the pH_Probe class
+The file for the PHProbe class
 """
-import adafruit_ads1x15.ads1115 as ADS
-import adafruit_ads1x15.analog_in as analog_in
-import busio
-import board
+from titration.utils import constants
+
+if constants.IS_TEST:
+    from titration.utils.devices import board_mock as board
+    from titration.utils.devices import i2c_mock as busio
+    from titration.utils.devices import ads_mock as ADS
+    from titration.utils.devices import analog_mock as analog_in
+else:
+    import adafruit_ads1x15.ads1115 as ADS  # type: ignore
+    import adafruit_ads1x15.analog_in as analog_in  # type: ignore
+    import busio  # type: ignore
+    import board  # type: ignore
 
 
-class pH_Probe:
+class PHProbe:
     """
     The class for the pH Probe device
     """
 
     def __init__(self, gain=1):
         """
-        The constructor for the pH_Probe class
+        The constructor for the PHProbe class
         Initializes I2C pins, gain, and voltage
 
         Parameters:
-            gain (float): gain of the pH_Probe
+            gain (float): gain of the PHProbe
         """
         self.i2c = busio.I2C(board.SCL, board.SDA)
         self.ads = ADS.ADS1115(self.i2c)
@@ -38,7 +46,7 @@ class pH_Probe:
         The function to set the pH probe's gain
 
         Parameters:
-            gain (int): the gain of the pH_Probe
+            gain (int): the gain of the PHProbe
         """
         if gain not in self.gain_options:
             raise ValueError("Gain must be one of: {}".format(self.gain_options))
