@@ -1,7 +1,6 @@
 """
-Module to test mock syringe pump
+The file to test the mock syringe
 """
-
 from titration.utils import constants
 from titration.utils.devices.syringe_pump_mock import Syringe_Pump
 
@@ -15,7 +14,7 @@ def create_test_syringe():
 
 def test_syringe_mock_create():
     """
-    Function to test creating mock syringe
+    The function to test creating mock syringe
     """
     pump = create_test_syringe()
     assert pump is not None

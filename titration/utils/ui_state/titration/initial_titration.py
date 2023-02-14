@@ -61,16 +61,6 @@ class InitialTitration(UIState):
             )
             self.titrator.lcd.print("", line=4)
 
-            # while not interfaces.temperature_controller.at_temperature():
-            #     interfaces.temperature_controller.update()
-            #     temperature = interfaces.temperature_controller.get_last_temperature()
-            #     self.titrator.lcd.print(
-            #         "Temp: {0:>4.3f} C".format(temperature),
-            #         style=constants.LCD_CENT_JUST,
-            #         line=2,
-            #     )
-            #     break  # TODO: fix mock temperature controller and remove break
-
             if self.choice == constants.KEY_1:
                 self._set_next_state(ManualTitration(self.titrator), True)
             else:
