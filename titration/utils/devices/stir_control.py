@@ -3,7 +3,6 @@ import math
 import pwmio
 
 import titration.utils.constants as constants
-import titration.utils.interfaces as interfaces
 
 
 class Stir_Control:
@@ -32,7 +31,6 @@ class Stir_Control:
                 self.motor.duty_cycle = self.motor.duty_cycle + (next_step * direction)
                 if self.debug:
                     print("Stirrer set to {0:.0f}".format(self.motor.duty_cycle))
-                interfaces.delay(0.1)
         else:
             self.motor.duty_cycle = target
             if self.debug:

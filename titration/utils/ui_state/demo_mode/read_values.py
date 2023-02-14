@@ -2,7 +2,6 @@
 The file for the ReadValues class
 """
 from titration.utils.ui_state.ui_state import UIState
-from titration.utils import interfaces
 
 
 class ReadValues(UIState):
@@ -62,7 +61,6 @@ class ReadValues(UIState):
                 "pH V: {0:>3.4f} mV".format(self.values["pH_volts"] * 1000), line=4
             )
             self.titrator.lcd.print("Reading: {}".format(i), 1, console=True)
-            interfaces.delay(self.values["timeStep"])
         self.titrator.lcd.clear()
         self.titrator.lcd.print("Press any to cont", line=1)
         self.titrator.lcd.print("", line=2)
