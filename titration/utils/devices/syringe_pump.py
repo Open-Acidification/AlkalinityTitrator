@@ -129,4 +129,4 @@ class Syringe_Pump:
             else:
                 return int(temp)
         else:
-            interfaces.lcd.print("Arduino Unavailable", 4, 2)
+            interfaces.lcd.print("Arduino Unavailable", 4, style="center")
