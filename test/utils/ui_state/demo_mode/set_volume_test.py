@@ -6,7 +6,7 @@ from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.titrator import Titrator
 from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
-from titration.utils.ui_state.test_mode.set_volume import SetVolume
+from titration.utils.ui_state.demo_mode.set_volume import SetVolume
 
 
 @mock.patch.object(SetVolume, "_set_next_state")

@@ -7,8 +7,8 @@ from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.titrator import Titrator
 from titration.utils import constants
 from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
-from titration.utils.ui_state.test_mode.read_volume import ReadVolume
-from titration.utils.ui_state.test_mode.test_mode import TestMode
+from titration.utils.ui_state.demo_mode.read_volume import ReadVolume
+from titration.utils.ui_state.demo_mode.demo_mode import DemoMode
 
 
 @mock.patch.object(ReadVolume, "_set_next_state")
@@ -16,11 +16,11 @@ def test_handle_key(set_next_state_mock):
     """
     The function to test ReadVolume's handle_key function for each keypad input
     """
-    read_volume = ReadVolume(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
+    read_volume = ReadVolume(Titrator(), DemoMode(Titrator(), MainMenu(Titrator())))
 
     read_volume.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "TestMode"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoMode"
 
 
 @mock.patch.object(LiquidCrystal, "print")
@@ -28,7 +28,7 @@ def test_loop(print_mock):
     """
     The function to test SetVolume's loop function's LiquidCrystal calls
     """
-    read_volume = ReadVolume(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
+    read_volume = ReadVolume(Titrator(), DemoMode(Titrator(), MainMenu(Titrator())))
 
     read_volume.loop()
     print_mock.assert_has_calls(
@@ -52,7 +52,7 @@ def test_read_volume(print_mock, set_next_state_mock):
     The function to test a use case of the SetVolume class:
         User enters "1" to continue after the pump volume is read
     """
-    read_volume = ReadVolume(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
+    read_volume = ReadVolume(Titrator(), DemoMode(Titrator(), MainMenu(Titrator())))
 
     read_volume.loop()
     print_mock.assert_has_calls(
@@ -70,4 +70,4 @@ def test_read_volume(print_mock, set_next_state_mock):
 
     read_volume.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "TestMode"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoMode"

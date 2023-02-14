@@ -1,18 +1,18 @@
 """
-The file for the TestMode class
+The file for the DemoMode class
 """
 from titration.utils.ui_state.ui_state import UIState
 from titration.utils import constants
-from titration.utils.ui_state.test_mode.pump import Pump
-from titration.utils.ui_state.test_mode.read_values import ReadValues
-from titration.utils.ui_state.test_mode.read_volume import ReadVolume
-from titration.utils.ui_state.test_mode.set_volume import SetVolume
-from titration.utils.ui_state.test_mode.toggle_test_mode import ToggleTestMode
+from titration.utils.ui_state.demo_mode.pump import Pump
+from titration.utils.ui_state.demo_mode.read_values import ReadValues
+from titration.utils.ui_state.demo_mode.read_volume import ReadVolume
+from titration.utils.ui_state.demo_mode.set_volume import SetVolume
+from titration.utils.ui_state.demo_mode.toggle_demo_mode import ToggleDemoMode
 
 
-class TestMode(UIState):
+class DemoMode(UIState):
     """
-    This is a class for the TestMode state of the titrator
+    This is a class for the DemoMode state of the titrator
 
     Attributes:
         titrator (Titrator object): the titrator is used to move through the state machine
@@ -27,7 +27,7 @@ class TestMode(UIState):
             1 -> Read Values
             2 -> Pump
             3 -> Set Volume
-            4 -> Toggle Test Mode
+            4 -> Toggle Demo Mode
             5 -> Read Volume
             6 -> Return to previous state
 
@@ -52,7 +52,7 @@ class TestMode(UIState):
                 self.substate -= 1
 
             elif key == constants.KEY_4:
-                self._set_next_state(ToggleTestMode(self.titrator, self), True)
+                self._set_next_state(ToggleDemoMode(self.titrator, self), True)
 
             elif key == constants.KEY_5:
                 self._set_next_state(ReadVolume(self.titrator, self), True)
@@ -73,7 +73,7 @@ class TestMode(UIState):
 
         elif self.substate == 2:
             self.titrator.lcd.clear()
-            self.titrator.lcd.print("4: Toggle Test Mode", line=1)
+            self.titrator.lcd.print("4: Toggle Demo Mode", line=1)
             self.titrator.lcd.print("5: Read Volume", line=2)
-            self.titrator.lcd.print("6: Exit Test Mode", line=3)
+            self.titrator.lcd.print("6: Exit Demo Mode", line=3)
             self.titrator.lcd.print("*: Page 1", line=4)

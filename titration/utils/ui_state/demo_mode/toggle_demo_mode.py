@@ -1,13 +1,13 @@
 """
-The file for the ToggleTestMode class
+The file for the ToggleDemoMode class
 """
 from titration.utils.ui_state.ui_state import UIState
 from titration.utils import constants
 
 
-class ToggleTestMode(UIState):
+class ToggleDemoMode(UIState):
     """
-    This is a class for the ToggleTestMode state of the titrator
+    This is a class for the ToggleDemoMode state of the titrator
 
     Attributes:
         titrator (Titrator object): the titrator is used to move through the state machine
@@ -18,7 +18,7 @@ class ToggleTestMode(UIState):
 
     def __init__(self, titrator, previous_state):
         """
-        The constructor for the ToggleTestMode class
+        The constructor for the ToggleDemoMode class
 
         Parameters:
             titrator (Titrator object): the titrator is used to move through the state machine
