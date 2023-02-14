@@ -12,13 +12,6 @@ def create_lcd():
     The function to create a lcd mock for the mock syringe tests
     """
     return LiquidCrystal(
-        rs=board_class.D27,
-        backlight=board_class.D15,
-        enable=board_class.D22,
-        d4=board_class.D18,
-        d5=board_class.D23,
-        d6=board_class.D24,
-        d7=board_class.D25,
         cols=constants.LCD_WIDTH,
         rows=constants.LCD_HEIGHT,
     )
