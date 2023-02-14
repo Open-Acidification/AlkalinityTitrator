@@ -1,40 +1,40 @@
 """
-The file to test the ToggleTestMode class
+The file to test the ToggleDemoMode class
 """
 from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
-from titration.utils.ui_state.test_mode.test_mode import TestMode
+from titration.utils.ui_state.demo_mode.demo_mode import DemoMode
 from titration.utils.titrator import Titrator
 from titration.utils import constants
 from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
-from titration.utils.ui_state.test_mode.toggle_test_mode import ToggleTestMode
+from titration.utils.ui_state.demo_mode.toggle_demo_mode import ToggleDemoMode
 
 
-@mock.patch.object(ToggleTestMode, "_set_next_state")
+@mock.patch.object(ToggleDemoMode, "_set_next_state")
 def test_handle_key(set_next_state_mock):
     """
-    The function to test ToggleTestMode's handle_key function for each keypad input
+    The function to test ToggleDemoMode's handle_key function for each keypad input
     """
-    toggle_test_mode = ToggleTestMode(
-        Titrator(), TestMode(Titrator(), MainMenu(Titrator()))
+    toggle_demo_mode = ToggleDemoMode(
+        Titrator(), DemoMode(Titrator(), MainMenu(Titrator()))
     )
 
-    toggle_test_mode.handle_key("1")
+    toggle_demo_mode.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "TestMode"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoMode"
 
 
 @mock.patch.object(LiquidCrystal, "print")
 def test_loop(print_mock):
     """
-    The function to test ToggleTestMode's loop function's LiquidCrystal calls
+    The function to test ToggleDemoMode's loop function's LiquidCrystal calls
     """
-    toggle_test_mode = ToggleTestMode(
-        Titrator(), TestMode(Titrator(), MainMenu(Titrator()))
+    toggle_demo_mode = ToggleDemoMode(
+        Titrator(), DemoMode(Titrator(), MainMenu(Titrator()))
     )
 
-    toggle_test_mode.loop()
+    toggle_demo_mode.loop()
     print_mock.assert_has_calls(
         [
             mock.call("Testing: {}".format(constants.IS_TEST), line=1),
@@ -45,18 +45,18 @@ def test_loop(print_mock):
     )
 
 
-@mock.patch.object(ToggleTestMode, "_set_next_state")
+@mock.patch.object(ToggleDemoMode, "_set_next_state")
 @mock.patch.object(LiquidCrystal, "print")
-def test_toggle_test_mode(print_mock, set_next_state_mock):
+def test_toggle_demo_mode(print_mock, set_next_state_mock):
     """
-    The function to test a use case of the ToggleTestMode class:
+    The function to test a use case of the ToggleDemoMode class:
         User enters "1" to continue after testing
     """
-    toggle_test_mode = ToggleTestMode(
-        Titrator(), TestMode(Titrator(), MainMenu(Titrator()))
+    toggle_demo_mode = ToggleDemoMode(
+        Titrator(), DemoMode(Titrator(), MainMenu(Titrator()))
     )
 
-    toggle_test_mode.loop()
+    toggle_demo_mode.loop()
     print_mock.assert_has_calls(
         [
             mock.call("Testing: {}".format(constants.IS_TEST), line=1),
@@ -66,6 +66,6 @@ def test_toggle_test_mode(print_mock, set_next_state_mock):
         ]
     )
 
-    toggle_test_mode.handle_key("1")
+    toggle_demo_mode.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "TestMode"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoMode"
