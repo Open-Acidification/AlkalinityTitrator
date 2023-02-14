@@ -4,7 +4,7 @@ The file for the MainMenu class
 from titration.utils.ui_state.ui_state import UIState
 from titration.utils import constants
 from titration.utils.ui_state.prime_pump.prime_pump import PrimePump
-from titration.utils.ui_state.test_mode.test_mode import TestMode
+from titration.utils.ui_state.demo_mode.demo_mode import DemoMode
 from titration.utils.ui_state.titration.setup_titration import SetupTitration
 from titration.utils.ui_state.calibration.setup_calibration import SetupCalibration
 from titration.utils.ui_state.update_settings.update_settings import UpdateSettings
@@ -28,7 +28,7 @@ class MainMenu(UIState):
             2 -> Setup Calibration
             3 -> Prime Pump
             4 -> Update Settings
-            5 -> Test Mode
+            5 -> Demo Mode
             6 -> Quit
 
         Parameters:
@@ -54,7 +54,7 @@ class MainMenu(UIState):
                 self._set_next_state(UpdateSettings(self.titrator, self), True)
 
             elif key == constants.KEY_5:
-                self._set_next_state(TestMode(self.titrator, self), True)
+                self._set_next_state(DemoMode(self.titrator, self), True)
 
             elif key == constants.KEY_6:
                 quit()
