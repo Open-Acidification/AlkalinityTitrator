@@ -22,3 +22,10 @@ class Temperature_Probe:
 
     def get_resistance(self):
         return self.sensor.resistance
+
+    def read_temperature(self):
+        """
+        Reads and returns the temperature from GPIO
+        :returns: temperature in celsius, resistance in ohms
+        """
+        return self.get_temperature(), self.get_resistance()

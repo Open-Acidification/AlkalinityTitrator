@@ -31,7 +31,7 @@ ROUTINE_OPTIONS_1 = {
 
 ROUTINE_OPTIONS_2 = {
     KEY_4: "Update settings",
-    KEY_5: "Test Mode",
+    KEY_5: "Demo Mode",
     KEY_6: "Exit",
     KEY_STAR: "Page 1",
 }

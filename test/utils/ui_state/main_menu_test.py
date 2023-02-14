@@ -36,7 +36,7 @@ def test_handle_key(set_next_state_mock):
 
     main_menu.handle_key("5")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "TestMode"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoMode"
 
     main_menu.handle_key("*")
     assert main_menu.substate == 1
@@ -120,7 +120,7 @@ def test_main_menu(set_next_state_mock, print_mock):
 
     main_menu.handle_key("5")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "TestMode"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoMode"
 
     main_menu.handle_key("*")
     assert main_menu.substate == 1

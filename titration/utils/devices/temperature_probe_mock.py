@@ -19,3 +19,10 @@ class Temperature_Probe:
 
     def mock_set_resistance(self, resistance):
         self.resistance = resistance
+
+    def read_temperature(self):
+        """
+        Reads and returns the temperature from GPIO
+        :returns: temperature in celsius, resistance in ohms
+        """
+        return self.get_temperature(), self.get_resistance()
