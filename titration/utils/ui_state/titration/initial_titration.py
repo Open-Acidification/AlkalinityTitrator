@@ -5,7 +5,6 @@ from titration.utils.ui_state.ui_state import UIState
 from titration.utils import constants
 from titration.utils.ui_state.titration.automatic_titration import AutomaticTitration
 from titration.utils.ui_state.titration.manual_titration import ManualTitration
-from titration.utils import interfaces
 
 
 class InitialTitration(UIState):
@@ -61,16 +60,6 @@ class InitialTitration(UIState):
                 "Please wait...", style=constants.LCD_CENT_JUST, line=3
             )
             self.titrator.lcd.print("", line=4)
-
-            while not interfaces.temperature_controller.at_temperature():
-                interfaces.temperature_controller.update()
-                temperature = interfaces.temperature_controller.get_last_temperature()
-                self.titrator.lcd.print(
-                    "Temp: {0:>4.3f} C".format(temperature),
-                    style=constants.LCD_CENT_JUST,
-                    line=2,
-                )
-                break  # TODO: fix mock temperature controller and remove break
 
             if self.choice == constants.KEY_1:
                 self._set_next_state(ManualTitration(self.titrator), True)

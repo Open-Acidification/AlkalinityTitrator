@@ -173,7 +173,6 @@ class SyringePump:
     def __determine_pump_cycles(self, volume_to_add):
         """
         The function to determines the number of cycles to move given volume
-
         Parameters:
             volume_to_add (int): amount of volume to add in mL
         Returns:

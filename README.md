@@ -81,26 +81,6 @@ To run in a local environment with mocked devices (with the UI State Machine int
 ./run_mocked.sh
 ```
 
-### Run on Device (old)
-
-To run (the old version without the UI State Machine integrated)
-
-``` sh
-./run_old.sh
-```
-
-This is the old way to run the code until the titration processes have been integrated into the new UI State Machine.
-
-### Run in Local Environment (old)
-
-To run in a local environment with mocked devices (the old version without the UI State Machine integrated)
-
-``` sh
-./run_old_mocked.sh
-```
-
-This is the old way to run the code mocked until the titration processes have been integrated into the new UI State Machine.
-
 ## Testing
 
 To perform Pytest tests for the devices and UI states.
