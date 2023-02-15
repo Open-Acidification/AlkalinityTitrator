@@ -22,7 +22,7 @@ PID_ANTIWINDUP_TD = 9
 class TemperatureControl:
     """
     Temperature Control class for running the PID control on the Alkalinity
-    t_itrator using a SSR and Heated Beaker Jacket
+    titrator using a SSR and Heated Beaker Jacket
 
     """
 
@@ -55,7 +55,7 @@ class TemperatureControl:
     # Step Count - How many cycles have we done?
     step_count = 0
 
-    # t_ime between steps (seconds) - how long to wait until next step
+    # time between steps (seconds) - how long to wait until next step
     time_step = 1
 
     # The time the next step nets to be taken
@@ -78,7 +78,7 @@ class TemperatureControl:
     set_point = 30
 
     """
-  Primary function run during the Alkalinityt_itrator.titration. update() will
+  Primary function run during the titration. update() will
   check if it is time to change the state of the relay and
   update the PID control and relay status as necessary
   """
@@ -205,11 +205,11 @@ class TemperatureControl:
         self.control_active = False
         self.__set_relay_state(False)
 
-    def __update_time_next(self, stept_ime):
+    def __update_time_next(self, step_time):
         """
         Update the time that the next relay action should be taken
         """
-        self.time_next = stept_ime
+        self.time_next = step_time
 
     def __set_controlparam_antiwindup(self):
         """
@@ -280,7 +280,7 @@ if __name__ == "__main__":
     # 10min time
     timeCurr = time.time()
     timeEnd = timeCurr + 3600
-    print("t_ime Start: ", time.ctime(timeCurr), "\nt_ime End: ", time.ctime(timeEnd))
+    print("time Start: ", time.ctime(timeCurr), "\ntime End: ", time.ctime(timeEnd))
     while timeEnd > time.time():
         temperature_control.update()
 

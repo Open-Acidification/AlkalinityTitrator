@@ -18,7 +18,7 @@ PID_ANTIWINDUP_TD = 9
 class TemperatureControl:
     """
     Mock of Temperature Control class for running the PID control on the Alkalinity
-    t_itrator using a SSR and Heated Beaker Jacket
+    titrator using a SSR and Heated Beaker Jacket
     """
 
     def __init__(self, relay_pin, sensor):
@@ -66,13 +66,13 @@ class TemperatureControl:
     # timeLog = []
 
     # Data Fame of Measurements
-    dataframe = pd.DataFrame(columns=["time (s)", "temperature (C)", "gain"])
+    data_frame = pd.DataFrame(columns=["time (s)", "temperature (C)", "gain"])
 
     # Target temperature
     set_point = 30
 
     """
-  Primary function run during the Alkalinityt_itrator.titration. update() will
+  Primary function run during the titration. update() will
   check if it is time to change the state of the relay and
   update the PID control and relay status as necessary
   """
@@ -123,16 +123,16 @@ class TemperatureControl:
                     self.temperature_last = self.temperature_last - 0.1
                     self.__update_priors()
 
-                # Add data to dataframe
+                # Add data to data_frame
                 data_frame_new = pd.DataFrame(
                     [[time.ctime(time_now), temperature, self.k]],
                     columns=["time (s)", "temperature (C)", "gain"],
                 )
-                self.dataframe = self.dataframe.append(
+                self.data_frame = self.data_frame.append(
                     data_frame_new, ignore_index=True
                 )
                 if self.print_data:
-                    print(self.dataframe)
+                    print(self.data_frame)
 
         else:
             # pass until next update is called
@@ -154,7 +154,7 @@ class TemperatureControl:
         """
         The function to output data to a csv file
         """
-        self.dataframe.to_csv(filename, index_label="step", header=True)
+        self.data_frame.to_csv(filename, index_label="step", header=True)
 
     def at_temperature(self):
         """

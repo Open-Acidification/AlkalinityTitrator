@@ -7,7 +7,9 @@ from AlkalinityTitrator.titration.utils.ui_state.demo_mode.pump import Pump
 from AlkalinityTitrator.titration.utils.ui_state.demo_mode.read_values import ReadValues
 from AlkalinityTitrator.titration.utils.ui_state.demo_mode.read_volume import ReadVolume
 from AlkalinityTitrator.titration.utils.ui_state.demo_mode.set_volume import SetVolume
-from AlkalinityTitrator.titration.utils.ui_state.demo_mode.toggle_demo_mode import ToggleDemoMode
+from AlkalinityTitrator.titration.utils.ui_state.demo_mode.toggle_demo_mode import (
+    ToggleDemoMode,
+)
 
 
 class DemoMode(UIState):
