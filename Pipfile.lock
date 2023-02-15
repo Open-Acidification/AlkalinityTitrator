@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "795feb2dc4711202baf48d42493b5fa0f393ed8189b67c16066fcc852eb98e19"
+            "sha256": "e81671098899d0a5f614a2c72bb1c64858ca21b9e8b6974b178cfd7130467731"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -119,6 +119,14 @@
                 "sha256:e7d5a5c26cd0dc37b164ebefc609f388de24f8593b659191e12d85f8f9d5eb58"
             ],
             "version": "==2.0"
+        },
+        "exceptiongroup": {
+            "hashes": [
+                "sha256:327cbda3da756e2de031a3107b81ab7b3770a602c4d16ca618298c526f4bec1e",
+                "sha256:bcb67d800a4497e1b404c2dd44fca47d3b7a5e5433dbab67f96c1a685cdfdf23"
+            ],
+            "index": "pypi",
+            "version": "==1.1.0"
         },
         "gpiozero": {
             "hashes": [
@@ -249,11 +257,11 @@
         },
         "setuptools": {
             "hashes": [
-                "sha256:23c86b4e44432bfd8899384afc08872ec166a24f48a3f99f293b0a557e6a6b5d",
-                "sha256:daec07fd848d80676694d6bf69c009d28910aeece68a38dbe88b7e1bb6dba12e"
+                "sha256:95f00380ef2ffa41d9bba85d95b27689d923c93dfbafed4aecd7cf988a25e012",
+                "sha256:bb6d8e508de562768f2027902929f8523932fcd1fb784e6d573d2cafac995a48"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==67.3.1"
+            "version": "==67.3.2"
         },
         "six": {
             "hashes": [
