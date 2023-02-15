@@ -6,11 +6,9 @@ from titration.utils import constants
 
 
 if constants.IS_TEST:
-    from titration.utils.devices import board_mock as board_class
     from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
     from titration.utils.devices.keypad_mock import Keypad
 else:
-    import board as board_class  # type: ignore
     from titration.utils.devices.keypad import Keypad  # type: ignore
     from titration.utils.devices.liquid_crystal import LiquidCrystal  # type: ignore
 
@@ -32,29 +30,13 @@ class Titrator:
 
         # Initialize LCD
         self.lcd = LiquidCrystal(
-            rs=board_class.D27,
-            backlight=board_class.D15,
-            enable=board_class.D22,
-            d4=board_class.D18,
-            d5=board_class.D23,
-            d6=board_class.D24,
-            d7=board_class.D25,
             cols=constants.LCD_WIDTH,
             rows=constants.LCD_HEIGHT,
         )
 
         # Initialize Keypad
         self.key = "A"
-        self.keypad = Keypad(
-            r0=board_class.D1,
-            r1=board_class.D6,
-            r2=board_class.D5,
-            r3=board_class.D19,
-            c0=board_class.D16,
-            c1=board_class.D26,
-            c2=board_class.D20,
-            c3=board_class.D21,
-        )
+        self.keypad = Keypad()
 
         # Initialize State
         self.state = MainMenu(self)
