@@ -2,6 +2,7 @@
 The file for the Keypad device class
 """
 import digitalio
+import board
 from AlkalinityTitrator.titration.utils import constants
 
 # pylint: disable = R0902, R0913, R0903
@@ -36,21 +37,22 @@ KEY_VALUES = {
 
 class Keypad:
     """
-    The class for the titrator Keypad
+    The class for the Keypad
     """
 
-    def __init__(self, r_zero, r_one, r_two, r_three, c_zero, c_one, c_two, c_three):
+    def __init__(self):
         """
-        The constructor for the the Keypad class
+        The constructor for the mock Keypad class.
         """
-        self.pin_r_zero = digitalio.DigitalInOut(r_zero)  # Top Row
-        self.pin_r_one = digitalio.DigitalInOut(r_one)
-        self.pin_r_two = digitalio.DigitalInOut(r_two)
-        self.pin_r_three = digitalio.DigitalInOut(r_three)  # Bottom Row
-        self.pin_c_zero = digitalio.DigitalInOut(c_zero)  # Leftmost Column
-        self.pin_c_one = digitalio.DigitalInOut(c_one)
-        self.pin_c_two = digitalio.DigitalInOut(c_two)
-        self.pin_c_three = digitalio.DigitalInOut(c_three)  # Rightmost Column
+
+        self.pin_r_zero = digitalio.DigitalInOut(board.D1)
+        self.pin_r_one = digitalio.DigitalInOut(board.D6)
+        self.pin_r_two = digitalio.DigitalInOut(board.D5)
+        self.pin_r_three = digitalio.DigitalInOut(board.D19)
+        self.pin_c_zero = digitalio.DigitalInOut(board.D16)
+        self.pin_c_one = digitalio.DigitalInOut(board.D26)
+        self.pin_c_two = digitalio.DigitalInOut(board.D20)
+        self.pin_c_three = digitalio.DigitalInOut(board.D21)
 
         self.rows = [self.pin_r_zero, self.pin_r_one, self.pin_r_two, self.pin_r_three]
         self.cols = [self.pin_c_zero, self.pin_c_one, self.pin_c_two, self.pin_c_three]

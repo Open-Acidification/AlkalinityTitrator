@@ -44,7 +44,7 @@ def test_loop(print_mock):
     print_mock.assert_has_calls(
         [
             mock.call("Volume:", line=1),
-            mock.call("", style=2, line=2),
+            mock.call("", style="center", line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
         ]
@@ -71,7 +71,7 @@ def test_volume(print_mock, set_next_state_mock):
     print_mock.assert_has_calls(
         [
             mock.call("Volume:", line=1),
-            mock.call("", style=2, line=2),
+            mock.call("", style="center", line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
         ]
@@ -84,7 +84,7 @@ def test_volume(print_mock, set_next_state_mock):
     print_mock.assert_has_calls(
         [
             mock.call("Volume:", line=1),
-            mock.call("3", style=2, line=2),
+            mock.call("3", style="center", line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
         ]
@@ -97,7 +97,7 @@ def test_volume(print_mock, set_next_state_mock):
     print_mock.assert_has_calls(
         [
             mock.call("Volume:", line=1),
-            mock.call("3.", style=2, line=2),
+            mock.call("3.", style="center", line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
         ]
@@ -110,7 +110,7 @@ def test_volume(print_mock, set_next_state_mock):
     print_mock.assert_has_calls(
         [
             mock.call("Volume:", line=1),
-            mock.call("3.", style=2, line=2),
+            mock.call("3.", style="center", line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
         ]
@@ -123,7 +123,7 @@ def test_volume(print_mock, set_next_state_mock):
     print_mock.assert_has_calls(
         [
             mock.call("Volume:", line=1),
-            mock.call("3.1", style=2, line=2),
+            mock.call("3.1", style="center", line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
         ]
@@ -136,7 +136,7 @@ def test_volume(print_mock, set_next_state_mock):
     print_mock.assert_has_calls(
         [
             mock.call("Volume:", line=1),
-            mock.call("3.", style=2, line=2),
+            mock.call("3.", style="center", line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
         ]
@@ -149,7 +149,7 @@ def test_volume(print_mock, set_next_state_mock):
     print_mock.assert_has_calls(
         [
             mock.call("Volume:", line=1),
-            mock.call("3", style=2, line=2),
+            mock.call("3", style="center", line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
         ]
@@ -162,7 +162,7 @@ def test_volume(print_mock, set_next_state_mock):
     print_mock.assert_has_calls(
         [
             mock.call("Volume:", line=1),
-            mock.call("", style=2, line=2),
+            mock.call("", style="center", line=2),
             mock.call("* = .       B = BS", line=3),
             mock.call("A = accept  C = Clr", line=4),
         ]

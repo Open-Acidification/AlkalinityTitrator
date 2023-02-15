@@ -60,9 +60,7 @@ class InitialTitration(UIState):
             self.titrator.lcd.clear()
             self.titrator.lcd.print("Heating to 30 C...", line=1)
             self.titrator.lcd.print("", line=2)
-            self.titrator.lcd.print(
-                "Please wait...", style=constants.LCD_CENT_JUST, line=3
-            )
+            self.titrator.lcd.print("Please wait...", style="center", line=3)
             self.titrator.lcd.print("", line=4)
 
             if self.choice == constants.KEY_1:

@@ -2,21 +2,48 @@
 The file for mock Keypad class
 """
 import click
+import digitalio
+from AlkalinityTitration.titration.utils.devices import board_mock as board
 
 # pylint: disable = R0913, W0107, R0903
 
 
 class Keypad:
     """
-    This is a class for the mock Keypad class
+    The class for the mock Keypad
     """
 
-    def __init__(self, r_zero, r_one, r_two, r_three, c_zero, c_one, c_two, c_three):
+    def __init__(self):
         """
         The constructor for the mock Keypad class.
-        The Parameters are the board pins that the keypad uses
+        The parameters are the board pins that the keypad uses
         """
-        pass
+
+        self.pin_r_zero = board.D1
+        self.pin_r_one = board.D6
+        self.pin_r_two = board.D5
+        self.pin_r_three = board.D19
+        self.pin_c_zero = board.D16
+        self.pin_c_one = board.D26
+        self.pin_c_two = board.D20
+        self.pin_c_three = board.D21
+
+        self.rows = [self.pin_r_zero, self.pin_r_one, self.pin_r_two, self.pin_r_three]
+        self.cols = [self.pin_c_zero, self.pin_c_one, self.pin_c_two, self.pin_c_three]
+
+        self.rows[0].direction = digitalio.Direction.OUTPUT
+        self.rows[1].direction = digitalio.Direction.OUTPUT
+        self.rows[2].direction = digitalio.Direction.OUTPUT
+        self.rows[3].direction = digitalio.Direction.OUTPUT
+        self.cols[0].direction = digitalio.Direction.INPUT
+        self.cols[1].direction = digitalio.Direction.INPUT
+        self.cols[2].direction = digitalio.Direction.INPUT
+        self.cols[3].direction = digitalio.Direction.INPUT
+
+        self.cols[0].pull = digitalio.Pull.DOWN
+        self.cols[1].pull = digitalio.Pull.DOWN
+        self.cols[2].pull = digitalio.Pull.DOWN
+        self.cols[3].pull = digitalio.Pull.DOWN
 
     def keypad_poll(self):
         """

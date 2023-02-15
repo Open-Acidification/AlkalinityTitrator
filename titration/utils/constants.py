@@ -1,10 +1,7 @@
 """
 The file to hold the titrator constants
 """
-# Display
-LCD_CONSOLE = False
 
-VALID_INPUT_WARNING = "Input Invalid"
 # keypad
 NO_KEY = ""
 KEY_0 = "0"
@@ -47,21 +44,6 @@ DELAY_STEP = 0.0001
 # LCD Device Constants
 LCD_WIDTH = 20  # Maximum characters per line
 LCD_HEIGHT = 4
-LCD_CHR = True
-LCD_CMD = False
-
-LCD_LEFT_JUST = 1
-LCD_CENT_JUST = 2
-LCD_RIGHT_JUST = 3
-
-LCD_LINE_1 = 0x80  # LCD RAM address for the 1st line
-LCD_LINE_2 = 0xC0  # LCD RAM address for the 2nd line
-LCD_LINE_3 = 0x94  # LCD RAM address for the 3rd line
-LCD_LINE_4 = 0xD4  # LCD RAM address for the 4th line
-
-# LCD Timing constants
-E_PULSE = 0.0005
-E_DELAY = 0.0005
 
 # for pH calibration constants
 calibration_data_format = {

@@ -8,13 +8,11 @@ from AlkalinityTitrator.titration.utils.ui_state.main_menu import MainMenu
 from AlkalinityTitrator.titration.utils import constants
 
 if constants.IS_TEST:
-    from AlkalinityTitrator.titration.utils.devices import board_mock as board_class
     from AlkalinityTitrator.titration.utils.devices.liquid_crystal_mock import (
         LiquidCrystal,
     )
     from AlkalinityTitrator.titration.utils.devices.keypad_mock import Keypad
 else:
-    import board as board_class  # type: ignore
     from AlkalinityTitrator.titration.utils.devices.keypad import Keypad  # type: ignore
     from AlkalinityTitrator.titration.utils.devices.liquid_crystal import LiquidCrystal  # type: ignore
 
@@ -37,29 +35,13 @@ class Titrator:
 
         # Initialize LCD
         self.lcd = LiquidCrystal(
-            r_s=board_class.D27,
-            backlight=board_class.D15,
-            enable=board_class.D22,
-            d_four=board_class.D18,
-            d_five=board_class.D23,
-            d_six=board_class.D24,
-            d_seven=board_class.D25,
             cols=constants.LCD_WIDTH,
             rows=constants.LCD_HEIGHT,
         )
 
         # Initialize Keypad
         self.key = "A"
-        self.keypad = Keypad(
-            r_zero=board_class.D1,
-            r_one=board_class.D6,
-            r_two=board_class.D5,
-            r_three=board_class.D19,
-            c_zero=board_class.D16,
-            c_one=board_class.D26,
-            c_two=board_class.D20,
-            c_three=board_class.D21,
-        )
+        self.keypad = Keypad()
 
         # Initialize State
         self.state = MainMenu(self)

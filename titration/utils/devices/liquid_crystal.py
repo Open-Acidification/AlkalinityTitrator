@@ -1,31 +1,42 @@
 """
-The file for the Liquid Crystal Device
+The file for the Sunfire LCD 20x04 Char Display, LiquidCrystal Class
 """
 import time
 import digitalio
-from AlkalinityTitrator.titration.utils import constants
+import board
 
-# pylint: disable = R0902, R0913
+# LCD Device Constants
+LCD_CHR = True
+LCD_CMD = False
+
+LCD_LINE_1 = 0x80
+LCD_LINE_2 = 0xC0
+LCD_LINE_3 = 0x94
+LCD_LINE_4 = 0xD4
+
+# LCD Timing constants
+E_PULSE = 0.0005
+E_DELAY = 0.0005
 
 
 class LiquidCrystal:
     """
-    Sunfire LCD 20x04 Char Display Module
+    The class for the Sunfire LCD 20x04 Char Display
     """
 
-    def __init__(
-        self, r_s, backlight, enable, d_four, d_five, d_six, d_seven, cols, rows
-    ):
+    def __init__(self, cols, rows):
         """
-        The constructor for the LCD
+        The constructor for the mock LiquidCrystal class.
+        The parameters are the board pins that the LCD uses
         """
-        self.pin_r_s = digitalio.DigitalInOut(r_s)
-        self.pin_e = digitalio.DigitalInOut(enable)
-        self.pin_d_four = digitalio.DigitalInOut(d_four)
-        self.pin_d_five = digitalio.DigitalInOut(d_five)
-        self.pin_d_six = digitalio.DigitalInOut(d_six)
-        self.pin_d_seven = digitalio.DigitalInOut(d_seven)
-        self.pin_on = digitalio.DigitalInOut(backlight)
+
+        self.pin_r_s = digitalio.DigitalInOut(board.D27)
+        self.pin_e = digitalio.DigitalInOut(board.D22)
+        self.pin_d_four = digitalio.DigitalInOut(board.D18)
+        self.pin_d_five = digitalio.DigitalInOut(board.D23)
+        self.pin_d_six = digitalio.DigitalInOut(board.D24)
+        self.pin_d_seven = digitalio.DigitalInOut(board.D25)
+        self.pin_on = digitalio.DigitalInOut(board.D15)
 
         self.pin_e.direction = digitalio.Direction.OUTPUT
         self.pin_r_s.direction = digitalio.Direction.OUTPUT
@@ -39,17 +50,13 @@ class LiquidCrystal:
         self.rows = rows
 
         # Initialise display
-        self.__lcd_byte(0x33, constants.LCD_CMD)  # 110011 Initialise
-        self.__lcd_byte(0x32, constants.LCD_CMD)  # 110010 Initialise
-        self.__lcd_byte(0x06, constants.LCD_CMD)  # 000110 Cursor move direction
-        self.__lcd_byte(
-            0x0C, constants.LCD_CMD
-        )  # 001100 Display On,Cursor Off, Blink Off
-        self.__lcd_byte(
-            0x28, constants.LCD_CMD
-        )  # 101000 Data length, number of lines, font size
-        self.__lcd_byte(0x01, constants.LCD_CMD)  # 000001 Clear display
-        time.sleep(constants.E_DELAY)
+        self.__lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
+        self.__lcd_byte(0x32, LCD_CMD)  # 110010 Initialise
+        self.__lcd_byte(0x06, LCD_CMD)  # 000110 Cursor move direction
+        self.__lcd_byte(0x0C, LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
+        self.__lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
+        self.__lcd_byte(0x01, LCD_CMD)  # 000001 Clear display
+        time.sleep(E_DELAY)
 
         # Toggle backlight on-off-on
         self.lcd_backlight(True)
@@ -61,68 +68,76 @@ class LiquidCrystal:
 
     def clear(self):
         """
-        The function to clear the LCD screen
+        The function to clear the LCD
         """
-        blank = ""
-        blank = blank.ljust(constants.LCD_WIDTH, " ")
+        blank = "".ljust(self.cols, " ")
 
-        self.__write(blank, constants.LCD_LINE_1)
-        self.__write(blank, constants.LCD_LINE_2)
-        self.__write(blank, constants.LCD_LINE_3)
-        self.__write(blank, constants.LCD_LINE_4)
+        self.__write(blank, LCD_LINE_1)
+        self.__write(blank, LCD_LINE_2)
+        self.__write(blank, LCD_LINE_3)
+        self.__write(blank, LCD_LINE_4)
 
-    def print(self, message, line, style=1):
+    def print(self, message, line, style="left"):
         """
-        Send string to display.
-        Lines: LCD_LINE_X (1,2,3,4)
-        styles (justification): X (1=left, 2=center, 3=right)
+        The function to send a string to the LCD on a given line and type
+
+        Parameters:
+            message (string): the message to be displayed on the screen
+            line (int): the line to display the message on
+            styles (int): 1=left centered, 2=centered , 3=right centered
         """
-        # Check if begin() has been run
         if self.cols == -1 or self.rows == -1:
             raise ValueError("The LCD has not be initialized with begin()")
 
-        if style == 1:
-            message = message.ljust(constants.LCD_WIDTH, " ")
-        elif style == 2:
-            message = message.center(constants.LCD_WIDTH, " ")
-        elif style == 3:
-            message = message.rjust(constants.LCD_WIDTH, " ")
+        if style == "left":
+            message = message.ljust(self.cols, " ")
+        elif style == "center":
+            message = message.center(self.cols, " ")
+        elif style == "right":
+            message = message.rjust(self.cols, " ")
 
         if line == 1:
-            line = constants.LCD_LINE_1
+            line = LCD_LINE_1
         elif line == 2:
-            line = constants.LCD_LINE_2
+            line = LCD_LINE_2
         elif line == 3:
-            line = constants.LCD_LINE_3
+            line = LCD_LINE_3
         elif line == 4:
-            line = constants.LCD_LINE_4
+            line = LCD_LINE_4
 
         self.__write(message, line)
 
-    def lcd_backlight(self, flag):
+    def lcd_backlight(self, enable):
         """
-        The function to turn off the LCD backlight
+        The function to turn the LCD backlight on or off
+
+        Parameters:
+            enable (bool): enable is whether the lcd_backlight is on or off
         """
-        self.pin_on.value = flag
+        self.pin_on.value = enable
 
     def __write(self, message, line):
         """
-        Prints a character to the LCD
-        """
-        self.__lcd_byte(line, constants.LCD_CMD)
+        The function to write characters to the LCD
 
-        for i in range(constants.LCD_WIDTH):
-            self.__lcd_byte(ord(message[i]), constants.LCD_CHR)
+        Parameters:
+            message (string): the message to be displayed on the screen
+            line (int): the line to display the message on
+        """
+        self.__lcd_byte(line, LCD_CMD)
+
+        for i in range(self.rows):
+            self.__lcd_byte(ord(message[i]), LCD_CHR)
 
     def __lcd_byte(self, bits, mode):
         """
-        The function to send byte to data pins
-        bits = data
-        mode = True  for character
-               False for command
-        """
+        The function to send the initialization bits to the LCD pins
 
-        self.pin_r_s.value = mode  # RS
+        Parameters:
+            bits (hex): the bits to be sent on the pin
+            mode (bool): True for character, False for command
+        """
+        self.pin_r_s.value = mode
 
         # High bits
         self.pin_d_four.value = bits & 0x10 == 0x10
@@ -130,7 +145,6 @@ class LiquidCrystal:
         self.pin_d_six.value = bits & 0x40 == 0x40
         self.pin_d_seven.value = bits & 0x80 == 0x80
 
-        # Toggle 'Enable' pin
         self.__lcd_toggle_enable()
 
         # Low bits
@@ -139,22 +153,25 @@ class LiquidCrystal:
         self.pin_d_six.value = bits & 0x04 == 0x04
         self.pin_d_seven.value = bits & 0x08 == 0x08
 
-        # Toggle 'Enable' pin
         self.__lcd_toggle_enable()
 
     def __lcd_toggle_enable(self):
-        # Toggle enable
-        time.sleep(constants.E_DELAY)
+        """
+        The function to toggle the LCD enable pin
+        """
+        time.sleep(E_DELAY)
         self.pin_e.value = True
-        time.sleep(constants.E_PULSE)
+        time.sleep(E_PULSE)
         self.pin_e.value = False
-        time.sleep(constants.E_DELAY)
+        time.sleep(E_DELAY)
 
     def display_list(self, dict_to_display):
         """
-        Display a list of options from a dictionary. Only the first four
-        options will be displayed due to only four screen rows.
-        :param list_to_display: list to be displayed on LCD screen
+        The function to display a list of options from a dictionary.
+        Only the first four options will be displayed due to only four screen rows.
+
+        Parameters:
+            dict_to_display (dict): list to be displayed on LCD screen
         """
         self.clear()
         keys = list(dict_to_display.keys())
