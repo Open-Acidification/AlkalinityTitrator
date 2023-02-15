@@ -3,32 +3,50 @@ Module for mocking the liquid_crystal.py class for testing purposes
 """
 from os import name, system
 
+# pylint: disable = W0613, R0913
+
 
 class LiquidCrystal:
-    def __init__(self, rs, backlight, enable, d4, d5, d6, d7, cols, rows):
+    """
+    The class for the Liquid Crystal Display
+    """
+
+    def __init__(
+        self, r_s, backlight, enable, d_four, d_five, d_six, d_seven, cols, rows
+    ):
+        """
+        The constructor for the LiquidCrystal class
+        """
         self.cols = cols
         self.rows = rows
 
         self.strings = []
         self.clear_flag = True
 
+        self.backlight = True
+
         # Clear any existing rows
         self.strings.clear()
 
         # Create empty arrays for strings
-        for i in range(0, rows):
+        for _ in range(0, rows):
             self.strings.append("".ljust(cols))
 
         # Draw mock display
         self.__draw()
 
     def clear(self):
-        for i in range(len(self.strings)):
-            self.strings[i] = "".ljust(self.cols, " ")
+        """
+        The function to clear the LCD screen
+        """
+        for i in enumerate(self.strings):
+            self.strings[i[0]] = "".ljust(self.cols, " ")
         self.__draw()
 
     def print(self, message, line, style=1):
-        # Check if begin() has been run
+        """
+        The function to print to the LCD screen
+        """
         if self.cols == -1 or self.rows == -1:
             raise ValueError("The LCD has not be initialized with begin()")
 
@@ -44,7 +62,10 @@ class LiquidCrystal:
         self.__draw()
 
     def lcd_backlight(self, flag):
-        pass
+        """
+        The function to enable / disable mock LCD
+        """
+        self.backlight = flag
 
     def __draw(self):
         """
@@ -57,15 +78,21 @@ class LiquidCrystal:
                 _ = system("clear")
 
         for i in range(-1, self.rows + 1):
-            if i == -1 or i == self.rows:
+            if i in (-1, self.rows):
                 print("*", "".ljust(self.cols, "="), "*", sep="")
             else:
                 print("|", self.strings[i], "|", sep="")
 
     def mock_disable_clear(self):
+        """
+        The function to disable the mock clear
+        """
         self.clear_flag = False
 
     def mock_enable_clear(self):
+        """
+        The function to enable the mock clear
+        """
         self.clear_flag = True
 
     def display_list(self, dict_to_display):

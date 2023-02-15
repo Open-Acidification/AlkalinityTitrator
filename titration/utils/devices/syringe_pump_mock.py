@@ -1,5 +1,8 @@
-import titration.utils.constants as constants
-import titration.utils.devices.serial_mock as serial_mock
+"""
+The function for the syringe pump mock
+"""
+from AlkalinityTitrator.titration.utils import constants
+from AlkalinityTitrator.titration.utils.devices import serial_mock
 
 MAX_PUMP_CAPACITY = 1.1
 NUM_CYCLES = {0.05: 470, 1: 9550}
@@ -8,25 +11,41 @@ NUM_CYCLES = {0.05: 470, 1: 9550}
 CYCLES_VOLUME_RATIO = 9550
 
 
-class Syringe_Pump:
+class SyringePump:
+    """
+    The class for the Syringe Pump mock
+    """
+
     def __init__(self):
+        """
+        The constructor for the Syringe Pump mock
+        """
         self.serial = serial_mock.Serial(
             port=constants.ARDUINO_PORT,
             baudrate=constants.ARDUINO_BAUD,
             timeout=constants.ARDUINO_TIMEOUT,
         )
 
-        self.volume_in_pump = constants.volume_in_pump
+        self.volume_in_pump = constants.VOLUME_IN_PUMP
         self.max_pump_capacity = constants.MAX_PUMP_CAPACITY
 
     def set_volume_in_pump(self, volume):
+        """
+        The function to set the volume in the mock pump
+        """
         self.volume_in_pump = volume
-        constants.volume_in_pump = volume
+        constants.VOLUME_IN_PUMP = volume
 
     def get_volume_in_pump(self):
+        """
+        The function to get the volume in the pump
+        """
         return self.volume_in_pump
 
     def pump_volume(self, volume, direction):
+        """
+        The function to pump an amount of volume into the solution
+        """
         volume_to_add = volume
 
         # pull in solution
@@ -71,26 +90,25 @@ class Syringe_Pump:
                 self.drive_pump(volume_to_add, direction)
 
     def drive_pump(self, volume, direction):
-        """Converts volume to cycles and ensures and checks pump level and values"""
+        """
+        Converts volume to cycles and ensures and checks pump level and values
+        """
         if direction == 0:
             space_in_pump = self.max_pump_capacity - self.volume_in_pump
             if volume > space_in_pump:
                 raise Exception("FILLING ERROR")
-            else:
-                cycles = self.__determine_pump_cycles(volume)
-                self.drive_step_stick(cycles, direction)
-                self.volume_in_pump += volume
+            cycles = self.__determine_pump_cycles(volume)
+            self.drive_step_stick(cycles, direction)
+            self.volume_in_pump += volume
         elif direction == 1:
             if volume > self.volume_in_pump:
                 raise Exception("PUMPING ERROR")
-            else:
-                cycles = self.__determine_pump_cycles(volume)
-                offset = self.drive_step_stick(cycles, direction)
-                # offset is what is returned from drive_step_stick which originally is returned from the arduino
-                if offset != 0:
-                    self.drive_step_stick(offset, 0)
-                    self.drive_step_stick(offset, 1)
-                self.volume_in_pump -= volume
+            cycles = self.__determine_pump_cycles(volume)
+            offset = self.drive_step_stick(cycles, direction)
+            if offset != 0:
+                self.drive_step_stick(offset, 0)
+                self.drive_step_stick(offset, 1)
+            self.volume_in_pump -= volume
 
     def drive_step_stick(self, cycles, direction):
         """
@@ -107,12 +125,10 @@ class Syringe_Pump:
             self.serial.write(direction.to_bytes(1, "little"))
             self.serial.flush()
             temp = self.serial.readline()
-            if temp == b"DONE\r\n" or temp == b"":
+            if temp in (b"DONE\r\n", b""):
                 return 0
-            else:
-                return int(temp)
-        else:
-            raise Exception("ARDUINO UNAVAILABLE")
+            return int(temp)
+        raise Exception("ARDUINO UNAVAILABLE")
 
     def __determine_pump_cycles(self, volume_to_add):
         """

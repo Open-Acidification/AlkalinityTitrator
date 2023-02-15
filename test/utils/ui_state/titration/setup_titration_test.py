@@ -3,10 +3,12 @@ The file to test the SetupTitration class
 """
 from unittest import mock
 from unittest.mock import ANY
-from titration.utils.ui_state.titration.setup_titration import SetupTitration
-from titration.utils.titrator import Titrator
-from titration.utils import constants
-from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
+from AlkalinityTitrator.titration.utils.ui_state.titration.setup_titration import (
+    SetupTitration,
+)
+from AlkalinityTitrator.titration.utils.titrator import Titrator
+from AlkalinityTitrator.titration.utils import constants
+from AlkalinityTitrator.titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 @mock.patch.object(SetupTitration, "_set_next_state")
@@ -71,9 +73,7 @@ def test_loop(print_mock):
             mock.call("Yes: 1", line=2),
             mock.call("No (use old): 0", line=3),
             mock.call(
-                "{0:>2.3f} pH: {1:>2.4f} V".format(
-                    constants.PH_REF_PH, constants.PH_REF_VOLTAGE
-                ),
+                f"{constants.PH_REF_PH} pH: {constants.PH_REF_VOLTAGE} V",
                 line=4,
             ),
         ]
@@ -128,9 +128,7 @@ def test_setup_titration(print_mock, set_next_state_mock):
             mock.call("Yes: 1", line=2),
             mock.call("No (use old): 0", line=3),
             mock.call(
-                "{0:>2.3f} pH: {1:>2.4f} V".format(
-                    constants.PH_REF_PH, constants.PH_REF_VOLTAGE
-                ),
+                f"{constants.PH_REF_PH} pH: {constants.PH_REF_VOLTAGE} V",
                 line=4,
             ),
         ]

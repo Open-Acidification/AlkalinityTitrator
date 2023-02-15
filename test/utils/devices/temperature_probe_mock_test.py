@@ -1,15 +1,15 @@
 """
 The file to test the mock temperature sensor
 """
-from titration.utils.devices import board_mock as board_class
-from titration.utils.devices.temperature_probe_mock import Temperature_Probe
+from AlkalinityTitrator.titration.utils.devices import board_mock as board_class
+from AlkalinityTitrator.titration.utils.devices.temperature_probe_mock import TemperatureProbe
 
 
 def create_temperature_probe():
     """
     The function to create a mock temperature sensor
     """
-    return Temperature_Probe(
+    return TemperatureProbe(
         board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D4, wires=2
     )
 
@@ -26,7 +26,7 @@ def test_temperature_probe_create_null():
     """
     The function to test creating a null mock temperature sensor
     """
-    temperature_sensor = Temperature_Probe(None, None, None, None)
+    temperature_sensor = TemperatureProbe(None, None, None, None)
     assert temperature_sensor is not None
 
 
@@ -42,7 +42,7 @@ def test_temperature_probe_temperature_null():
     """
     The function to test getting a temperature from a null mock sensor
     """
-    temperature_sensor = Temperature_Probe(None, None, None, None)
+    temperature_sensor = TemperatureProbe(None, None, None, None)
     assert temperature_sensor.get_temperature() == 0
 
 
@@ -58,7 +58,7 @@ def test_temperature_probe_resistance_null():
     """
     The function to test getting a resistance from a null mock sensor
     """
-    temperature_sensor = Temperature_Probe(None, None, None, None)
+    temperature_sensor = TemperatureProbe(None, None, None, None)
     assert temperature_sensor.get_resistance() == 1000.0
 
 

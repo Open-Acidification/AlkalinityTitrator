@@ -2,15 +2,15 @@
 The file to test the mock pH probe
 """
 import pytest
-from titration.utils.devices import board_mock as board_class
-from titration.utils.devices.ph_probe_mock import pH_Probe
+from AlkalinityTitrator.titration.utils.devices import board_mock as board_class
+from AlkalinityTitrator.titration.utils.devices.ph_probe_mock import PhProbe
 
 
 def create_ph_probe(pin_one=board_class.SCL, pin_two=board_class.SDA):
     """
     The function to create a mock pH probe
     """
-    return pH_Probe(pin_one, pin_two)
+    return PhProbe(pin_one, pin_two)
 
 
 def test_ph_create():

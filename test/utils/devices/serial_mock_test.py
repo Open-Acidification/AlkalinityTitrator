@@ -1,8 +1,8 @@
 """
 The file to test the mock serial peripheral
 """
-from titration.utils import constants
-from titration.utils.devices.serial_mock import Serial
+from AlkalinityTitrator.titration.utils import constants
+from AlkalinityTitrator.titration.utils.devices.serial_mock import Serial
 
 
 def create_arduino():

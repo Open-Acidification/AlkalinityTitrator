@@ -1,30 +1,39 @@
+"""
+The file for the Liquid Crystal Device
+"""
 import time
-
 import digitalio
+from AlkalinityTitrator.titration.utils import constants
 
-from titration.utils import constants
+# pylint: disable = R0902, R0913
 
 
 class LiquidCrystal:
-    """Sunfire LCD 20x04 Char Display Module"""
+    """
+    Sunfire LCD 20x04 Char Display Module
+    """
 
-    def __init__(self, rs, backlight, enable, d4, d5, d6, d7, cols, rows):
-        # Set up pins
-        self.pin_RS = digitalio.DigitalInOut(rs)  # RS
-        self.pin_E = digitalio.DigitalInOut(enable)  # E
-        self.pin_D4 = digitalio.DigitalInOut(d4)  # DB4
-        self.pin_D5 = digitalio.DigitalInOut(d5)  # DB5
-        self.pin_D6 = digitalio.DigitalInOut(d6)  # DB6
-        self.pin_D7 = digitalio.DigitalInOut(d7)  # DB7
-        self.pin_ON = digitalio.DigitalInOut(backlight)  # Backlight enable
+    def __init__(
+        self, r_s, backlight, enable, d_four, d_five, d_six, d_seven, cols, rows
+    ):
+        """
+        The constructor for the LCD
+        """
+        self.pin_r_s = digitalio.DigitalInOut(r_s)
+        self.pin_e = digitalio.DigitalInOut(enable)
+        self.pin_d_four = digitalio.DigitalInOut(d_four)
+        self.pin_d_five = digitalio.DigitalInOut(d_five)
+        self.pin_d_six = digitalio.DigitalInOut(d_six)
+        self.pin_d_seven = digitalio.DigitalInOut(d_seven)
+        self.pin_on = digitalio.DigitalInOut(backlight)
 
-        self.pin_E.direction = digitalio.Direction.OUTPUT
-        self.pin_RS.direction = digitalio.Direction.OUTPUT
-        self.pin_D4.direction = digitalio.Direction.OUTPUT
-        self.pin_D5.direction = digitalio.Direction.OUTPUT
-        self.pin_D6.direction = digitalio.Direction.OUTPUT
-        self.pin_D7.direction = digitalio.Direction.OUTPUT
-        self.pin_ON.direction = digitalio.Direction.OUTPUT
+        self.pin_e.direction = digitalio.Direction.OUTPUT
+        self.pin_r_s.direction = digitalio.Direction.OUTPUT
+        self.pin_d_four.direction = digitalio.Direction.OUTPUT
+        self.pin_d_five.direction = digitalio.Direction.OUTPUT
+        self.pin_d_six.direction = digitalio.Direction.OUTPUT
+        self.pin_d_seven.direction = digitalio.Direction.OUTPUT
+        self.pin_on.direction = digitalio.Direction.OUTPUT
 
         self.cols = cols
         self.rows = rows
@@ -51,7 +60,9 @@ class LiquidCrystal:
         time.sleep(0.5)
 
     def clear(self):
-        # Clear the screen
+        """
+        The function to clear the LCD screen
+        """
         blank = ""
         blank = blank.ljust(constants.LCD_WIDTH, " ")
 
@@ -89,41 +100,44 @@ class LiquidCrystal:
         self.__write(message, line)
 
     def lcd_backlight(self, flag):
-        # Toggle backlight on-off-on
-        self.pin_ON.value = flag
+        """
+        The function to turn off the LCD backlight
+        """
+        self.pin_on.value = flag
 
     def __write(self, message, line):
         """
         Prints a character to the LCD
         """
-        # print(message, line)
         self.__lcd_byte(line, constants.LCD_CMD)
 
         for i in range(constants.LCD_WIDTH):
             self.__lcd_byte(ord(message[i]), constants.LCD_CHR)
 
     def __lcd_byte(self, bits, mode):
-        # Send byte to data pins
-        # bits = data
-        # mode = True  for character
-        #        False for command
+        """
+        The function to send byte to data pins
+        bits = data
+        mode = True  for character
+               False for command
+        """
 
-        self.pin_RS.value = mode  # RS
+        self.pin_r_s.value = mode  # RS
 
         # High bits
-        self.pin_D4.value = bits & 0x10 == 0x10
-        self.pin_D5.value = bits & 0x20 == 0x20
-        self.pin_D6.value = bits & 0x40 == 0x40
-        self.pin_D7.value = bits & 0x80 == 0x80
+        self.pin_d_four.value = bits & 0x10 == 0x10
+        self.pin_d_five.value = bits & 0x20 == 0x20
+        self.pin_d_six.value = bits & 0x40 == 0x40
+        self.pin_d_seven.value = bits & 0x80 == 0x80
 
         # Toggle 'Enable' pin
         self.__lcd_toggle_enable()
 
         # Low bits
-        self.pin_D4.value = bits & 0x01 == 0x01
-        self.pin_D5.value = bits & 0x02 == 0x02
-        self.pin_D6.value = bits & 0x04 == 0x04
-        self.pin_D7.value = bits & 0x08 == 0x08
+        self.pin_d_four.value = bits & 0x01 == 0x01
+        self.pin_d_five.value = bits & 0x02 == 0x02
+        self.pin_d_six.value = bits & 0x04 == 0x04
+        self.pin_d_seven.value = bits & 0x08 == 0x08
 
         # Toggle 'Enable' pin
         self.__lcd_toggle_enable()
@@ -131,9 +145,9 @@ class LiquidCrystal:
     def __lcd_toggle_enable(self):
         # Toggle enable
         time.sleep(constants.E_DELAY)
-        self.pin_E.value = True
+        self.pin_e.value = True
         time.sleep(constants.E_PULSE)
-        self.pin_E.value = False
+        self.pin_e.value = False
         time.sleep(constants.E_DELAY)
 
     def display_list(self, dict_to_display):

@@ -1,8 +1,8 @@
 """
 The file for the ToggleDemoMode class
 """
-from titration.utils.ui_state.ui_state import UIState
-from titration.utils import constants
+from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
+from AlkalinityTitrator.titration.utils import constants
 
 
 class ToggleDemoMode(UIState):
@@ -41,7 +41,7 @@ class ToggleDemoMode(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         self.titrator.lcd.clear()
-        self.titrator.lcd.print("Testing: {}".format(constants.IS_TEST), line=1)
+        self.titrator.lcd.print(f"Testing: {constants.IS_TEST}", line=1)
         self.titrator.lcd.print("", line=2)
         self.titrator.lcd.print("Press any to cont.", line=3)
         self.titrator.lcd.print("", line=4)

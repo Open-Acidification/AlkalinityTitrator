@@ -1,7 +1,7 @@
 """
 The file for the Alkalinity Titrator driver
 """
-from titration.utils.titrator import Titrator
+from AlkalinityTitrator.titration.utils.titrator import Titrator
 
 titrator = Titrator()
 

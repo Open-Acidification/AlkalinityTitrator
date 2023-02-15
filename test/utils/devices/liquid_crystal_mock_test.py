@@ -2,9 +2,9 @@
 The file to test the mock liquid crystal display
 """
 
-import titration.utils.devices.board_mock as board
-from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
-from titration.utils import constants
+from AlkalinityTitrator.titration.utils.devices import board_mock as board
+from AlkalinityTitrator.titration.utils.devices.liquid_crystal_mock import LiquidCrystal
+from AlkalinityTitrator.titration.utils import constants
 
 
 def create_lcd(cols=constants.LCD_WIDTH, rows=constants.LCD_HEIGHT):
@@ -13,13 +13,13 @@ def create_lcd(cols=constants.LCD_WIDTH, rows=constants.LCD_HEIGHT):
     """
 
     liquid_crystal = LiquidCrystal(
-        rs=board.D27,
+        r_s=board.D27,
         backlight=board.D15,
         enable=board.D22,
-        d4=board.D18,
-        d5=board.D23,
-        d6=board.D24,
-        d7=board.D25,
+        d_four=board.D18,
+        d_five=board.D23,
+        d_six=board.D24,
+        d_seven=board.D25,
         cols=cols,
         rows=rows,
     )

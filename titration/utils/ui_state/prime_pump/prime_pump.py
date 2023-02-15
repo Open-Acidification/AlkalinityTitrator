@@ -1,7 +1,7 @@
 """
 The file for the PrimePump class
 """
-from titration.utils.ui_state.ui_state import UIState
+from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
 
 
 class PrimePump(UIState):

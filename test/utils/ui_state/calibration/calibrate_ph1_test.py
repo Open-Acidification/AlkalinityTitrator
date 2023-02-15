@@ -3,11 +3,15 @@ The file to test the calibration CalibratePh class
 """
 from unittest import mock
 from unittest.mock import ANY
-from titration.utils.ui_state.main_menu import MainMenu
-from titration.utils.ui_state.calibration.calibrate_ph import CalibratePh
-from titration.utils.ui_state.calibration.setup_calibration import SetupCalibration
-from titration.utils.titrator import Titrator
-from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
+from AlkalinityTitrator.titration.utils.ui_state.main_menu import MainMenu
+from AlkalinityTitrator.titration.utils.ui_state.calibration.calibrate_ph import (
+    CalibratePh,
+)
+from AlkalinityTitrator.titration.utils.ui_state.calibration.setup_calibration import (
+    SetupCalibration,
+)
+from AlkalinityTitrator.titration.utils.titrator import Titrator
+from AlkalinityTitrator.titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 @mock.patch.object(CalibratePh, "_set_next_state")
@@ -68,10 +72,7 @@ def test_loop(print_mock):
         [
             mock.call("Recorded pH and volts:", line=1),
             mock.call(
-                "{0:>2.5f} pH, {1:>3.4f} V".format(
-                    calibrate_ph.values["buffer1_actual_pH"],
-                    calibrate_ph.values["buffer1_measured_volts"],
-                ),
+                f"{calibrate_ph.values['buffer1_actual_pH']} pH, {calibrate_ph.values['buffer1_measured_volts']} V",
                 line=2,
             ),
             mock.call("Press any to cont", line=3),
@@ -126,10 +127,7 @@ def test_calibrate_ph(print_mock, set_next_state_mock):
         [
             mock.call("Recorded pH and volts:", line=1),
             mock.call(
-                "{0:>2.5f} pH, {1:>3.4f} V".format(
-                    calibrate_ph.values["buffer1_actual_pH"],
-                    calibrate_ph.values["buffer1_measured_volts"],
-                ),
+                f"{calibrate_ph.values['buffer1_actual_pH']} pH, {calibrate_ph.values['buffer1_measured_volts']} V",
                 line=2,
             ),
             mock.call("Press any to cont", line=3),

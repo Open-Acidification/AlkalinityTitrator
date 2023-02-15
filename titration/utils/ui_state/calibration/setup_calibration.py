@@ -1,10 +1,10 @@
 """
 The file for the SetupCalibration class
 """
-from titration.utils.ui_state.ui_state import UIState
-from titration.utils import constants
-from titration.utils.ui_state.calibration.calibrate_ph import CalibratePh
-from titration.utils.ui_state.calibration.calibrate_temp import CalibrateTemp
+from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
+from AlkalinityTitrator.titration.utils import constants
+from AlkalinityTitrator.titration.utils.ui_state.calibration.calibrate_ph import CalibratePh
+from AlkalinityTitrator.titration.utils.ui_state.calibration.calibrate_temp import CalibrateTemp
 
 
 class SetupCalibration(UIState):

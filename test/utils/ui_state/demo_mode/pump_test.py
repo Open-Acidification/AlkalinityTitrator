@@ -3,11 +3,11 @@ The file to test the Pump class
 """
 from unittest import mock
 from unittest.mock import ANY
-from titration.utils.ui_state.main_menu import MainMenu
-from titration.utils.ui_state.demo_mode.demo_mode import DemoMode
-from titration.utils.titrator import Titrator
-from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
-from titration.utils.ui_state.demo_mode.pump import Pump
+from AlkalinityTitrator.titration.utils.ui_state.main_menu import MainMenu
+from AlkalinityTitrator.titration.utils.ui_state.demo_mode.demo_mode import DemoMode
+from AlkalinityTitrator.titration.utils.titrator import Titrator
+from AlkalinityTitrator.titration.utils.devices.liquid_crystal_mock import LiquidCrystal
+from AlkalinityTitrator.titration.utils.ui_state.demo_mode.pump import Pump
 
 
 @mock.patch.object(Pump, "_set_next_state")
@@ -73,7 +73,7 @@ def test_loop(print_mock):
 
 @mock.patch.object(Pump, "_set_next_state")
 @mock.patch.object(LiquidCrystal, "print")
-def test_Pump(print_mock, set_next_state_mock):
+def test_pump(print_mock, set_next_state_mock):
     """
     The function to test a use case of the Pump class:
         User enters "1" to continue setting volume

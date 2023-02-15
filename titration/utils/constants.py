@@ -1,3 +1,6 @@
+"""
+The file to hold the titrator constants
+"""
 # Display
 LCD_CONSOLE = False
 
@@ -116,7 +119,7 @@ DEFAULT_PH_REF_VOLTAGE = -0.012
 DEFAULT_PH_REF_PH = 7.0
 # data paths
 DATA_PATH = "data/"
-volume_in_pump = 0  # keep track of solution in pump
+VOLUME_IN_PUMP = 0  # keep track of solution in pump
 
 # TESTING
 test_pH_vals = [
@@ -314,7 +317,5 @@ test_pH_vals = [
         3.0,
     ],
 ]
-hcl_call_iter = 0
-pH_call_iter = -1
 
 IS_TEST = False

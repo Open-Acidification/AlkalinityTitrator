@@ -3,11 +3,11 @@ The file to test the ReadValues class
 """
 from unittest import mock
 from unittest.mock import ANY
-from titration.utils.ui_state.main_menu import MainMenu
-from titration.utils.ui_state.demo_mode.demo_mode import DemoMode
-from titration.utils.titrator import Titrator
-from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
-from titration.utils.ui_state.demo_mode.read_values import ReadValues
+from AlkalinityTitrator.titration.utils.ui_state.main_menu import MainMenu
+from AlkalinityTitrator.titration.utils.ui_state.demo_mode.demo_mode import DemoMode
+from AlkalinityTitrator.titration.utils.titrator import Titrator
+from AlkalinityTitrator.titration.utils.devices.liquid_crystal_mock import LiquidCrystal
+from AlkalinityTitrator.titration.utils.ui_state.demo_mode.read_values import ReadValues
 
 
 @mock.patch.object(ReadValues, "_set_next_state")
@@ -33,21 +33,17 @@ def test_loop(print_mock):
     for i in range(read_values.values["numVals"]):
         print_mock.assert_has_calls(
             [
+                mock.call(f"Temp: {read_values.values['temp']} C", line=1),
+                mock.call(f"Res:  {read_values.values['res']} Ohms", line=2),
                 mock.call(
-                    "Temp: {0:>4.3f} C".format(read_values.values["temp"]), line=1
-                ),
-                mock.call(
-                    "Res:  {0:>4.3f} Ohms".format(read_values.values["res"]), line=2
-                ),
-                mock.call(
-                    "pH:   {0:>4.5f} pH".format(read_values.values["pH_reading"]),
+                    f"pH:   {read_values.values['pH_reading']} pH",
                     line=3,
                 ),
                 mock.call(
-                    "pH V: {0:>3.4f} mV".format(read_values.values["pH_volts"] * 1000),
+                    f"pH V: {read_values.values['pH_volts'] * 1000} mV",
                     line=4,
                 ),
-                mock.call("Reading: {}".format(i), 1, console=True),
+                mock.call(f"Reading: {i}", 1, console=True),
             ]
         )
 
@@ -74,21 +70,17 @@ def test_read_values(print_mock, set_next_state_mock):
     for i in range(read_values.values["numVals"]):
         print_mock.assert_has_calls(
             [
+                mock.call(f"Temp: {read_values.values['temp']} C", line=1),
+                mock.call(f"Res:  {read_values.values['res']} Ohms", line=2),
                 mock.call(
-                    "Temp: {0:>4.3f} C".format(read_values.values["temp"]), line=1
-                ),
-                mock.call(
-                    "Res:  {0:>4.3f} Ohms".format(read_values.values["res"]), line=2
-                ),
-                mock.call(
-                    "pH:   {0:>4.5f} pH".format(read_values.values["pH_reading"]),
+                    f"pH:   {read_values.values['pH_reading']} pH",
                     line=3,
                 ),
                 mock.call(
-                    "pH V: {0:>3.4f} mV".format(read_values.values["pH_volts"] * 1000),
+                    f"pH V: {read_values.values['pH_volts'] * 1000} mV",
                     line=4,
                 ),
-                mock.call("Reading: {}".format(i), 1, console=True),
+                mock.call(f"Reading: {i}", 1, console=True),
             ]
         )
 

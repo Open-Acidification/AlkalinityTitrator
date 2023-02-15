@@ -2,8 +2,8 @@
 Module to test keypad calls in the terminal
 """
 
-import titration.utils.devices.board_mock as board
-import titration.utils.devices.keypad_mock as keypad
+from AlkalinityTitrator.titration.utils.devices import board_mock as board
+from AlkalinityTitrator.titration.utils.devices import keypad_mock as keypad
 
 
 def test_keypad_create():

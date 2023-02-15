@@ -1,7 +1,7 @@
 """
 The file for the ReadValues class
 """
-from titration.utils.ui_state.ui_state import UIState
+from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
 
 
 class ReadValues(UIState):
@@ -48,19 +48,13 @@ class ReadValues(UIState):
         """
         for i in range(self.values["numVals"]):
             self.titrator.lcd.clear()
+            self.titrator.lcd.print(f"Temp: {self.values['temp']} C", line=1)
+            self.titrator.lcd.print(f"Res:  {self.values['res']} Ohms", line=2)
+            self.titrator.lcd.print(f"pH:   {self.values['pH_reading']} pH", line=3)
             self.titrator.lcd.print(
-                "Temp: {0:>4.3f} C".format(self.values["temp"]), line=1
+                f"pH V: {self.values['pH_volts'] * 1000} mV", line=4
             )
-            self.titrator.lcd.print(
-                "Res:  {0:>4.3f} Ohms".format(self.values["res"]), line=2
-            )
-            self.titrator.lcd.print(
-                "pH:   {0:>4.5f} pH".format(self.values["pH_reading"]), line=3
-            )
-            self.titrator.lcd.print(
-                "pH V: {0:>3.4f} mV".format(self.values["pH_volts"] * 1000), line=4
-            )
-            self.titrator.lcd.print("Reading: {}".format(i), 1, console=True)
+            self.titrator.lcd.print(f"Reading: {i}", 1, console=True)
         self.titrator.lcd.clear()
         self.titrator.lcd.print("Press any to cont", line=1)
         self.titrator.lcd.print("", line=2)

@@ -1,9 +1,9 @@
 """
 The file for the CalibrateTemp class
 """
-from titration.utils.ui_state.ui_state import UIState
-from titration.utils import constants
-from titration.utils.ui_state.user_value.reference_temperature import (
+from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
+from AlkalinityTitrator.titration.utils import constants
+from AlkalinityTitrator.titration.utils.ui_state.user_value.reference_temperature import (
     ReferenceTemperature,
 )
 
@@ -53,7 +53,7 @@ class CalibrateTemp(UIState):
             self.substate += 1
 
         elif self.substate == 2:
-            if key == 1 or key == constants.KEY_1:
+            if key in (1, constants.KEY_1):
                 self.substate += 1
 
         elif self.substate == 3:
@@ -80,10 +80,6 @@ class CalibrateTemp(UIState):
         elif self.substate == 3:
             self.titrator.lcd.clear()
             self.titrator.lcd.print("Recorded temp:", line=1)
-            self.titrator.lcd.print(
-                "{0:0.3f}".format(self.values["actual_temperature"]), line=2
-            )
-            self.titrator.lcd.print(
-                "{}".format(self.values["new_ref_resistance"]), line=3
-            )
+            self.titrator.lcd.print(f"{self.values['actual_temperature']}", line=2)
+            self.titrator.lcd.print(f"{self.values['new_ref_resistance']}", line=3)
             self.titrator.lcd.print("", line=4)

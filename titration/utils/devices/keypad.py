@@ -1,6 +1,10 @@
+"""
+The file for the Keypad device class
+"""
 import digitalio
+from AlkalinityTitrator.titration.utils import constants
 
-from titration.utils import constants
+# pylint: disable = R0902, R0913, R0903
 
 KEY_VALUES = {
     0: {
@@ -31,18 +35,25 @@ KEY_VALUES = {
 
 
 class Keypad:
-    def __init__(self, r0, r1, r2, r3, c0, c1, c2, c3):
-        self.pin_R0 = digitalio.DigitalInOut(r0)  # Top Row
-        self.pin_R1 = digitalio.DigitalInOut(r1)
-        self.pin_R2 = digitalio.DigitalInOut(r2)
-        self.pin_R3 = digitalio.DigitalInOut(r3)  # Bottom Row
-        self.pin_C0 = digitalio.DigitalInOut(c0)  # Leftmost Column
-        self.pin_C1 = digitalio.DigitalInOut(c1)
-        self.pin_C2 = digitalio.DigitalInOut(c2)
-        self.pin_C3 = digitalio.DigitalInOut(c3)  # Rightmost Column
+    """
+    The class for the titrator Keypad
+    """
 
-        self.rows = [self.pin_R0, self.pin_R1, self.pin_R2, self.pin_R3]
-        self.cols = [self.pin_C0, self.pin_C1, self.pin_C2, self.pin_C3]
+    def __init__(self, r_zero, r_one, r_two, r_three, c_zero, c_one, c_two, c_three):
+        """
+        The constructor for the the Keypad class
+        """
+        self.pin_r_zero = digitalio.DigitalInOut(r_zero)  # Top Row
+        self.pin_r_one = digitalio.DigitalInOut(r_one)
+        self.pin_r_two = digitalio.DigitalInOut(r_two)
+        self.pin_r_three = digitalio.DigitalInOut(r_three)  # Bottom Row
+        self.pin_c_zero = digitalio.DigitalInOut(c_zero)  # Leftmost Column
+        self.pin_c_one = digitalio.DigitalInOut(c_one)
+        self.pin_c_two = digitalio.DigitalInOut(c_two)
+        self.pin_c_three = digitalio.DigitalInOut(c_three)  # Rightmost Column
+
+        self.rows = [self.pin_r_zero, self.pin_r_one, self.pin_r_two, self.pin_r_three]
+        self.cols = [self.pin_c_zero, self.pin_c_one, self.pin_c_two, self.pin_c_three]
 
         self.rows[0].direction = digitalio.Direction.OUTPUT
         self.rows[1].direction = digitalio.Direction.OUTPUT
@@ -60,18 +71,15 @@ class Keypad:
 
     def keypad_poll(self):
         """
-        polls the keypad and returns the button label (1,2,A,B,*,#, etc)
+        The function that polls the keypad and returns the button label (1,2,A,B,*,#, etc)
         of the button pressed.
         """
-        # Set each row high and check if a column went high as well
-        for row in range(len(self.rows)):
+        for row in enumerate(self.rows):
             self.rows[row].value = True
-            for col in range(len(self.cols)):
+            for col in enumerate(self.cols):
                 if self.cols[col].value:
                     self.rows[row].value = False
-                    # print("Button: ", row, " ", col)
                     return KEY_VALUES[row][col]
             self.rows[row].value = False
 
-        # No buttons were pressed
         return None

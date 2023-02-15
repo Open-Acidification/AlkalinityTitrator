@@ -1,9 +1,9 @@
 """
 The file for the AutomaticTitration class
 """
-from titration.utils.ui_state.ui_state import UIState
-from titration.utils import constants
-from titration.utils.ui_state import main_menu
+from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
+from AlkalinityTitrator.titration.utils import constants
+from AlkalinityTitrator.titration.utils.ui_state import main_menu
 
 
 class AutomaticTitration(UIState):
@@ -61,9 +61,7 @@ class AutomaticTitration(UIState):
         if self.substate == 1:
             self.titrator.lcd.clear()
             self.titrator.lcd.print(
-                "Titrating to {} pH".format(
-                    str(self.values["pH_target"])
-                ),  # TODO: Change pH_target
+                f"Titrating to {self.values['pH_target']} pH",
                 line=1,
             )
             self.titrator.lcd.print("", line=2)
@@ -80,8 +78,8 @@ class AutomaticTitration(UIState):
         elif self.substate == 3:
             self.titrator.lcd.clear()
             self.titrator.lcd.print(
-                "pH value {} reached".format(self.values["current_pH"]), line=1
-            )  # TODO: Change current_pH
+                f"pH value {self.values['current_pH']} reached", line=1
+            )
             self.titrator.lcd.print("", line=2)
             self.titrator.lcd.print("Press any to cont", line=3)
             self.titrator.lcd.print("", line=4)

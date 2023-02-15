@@ -1,8 +1,10 @@
 """
 The file to for the UpdateSetting class
 """
-from titration.utils.ui_state.ui_state import UIState
-from titration.utils.ui_state.user_value.pump_volume import PumpVolume
+from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
+from AlkalinityTitrator.titration.utils.ui_state.user_value.pump_volume import (
+    PumpVolume,
+)
 
 
 class UpdateSettings(UIState):
@@ -36,7 +38,7 @@ class UpdateSettings(UIState):
             key (char): the keypad input is used to move through the substates
         """
         if self.substate == 1:
-            if key != "n" and key != "N":
+            if key not in ("n", "N"):
                 self.substate += 1
             else:
                 self.substate += 2
@@ -45,7 +47,7 @@ class UpdateSettings(UIState):
             self.substate += 1
 
         elif self.substate == 3:
-            if key != "n" and key != "N":
+            if key not in ("n", "N"):
                 self.substate += 1
             else:
                 self._set_next_state(self.previous_state, True)

@@ -1,8 +1,10 @@
 """
 The file for the SetVolume class
 """
-from titration.utils.ui_state.ui_state import UIState
-from titration.utils.ui_state.user_value.pump_volume import PumpVolume
+from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
+from AlkalinityTitrator.titration.utils.ui_state.user_value.pump_volume import (
+    PumpVolume,
+)
 
 
 class SetVolume(UIState):

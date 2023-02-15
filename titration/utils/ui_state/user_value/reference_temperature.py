@@ -2,7 +2,7 @@
 The file for the ReferenceTemperature class
 """
 
-from titration.utils.ui_state.user_value.user_value import UserValue
+from AlkalinityTitrator.titration.utils.ui_state.user_value.user_value import UserValue
 
 
 class ReferenceTemperature(UserValue):

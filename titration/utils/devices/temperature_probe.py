@@ -1,12 +1,21 @@
+"""
+The file for the temperature probe device
+"""
 import adafruit_max31865
 import busio
 import digitalio
+from AlkalinityTitrator.titration.utils import constants
 
-from titration.utils import constants
 
+class TemperatureProbe:
+    """
+    The class for the Temperature Probe device
+    """
 
-class Temperature_Probe:
     def __init__(self, sck, mosi, miso, cs, wires=2):
+        """
+        The constructor for the Temperature Probe
+        """
         self.spi = busio.SPI(sck, MOSI=mosi, MISO=miso)
         self.cs = digitalio.DigitalInOut(cs)
         self.sensor = adafruit_max31865.MAX31865(
@@ -18,9 +27,15 @@ class Temperature_Probe:
         )
 
     def get_temperature(self):
+        """
+        The function to get the probe's temperature
+        """
         return self.sensor.temperature
 
     def get_resistance(self):
+        """
+        The function to get the probe's resistance
+        """
         return self.sensor.resistance
 
     def read_temperature(self):

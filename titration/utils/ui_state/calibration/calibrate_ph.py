@@ -1,8 +1,10 @@
 """
 The file for the CalibratePh class
 """
-from titration.utils.ui_state.ui_state import UIState
-from titration.utils.ui_state.user_value.solution_weight import SolutionWeight
+from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
+from AlkalinityTitrator.titration.utils.ui_state.user_value.solution_weight import (
+    SolutionWeight,
+)
 
 
 class CalibratePh(UIState):
@@ -72,10 +74,7 @@ class CalibratePh(UIState):
             self.titrator.lcd.clear()
             self.titrator.lcd.print("Recorded pH and volts:", line=1)
             self.titrator.lcd.print(
-                "{0:>2.5f} pH, {1:>3.4f} V".format(
-                    self.values["buffer1_actual_pH"],
-                    self.values["buffer1_measured_volts"],
-                ),
+                f"{self.values['buffer1_actual_pH']} pH, {self.values['buffer1_measured_volts']} V",
                 line=2,
             )
             self.titrator.lcd.print("Press any to cont", line=3)

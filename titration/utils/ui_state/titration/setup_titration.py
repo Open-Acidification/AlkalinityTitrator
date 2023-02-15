@@ -1,12 +1,20 @@
 """
 The file for the SetupTitration class
 """
-from titration.utils.ui_state.ui_state import UIState
-from titration.utils import constants
-from titration.utils.ui_state.titration.initial_titration import InitialTitration
-from titration.utils.ui_state.titration.calibrate_ph import CalibratePh
-from titration.utils.ui_state.user_value.solution_weight import SolutionWeight
-from titration.utils.ui_state.user_value.solution_salinity import SolutionSalinity
+from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
+from AlkalinityTitrator.titration.utils import constants
+from AlkalinityTitrator.titration.utils.ui_state.titration.initial_titration import (
+    InitialTitration,
+)
+from AlkalinityTitrator.titration.utils.ui_state.titration.calibrate_ph import (
+    CalibratePh,
+)
+from AlkalinityTitrator.titration.utils.ui_state.user_value.solution_weight import (
+    SolutionWeight,
+)
+from AlkalinityTitrator.titration.utils.ui_state.user_value.solution_salinity import (
+    SolutionSalinity,
+)
 
 
 class SetupTitration(UIState):
@@ -72,8 +80,6 @@ class SetupTitration(UIState):
             self.titrator.lcd.print("Yes: 1", line=2)
             self.titrator.lcd.print("No (use old): 0", line=3)
             self.titrator.lcd.print(
-                "{0:>2.3f} pH: {1:>2.4f} V".format(
-                    constants.PH_REF_PH, constants.PH_REF_VOLTAGE
-                ),
+                f"{constants.PH_REF_PH} pH: {constants.PH_REF_VOLTAGE} V",
                 line=4,
             )

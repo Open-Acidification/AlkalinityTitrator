@@ -1,5 +1,10 @@
-import time
+"""
+The file for the temperature controller device
+"""
 
+# pylint: disable = E0401, R0902, R0912, W0621
+
+import time
 import adafruit_max31865
 import busio
 import digitalio
@@ -14,27 +19,30 @@ PID_ANTIWINDUP_TI = 0.004
 PID_ANTIWINDUP_TD = 9
 
 
-class Temperature_Control:
+class TemperatureControl:
     """
     Temperature Control class for running the PID control on the Alkalinity
-    Titrator using a SSR and Heated Beaker Jacket
+    t_itrator using a SSR and Heated Beaker Jacket
 
     """
 
     def __init__(self, relay_pin, sensor):
+        """
+        The constructor for the Temperature Controller
+        """
         self.sensor = sensor
         self.relay = LED(relay_pin)
 
     # Flag - print data to console or not
-    printData = False
+    print_data = False
 
     # Flag - if False, update() does not toggle relay
-    controlActive = False
+    control_active = False
 
     # PID Parameters
-    kp = PID_DEFAULT_KP
-    Ti = PID_DEFAULT_TI
-    Td = PID_DEFAULT_TD
+    k_p = PID_DEFAULT_KP
+    t_i = PID_DEFAULT_TI
+    t_d = PID_DEFAULT_TD
 
     # PID Gain
     k = 0
@@ -45,177 +53,197 @@ class Temperature_Control:
     error_prior = 0
 
     # Step Count - How many cycles have we done?
-    stepCount = 0
+    step_count = 0
 
-    # Time between steps (seconds) - how long to wait until next step
-    timeStep = 1
+    # t_ime between steps (seconds) - how long to wait until next step
+    time_step = 1
 
     # The time the next step nets to be taken
     # not localtime() since we need fractional seconds
-    timeNext = time.time()
+    time_next = time.time()
 
     # last temperature read
-    temperatureLast = 0
+    temperature_last = 0
 
     # What state is the relay currently in
-    relayOn = False
+    relay_on = False
 
     # Log of times measurements were taken
     # timeLog = []
 
     # Data Fame of Measurements
-    df = pd.DataFrame(columns=["time (s)", "temperature (C)", "gain"])
+    data_frame = pd.DataFrame(columns=["time (s)", "temperature (C)", "gain"])
 
     # Target temperature
-    setPoint = 30
+    set_point = 30
 
     """
-  Primary function run during the titration. update() will
+  Primary function run during the Alkalinityt_itrator.titration. update() will
   check if it is time to change the state of the relay and
   update the PID control and relay status as necessary
   """
 
     def update(self):
-        # If
-        if not self.controlActive:
+        """
+        The function to update the temperature controller
+        """
+        if not self.control_active:
             return
 
-        timeNow = time.time()  # not localtime() since we need fractional seconds
+        time_now = time.time()  # not localtime() since we need fractional seconds
 
-        # TODO: Add logging of timeNow-timeNext results (how late?)
-        if timeNow >= self.timeNext:
-            if self.relayOn:
+        if time_now >= self.time_next:
+            if self.relay_on:
                 # we'll turn it off
                 # turn off
-                self.__set_relayState(False)
+                self.__set_relay_state(False)
 
                 # count a step
-                self.stepCount += 1
+                self.step_count += 1
 
                 # update error/integral_priors
                 self.__update_priors()
 
                 # set off time based on k
-                self.__update_timeNext(time.time() + self.timeStep * (1 - self.k))
+                self.__update_time_next(time.time() + self.time_step * (1 - self.k))
 
             else:
                 # Get data values
                 temperature = self.sensor.get_temperature()
-                self.temperatureLast = temperature
-                # timelog.append(timeNow.tm_sec)
+                self.temperature_last = temperature
+                # timelog.append(time_now.tm_sec)
 
                 # anti-windup
-                if self.stepCount < 250:
+                if self.step_count < 250:
                     self.__set_integral_zero()
-                elif self.stepCount == 250:
+                elif self.step_count == 250:
                     self.__set_controlparam_antiwindup()
 
                 # Update PID Gain
                 self.__update_gains(temperature)
 
                 # Check if relay needs to be turned on
-                if temperature < self.setPoint:
+                if temperature < self.set_point:
                     if self.k <= 0:
                         self.k = 0
-                        self.__update_timeNext(time.time() + self.timeStep)
+                        self.__update_time_next(time.time() + self.time_step)
                     elif self.k < 1:
-                        self.__set_relayState(True)
-                        self.__update_timeNext(time.time() + self.timeStep * self.k)
+                        self.__set_relay_state(True)
+                        self.__update_time_next(time.time() + self.time_step * self.k)
                     else:
                         self.k = 1
-                        self.__set_relayState(True)
-                        self.__update_timeNext(time.time() + self.timeStep)
+                        self.__set_relay_state(True)
+                        self.__update_time_next(time.time() + self.time_step)
 
                 # temperature above setpoint
                 else:
                     self.k = 0
-                    self.__set_relayState(False)
-                    self.__update_timeNext(time.time() + self.timeStep)
+                    self.__set_relay_state(False)
+                    self.__update_time_next(time.time() + self.time_step)
                     self.__update_priors()
 
-                # Add data to df
+                # Add data to data_frame
                 data_frame_new = pd.DataFrame(
-                    [[time.ctime(timeNow), temperature, self.k]],
+                    [[time.ctime(time_now), temperature, self.k]],
                     columns=["time (s)", "temperature (C)", "gain"],
                 )
-                self.df = self.df.append(data_frame_new, ignore_index=True)
-                if self.printData:
-                    print(self.df)
+                self.data_frame = self.data_frame.append(
+                    data_frame_new, ignore_index=True
+                )
+                if self.print_data:
+                    print(self.data_frame)
 
         else:
             # pass until next update is called
             return
 
     def enable_print(self):
-        self.printData = True
+        """
+        The function to enable the print
+        """
+        self.print_data = True
 
     def disable_print(self):
-        self.printData = False
+        """
+        The function to disable the print
+        """
+        self.print_data = False
 
     def output_csv(self, filename):
-        self.df.to_csv(filename, index_label="step", header=True)
+        """
+        The function to output data to the csv file
+        """
+        self.data_frame.to_csv(filename, index_label="step", header=True)
 
     def at_temperature(self):
-        if (
+        """
+        The function to tell if the solution is at temperature
+        """
+        return bool(
             self.sensor.get_temperature() >= 29.5
             and self.sensor.get_temperature() <= 30.5
-        ):
-            return True
-        else:
-            return False
+        )
 
     def get_last_temperature(self):
-        return self.temperatureLast
+        """
+        The function to return the last temperature
+        """
+        return self.temperature_last
 
     def activate(self):
-        self.controlActive = True
+        """
+        The function to activate the temperature controller
+        """
+        self.control_active = True
         self.__set_controlparam_default()
-        self.timeNext = time.time()
+        self.time_next = time.time()
 
     def deactivate(self):
-        self.controlActive = False
-        self.__set_relayState(False)
-
-    def __update_timeLast(self, stepTime):
         """
-        Update the time of the last step taken with the time of the
-        step just taken with time.time()
+        The function to deactivate the temperature controller
         """
-        self.timeLast = stepTime
+        self.control_active = False
+        self.__set_relay_state(False)
 
-    def __update_timeNext(self, stepTime):
+    def __update_time_next(self, stept_ime):
         """
         Update the time that the next relay action should be taken
         """
-        self.timeNext = stepTime
+        self.time_next = stept_ime
 
     def __set_controlparam_antiwindup(self):
         """
         After 250 cycles, the PID control parameters should
         be changed to new values
         """
-        self.kp = PID_ANTIWINDUP_KP
-        self.Ti = PID_ANTIWINDUP_TI
-        self.Td = PID_ANTIWINDUP_TD
+        self.k_p = PID_ANTIWINDUP_KP
+        self.t_i = PID_ANTIWINDUP_TI
+        self.t_d = PID_ANTIWINDUP_TD
 
     def __set_controlparam_default(self):
         """
         For the first 250 cycles, the PID parameters should
         be set to their default values.
         """
-        self.kp = PID_DEFAULT_KP
-        self.Ti = PID_DEFAULT_TI
-        self.Td = PID_DEFAULT_TD
+        self.k_p = PID_DEFAULT_KP
+        self.t_i = PID_DEFAULT_TI
+        self.t_d = PID_DEFAULT_TD
 
     def __update_gains(self, temperature):
-        self.error = self.setPoint - temperature
-        self.integral = self.integral_prior + self.error * self.timeStep
-        self.derivative = (self.error - self.error_prior) / self.timeStep
-        self.k = self.kp * (
-            self.error + self.Ti * self.integral + self.Td * self.derivative
+        """
+        The function to update the gains
+        """
+        self.error = self.set_point - temperature
+        self.integral = self.integral_prior + self.error * self.time_step
+        self.derivative = (self.error - self.error_prior) / self.time_step
+        self.k = self.k_p * (
+            self.error + self.t_i * self.integral + self.t_d * self.derivative
         )
 
     def __update_priors(self):
+        """
+        The function to update the priors
+        """
         self.error_prior = self.error
         self.integral_prior = self.integral
 
@@ -226,17 +254,17 @@ class Temperature_Control:
         """
         self.integral = 0
 
-    def __set_relayState(self, boolean):
-        self.relayOn = boolean
+    def __set_relay_state(self, boolean):
+        """
+        The function to set the relay state
+        """
+        self.relay_on = boolean
         if boolean:
             self.relay.on()
         else:
             self.relay.off()
 
 
-"""
-TODO: add comment
-"""
 if __name__ == "__main__":
     import board
 
@@ -246,13 +274,13 @@ if __name__ == "__main__":
         spi, cs, rtd_nominal=1000, ref_resistor=4300, wires=3
     )
 
-    temperature_control = Temperature_Control(sensor, 12)
+    temperature_control = TemperatureControl(sensor, 12)
     temperature_control.enable_print()
 
     # 10min time
     timeCurr = time.time()
     timeEnd = timeCurr + 3600
-    print("Time Start: ", time.ctime(timeCurr), "\nTime End: ", time.ctime(timeEnd))
+    print("t_ime Start: ", time.ctime(timeCurr), "\nt_ime End: ", time.ctime(timeEnd))
     while timeEnd > time.time():
         temperature_control.update()
 

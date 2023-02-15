@@ -3,12 +3,12 @@ The file to test the ReadVolume class
 """
 from unittest import mock
 from unittest.mock import ANY
-from titration.utils.ui_state.main_menu import MainMenu
-from titration.utils.titrator import Titrator
-from titration.utils import constants
-from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
-from titration.utils.ui_state.demo_mode.read_volume import ReadVolume
-from titration.utils.ui_state.demo_mode.demo_mode import DemoMode
+from AlkalinityTitrator.titration.utils.ui_state.main_menu import MainMenu
+from AlkalinityTitrator.titration.utils.titrator import Titrator
+from AlkalinityTitrator.titration.utils import constants
+from AlkalinityTitrator.titration.utils.devices.liquid_crystal_mock import LiquidCrystal
+from AlkalinityTitrator.titration.utils.ui_state.demo_mode.read_volume import ReadVolume
+from AlkalinityTitrator.titration.utils.ui_state.demo_mode.demo_mode import DemoMode
 
 
 @mock.patch.object(ReadVolume, "_set_next_state")
@@ -35,7 +35,7 @@ def test_loop(print_mock):
         [
             mock.call("Pump Vol: ", line=1),
             mock.call(
-                "{0:1.2f}".format(constants.volume_in_pump),
+                f"{constants.VOLUME_IN_PUMP}",
                 style=constants.LCD_CENT_JUST,
                 line=2,
             ),
@@ -59,7 +59,7 @@ def test_read_volume(print_mock, set_next_state_mock):
         [
             mock.call("Pump Vol: ", line=1),
             mock.call(
-                "{0:1.2f}".format(constants.volume_in_pump),
+                f"{constants.VOLUME_IN_PUMP}",
                 style=constants.LCD_CENT_JUST,
                 line=2,
             ),

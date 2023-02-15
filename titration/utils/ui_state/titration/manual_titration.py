@@ -1,11 +1,11 @@
 """
 The file for the ManualTitration class
 """
-from titration.utils.ui_state.ui_state import UIState
-from titration.utils import constants
-from titration.utils.ui_state import main_menu
-from titration.utils.ui_state.user_value.volume import Volume
-from titration.utils.ui_state.user_value.degas_time import DegasTime
+from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
+from AlkalinityTitrator.titration.utils import constants
+from AlkalinityTitrator.titration.utils.ui_state import main_menu
+from AlkalinityTitrator.titration.utils.ui_state.user_value.volume import Volume
+from AlkalinityTitrator.titration.utils.ui_state.user_value.degas_time import DegasTime
 
 
 class ManualTitration(UIState):
@@ -100,18 +100,14 @@ class ManualTitration(UIState):
 
         elif self.substate == 3:
             self.titrator.lcd.clear()
-            self.titrator.lcd.print(
-                "Current pH: {0:>4.5f}".format(self.values["current_pH"]), line=1
-            )  # TODO: change current pH value from 5
+            self.titrator.lcd.print(f"Current pH: {self.values['current_pH']}", line=1)
             self.titrator.lcd.print("Add more HCl?", line=2)
             self.titrator.lcd.print("(0 - No, 1 - Yes)", line=3)
             self.titrator.lcd.print("", line=4)
 
         elif self.substate == 4:
             self.titrator.lcd.clear()
-            self.titrator.lcd.print(
-                "Current pH: {0:>4.5f}".format(self.values["current_pH"]), line=1
-            )  # TODO: change current pH value from 5
+            self.titrator.lcd.print(f"Current pH: {self.values['current_pH']}", line=1)
             self.titrator.lcd.print("Degas?", line=2)
             self.titrator.lcd.print("(0 - No, 1 - Yes)", line=3)
             self.titrator.lcd.print("", line=4)
@@ -127,9 +123,7 @@ class ManualTitration(UIState):
             self.titrator.lcd.clear()
             self.titrator.lcd.print("Return to", line=1)
             self.titrator.lcd.print("main menu", line=2)
-            self.titrator.lcd.print(
-                "Press any to cont", line=3
-            )  # TODO: change exit and go to main menu
+            self.titrator.lcd.print("Press any to cont", line=3)
             self.titrator.lcd.print("", line=4)
 
     def start(self):

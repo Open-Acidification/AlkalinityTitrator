@@ -1,13 +1,20 @@
 """
 The file for the MainMenu class
 """
-from titration.utils.ui_state.ui_state import UIState
-from titration.utils import constants
-from titration.utils.ui_state.prime_pump.prime_pump import PrimePump
-from titration.utils.ui_state.demo_mode.demo_mode import DemoMode
-from titration.utils.ui_state.titration.setup_titration import SetupTitration
-from titration.utils.ui_state.calibration.setup_calibration import SetupCalibration
-from titration.utils.ui_state.update_settings.update_settings import UpdateSettings
+import sys
+from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
+from AlkalinityTitrator.titration.utils import constants
+from AlkalinityTitrator.titration.utils.ui_state.prime_pump.prime_pump import PrimePump
+from AlkalinityTitrator.titration.utils.ui_state.demo_mode.demo_mode import DemoMode
+from AlkalinityTitrator.titration.utils.ui_state.titration.setup_titration import (
+    SetupTitration,
+)
+from AlkalinityTitrator.titration.utils.ui_state.calibration.setup_calibration import (
+    SetupCalibration,
+)
+from AlkalinityTitrator.titration.utils.ui_state.update_settings.update_settings import (
+    UpdateSettings,
+)
 
 
 class MainMenu(UIState):
@@ -57,7 +64,7 @@ class MainMenu(UIState):
                 self._set_next_state(DemoMode(self.titrator, self), True)
 
             elif key == constants.KEY_6:
-                quit()
+                sys.exit()
 
     def loop(self):
         """

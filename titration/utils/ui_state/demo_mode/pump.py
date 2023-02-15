@@ -1,9 +1,11 @@
 """
 The file for the Pump class
 """
-from titration.utils.ui_state.ui_state import UIState
-from titration.utils import constants
-from titration.utils.ui_state.user_value.pump_volume import PumpVolume
+from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
+from AlkalinityTitrator.titration.utils import constants
+from AlkalinityTitrator.titration.utils.ui_state.user_value.pump_volume import (
+    PumpVolume,
+)
 
 
 class Pump(UIState):
@@ -46,7 +48,7 @@ class Pump(UIState):
             self.substate += 1
 
         elif self.substate == 2:
-            if key == constants.KEY_0 or key == constants.KEY_1:
+            if key in (constants.KEY_0, constants.KEY_1):
                 self.values["p_direction"] = key
                 self.substate += 1
 

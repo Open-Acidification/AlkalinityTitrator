@@ -1,8 +1,8 @@
 """
 The file for the ReadVolume class
 """
-from titration.utils.ui_state.ui_state import UIState
-from titration.utils import constants
+from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
+from AlkalinityTitrator.titration.utils import constants
 
 
 class ReadVolume(UIState):
@@ -32,7 +32,7 @@ class ReadVolume(UIState):
         self.titrator.lcd.clear()
         self.titrator.lcd.print("Pump Vol: ", line=1)
         self.titrator.lcd.print(
-            "{0:1.2f}".format(constants.volume_in_pump),
+            f"{constants.VOLUME_IN_PUMP}",
             style=constants.LCD_CENT_JUST,
             line=2,
         )

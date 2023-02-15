@@ -3,11 +3,15 @@ The file to test the CalibrateTemp class
 """
 from unittest import mock
 from unittest.mock import ANY
-from titration.utils.ui_state.main_menu import MainMenu
-from titration.utils.ui_state.calibration.calibrate_temp import CalibrateTemp
-from titration.utils.ui_state.calibration.setup_calibration import SetupCalibration
-from titration.utils.titrator import Titrator
-from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
+from AlkalinityTitrator.titration.utils.ui_state.main_menu import MainMenu
+from AlkalinityTitrator.titration.utils.ui_state.calibration.calibrate_temp import (
+    CalibrateTemp,
+)
+from AlkalinityTitrator.titration.utils.ui_state.calibration.setup_calibration import (
+    SetupCalibration,
+)
+from AlkalinityTitrator.titration.utils.titrator import Titrator
+from AlkalinityTitrator.titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 @mock.patch.object(CalibrateTemp, "_set_next_state")
@@ -67,10 +71,8 @@ def test_loop(print_mock):
     print_mock.assert_has_calls(
         [
             mock.call("Recorded temp:", line=1),
-            mock.call(
-                "{0:0.3f}".format(calibrate_temp.values["actual_temperature"]), line=2
-            ),
-            mock.call("{}".format(calibrate_temp.values["new_ref_resistance"]), line=3),
+            mock.call(f"{calibrate_temp.values['actual_temperature']}", line=2),
+            mock.call(f"{calibrate_temp.values['new_ref_resistance']}", line=3),
             mock.call("", line=4),
         ]
     )
@@ -121,10 +123,8 @@ def test_calibrate_temp(print_mock, set_next_state_mock):
     print_mock.assert_has_calls(
         [
             mock.call("Recorded temp:", line=1),
-            mock.call(
-                "{0:0.3f}".format(calibrate_temp.values["actual_temperature"]), line=2
-            ),
-            mock.call("{}".format(calibrate_temp.values["new_ref_resistance"]), line=3),
+            mock.call(f"{calibrate_temp.values['actual_temperature']}", line=2),
+            mock.call(f"{calibrate_temp.values['new_ref_resistance']}", line=3),
             mock.call("", line=4),
         ]
     )
