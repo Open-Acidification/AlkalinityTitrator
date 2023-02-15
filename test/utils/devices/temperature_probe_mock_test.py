@@ -2,7 +2,9 @@
 The file to test the mock temperature sensor
 """
 from AlkalinityTitrator.titration.utils.devices import board_mock as board_class
-from AlkalinityTitrator.titration.utils.devices.temperature_probe_mock import TemperatureProbe
+from AlkalinityTitrator.titration.utils.devices.temperature_probe_mock import (
+    TemperatureProbe,
+)
 
 
 def create_temperature_probe():

@@ -5,7 +5,7 @@ The file for the UIState class
 # pylint: disable = W0107
 
 
-class UIState:
+class UIState(object):
     """
     The UIState class is the model for all UI states
 

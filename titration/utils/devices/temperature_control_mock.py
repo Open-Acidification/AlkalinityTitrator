@@ -49,7 +49,7 @@ class TemperatureControl:
     # Step Count - How many cycles have we done?
     step_count = 0
 
-    # t_ime between steps (seconds) - how long to wait until next step
+    # time between steps (seconds) - how long to wait until next step
     time_step = 1
 
     # The time the next step nets to be taken
