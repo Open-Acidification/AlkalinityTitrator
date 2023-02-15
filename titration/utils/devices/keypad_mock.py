@@ -3,9 +3,7 @@ The file for mock Keypad class
 """
 import click
 import digitalio
-from AlkalinityTitration.titration.utils.devices import board_mock as board
-
-# pylint: disable = R0913, W0107, R0903
+from AlkalinityTitrator.titration.utils.devices import board_mock as board
 
 
 class Keypad:

@@ -3,11 +3,11 @@ The file to test the InitialTitration class
 """
 from unittest import mock
 from unittest.mock import ANY
+from AlkalinityTitrator.titration.utils.titrator import Titrator
+from AlkalinityTitrator.titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 from AlkalinityTitrator.titration.utils.ui_state.titration.initial_titration import (
     InitialTitration,
 )
-from AlkalinityTitrator.titration.utils.titrator import Titrator
-from AlkalinityTitrator.titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 def test_handle_key():

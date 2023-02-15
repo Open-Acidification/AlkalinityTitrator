@@ -42,9 +42,7 @@ def test_loop(print_mock):
     print_mock.assert_has_calls(
         [
             mock.call(
-                "Titrating to {} pH".format(
-                    str(automatic_titration.values["pH_target"])
-                ),
+                f"Titrating to {automatic_titration.values['pH_target']} pH",
                 line=1,
             ),
             mock.call("", line=2),
@@ -69,7 +67,7 @@ def test_loop(print_mock):
     print_mock.assert_has_calls(
         [
             mock.call(
-                "pH value {} reached".format(automatic_titration.values["current_pH"]),
+                f"pH value {automatic_titration.values['current_pH']} reached",
                 line=1,
             ),
             mock.call("", line=2),
@@ -106,9 +104,7 @@ def test_automatic_titration(print_mock, set_next_state_mock):
     print_mock.assert_has_calls(
         [
             mock.call(
-                "Titrating to {} pH".format(
-                    str(automatic_titration.values["pH_target"])
-                ),
+                f"Titrating to {automatic_titration.values['pH_target']} pH",
                 line=1,
             ),
             mock.call("", line=2),
@@ -137,7 +133,7 @@ def test_automatic_titration(print_mock, set_next_state_mock):
     print_mock.assert_has_calls(
         [
             mock.call(
-                "pH value {} reached".format(automatic_titration.values["current_pH"]),
+                f"pH value {automatic_titration.values['current_pH']} reached",
                 line=1,
             ),
             mock.call("", line=2),

@@ -1,6 +1,9 @@
 """
 The file for the temperature probe device
 """
+
+# pylint: disable = E0401, R0913
+
 import adafruit_max31865
 import busio
 import digitalio
@@ -12,15 +15,15 @@ class TemperatureProbe:
     The class for the Temperature Probe device
     """
 
-    def __init__(self, sck, mosi, miso, cs, wires=2):
+    def __init__(self, sck, mosi, miso, c_s, wires=2):
         """
         The constructor for the Temperature Probe
         """
         self.spi = busio.SPI(sck, MOSI=mosi, MISO=miso)
-        self.cs = digitalio.DigitalInOut(cs)
+        self.c_s = digitalio.DigitalInOut(c_s)
         self.sensor = adafruit_max31865.MAX31865(
             self.spi,
-            self.cs,
+            self.c_s,
             wires=wires,
             rtd_nominal=constants.TEMPERATURE_NOMINAL_RESISTANCE,
             ref_resistor=constants.TEMPERATURE_REF_RESISTANCE,

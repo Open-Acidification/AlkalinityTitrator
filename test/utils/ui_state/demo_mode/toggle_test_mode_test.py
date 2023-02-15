@@ -8,7 +8,9 @@ from AlkalinityTitrator.titration.utils.ui_state.demo_mode.demo_mode import Demo
 from AlkalinityTitrator.titration.utils.titrator import Titrator
 from AlkalinityTitrator.titration.utils import constants
 from AlkalinityTitrator.titration.utils.devices.liquid_crystal_mock import LiquidCrystal
-from AlkalinityTitrator.titration.utils.ui_state.demo_mode.toggle_demo_mode import ToggleDemoMode
+from AlkalinityTitrator.titration.utils.ui_state.demo_mode.toggle_demo_mode import (
+    ToggleDemoMode,
+)
 
 
 @mock.patch.object(ToggleDemoMode, "_set_next_state")
@@ -37,7 +39,7 @@ def test_loop(print_mock):
     toggle_demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Testing: {}".format(constants.IS_TEST), line=1),
+            mock.call(f"Testing: {constants.IS_TEST}", line=1),
             mock.call("", line=2),
             mock.call("Press any to cont.", line=3),
             mock.call("", line=4),
@@ -59,7 +61,7 @@ def test_toggle_demo_mode(print_mock, set_next_state_mock):
     toggle_demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Testing: {}".format(constants.IS_TEST), line=1),
+            mock.call(f"Testing: {constants.IS_TEST}", line=1),
             mock.call("", line=2),
             mock.call("Press any to cont.", line=3),
             mock.call("", line=4),

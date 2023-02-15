@@ -5,7 +5,6 @@ import digitalio
 import board
 from AlkalinityTitrator.titration.utils import constants
 
-# pylint: disable = R0902, R0913, R0903
 
 KEY_VALUES = {
     0: {

@@ -1,11 +1,12 @@
 """
 The file for mocking the LiquidCrystal class for testing purposes
 """
+
+# pylint: disable = R0902
+
 from os import name, system
 import digitalio
 from AlkalinityTitrator.titration.utils.devices import board_mock as board
-
-# pylint: disable = W0613, R0913
 
 
 class LiquidCrystal:

@@ -2,7 +2,9 @@
 Mock temperature probe class
 """
 
-# pylint: disable = R0913, W0613
+# pylint: disable = R0913, W0613, R0801
+
+
 class TemperatureProbe:
     """
     The class for the Temperature Probe

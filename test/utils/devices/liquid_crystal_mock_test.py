@@ -22,23 +22,23 @@ def test_lcd_create():
 
     liquid_crystal = create_lcd()
 
-    assert liquid_crystal.pin_RS == board.D27
-    assert liquid_crystal.pin_ON == board.D15
-    assert liquid_crystal.pin_E == board.D22
-    assert liquid_crystal.pin_D4 == board.D18
-    assert liquid_crystal.pin_D5 == board.D23
-    assert liquid_crystal.pin_D6 == board.D24
-    assert liquid_crystal.pin_D7 == board.D25
+    assert liquid_crystal.pin_r_s == board.D27
+    assert liquid_crystal.pin_on == board.D15
+    assert liquid_crystal.pin_e == board.D22
+    assert liquid_crystal.pin_d_four == board.D18
+    assert liquid_crystal.pin_d_five == board.D23
+    assert liquid_crystal.pin_d_six == board.D24
+    assert liquid_crystal.pin_d_seven == board.D25
 
-    assert liquid_crystal.pin_RS.direction == digitalio.Direction.OUTPUT
-    assert liquid_crystal.pin_E.direction == digitalio.Direction.OUTPUT
-    assert liquid_crystal.pin_D4.direction == digitalio.Direction.OUTPUT
-    assert liquid_crystal.pin_D5.direction == digitalio.Direction.OUTPUT
-    assert liquid_crystal.pin_D6.direction == digitalio.Direction.OUTPUT
-    assert liquid_crystal.pin_D7.direction == digitalio.Direction.OUTPUT
-    assert liquid_crystal.pin_ON.direction == digitalio.Direction.OUTPUT
+    assert liquid_crystal.pin_r_s.direction == digitalio.Direction.OUTPUT
+    assert liquid_crystal.pin_e.direction == digitalio.Direction.OUTPUT
+    assert liquid_crystal.pin_d_four.direction == digitalio.Direction.OUTPUT
+    assert liquid_crystal.pin_d_five.direction == digitalio.Direction.OUTPUT
+    assert liquid_crystal.pin_d_six.direction == digitalio.Direction.OUTPUT
+    assert liquid_crystal.pin_d_seven.direction == digitalio.Direction.OUTPUT
+    assert liquid_crystal.pin_on.direction == digitalio.Direction.OUTPUT
 
-    assert liquid_crystal.pin_ON.value is True
+    assert liquid_crystal.pin_on.value is True
 
     assert liquid_crystal.cols == 20
     assert liquid_crystal.rows == 4
@@ -351,11 +351,11 @@ def test_lcd_backlight(capsys):
 
     _ = capsys.readouterr()
 
-    assert liquid_crystal.pin_ON.value is True
+    assert liquid_crystal.pin_on.value is True
 
     liquid_crystal.lcd_backlight(False)
 
-    assert liquid_crystal.pin_ON.value is False
+    assert liquid_crystal.pin_on.value is False
 
     liquid_crystal.print("test string", 1, "left")
     captured = capsys.readouterr()
@@ -363,7 +363,7 @@ def test_lcd_backlight(capsys):
 
     liquid_crystal.lcd_backlight(True)
 
-    assert liquid_crystal.pin_ON.value is True
+    assert liquid_crystal.pin_on.value is True
 
     liquid_crystal.print("test string", 1, "left")
     captured = capsys.readouterr()
