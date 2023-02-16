@@ -5,7 +5,6 @@ from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils.titrator import Titrator
-from titration.utils import constants
 from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 from titration.utils.ui_state.demo_mode.read_volume import ReadVolume
 from titration.utils.ui_state.demo_mode.demo_mode import DemoMode
@@ -35,13 +34,8 @@ def test_loop(print_mock):
         [
             mock.call("Pump Vol: ", line=1),
             mock.call(
-<<<<<<< HEAD
                 "{0:1.2f}".format(read_volume.titrator.pump.get_volume_in_pump()),
-                style=constants.LCD_CENT_JUST,
-=======
-                "{0:1.2f}".format(constants.volume_in_pump),
                 style="center",
->>>>>>> main
                 line=2,
             ),
             mock.call("Press any to cont.", line=3),
@@ -64,13 +58,8 @@ def test_read_volume(print_mock, set_next_state_mock):
         [
             mock.call("Pump Vol: ", line=1),
             mock.call(
-<<<<<<< HEAD
                 "{0:1.2f}".format(read_volume.titrator.pump.get_volume_in_pump()),
-                style=constants.LCD_CENT_JUST,
-=======
-                "{0:1.2f}".format(constants.volume_in_pump),
                 style="center",
->>>>>>> main
                 line=2,
             ),
             mock.call("Press any to cont.", line=3),
