@@ -3,11 +3,11 @@ The file to test the Pump class
 """
 from unittest import mock
 from unittest.mock import ANY
-from AlkalinityTitrator.titration.utils.ui_state.main_menu import MainMenu
-from AlkalinityTitrator.titration.utils.ui_state.demo_mode.demo_mode import DemoMode
-from AlkalinityTitrator.titration.utils.titrator import Titrator
-from AlkalinityTitrator.titration.utils.devices.liquid_crystal_mock import LiquidCrystal
-from AlkalinityTitrator.titration.utils.ui_state.demo_mode.pump import Pump
+from titration.utils.ui_state.main_menu import MainMenu
+from titration.utils.ui_state.demo_mode.demo_mode import DemoMode
+from titration.utils.titrator import Titrator
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
+from titration.utils.ui_state.demo_mode.pump import Pump
 
 
 @mock.patch.object(Pump, "_set_next_state")

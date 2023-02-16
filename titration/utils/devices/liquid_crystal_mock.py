@@ -6,7 +6,7 @@ The file for mocking the LiquidCrystal class for testing purposes
 
 from os import name, system
 import digitalio
-from AlkalinityTitrator.titration.utils.devices import board_mock as board
+from titration.utils.devices import board_mock as board
 
 
 class LiquidCrystal:
@@ -20,20 +20,20 @@ class LiquidCrystal:
         The parameters are the board pins that the LCD uses
         """
 
-        self.pin_r_s = board.D27
+        self.pin_rs = board.D27
         self.pin_e = board.D22
-        self.pin_d_four = board.D18
-        self.pin_d_five = board.D23
-        self.pin_d_six = board.D24
-        self.pin_d_seven = board.D25
+        self.pin_d4 = board.D18
+        self.pin_d5 = board.D23
+        self.pin_d6 = board.D24
+        self.pin_d7 = board.D25
         self.pin_on = board.D15
 
-        self.pin_r_s.direction = digitalio.Direction.OUTPUT
+        self.pin_rs.direction = digitalio.Direction.OUTPUT
         self.pin_e.direction = digitalio.Direction.OUTPUT
-        self.pin_d_four.direction = digitalio.Direction.OUTPUT
-        self.pin_d_five.direction = digitalio.Direction.OUTPUT
-        self.pin_d_six.direction = digitalio.Direction.OUTPUT
-        self.pin_d_seven.direction = digitalio.Direction.OUTPUT
+        self.pin_d4.direction = digitalio.Direction.OUTPUT
+        self.pin_d5.direction = digitalio.Direction.OUTPUT
+        self.pin_d6.direction = digitalio.Direction.OUTPUT
+        self.pin_d7.direction = digitalio.Direction.OUTPUT
         self.pin_on.direction = digitalio.Direction.OUTPUT
 
         self.pin_on.value = True

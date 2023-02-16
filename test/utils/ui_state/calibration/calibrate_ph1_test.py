@@ -6,15 +6,15 @@ The file to test the calibration CalibratePh class
 
 from unittest import mock
 from unittest.mock import ANY
-from AlkalinityTitrator.titration.utils.ui_state.main_menu import MainMenu
-from AlkalinityTitrator.titration.utils.ui_state.calibration.calibrate_ph import (
+from titration.utils.ui_state.main_menu import MainMenu
+from titration.utils.ui_state.calibration.calibrate_ph import (
     CalibratePh,
 )
-from AlkalinityTitrator.titration.utils.ui_state.calibration.setup_calibration import (
+from titration.utils.ui_state.calibration.setup_calibration import (
     SetupCalibration,
 )
-from AlkalinityTitrator.titration.utils.titrator import Titrator
-from AlkalinityTitrator.titration.utils.devices.liquid_crystal_mock import LiquidCrystal
+from titration.utils.titrator import Titrator
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 @mock.patch.object(CalibratePh, "_set_next_state")

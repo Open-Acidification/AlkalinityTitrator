@@ -4,8 +4,8 @@ The file for the AutomaticTitration class
 
 # pylint: disable=E1101
 
-from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
-from AlkalinityTitrator.titration.utils.ui_state import main_menu
+from titration.utils.ui_state.ui_state import UIState
+from titration.utils.ui_state import main_menu
 
 
 class AutomaticTitration(UIState):

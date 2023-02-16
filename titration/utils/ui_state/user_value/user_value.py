@@ -1,7 +1,7 @@
 """
 The file for the UserValue class
 """
-from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
+from titration.utils.ui_state.ui_state import UIState
 
 
 class UserValue(UIState):

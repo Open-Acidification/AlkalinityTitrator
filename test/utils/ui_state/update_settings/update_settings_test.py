@@ -3,12 +3,12 @@ The file to test the UpdateSettings class
 """
 from unittest import mock
 from unittest.mock import ANY
-from AlkalinityTitrator.titration.utils.ui_state.main_menu import MainMenu
-from AlkalinityTitrator.titration.utils.titrator import Titrator
-from AlkalinityTitrator.titration.utils.ui_state.update_settings.update_settings import (
+from titration.utils.ui_state.main_menu import MainMenu
+from titration.utils.titrator import Titrator
+from titration.utils.ui_state.update_settings.update_settings import (
     UpdateSettings,
 )
-from AlkalinityTitrator.titration.utils.devices.liquid_crystal_mock import LiquidCrystal
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 @mock.patch.object(UpdateSettings, "_set_next_state")

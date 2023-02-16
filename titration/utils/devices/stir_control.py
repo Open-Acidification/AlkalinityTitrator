@@ -3,7 +3,7 @@ The file for the stir control device
 """
 import math
 import pwmio
-from AlkalinityTitrator.titration.utils import constants
+from titration.utils import constants
 
 
 class StirControl:

@@ -1,8 +1,8 @@
 """
 The file to test the mock syringe
 """
-from AlkalinityTitrator.titration.utils import constants
-from AlkalinityTitrator.titration.utils.devices.syringe_pump_mock import SyringePump
+from titration.utils import constants
+from titration.utils.devices.syringe_pump_mock import SyringePump
 
 
 def create_test_syringe():

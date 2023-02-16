@@ -2,7 +2,7 @@
 The file for the syringe pump class
 """
 import serial
-from AlkalinityTitrator.titration.utils import constants
+from titration.utils import constants
 
 MAX_PUMP_CAPACITY = 1.1
 NUM_CYCLES = {0.05: 470, 1: 9550}

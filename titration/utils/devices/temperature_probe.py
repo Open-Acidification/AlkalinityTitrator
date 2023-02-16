@@ -7,7 +7,7 @@ The file for the temperature probe device
 import adafruit_max31865
 import busio
 import digitalio
-from AlkalinityTitrator.titration.utils import constants
+from titration.utils import constants
 
 
 class TemperatureProbe:

@@ -1,8 +1,8 @@
 """
 The function for the syringe pump mock
 """
-from AlkalinityTitrator.titration.utils import constants
-from AlkalinityTitrator.titration.utils.devices import serial_mock
+from titration.utils import constants
+from titration.utils.devices import serial_mock
 
 MAX_PUMP_CAPACITY = 1.1
 NUM_CYCLES = {0.05: 470, 1: 9550}

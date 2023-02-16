@@ -30,20 +30,20 @@ class LiquidCrystal:
         The parameters are the board pins that the LCD uses
         """
 
-        self.pin_r_s = digitalio.DigitalInOut(board.D27)
+        self.pin_rs = digitalio.DigitalInOut(board.D27)
         self.pin_e = digitalio.DigitalInOut(board.D22)
-        self.pin_d_four = digitalio.DigitalInOut(board.D18)
-        self.pin_d_five = digitalio.DigitalInOut(board.D23)
-        self.pin_d_six = digitalio.DigitalInOut(board.D24)
-        self.pin_d_seven = digitalio.DigitalInOut(board.D25)
+        self.pin_d4 = digitalio.DigitalInOut(board.D18)
+        self.pin_d5 = digitalio.DigitalInOut(board.D23)
+        self.pin_d6 = digitalio.DigitalInOut(board.D24)
+        self.pin_d7 = digitalio.DigitalInOut(board.D25)
         self.pin_on = digitalio.DigitalInOut(board.D15)
 
         self.pin_e.direction = digitalio.Direction.OUTPUT
-        self.pin_r_s.direction = digitalio.Direction.OUTPUT
-        self.pin_d_four.direction = digitalio.Direction.OUTPUT
-        self.pin_d_five.direction = digitalio.Direction.OUTPUT
-        self.pin_d_six.direction = digitalio.Direction.OUTPUT
-        self.pin_d_seven.direction = digitalio.Direction.OUTPUT
+        self.pin_rs.direction = digitalio.Direction.OUTPUT
+        self.pin_d4.direction = digitalio.Direction.OUTPUT
+        self.pin_d5.direction = digitalio.Direction.OUTPUT
+        self.pin_d6.direction = digitalio.Direction.OUTPUT
+        self.pin_d7.direction = digitalio.Direction.OUTPUT
         self.pin_on.direction = digitalio.Direction.OUTPUT
 
         self.cols = cols
@@ -137,21 +137,21 @@ class LiquidCrystal:
             bits (hex): the bits to be sent on the pin
             mode (bool): True for character, False for command
         """
-        self.pin_r_s.value = mode
+        self.pin_rs.value = mode
 
         # High bits
-        self.pin_d_four.value = bits & 0x10 == 0x10
-        self.pin_d_five.value = bits & 0x20 == 0x20
-        self.pin_d_six.value = bits & 0x40 == 0x40
-        self.pin_d_seven.value = bits & 0x80 == 0x80
+        self.pin_d4.value = bits & 0x10 == 0x10
+        self.pin_d5.value = bits & 0x20 == 0x20
+        self.pin_d6.value = bits & 0x40 == 0x40
+        self.pin_d7.value = bits & 0x80 == 0x80
 
         self.__lcd_toggle_enable()
 
         # Low bits
-        self.pin_d_four.value = bits & 0x01 == 0x01
-        self.pin_d_five.value = bits & 0x02 == 0x02
-        self.pin_d_six.value = bits & 0x04 == 0x04
-        self.pin_d_seven.value = bits & 0x08 == 0x08
+        self.pin_d4.value = bits & 0x01 == 0x01
+        self.pin_d5.value = bits & 0x02 == 0x02
+        self.pin_d6.value = bits & 0x04 == 0x04
+        self.pin_d7.value = bits & 0x08 == 0x08
 
         self.__lcd_toggle_enable()
 

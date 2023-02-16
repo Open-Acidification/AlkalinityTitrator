@@ -2,8 +2,8 @@
 The file to test the mock keypad
 """
 import digitalio
-from AlkalinityTitrator.titration.utils.devices import board_mock as board
-from AlkalinityTitrator.titration.utils.devices.keypad_mock import Keypad
+from titration.utils.devices import board_mock as board
+from titration.utils.devices.keypad_mock import Keypad
 
 
 def test_keypad_create():

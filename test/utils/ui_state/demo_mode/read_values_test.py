@@ -3,11 +3,11 @@ The file to test the ReadValues class
 """
 from unittest import mock
 from unittest.mock import ANY
-from AlkalinityTitrator.titration.utils.ui_state.main_menu import MainMenu
-from AlkalinityTitrator.titration.utils.ui_state.demo_mode.demo_mode import DemoMode
-from AlkalinityTitrator.titration.utils.titrator import Titrator
-from AlkalinityTitrator.titration.utils.devices.liquid_crystal_mock import LiquidCrystal
-from AlkalinityTitrator.titration.utils.ui_state.demo_mode.read_values import ReadValues
+from titration.utils.ui_state.main_menu import MainMenu
+from titration.utils.ui_state.demo_mode.demo_mode import DemoMode
+from titration.utils.titrator import Titrator
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
+from titration.utils.ui_state.demo_mode.read_values import ReadValues
 
 
 @mock.patch.object(ReadValues, "_set_next_state")

@@ -2,12 +2,12 @@
 The file to test the Titrator class
 """
 from unittest import mock
-from AlkalinityTitrator.titration.utils.ui_state.main_menu import MainMenu
-from AlkalinityTitrator.titration.utils.ui_state.titration.setup_titration import (
+from titration.utils.ui_state.main_menu import MainMenu
+from titration.utils.ui_state.titration.setup_titration import (
     SetupTitration,
 )
-from AlkalinityTitrator.titration.utils.titrator import Titrator
-from AlkalinityTitrator.titration.utils.devices.keypad_mock import Keypad
+from titration.utils.titrator import Titrator
+from titration.utils.devices.keypad_mock import Keypad
 
 
 @mock.patch.object(Titrator, "handle_ui")

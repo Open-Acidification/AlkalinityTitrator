@@ -4,11 +4,11 @@ The file for the ManualTitration class
 
 # pylint: disable=E1101
 
-from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
-from AlkalinityTitrator.titration.utils import constants
-from AlkalinityTitrator.titration.utils.ui_state import main_menu
-from AlkalinityTitrator.titration.utils.ui_state.user_value.volume import Volume
-from AlkalinityTitrator.titration.utils.ui_state.user_value.degas_time import DegasTime
+from titration.utils.ui_state.ui_state import UIState
+from titration.utils import constants
+from titration.utils.ui_state import main_menu
+from titration.utils.ui_state.user_value.volume import Volume
+from titration.utils.ui_state.user_value.degas_time import DegasTime
 
 
 class ManualTitration(UIState):

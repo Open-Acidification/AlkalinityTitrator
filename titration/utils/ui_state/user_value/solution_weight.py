@@ -2,7 +2,7 @@
 The file for the SolutionWeight class
 """
 
-from AlkalinityTitrator.titration.utils.ui_state.user_value.user_value import UserValue
+from titration.utils.ui_state.user_value.user_value import UserValue
 
 
 class SolutionWeight(UserValue):

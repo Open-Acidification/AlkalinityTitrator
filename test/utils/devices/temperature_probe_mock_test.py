@@ -1,8 +1,8 @@
 """
 The file to test the mock temperature sensor
 """
-from AlkalinityTitrator.titration.utils.devices import board_mock as board_class
-from AlkalinityTitrator.titration.utils.devices.temperature_probe_mock import (
+from titration.utils.devices import board_mock as board_class
+from titration.utils.devices.temperature_probe_mock import (
     TemperatureProbe,
 )
 

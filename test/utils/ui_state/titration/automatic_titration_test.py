@@ -3,11 +3,11 @@ The file to test the AutomaticTitration class
 """
 from unittest import mock
 from unittest.mock import ANY
-from AlkalinityTitrator.titration.utils.ui_state.titration.automatic_titration import (
+from titration.utils.ui_state.titration.automatic_titration import (
     AutomaticTitration,
 )
-from AlkalinityTitrator.titration.utils.titrator import Titrator
-from AlkalinityTitrator.titration.utils.devices.liquid_crystal_mock import LiquidCrystal
+from titration.utils.titrator import Titrator
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 
 
 @mock.patch.object(AutomaticTitration, "_set_next_state")

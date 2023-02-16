@@ -3,7 +3,7 @@ The file for the Keypad device class
 """
 import digitalio
 import board
-from AlkalinityTitrator.titration.utils import constants
+from titration.utils import constants
 
 
 KEY_VALUES = {

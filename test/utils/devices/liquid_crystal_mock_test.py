@@ -2,9 +2,9 @@
 The file to test the mock liquid crystal display
 """
 import digitalio
-from AlkalinityTitrator.titration.utils.devices import board_mock as board
-from AlkalinityTitrator.titration.utils.devices.liquid_crystal_mock import LiquidCrystal
-from AlkalinityTitrator.titration.utils import constants
+from titration.utils.devices import board_mock as board
+from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
+from titration.utils import constants
 
 
 def create_lcd(cols=constants.LCD_WIDTH, rows=constants.LCD_HEIGHT):
@@ -22,20 +22,20 @@ def test_lcd_create():
 
     liquid_crystal = create_lcd()
 
-    assert liquid_crystal.pin_r_s == board.D27
+    assert liquid_crystal.pin_rs == board.D27
     assert liquid_crystal.pin_on == board.D15
     assert liquid_crystal.pin_e == board.D22
-    assert liquid_crystal.pin_d_four == board.D18
-    assert liquid_crystal.pin_d_five == board.D23
-    assert liquid_crystal.pin_d_six == board.D24
-    assert liquid_crystal.pin_d_seven == board.D25
+    assert liquid_crystal.pin_d4 == board.D18
+    assert liquid_crystal.pin_d5 == board.D23
+    assert liquid_crystal.pin_d6 == board.D24
+    assert liquid_crystal.pin_d7 == board.D25
 
-    assert liquid_crystal.pin_r_s.direction == digitalio.Direction.OUTPUT
+    assert liquid_crystal.pin_rs.direction == digitalio.Direction.OUTPUT
     assert liquid_crystal.pin_e.direction == digitalio.Direction.OUTPUT
-    assert liquid_crystal.pin_d_four.direction == digitalio.Direction.OUTPUT
-    assert liquid_crystal.pin_d_five.direction == digitalio.Direction.OUTPUT
-    assert liquid_crystal.pin_d_six.direction == digitalio.Direction.OUTPUT
-    assert liquid_crystal.pin_d_seven.direction == digitalio.Direction.OUTPUT
+    assert liquid_crystal.pin_d4.direction == digitalio.Direction.OUTPUT
+    assert liquid_crystal.pin_d5.direction == digitalio.Direction.OUTPUT
+    assert liquid_crystal.pin_d6.direction == digitalio.Direction.OUTPUT
+    assert liquid_crystal.pin_d7.direction == digitalio.Direction.OUTPUT
     assert liquid_crystal.pin_on.direction == digitalio.Direction.OUTPUT
 
     assert liquid_crystal.pin_on.value is True

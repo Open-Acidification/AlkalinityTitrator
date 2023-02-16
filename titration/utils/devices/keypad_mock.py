@@ -3,7 +3,7 @@ The file for mock Keypad class
 """
 import click
 import digitalio
-from AlkalinityTitrator.titration.utils.devices import board_mock as board
+from titration.utils.devices import board_mock as board
 
 
 class Keypad:

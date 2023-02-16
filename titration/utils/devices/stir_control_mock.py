@@ -2,7 +2,7 @@
 The file for the stir control mock
 """
 import math
-from AlkalinityTitrator.titration.utils import constants
+from titration.utils import constants
 
 # pylint: disable = W0613
 

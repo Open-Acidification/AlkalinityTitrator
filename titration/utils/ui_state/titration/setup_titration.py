@@ -4,18 +4,18 @@ The file for the SetupTitration class
 
 # pylint: disable=E1101
 
-from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
-from AlkalinityTitrator.titration.utils import constants
-from AlkalinityTitrator.titration.utils.ui_state.titration.initial_titration import (
+from titration.utils.ui_state.ui_state import UIState
+from titration.utils import constants
+from titration.utils.ui_state.titration.initial_titration import (
     InitialTitration,
 )
-from AlkalinityTitrator.titration.utils.ui_state.titration.calibrate_ph import (
+from titration.utils.ui_state.titration.calibrate_ph import (
     CalibratePh,
 )
-from AlkalinityTitrator.titration.utils.ui_state.user_value.solution_weight import (
+from titration.utils.ui_state.user_value.solution_weight import (
     SolutionWeight,
 )
-from AlkalinityTitrator.titration.utils.ui_state.user_value.solution_salinity import (
+from titration.utils.ui_state.user_value.solution_salinity import (
     SolutionSalinity,
 )
 

@@ -4,17 +4,17 @@ The file for the Titrator class
 
 # pylint: disable = R0902,
 
-from AlkalinityTitrator.titration.utils.ui_state.main_menu import MainMenu
-from AlkalinityTitrator.titration.utils import constants
+from titration.utils.ui_state.main_menu import MainMenu
+from titration.utils import constants
 
 if constants.IS_TEST:
-    from AlkalinityTitrator.titration.utils.devices.liquid_crystal_mock import (
+    from titration.utils.devices.liquid_crystal_mock import (
         LiquidCrystal,
     )
-    from AlkalinityTitrator.titration.utils.devices.keypad_mock import Keypad
+    from titration.utils.devices.keypad_mock import Keypad
 else:
-    from AlkalinityTitrator.titration.utils.devices.keypad import Keypad  # type: ignore
-    from AlkalinityTitrator.titration.utils.devices.liquid_crystal import LiquidCrystal  # type: ignore
+    from titration.utils.devices.keypad import Keypad  # type: ignore
+    from titration.utils.devices.liquid_crystal import LiquidCrystal  # type: ignore
 
 
 class Titrator:

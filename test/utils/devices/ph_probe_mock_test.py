@@ -2,8 +2,8 @@
 The file to test the mock pH probe
 """
 import pytest
-from AlkalinityTitrator.titration.utils.devices import board_mock as board_class
-from AlkalinityTitrator.titration.utils.devices.ph_probe_mock import PhProbe
+from titration.utils.devices import board_mock as board_class
+from titration.utils.devices.ph_probe_mock import PhProbe
 
 
 def create_ph_probe(pin_one=board_class.SCL, pin_two=board_class.SDA):
