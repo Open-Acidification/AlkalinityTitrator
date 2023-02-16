@@ -2,7 +2,6 @@
 The file for the ReadVolume class
 """
 from titration.utils.ui_state.ui_state import UIState
-from titration.utils import constants
 
 
 class ReadVolume(UIState):
@@ -33,7 +32,7 @@ class ReadVolume(UIState):
         self.titrator.lcd.print("Pump Vol: ", line=1)
         self.titrator.lcd.print(
             "{0:1.2f}".format(self.titrator.pump.get_volume_in_pump()),
-            style=constants.LCD_CENT_JUST,
+            style="center",
             line=2,
         )
         self.titrator.lcd.print("Press any to cont.", line=3)

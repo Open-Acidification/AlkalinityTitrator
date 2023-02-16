@@ -35,8 +35,13 @@ def test_loop(print_mock):
         [
             mock.call("Pump Vol: ", line=1),
             mock.call(
+<<<<<<< HEAD
                 "{0:1.2f}".format(read_volume.titrator.pump.get_volume_in_pump()),
                 style=constants.LCD_CENT_JUST,
+=======
+                "{0:1.2f}".format(constants.volume_in_pump),
+                style="center",
+>>>>>>> main
                 line=2,
             ),
             mock.call("Press any to cont.", line=3),
@@ -59,8 +64,13 @@ def test_read_volume(print_mock, set_next_state_mock):
         [
             mock.call("Pump Vol: ", line=1),
             mock.call(
+<<<<<<< HEAD
                 "{0:1.2f}".format(read_volume.titrator.pump.get_volume_in_pump()),
                 style=constants.LCD_CENT_JUST,
+=======
+                "{0:1.2f}".format(constants.volume_in_pump),
+                style="center",
+>>>>>>> main
                 line=2,
             ),
             mock.call("Press any to cont.", line=3),
