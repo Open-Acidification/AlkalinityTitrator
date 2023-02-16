@@ -1,6 +1,9 @@
 """
 The file for the ManualTitration class
 """
+
+# pylint: disable=E1101
+
 from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
 from AlkalinityTitrator.titration.utils import constants
 from AlkalinityTitrator.titration.utils.ui_state import main_menu

@@ -1,6 +1,9 @@
 """
 The file for the CalibratePh class
 """
+
+# pylint: disable=E1101
+
 from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
 from AlkalinityTitrator.titration.utils.ui_state.user_value.solution_weight import (
     SolutionWeight,

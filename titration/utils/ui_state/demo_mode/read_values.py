@@ -1,6 +1,9 @@
 """
 The file for the ReadValues class
 """
+
+# pylint: disable=E1101
+
 from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
 
 

@@ -1,6 +1,9 @@
 """
 The file for the InitialTitration class
 """
+
+# pylint: disable=E1101
+
 from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
 from AlkalinityTitrator.titration.utils import constants
 from AlkalinityTitrator.titration.utils.ui_state.titration.automatic_titration import (

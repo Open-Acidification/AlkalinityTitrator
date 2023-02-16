@@ -1,6 +1,9 @@
 """
 The file for the PrimePump class
 """
+
+# pylint: disable=E1101
+
 from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
 
 

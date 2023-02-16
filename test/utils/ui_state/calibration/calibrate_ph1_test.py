@@ -2,7 +2,7 @@
 The file to test the calibration CalibratePh class
 """
 
-# pylint: disable = C0301
+# pylint: disable = C0301, E1101
 
 from unittest import mock
 from unittest.mock import ANY

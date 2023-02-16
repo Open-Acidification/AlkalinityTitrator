@@ -1,6 +1,9 @@
 """
 The file for the MainMenu class
 """
+
+# pylint: disable=E1101,E0203
+
 import sys
 from AlkalinityTitrator.titration.utils.ui_state.ui_state import UIState
 from AlkalinityTitrator.titration.utils import constants
