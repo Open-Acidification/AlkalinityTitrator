@@ -2,6 +2,7 @@
 The file to connect the Raspberry Pi to the Arduino
 """
 import time
+
 import serial
 
 N = 2000
