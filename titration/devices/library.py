@@ -17,10 +17,10 @@ if constants.IS_TEST:
     from titration.devices.serial_mock import Serial
 else:
     import adafruit_ads1x15.ads1115 as ADS  # type: ignore
-    from adafruit_ads1x15 import analog_in  # type: ignore
     import board  # type: ignore
     import busio  # type: ignore
     import pwmio  # type: ignore
+    from adafruit_ads1x15 import analog_in  # type: ignore
     from serial import Serial  # type: ignore
 
     from titration.devices.keypad import Keypad  # type: ignore
