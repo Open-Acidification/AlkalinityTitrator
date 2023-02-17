@@ -1,24 +1,36 @@
+"""
+The file to test the mock temperature controller
+"""
 import time
+from titration.utils.devices import board_mock as board_class
+from titration.utils.devices.temperature_control_mock import TemperatureControl
+from titration.utils.devices.temperature_probe_mock import Temperature_Probe
 
-import titration.utils.devices.board_mock as board
-import titration.utils.devices.temperature_control_mock as temperature_control
-import titration.utils.devices.temperature_probe_mock as temperature_probe
+
+def create_temperature_controller():
+    """
+    The function to create a mock temperature controller for tests
+    """
+    sensor = Temperature_Probe(
+        board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D0, wires=3
+    )
+    return TemperatureControl(sensor)
 
 
 def test_temperature_control_create():
-    sensor = temperature_probe.Temperature_Probe(
-        board.SCK, board.MOSI, board.MISO, board.D0, wires=3
-    )
-    temperature_controller = temperature_control.TemperatureControl(sensor)
+    """
+    The function to test create a temperature controller
+    """
+    temperature_controller = create_temperature_controller()
 
     assert temperature_controller is not None
 
 
 def test_temperature_control_update():
-    sensor = temperature_probe.Temperature_Probe(
-        board.SCK, board.MOSI, board.MISO, board.D0, wires=3
-    )
-    temperature_controller = temperature_control.TemperatureControl(sensor)
+    """
+    The function to test updating the temperature controller
+    """
+    temperature_controller = create_temperature_controller()
 
     temperature_controller.update()
     time.sleep(1)
@@ -26,27 +38,27 @@ def test_temperature_control_update():
 
 
 def test_temperature_control_at_temperature():
-    sensor = temperature_probe.Temperature_Probe(
-        board.SCK, board.MOSI, board.MISO, board.D0, wires=3
-    )
-    temperature_controller = temperature_control.TemperatureControl(sensor)
+    """
+    The function to test the at_temperature function
+    """
+    temperature_controller = create_temperature_controller()
 
     temperature_controller.at_temperature()
 
 
 def test_temperature_control_last_temperature():
-    sensor = temperature_probe.Temperature_Probe(
-        board.SCK, board.MOSI, board.MISO, board.D0, wires=3
-    )
-    temperature_controller = temperature_control.TemperatureControl(sensor)
+    """
+    The function to get the last temperature from the temperature controller
+    """
+    temperature_controller = create_temperature_controller()
 
     temperature_controller.get_last_temperature()
 
 
 def test_temperature_control_deactivate():
-    sensor = temperature_probe.Temperature_Probe(
-        board.SCK, board.MOSI, board.MISO, board.D0, wires=3
-    )
-    temperature_controller = temperature_control.TemperatureControl(sensor)
+    """
+    The function to deactivate the temperature controller
+    """
+    temperature_controller = create_temperature_controller()
 
     temperature_controller.deactivate()

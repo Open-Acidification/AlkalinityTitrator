@@ -4,7 +4,7 @@ The file to test the PrimePump class
 from unittest import mock
 from unittest.mock import ANY
 from titration.utils.ui_state.main_menu import MainMenu
-from titration.utils.ui_state.test_mode.test_mode import TestMode
+from titration.utils.ui_state.demo_mode.demo_mode import DemoMode
 from titration.utils.titrator import Titrator
 from titration.utils.devices.liquid_crystal_mock import LiquidCrystal
 from titration.utils.ui_state.prime_pump.prime_pump import PrimePump
@@ -15,7 +15,7 @@ def test_handle_key(set_next_state_mock):
     """
     The function to test PrimePump's handle_key function for each keypad input
     """
-    prime_pump = PrimePump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
+    prime_pump = PrimePump(Titrator(), DemoMode(Titrator(), MainMenu(Titrator())))
 
     prime_pump.handle_key("3")
     assert prime_pump.values["selection"] == "3"
@@ -27,7 +27,7 @@ def test_handle_key(set_next_state_mock):
     prime_pump.handle_key("0")
     assert prime_pump.values["selection"] == "0"
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "TestMode"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoMode"
 
 
 @mock.patch.object(LiquidCrystal, "print")
@@ -35,7 +35,7 @@ def test_loop(print_mock):
     """
     The function to test PrimePump's loop function's LiquidCrystal calls
     """
-    prime_pump = PrimePump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
+    prime_pump = PrimePump(Titrator(), DemoMode(Titrator(), MainMenu(Titrator())))
 
     prime_pump.loop()
     print_mock.assert_has_calls(
@@ -68,7 +68,7 @@ def test_prime_pump(print_mock, set_next_state_mock):
         User enters "1" to select 1 more pump
         User enters "0" tot return to test mode
     """
-    prime_pump = PrimePump(Titrator(), TestMode(Titrator(), MainMenu(Titrator())))
+    prime_pump = PrimePump(Titrator(), DemoMode(Titrator(), MainMenu(Titrator())))
 
     prime_pump.loop()
     print_mock.assert_has_calls(
@@ -109,4 +109,4 @@ def test_prime_pump(print_mock, set_next_state_mock):
     prime_pump.handle_key("0")
     assert prime_pump.values["selection"] == "0"
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "TestMode"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoMode"

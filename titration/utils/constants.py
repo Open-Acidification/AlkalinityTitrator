@@ -1,7 +1,3 @@
-# Display
-LCD_CONSOLE = False
-
-VALID_INPUT_WARNING = "Input Invalid"
 # keypad
 NO_KEY = ""
 KEY_0 = "0"
@@ -31,7 +27,7 @@ ROUTINE_OPTIONS_1 = {
 
 ROUTINE_OPTIONS_2 = {
     KEY_4: "Update settings",
-    KEY_5: "Test Mode",
+    KEY_5: "Demo Mode",
     KEY_6: "Exit",
     KEY_STAR: "Page 1",
 }
@@ -44,21 +40,6 @@ DELAY_STEP = 0.0001
 # LCD Device Constants
 LCD_WIDTH = 20  # Maximum characters per line
 LCD_HEIGHT = 4
-LCD_CHR = True
-LCD_CMD = False
-
-LCD_LEFT_JUST = 1
-LCD_CENT_JUST = 2
-LCD_RIGHT_JUST = 3
-
-LCD_LINE_1 = 0x80  # LCD RAM address for the 1st line
-LCD_LINE_2 = 0xC0  # LCD RAM address for the 2nd line
-LCD_LINE_3 = 0x94  # LCD RAM address for the 3rd line
-LCD_LINE_4 = 0xD4  # LCD RAM address for the 4th line
-
-# LCD Timing constants
-E_PULSE = 0.0005
-E_DELAY = 0.0005
 
 # for pH calibration constants
 calibration_data_format = {
@@ -91,21 +72,9 @@ INCREMENT_AMOUNT_MID = 0.1
 INCREMENT_AMOUNT_FINAL = 0.05
 TARGET_STD_DEVIATION = 0.15
 
-# Stir Control
-STIR_PWM_FAST = 5000
-STIR_PWM_SLOW = 3000
-STIR_FREQUENCY = 100
-STIR_DUTY_CYCLE = 0
+# Temperature Control
+RELAY_PIN = 12
 
-# pump settings
-# ARDUINO_PORT = "/dev/ttyUSB0"
-ARDUINO_PORT = "/dev/ttyACM0"
-ARDUINO_BAUD = 9600
-ARDUINO_TIMEOUT = 5
-# maps vol to number of pulses needed
-NUM_CYCLES = {0.05: 470, 1: 9550}
-CYCLES_VOLUME_RATIO = 9550  # 1 mL is 9550 pump cycles
-MAX_PUMP_CAPACITY = 1.1  # max capacity of pump in mL
 # defaults
 DEFAULT_TEMPERATURE_REF_RESISTANCE = 4300.0
 DEFAULT_TEMPERATURE_NOMINAL_RESISTANCE = 1000.0
@@ -113,7 +82,6 @@ DEFAULT_PH_REF_VOLTAGE = -0.012
 DEFAULT_PH_REF_PH = 7.0
 # data paths
 DATA_PATH = "data/"
-volume_in_pump = 0  # keep track of solution in pump
 
 # TESTING
 test_pH_vals = [
