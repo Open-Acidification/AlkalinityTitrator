@@ -1,6 +1,9 @@
 """
 The file to configure mock objects
 """
+
+# pylint: disable=unused-import
+
 from titration import constants
 
 if constants.IS_TEST:

@@ -69,7 +69,8 @@ def test_loop(print_mock):
         [
             mock.call("Recorded pH and volts:", line=1),
             mock.call(
-                f"{calibrate_ph.values['buffer1_actual_pH']:>2.5} pH, {calibrate_ph.values['buffer1_measured_volts']:3.4f} V",
+                f"{calibrate_ph.values['buffer1_actual_pH']:>2.5f} pH,"
+                + f" {calibrate_ph.values['buffer1_measured_volts']:>3.4f} V",
                 line=2,
             ),
             mock.call("Press any to cont", line=3),
@@ -124,7 +125,8 @@ def test_calibrate_ph(print_mock, set_next_state_mock):
         [
             mock.call("Recorded pH and volts:", line=1),
             mock.call(
-                f"{calibrate_ph.values['buffer1_actual_pH']:>2.5f} pH, {calibrate_ph.values['buffer1_measured_volts']:>3.4f} V",
+                f"{calibrate_ph.values['buffer1_actual_pH']:>2.5f} pH,"
+                + f" {calibrate_ph.values['buffer1_measured_volts']:>3.4f} V",
                 line=2,
             ),
             mock.call("Press any to cont", line=3),

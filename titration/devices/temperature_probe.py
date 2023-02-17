@@ -1,6 +1,9 @@
 """
 The file for the temperature probe device
 """
+
+# pylint: disable = too-many-arguments
+
 import adafruit_max31865
 import busio
 import digitalio

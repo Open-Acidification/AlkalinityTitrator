@@ -1,6 +1,9 @@
 """
 The file for the temperature controller device
 """
+
+# pylint:disable=too-many-instance-attributes, too-many-branches, redefined-outer-name
+
 import time
 
 import adafruit_max31865

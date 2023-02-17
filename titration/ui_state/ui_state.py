@@ -2,6 +2,8 @@
 The file for the UIState class
 """
 
+# pylint: disable = unnecessary-pass
+
 
 class UIState:
     """

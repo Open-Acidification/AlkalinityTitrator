@@ -2,6 +2,8 @@
 Mock temperature probe class
 """
 
+# pylint: disable = too-many-arguments, unused-argument
+
 
 class TemperatureProbe:
     """

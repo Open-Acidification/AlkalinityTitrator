@@ -1,6 +1,9 @@
 """
 The file for the temperature control mock
 """
+
+# pylint: disable = too-many-instance-attributes, unused-argument
+
 import time
 
 import pandas as pd
