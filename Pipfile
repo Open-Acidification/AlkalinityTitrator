@@ -11,6 +11,11 @@ pytest = "*"
 pylint = "*"
 pytest-cov = "*"
 pytest-mock = "*"
+serial = "*"
+digitalio = "*"
+pytest = "*"
+board = "*"
+click = "*"
 
 [packages]
 adafruit-circuitpython-ads1x15 = "*"

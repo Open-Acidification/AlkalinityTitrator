@@ -8,12 +8,12 @@ class AnalogIn:
     The mock class for the analog peripheral in
     """
 
-    def __init__(self, ads, p0, p1):
+    def __init__(self, ads, p_0, p_1):
         """
         The constructor function for the AnalogIn class
         """
         self.ads = ads
-        self.p0 = p0
-        self.p1 = p1
+        self.p_0 = p_0
+        self.p_1 = p_1
 
         self.voltage = 0

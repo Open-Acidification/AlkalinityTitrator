@@ -1,22 +1,4 @@
 """
-<<<<<<< HEAD
-The file for the serial mock
-"""
-
-# pylint: disable = W0107
-
-
-class Serial:
-    """
-    The serial mock class
-    """
-
-    def __init__(self, port=None, baudrate=None, timeout=None):
-        """
-        The constructor for the serial class
-        """
-        pass
-=======
 The file for the mock serial mock
 """
 
@@ -42,43 +24,17 @@ class Serial:
 
         self.input_buffer = []
         self.output_buffer = []
->>>>>>> main
 
     def reset_output_buffer(self):
         """
         The function to reset the serial output buffer
         """
-<<<<<<< HEAD
-        pass
-=======
         self.output_buffer = []
->>>>>>> main
 
     def reset_input_buffer(self):
         """
         The function to reset the serial input buffer
         """
-<<<<<<< HEAD
-        pass
-
-    def writable(self):
-        """
-        The function to tell whether or not the serial is writable
-        """
-        return True
-
-    def write(self, byte):
-        """
-        The function to write to the mock arduino
-        """
-        pass
-
-    def flush(self):
-        """
-        The function to flush out the serial input and output buffers
-        """
-        pass
-=======
         self.input_buffer = []
 
     def writable(self):
@@ -102,7 +58,6 @@ class Serial:
         """
         self.input_buffer = []
         self.output_buffer = []
->>>>>>> main
 
     def readline(self):
         """

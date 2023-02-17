@@ -1,10 +1,4 @@
 """
-<<<<<<< HEAD
-The file for the syringe pump class
-"""
-import serial
-from titration.utils import constants
-=======
 The file for the SyringePump class
 """
 from titration.utils import constants
@@ -17,7 +11,6 @@ else:
 ARDUINO_PORT = "/dev/ttyACM0"
 ARDUINO_BAUD = 9600
 ARDUINO_TIMEOUT = 5
->>>>>>> main
 
 MAX_PUMP_CAPACITY = 1.1
 NUM_CYCLES = {0.05: 470, 1: 9550}
@@ -28,27 +21,11 @@ CYCLES_VOLUME_RATIO = 9550
 
 class SyringePump:
     """
-<<<<<<< HEAD
     The class for the Syringe Pump device
-=======
-    The class for the syringe pump device
->>>>>>> main
     """
 
     def __init__(self):
         """
-<<<<<<< HEAD
-        The constructor for the Syringe Pump class
-        """
-        self.serial = serial.Serial(
-            port=constants.ARDUINO_PORT,
-            baudrate=constants.ARDUINO_BAUD,
-            timeout=constants.ARDUINO_TIMEOUT,
-        )
-
-        self.volume_in_pump = constants.VOLUME_IN_PUMP
-        self.max_pump_capacity = constants.MAX_PUMP_CAPACITY
-=======
         The constructor function for the syringe pump
         Initializes the arduino to control the pump motor
         """
@@ -59,23 +36,12 @@ class SyringePump:
         )
 
         self.volume_in_pump = 0
->>>>>>> main
 
         self.serial.reset_input_buffer()
         self.serial.reset_output_buffer()
 
     def set_volume_in_pump(self, volume):
         """
-<<<<<<< HEAD
-        The function to set volume in pump
-        """
-        self.volume_in_pump = volume
-        constants.VOLUME_IN_PUMP = volume
-
-    def get_volume_in_pump(self):
-        """
-        The function to get the volume in the pump
-=======
         The function to set the pump's volume
 
         Parameters:
@@ -96,7 +62,6 @@ class SyringePump:
 
         Returns:
             volume_in_pump (float): the amount of volume in syringe
->>>>>>> main
         """
         return self.volume_in_pump
 
@@ -144,32 +109,11 @@ class SyringePump:
             # calculate remaining volume to add
             volume_to_add -= next_volume
 
-<<<<<<< HEAD
-    def drive_pump(self, volume, direction):
-        """
-        Converts volume to cycles and ensures and checks pump level and values
-        """
-        if direction == 0:
-            space_in_pump = self.max_pump_capacity - self.volume_in_pump
-            if volume <= space_in_pump:
-                cycles = self.__determine_pump_cycles(volume)
-                self.drive_step_stick(cycles, direction)
-                self.volume_in_pump += volume
-        elif direction == 1:
-            if volume <= self.volume_in_pump:
-                cycles = self.__determine_pump_cycles(volume)
-                offset = self.drive_step_stick(cycles, direction)
-                if offset != 0:
-                    self.drive_step_stick(offset, 0)
-                    self.drive_step_stick(offset, 1)
-                self.set_volume_in_pump(self.volume_in_pump - volume)
-=======
             self.__drive_pump_in(volume_to_add)
             self.__drive_pump_out(volume_to_add)
         else:
             # volume less than volume in pump
             self.__drive_pump_out(volume_to_add)
->>>>>>> main
 
     def __drive_pump_in(self, volume):
         """
