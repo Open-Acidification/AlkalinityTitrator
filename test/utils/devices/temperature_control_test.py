@@ -3,7 +3,7 @@ The file to test the mock temperature controller
 """
 import time
 from titration.utils.devices import board_mock as board_class
-from titration.utils.devices.temperature_control_mock import TemperatureControl
+from titration.utils.devices.temperature_control import TemperatureControl
 from titration.utils.devices.temperature_probe_mock import Temperature_Probe
 
 
