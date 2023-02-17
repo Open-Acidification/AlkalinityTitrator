@@ -3,7 +3,9 @@ The file for the CalibrateTemp class
 """
 from titration import constants
 from titration.ui_state.ui_state import UIState
-from titration.ui_state.user_value.reference_temperature import ReferenceTemperature
+from titration.ui_state.user_value.reference_temperature import (
+    ReferenceTemperature,
+)
 
 
 class CalibrateTemp(UIState):

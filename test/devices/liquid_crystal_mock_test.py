@@ -1,6 +1,7 @@
 """
 The file to test the mock liquid crystal display
 """
+
 import digitalio
 
 from titration import constants

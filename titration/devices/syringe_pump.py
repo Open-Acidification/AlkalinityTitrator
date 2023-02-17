@@ -46,7 +46,7 @@ class SyringePump:
             raise Exception(
                 "Set Volume Error: Volume set is higher than maximum capacity"
             )
-        elif volume < 0:
+        if volume < 0:
             raise Exception("Set Volume Error: Volume set cannot be a negative value")
         self.volume_in_pump = volume
 

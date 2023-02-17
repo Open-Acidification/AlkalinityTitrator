@@ -1,9 +1,10 @@
 """
 The file for the Sunfire LCD 20x04 Char Display, LiquidCrystal Class
 """
+import time
+
 import board
 import digitalio
-import time
 
 # LCD Device Constants
 LCD_CHR = True

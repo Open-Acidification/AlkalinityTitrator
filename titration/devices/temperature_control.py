@@ -4,12 +4,12 @@ The file for the temperature controller device
 
 # pylint: disable = E0401, R0902, R0912, W0621
 
+import time
+
 import adafruit_max31865
 import busio
 import digitalio
 import pandas as pd
-import time
-
 from gpiozero import LED
 
 PID_DEFAULT_KP = 0.09

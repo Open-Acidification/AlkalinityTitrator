@@ -4,9 +4,10 @@ The file for mocking the LiquidCrystal class for testing purposes
 
 # pylint: disable = R0902
 
+from os import name, system
+
 import digitalio
 
-from os import name, system
 from titration.devices import board_mock as board
 
 

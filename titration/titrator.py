@@ -5,7 +5,7 @@ The file for the Titrator class
 # pylint: disable = R0902,
 
 from titration import constants
-from titration.devices.library import LiquidCrystal, Keypad
+from titration.devices.library import Keypad, LiquidCrystal
 from titration.devices.syringe_pump import SyringePump
 from titration.ui_state.main_menu import MainMenu
 

@@ -8,7 +8,9 @@ from titration.devices.liquid_crystal_mock import LiquidCrystal
 from titration.titrator import Titrator
 from titration.ui_state.main_menu import MainMenu
 from titration.ui_state.update_settings.update_settings import UpdateSettings
-from titration.ui_state.user_value.reference_temperature import ReferenceTemperature
+from titration.ui_state.user_value.reference_temperature import (
+    ReferenceTemperature,
+)
 
 
 @mock.patch.object(ReferenceTemperature, "_set_next_state")

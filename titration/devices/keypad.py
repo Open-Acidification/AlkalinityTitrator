@@ -6,7 +6,6 @@ import digitalio
 
 from titration import constants
 
-
 KEY_VALUES = {
     0: {
         0: constants.KEY_1,

@@ -8,9 +8,7 @@ from titration import constants
 from titration.devices.liquid_crystal_mock import LiquidCrystal
 from titration.titrator import Titrator
 from titration.ui_state.demo_mode.demo_mode import DemoMode
-from titration.ui_state.demo_mode.toggle_demo_mode import (
-    ToggleDemoMode,
-)
+from titration.ui_state.demo_mode.toggle_demo_mode import ToggleDemoMode
 from titration.ui_state.main_menu import MainMenu
 
 

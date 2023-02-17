@@ -4,8 +4,8 @@ The file for the ManualTitration class
 from titration import constants
 from titration.ui_state import main_menu
 from titration.ui_state.ui_state import UIState
-from titration.ui_state.user_value.volume import Volume
 from titration.ui_state.user_value.degas_time import DegasTime
+from titration.ui_state.user_value.volume import Volume
 
 
 class ManualTitration(UIState):
