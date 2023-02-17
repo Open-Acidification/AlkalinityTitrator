@@ -72,7 +72,7 @@ def test_loop(print_mock):
             mock.call("Yes: 1", line=2),
             mock.call("No (use old): 0", line=3),
             mock.call(
-                f"{constants.PH_REF_PH} pH: {constants.PH_REF_VOLTAGE} V",
+                f"{constants.PH_REF_PH:>2.3f} pH: {constants.PH_REF_VOLTAGE:>2.4f} V",
                 line=4,
             ),
         ]
@@ -127,7 +127,7 @@ def test_setup_titration(print_mock, set_next_state_mock):
             mock.call("Yes: 1", line=2),
             mock.call("No (use old): 0", line=3),
             mock.call(
-                f"{constants.PH_REF_PH} pH: {constants.PH_REF_VOLTAGE} V",
+                f"{constants.PH_REF_PH:>2.3f} pH: {constants.PH_REF_VOLTAGE:>2.4f} V",
                 line=4,
             ),
         ]

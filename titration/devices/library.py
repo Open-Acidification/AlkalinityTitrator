@@ -1,9 +1,6 @@
 """
 The file to configure mock objects
 """
-
-# pylint: disable = W0611, C0412,
-
 from titration import constants
 
 if constants.IS_TEST:

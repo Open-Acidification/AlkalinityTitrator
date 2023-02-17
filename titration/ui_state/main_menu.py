@@ -1,9 +1,6 @@
 """
 The file for the MainMenu class
 """
-
-# pylint: disable=E0203
-
 import sys
 
 from titration import constants

@@ -74,7 +74,7 @@ def test_loop(print_mock):
     print_mock.assert_has_calls(
         [
             mock.call(
-                f"Current pH: {manual_titration.values['current_pH']}",
+                f"Current pH: {manual_titration.values['current_pH']:>4.5f}",
                 line=1,
             ),
             mock.call("Add more HCl?", line=2),
@@ -88,7 +88,7 @@ def test_loop(print_mock):
     print_mock.assert_has_calls(
         [
             mock.call(
-                f"Current pH: {manual_titration.values['current_pH']}",
+                f"Current pH: {manual_titration.values['current_pH']:>4.5f}",
                 line=1,
             ),
             mock.call("Degas?", line=2),
@@ -168,7 +168,7 @@ def test_manual_titration(print_mock, set_next_state_mock):
     print_mock.assert_has_calls(
         [
             mock.call(
-                f"Current pH: {manual_titration.values['current_pH']}",
+                f"Current pH: {manual_titration.values['current_pH']:>4.5f}",
                 line=1,
             ),
             mock.call("Add more HCl?", line=2),
@@ -184,7 +184,7 @@ def test_manual_titration(print_mock, set_next_state_mock):
     print_mock.assert_has_calls(
         [
             mock.call(
-                f"Current pH: {manual_titration.values['current_pH']}",
+                f"Current pH: {manual_titration.values['current_pH']:>4.5f}",
                 line=1,
             ),
             mock.call("Degas?", line=2),

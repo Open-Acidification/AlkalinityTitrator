@@ -1,9 +1,6 @@
 """
 The file for the temperature control mock
 """
-
-# pylint: disable = R0902, W0613
-
 import time
 
 import pandas as pd

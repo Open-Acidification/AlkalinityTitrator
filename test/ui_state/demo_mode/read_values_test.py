@@ -34,14 +34,14 @@ def test_loop(print_mock):
     for i in range(read_values.values["numVals"]):
         print_mock.assert_has_calls(
             [
-                mock.call(f"Temp: {read_values.values['temp']} C", line=1),
-                mock.call(f"Res:  {read_values.values['res']} Ohms", line=2),
+                mock.call(f"Temp: {read_values.values['temp']:>4.3f} C", line=1),
+                mock.call(f"Res:  {read_values.values['res']:>4.3f} Ohms", line=2),
                 mock.call(
-                    f"pH:   {read_values.values['pH_reading']} pH",
+                    f"pH:   {read_values.values['pH_reading']:>4.5f} pH",
                     line=3,
                 ),
                 mock.call(
-                    f"pH V: {read_values.values['pH_volts'] * 1000} mV",
+                    f"pH V: {(read_values.values['pH_volts'] * 1000):>3.4f} mV",
                     line=4,
                 ),
                 mock.call(f"Reading: {i}", 1, console=True),
@@ -71,14 +71,14 @@ def test_read_values(print_mock, set_next_state_mock):
     for i in range(read_values.values["numVals"]):
         print_mock.assert_has_calls(
             [
-                mock.call(f"Temp: {read_values.values['temp']} C", line=1),
-                mock.call(f"Res:  {read_values.values['res']} Ohms", line=2),
+                mock.call(f"Temp: {read_values.values['temp']:>4.3f} C", line=1),
+                mock.call(f"Res:  {read_values.values['res']:>4.3f} Ohms", line=2),
                 mock.call(
-                    f"pH:   {read_values.values['pH_reading']} pH",
+                    f"pH:   {read_values.values['pH_reading']:>4.5f} pH",
                     line=3,
                 ),
                 mock.call(
-                    f"pH V: {read_values.values['pH_volts'] * 1000} mV",
+                    f"pH V: {(read_values.values['pH_volts'] * 1000):>3.4f} mV",
                     line=4,
                 ),
                 mock.call(f"Reading: {i}", 1, console=True),

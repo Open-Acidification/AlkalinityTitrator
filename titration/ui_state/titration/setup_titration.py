@@ -72,6 +72,6 @@ class SetupTitration(UIState):
             self.titrator.lcd.print("Yes: 1", line=2)
             self.titrator.lcd.print("No (use old): 0", line=3)
             self.titrator.lcd.print(
-                f"{constants.PH_REF_PH} pH: {constants.PH_REF_VOLTAGE} V",
+                f"{constants.PH_REF_PH:>2.3f} pH: {constants.PH_REF_VOLTAGE:>2.4f} V",
                 line=4,
             )

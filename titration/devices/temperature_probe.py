@@ -1,9 +1,6 @@
 """
 The file for the temperature probe device
 """
-
-# pylint: disable = E0401, R0913
-
 import adafruit_max31865
 import busio
 import digitalio

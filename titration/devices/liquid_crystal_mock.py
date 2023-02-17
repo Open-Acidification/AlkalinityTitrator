@@ -1,9 +1,6 @@
 """
 The file for mocking the LiquidCrystal class for testing purposes
 """
-
-# pylint: disable = R0902
-
 from os import name, system
 
 import digitalio

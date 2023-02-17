@@ -80,6 +80,6 @@ class CalibrateTemp(UIState):
         elif self.substate == 3:
             self.titrator.lcd.clear()
             self.titrator.lcd.print("Recorded temp:", line=1)
-            self.titrator.lcd.print(f"{self.values['actual_temperature']}", line=2)
+            self.titrator.lcd.print(f"{self.values['actual_temperature']:0.3f}", line=2)
             self.titrator.lcd.print(f"{self.values['new_ref_resistance']}", line=3)
             self.titrator.lcd.print("", line=4)

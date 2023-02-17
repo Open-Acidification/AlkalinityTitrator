@@ -68,7 +68,7 @@ def test_loop(print_mock):
     print_mock.assert_has_calls(
         [
             mock.call("Recorded temp:", line=1),
-            mock.call(f"{calibrate_temp.values['actual_temperature']}", line=2),
+            mock.call(f"{calibrate_temp.values['actual_temperature']:0.3f}", line=2),
             mock.call(f"{calibrate_temp.values['new_ref_resistance']}", line=3),
             mock.call("", line=4),
         ]
@@ -120,7 +120,7 @@ def test_calibrate_temp(print_mock, set_next_state_mock):
     print_mock.assert_has_calls(
         [
             mock.call("Recorded temp:", line=1),
-            mock.call(f"{calibrate_temp.values['actual_temperature']}", line=2),
+            mock.call(f"{calibrate_temp.values['actual_temperature']:0.3f}", line=2),
             mock.call(f"{calibrate_temp.values['new_ref_resistance']}", line=3),
             mock.call("", line=4),
         ]

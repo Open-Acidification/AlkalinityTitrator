@@ -72,7 +72,7 @@ class CalibratePh(UIState):
             self.titrator.lcd.clear()
             self.titrator.lcd.print("Recorded pH, volts:", line=1)
             self.titrator.lcd.print(
-                f"{self.values['buffer1_actual_pH']} pH, {self.values['buffer1_measured_volts']} V",
+                f"{self.values['buffer1_actual_pH']:>2.5f} pH, {self.values['buffer1_measured_volts']:>3.4f} V",
                 line=2,
             )
             self.titrator.lcd.print("Press any to cont", line=3)

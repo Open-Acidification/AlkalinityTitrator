@@ -1,9 +1,6 @@
 """
 The file for the temperature controller device
 """
-
-# pylint: disable = E0401, R0902, R0912, W0621
-
 import time
 
 import adafruit_max31865

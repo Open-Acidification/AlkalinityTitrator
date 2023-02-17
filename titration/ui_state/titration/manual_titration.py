@@ -100,14 +100,18 @@ class ManualTitration(UIState):
 
         elif self.substate == 3:
             self.titrator.lcd.clear()
-            self.titrator.lcd.print(f"Current pH: {self.values['current_pH']}", line=1)
+            self.titrator.lcd.print(
+                f"Current pH: {self.values['current_pH']:>4.5f}", line=1
+            )
             self.titrator.lcd.print("Add more HCl?", line=2)
             self.titrator.lcd.print("(0 - No, 1 - Yes)", line=3)
             self.titrator.lcd.print("", line=4)
 
         elif self.substate == 4:
             self.titrator.lcd.clear()
-            self.titrator.lcd.print(f"Current pH: {self.values['current_pH']}", line=1)
+            self.titrator.lcd.print(
+                f"Current pH: {self.values['current_pH']:>4.5f}", line=1
+            )
             self.titrator.lcd.print("Degas?", line=2)
             self.titrator.lcd.print("(0 - No, 1 - Yes)", line=3)
             self.titrator.lcd.print("", line=4)

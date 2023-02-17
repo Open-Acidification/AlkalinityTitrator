@@ -1,9 +1,6 @@
 """
 The file for the Titrator class
 """
-
-# pylint: disable = R0902,
-
 from titration import constants
 from titration.devices.library import Keypad, LiquidCrystal
 from titration.devices.syringe_pump import SyringePump
@@ -86,7 +83,7 @@ class Titrator:
         """
         print("Titrator::handleUI() - ", self.state.name())
         if self.key != self.keypad.keypad_poll():
-            self.key = self.keypad.keypad_poll()  # pylint: disable = E1128
+            self.key = self.keypad.keypad_poll()
             print(
                 "Titrator::handleUI() - ",
                 self.state.name(),
