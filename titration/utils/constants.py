@@ -79,21 +79,6 @@ TARGET_STD_DEVIATION = 0.15
 # Temperature Control
 RELAY_PIN = 12
 
-# Stir Control
-STIR_PWM_FAST = 5000
-STIR_PWM_SLOW = 3000
-STIR_FREQUENCY = 100
-STIR_DUTY_CYCLE = 0
-
-# pump settings
-# ARDUINO_PORT = "/dev/ttyUSB0"
-ARDUINO_PORT = "/dev/ttyACM0"
-ARDUINO_BAUD = 9600
-ARDUINO_TIMEOUT = 5
-# maps vol to number of pulses needed
-NUM_CYCLES = {0.05: 470, 1: 9550}
-CYCLES_VOLUME_RATIO = 9550  # 1 mL is 9550 pump cycles
-MAX_PUMP_CAPACITY = 1.1  # max capacity of pump in mL
 # defaults
 DEFAULT_TEMPERATURE_REF_RESISTANCE = 4300.0
 DEFAULT_TEMPERATURE_NOMINAL_RESISTANCE = 1000.0
@@ -101,7 +86,6 @@ DEFAULT_PH_REF_VOLTAGE = -0.012
 DEFAULT_PH_REF_PH = 7.0
 # data paths
 DATA_PATH = "data/"
-VOLUME_IN_PUMP = 0  # keep track of solution in pump
 
 # TESTING
 test_pH_vals = [

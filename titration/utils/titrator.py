@@ -6,6 +6,7 @@ The file for the Titrator class
 
 from titration.utils.ui_state.main_menu import MainMenu
 from titration.utils import constants
+from titration.utils.devices.syringe_pump import SyringePump
 
 if constants.IS_TEST:
     from titration.utils.devices.liquid_crystal_mock import (
@@ -32,6 +33,9 @@ class Titrator:
         """
         The constructor for the Titrator class
         """
+
+        # Initialize Syringe Pump
+        self.pump = SyringePump()
 
         # Initialize LCD
         self.lcd = LiquidCrystal(

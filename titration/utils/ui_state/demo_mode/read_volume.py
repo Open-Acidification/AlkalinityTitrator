@@ -5,7 +5,6 @@ The file for the ReadVolume class
 # pylint: disable=E1101
 
 from titration.utils.ui_state.ui_state import UIState
-from titration.utils import constants
 
 
 class ReadVolume(UIState):
@@ -35,7 +34,7 @@ class ReadVolume(UIState):
         self.titrator.lcd.clear()
         self.titrator.lcd.print("Pump Vol: ", line=1)
         self.titrator.lcd.print(
-            f"{constants.VOLUME_IN_PUMP}",
+            f"{self.titrator.pump.get_volume_in_pump()}",
             style="center",
             line=2,
         )
