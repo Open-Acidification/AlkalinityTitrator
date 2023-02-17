@@ -26,7 +26,6 @@ jobs:
           LINTER_RULES_PATH: /
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_JSCPD: false
-          VALIDATE_PYTHON_ISORT: true
           PYTHON_PYLINT_CONFIG_FILE: .pylintrc
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
