@@ -5,7 +5,7 @@ from unittest import mock
 from unittest.mock import ANY
 
 from titration import constants
-from titration.devices.liquid_crystal_mock import LiquidCrystal
+from titration.devices.library import LiquidCrystal
 from titration.titrator import Titrator
 from titration.ui_state.titration.setup_titration import SetupTitration
 

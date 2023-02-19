@@ -3,7 +3,7 @@ The file to test the syringe pump
 """
 import pytest
 
-from titration.devices.syringe_pump import SyringePump
+from titration.devices.library import SyringePump
 
 
 def create_syringe_pump():

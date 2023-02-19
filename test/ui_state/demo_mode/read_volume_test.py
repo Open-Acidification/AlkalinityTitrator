@@ -4,7 +4,7 @@ The file to test the ReadVolume class
 from unittest import mock
 from unittest.mock import ANY
 
-from titration.devices.liquid_crystal_mock import LiquidCrystal
+from titration.devices.library import LiquidCrystal
 from titration.titrator import Titrator
 from titration.ui_state.demo_mode.demo_mode import DemoMode
 from titration.ui_state.demo_mode.read_volume import ReadVolume

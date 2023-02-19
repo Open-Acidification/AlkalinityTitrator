@@ -3,19 +3,15 @@ The file to test the mock temperature controller
 """
 import time
 
-from titration.devices import board_mock as board_class
-from titration.devices.temperature_control_mock import TemperatureControl
-from titration.devices.temperature_probe_mock import TemperatureProbe
+from titration.devices.library import board, TemperatureControl, TemperatureProbe
 
 
 def create_temperature_controller():
     """
     The function to create a mock temperature controller for tests
     """
-    sensor = TemperatureProbe(
-        board_class.SCK, board_class.MOSI, board_class.MISO, board_class.D0, wires=3
-    )
-    return TemperatureControl(board_class.D1, sensor)
+    sensor = TemperatureProbe(board.SCK, board.MOSI, board.MISO, board.D0, wires=3)
+    return TemperatureControl(board.D1, sensor)
 
 
 def test_temperature_control_create():

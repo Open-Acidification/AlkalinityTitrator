@@ -3,8 +3,7 @@ The file to test the mock keypad
 """
 import digitalio
 
-from titration.devices import board_mock as board
-from titration.devices.keypad_mock import Keypad
+from titration.devices.library import board, Keypad
 
 
 def test_keypad_create():

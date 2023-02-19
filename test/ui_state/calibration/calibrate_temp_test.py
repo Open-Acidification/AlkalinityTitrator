@@ -4,7 +4,7 @@ The file to test the CalibrateTemp class
 from unittest import mock
 from unittest.mock import ANY
 
-from titration.devices.liquid_crystal_mock import LiquidCrystal
+from titration.devices.library import LiquidCrystal
 from titration.titrator import Titrator
 from titration.ui_state.calibration.calibrate_temp import CalibrateTemp
 from titration.ui_state.calibration.setup_calibration import SetupCalibration

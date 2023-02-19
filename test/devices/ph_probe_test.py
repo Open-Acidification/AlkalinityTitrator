@@ -3,8 +3,7 @@ The file to test the pH probe
 """
 import pytest
 
-from titration.devices import ads_mock, board_mock
-from titration.devices.ph_probe import PHProbe
+from titration.devices.library import board, ADS, PHProbe
 
 
 def create_ph_probe():
@@ -20,12 +19,12 @@ def test_ph_create():
     """
     ph_test = create_ph_probe()
 
-    assert ph_test.i2c.scl == board_mock.SCL
-    assert ph_test.i2c.sda == board_mock.SDA
+    assert ph_test.i2c.scl == board.SCL
+    assert ph_test.i2c.sda == board.SDA
     assert ph_test.ads.i2c == ph_test.i2c
     assert ph_test.channel.ads == ph_test.ads
-    assert ph_test.channel.p_0 == ads_mock.P0
-    assert ph_test.channel.p_1 == ads_mock.P1
+    assert ph_test.channel.p_0 == ADS.P0
+    assert ph_test.channel.p_1 == ADS.P1
     assert ph_test.ads.gain == 1
     assert ph_test.channel.voltage == 0
 
