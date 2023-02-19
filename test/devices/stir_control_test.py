@@ -1,7 +1,7 @@
 """
 The file to test the StirControl class
 """
-from titration.devices.library import StirControl
+from titration.devices.stir_control import StirControl
 
 
 def create_stir_controller():

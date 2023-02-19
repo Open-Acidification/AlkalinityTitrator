@@ -2,7 +2,7 @@
 The file to test the mock temperature sensor
 """
 from titration.devices.library import board
-from titration.devices.library import TemperatureProbe
+from titration.devices.temperature_probe_mock import TemperatureProbe
 
 
 def create_temperature_probe():
