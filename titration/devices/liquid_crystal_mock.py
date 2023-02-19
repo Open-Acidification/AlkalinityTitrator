@@ -5,7 +5,7 @@ from os import name, system
 
 import digitalio
 
-from titration.devices import board_mock as board
+from titration.devices.library import board
 
 
 class LiquidCrystal:

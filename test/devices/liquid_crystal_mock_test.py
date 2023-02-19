@@ -5,7 +5,7 @@ The file to test the mock liquid crystal display
 import digitalio
 
 from titration import constants
-from titration.devices.library import board, LiquidCrystal
+from titration.devices.library import LiquidCrystal, board
 
 
 def create_lcd(cols=constants.LCD_WIDTH, rows=constants.LCD_HEIGHT):
