@@ -18,17 +18,17 @@ class Keypad:
         The parameters are the board pins that the keypad uses
         """
 
-        self.pin_r_zero = board.D1
-        self.pin_r_one = board.D6
-        self.pin_r_two = board.D5
-        self.pin_r_three = board.D19
-        self.pin_c_zero = board.D16
-        self.pin_c_one = board.D26
-        self.pin_c_two = board.D20
-        self.pin_c_three = board.D21
+        self.pin_r0 = board.D1
+        self.pin_r1 = board.D6
+        self.pin_r2 = board.D5
+        self.pin_r3 = board.D19
+        self.pin_c0 = board.D16
+        self.pin_c1 = board.D26
+        self.pin_c2 = board.D20
+        self.pin_c3 = board.D21
 
-        self.rows = [self.pin_r_zero, self.pin_r_one, self.pin_r_two, self.pin_r_three]
-        self.cols = [self.pin_c_zero, self.pin_c_one, self.pin_c_two, self.pin_c_three]
+        self.rows = [self.pin_r0, self.pin_r1, self.pin_r2, self.pin_r3]
+        self.cols = [self.pin_c0, self.pin_c1, self.pin_c2, self.pin_c3]
 
         self.rows[0].direction = digitalio.Direction.OUTPUT
         self.rows[1].direction = digitalio.Direction.OUTPUT

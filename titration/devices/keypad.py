@@ -44,17 +44,17 @@ class Keypad:
         The constructor for the mock Keypad class.
         """
 
-        self.pin_r_zero = digitalio.DigitalInOut(board.D1)
-        self.pin_r_one = digitalio.DigitalInOut(board.D6)
-        self.pin_r_two = digitalio.DigitalInOut(board.D5)
-        self.pin_r_three = digitalio.DigitalInOut(board.D19)
-        self.pin_c_zero = digitalio.DigitalInOut(board.D16)
-        self.pin_c_one = digitalio.DigitalInOut(board.D26)
-        self.pin_c_two = digitalio.DigitalInOut(board.D20)
-        self.pin_c_three = digitalio.DigitalInOut(board.D21)
+        self.pin_r0 = digitalio.DigitalInOut(board.D1)
+        self.pin_r1 = digitalio.DigitalInOut(board.D6)
+        self.pin_r2 = digitalio.DigitalInOut(board.D5)
+        self.pin_r3 = digitalio.DigitalInOut(board.D19)
+        self.pin_c0 = digitalio.DigitalInOut(board.D16)
+        self.pin_c1 = digitalio.DigitalInOut(board.D26)
+        self.pin_c2 = digitalio.DigitalInOut(board.D20)
+        self.pin_c3 = digitalio.DigitalInOut(board.D21)
 
-        self.rows = [self.pin_r_zero, self.pin_r_one, self.pin_r_two, self.pin_r_three]
-        self.cols = [self.pin_c_zero, self.pin_c_one, self.pin_c_two, self.pin_c_three]
+        self.rows = [self.pin_r0, self.pin_r1, self.pin_r2, self.pin_r3]
+        self.cols = [self.pin_c0, self.pin_c1, self.pin_c2, self.pin_c3]
 
         self.rows[0].direction = digitalio.Direction.OUTPUT
         self.rows[1].direction = digitalio.Direction.OUTPUT
