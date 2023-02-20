@@ -23,8 +23,9 @@ jobs:
       - name: Lint Code Base
         uses: docker://ghcr.io/github/super-linter:slim-v4
         env:
+          LINTER_RULES_PATH: /
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_JSCPD: false
-          VALIDATE_PYTHON_ISORT: false
+          PYTHON_PYLINT_CONFIG_FILE: .pylintrc
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
