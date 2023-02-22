@@ -9,6 +9,7 @@ from titration.devices.library import (
     board,
 )
 
+
 def create_temperature_controller():
     """
     The function to create a mock temperature controller for tests
