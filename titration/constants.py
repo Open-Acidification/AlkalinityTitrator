@@ -53,9 +53,6 @@ calibration_data_format = {
 }
 
 CALIBRATION_FILENAME = "data/calibration.json"
-# temperature calibration values
-TEMPERATURE_REF_RESISTANCE = 4300.0
-TEMPERATURE_NOMINAL_RESISTANCE = 1000.0
 # pH
 UNIVERSAL_GAS_CONST = 8.31447215
 FARADAY_CONST = 96485.33212

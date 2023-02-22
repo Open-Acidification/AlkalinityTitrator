@@ -2,8 +2,7 @@
 The file for the Titrator class
 """
 from titration import constants
-from titration.devices.library import Keypad, LiquidCrystal
-from titration.devices.syringe_pump import SyringePump
+from titration.devices.library import Keypad, LiquidCrystal, SyringePump
 from titration.ui_state.main_menu import MainMenu
 
 

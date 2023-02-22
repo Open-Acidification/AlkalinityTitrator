@@ -4,30 +4,29 @@ The file for the temperature probe device
 
 # pylint: disable = too-many-arguments
 
-import adafruit_max31865
-import busio
-import digitalio
+from titration.devices.library import MAX31865, SPI, DigitalInOut
 
-from titration import constants
+TEMPERATURE_REF_RESISTANCE = 4300.0
+TEMPERATURE_NOMINAL_RESISTANCE = 1000.0
 
 
 class TemperatureProbe:
     """
-    The class for the Temperature Probe device
+    The class for the temperature probe device
     """
 
     def __init__(self, sck, mosi, miso, c_s, wires=2):
         """
-        The constructor for the Temperature Probe
+        The constructor for the TemperatureProbe class
         """
-        self.spi = busio.SPI(sck, MOSI=mosi, MISO=miso)
-        self.c_s = digitalio.DigitalInOut(c_s)
-        self.sensor = adafruit_max31865.MAX31865(
+        self.spi = SPI(sck, MOSI=mosi, MISO=miso)
+        self.c_s = DigitalInOut(c_s)
+        self.sensor = MAX31865(
             self.spi,
             self.c_s,
             wires=wires,
-            rtd_nominal=constants.TEMPERATURE_NOMINAL_RESISTANCE,
-            ref_resistor=constants.TEMPERATURE_REF_RESISTANCE,
+            rtd_nominal=TEMPERATURE_NOMINAL_RESISTANCE,
+            ref_resistor=TEMPERATURE_REF_RESISTANCE,
         )
 
     def get_temperature(self):
@@ -44,7 +43,6 @@ class TemperatureProbe:
 
     def read_temperature(self):
         """
-        Reads and returns the temperature from GPIO
-        :returns: temperature in celsius, resistance in ohms
+        The function that reads and returns the temperature from GPIO
         """
         return self.get_temperature(), self.get_resistance()

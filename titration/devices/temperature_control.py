@@ -6,11 +6,12 @@ The file for the temperature controller device
 
 import time
 
-import adafruit_max31865
-import busio
-import digitalio
 import pandas as pd
-from gpiozero import LED
+
+from titration.devices.library import LED
+
+TIMESTEP = 1
+SETPOINT = 30
 
 PID_DEFAULT_KP = 0.09
 PID_DEFAULT_TI = 0.000001
@@ -19,104 +20,81 @@ PID_ANTIWINDUP_KP = 0.04
 PID_ANTIWINDUP_TI = 0.004
 PID_ANTIWINDUP_TD = 9
 
+RELAY_PIN = 12
+
 
 class TemperatureControl:
     """
-    Temperature Control class for running the PID control on the Alkalinity
-    titrator using a SSR and Heated Beaker Jacket
-
+    The class for the mock Temperature Controller
+    running the PID control on the Alkalinity Titrator
+    using a SSR and Heated Beaker Jacket
     """
 
-    def __init__(self, relay_pin, sensor):
+    def __init__(self, sensor):
         """
-        The constructor for the Temperature Controller
+        The constructor for the TemperatureControl class
+
+        Parameters:
+            relay_pin (Pin object): the pin for the relay
+            sensor (Pin object): the pin for the temperature sensor
         """
         self.sensor = sensor
-        self.relay = LED(relay_pin)
+        self.relay = LED(RELAY_PIN)
 
-    # Flag - print data to console or not
-    print_data = False
+        # Flag - if False, update() does not toggle relay
+        self.control_active = False
 
-    # Flag - if False, update() does not toggle relay
-    control_active = False
+        # PID Gain
+        self.k = 0
+        self.integral = 0
+        self.integral_prior = 0
+        self.derivative = 0
+        self.error = 0
+        self.error_prior = 0
 
-    # PID Parameters
-    k_p = PID_DEFAULT_KP
-    t_i = PID_DEFAULT_TI
-    t_d = PID_DEFAULT_TD
+        # PID Parameters
+        self.k_p = PID_DEFAULT_KP
+        self.t_i = PID_DEFAULT_TI
+        self.t_d = PID_DEFAULT_TD
 
-    # PID Gain
-    k = 0
-    integral = 0
-    integral_prior = 0
-    derivative = 0
-    error = 0
-    error_prior = 0
+        self.step_count = 0
 
-    # Step Count - How many cycles have we done?
-    step_count = 0
+        # The time the next step nets to be taken
+        # not localtime() since we need fractional seconds
+        self.time_next = time.time()
 
-    # time between steps (seconds) - how long to wait until next step
-    time_step = 1
+        # last temperature read
+        self.temperature_last = 0
 
-    # The time the next step nets to be taken
-    # not localtime() since we need fractional seconds
-    time_next = time.time()
-
-    # last temperature read
-    temperature_last = 0
-
-    # What state is the relay currently in
-    relay_on = False
-
-    # Log of times measurements were taken
-    # timeLog = []
-
-    # Data Fame of Measurements
-    data_frame = pd.DataFrame(columns=["time (s)", "temperature (C)", "gain"])
-
-    # Target temperature
-    set_point = 30
-
-    """
-  Primary function run during the titration. update() will
-  check if it is time to change the state of the relay and
-  update the PID control and relay status as necessary
-  """
+        # Data Fame of Measurements
+        self.data_frame = pd.DataFrame(columns=["time (s)", "temperature (C)", "gain"])
 
     def update(self):
         """
-        The function to update the temperature controller
+        The function run during the titration. update() will
+        check if it is time to change the state of the relay and
+        update the PID control and relay status as necessary
         """
         if not self.control_active:
             return
 
-        time_now = time.time()  # not localtime() since we need fractional seconds
+        time_now = time.time()
 
         if time_now >= self.time_next:
-            if self.relay_on:
-                # we'll turn it off
-                # turn off
-                self.__set_relay_state(False)
-
-                # count a step
+            if self.relay.value == 1:
+                self.relay.off()
                 self.step_count += 1
-
-                # update error/integral_priors
                 self.__update_priors()
-
-                # set off time based on k
-                self.__update_time_next(time.time() + self.time_step * (1 - self.k))
+                self.time_next = time.time() + TIMESTEP * (1 - self.k)
 
             else:
                 # Get data values
                 temperature = self.sensor.get_temperature()
                 self.temperature_last = temperature
-                # timelog.append(time_now.tm_sec)
 
                 # anti-windup
                 if self.step_count < 250:
-                    self.__set_integral_zero()
+                    self.integral = 0
                 elif self.step_count == 250:
                     self.__set_controlparam_antiwindup()
 
@@ -124,26 +102,26 @@ class TemperatureControl:
                 self.__update_gains(temperature)
 
                 # Check if relay needs to be turned on
-                if temperature < self.set_point:
+                if temperature < SETPOINT:
                     if self.k <= 0:
                         self.k = 0
-                        self.__update_time_next(time.time() + self.time_step)
+                        self.time_next = time.time() + TIMESTEP
                     elif self.k < 1:
-                        self.__set_relay_state(True)
-                        self.__update_time_next(time.time() + self.time_step * self.k)
+                        self.relay.on()
+                        self.time_next = time.time() + TIMESTEP * self.k
                     else:
                         self.k = 1
-                        self.__set_relay_state(True)
-                        self.__update_time_next(time.time() + self.time_step)
+                        self.relay.on()
+                        self.time_next = time.time() + TIMESTEP
 
                 # temperature above setpoint
                 else:
                     self.k = 0
-                    self.__set_relay_state(False)
-                    self.__update_time_next(time.time() + self.time_step)
+                    self.relay.off()
+                    self.time_next = time.time() + TIMESTEP
                     self.__update_priors()
 
-                # Add data to data_frame
+                # Add data to self.data_frame
                 data_frame_new = pd.DataFrame(
                     [[time.ctime(time_now), temperature, self.k]],
                     columns=["time (s)", "temperature (C)", "gain"],
@@ -151,34 +129,16 @@ class TemperatureControl:
                 self.data_frame = self.data_frame.append(
                     data_frame_new, ignore_index=True
                 )
-                if self.print_data:
-                    print(self.data_frame)
-
-        else:
-            # pass until next update is called
-            return
-
-    def enable_print(self):
-        """
-        The function to enable the print
-        """
-        self.print_data = True
-
-    def disable_print(self):
-        """
-        The function to disable the print
-        """
-        self.print_data = False
 
     def output_csv(self, filename):
         """
-        The function to output data to the csv file
+        The function to output a csv file of the temperature data
         """
         self.data_frame.to_csv(filename, index_label="step", header=True)
 
     def at_temperature(self):
         """
-        The function to tell if the solution is at temperature
+        The function to see if the sensor is at the specified temperature
         """
         return bool(
             self.sensor.get_temperature() >= 29.5
@@ -187,7 +147,7 @@ class TemperatureControl:
 
     def get_last_temperature(self):
         """
-        The function to return the last temperature
+        The function to get the last measured temperature
         """
         return self.temperature_last
 
@@ -204,13 +164,7 @@ class TemperatureControl:
         The function to deactivate the temperature controller
         """
         self.control_active = False
-        self.__set_relay_state(False)
-
-    def __update_time_next(self, step_time):
-        """
-        Update the time that the next relay action should be taken
-        """
-        self.time_next = step_time
+        self.relay.off()
 
     def __set_controlparam_antiwindup(self):
         """
@@ -234,9 +188,9 @@ class TemperatureControl:
         """
         The function to update the gains
         """
-        self.error = self.set_point - temperature
-        self.integral = self.integral_prior + self.error * self.time_step
-        self.derivative = (self.error - self.error_prior) / self.time_step
+        self.error = SETPOINT - temperature
+        self.integral = self.integral_prior + self.error * TIMESTEP
+        self.derivative = (self.error - self.error_prior) / TIMESTEP
         self.k = self.k_p * (
             self.error + self.t_i * self.integral + self.t_d * self.derivative
         )
@@ -247,46 +201,3 @@ class TemperatureControl:
         """
         self.error_prior = self.error
         self.integral_prior = self.integral
-
-    def __set_integral_zero(self):
-        """
-        For the first 250 cycles, the integral value should
-        be zeroed to prevent windup
-        """
-        self.integral = 0
-
-    def __set_relay_state(self, boolean):
-        """
-        The function to set the relay state
-        """
-        self.relay_on = boolean
-        if boolean:
-            self.relay.on()
-        else:
-            self.relay.off()
-
-
-if __name__ == "__main__":
-    import board
-
-    spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
-    cs = digitalio.DigitalInOut(board.CE1)  # Chip select of the MAX31865 board.
-    sensor = adafruit_max31865.MAX31865(
-        spi, cs, rtd_nominal=1000, ref_resistor=4300, wires=3
-    )
-
-    temperature_control = TemperatureControl(sensor, 12)
-    temperature_control.enable_print()
-
-    # 10min time
-    timeCurr = time.time()
-    timeEnd = timeCurr + 3600
-    print("time Start: ", time.ctime(timeCurr), "\ntime End: ", time.ctime(timeEnd))
-    while timeEnd > time.time():
-        temperature_control.update()
-
-    filename = "data/TemperatureCtrl_" + time.ctime() + ".csv"
-    filename = filename.replace(":", "-")
-    filename = filename.replace(" ", "_")
-
-    temperature_control.output_csv(filename)
