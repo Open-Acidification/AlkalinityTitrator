@@ -3,8 +3,11 @@ The file to test the mock temperature controller
 """
 import time
 
-from titration.devices.library import TemperatureControl, TemperatureProbe, board
-
+from titration.devices.library import (
+    TemperatureControl,
+    TemperatureProbe,
+    board,
+)
 
 def create_temperature_controller():
     """
@@ -20,7 +23,7 @@ def test_temperature_control_create():
     """
     temperature_controller = create_temperature_controller()
 
-    assert temperature_controller.control_active == False
+    assert temperature_controller.control_active is False
     assert temperature_controller.k == 0
     assert temperature_controller.integral == 0
     assert temperature_controller.integral_prior == 0
@@ -53,7 +56,7 @@ def test_temperature_control_at_temperature():
 
     temperature_controller.at_temperature()
 
-    assert temperature_controller.at_temperature() == False
+    assert temperature_controller.at_temperature() is False
 
 
 def test_temperature_control_last_temperature():
@@ -73,7 +76,7 @@ def test_temperature_control_deactivate():
 
     temperature_controller.deactivate()
 
-    assert temperature_controller.control_active == False
+    assert temperature_controller.control_active is False
     assert temperature_controller.relay.value == 0
 
 
@@ -85,7 +88,7 @@ def test_temperature_control_activate():
 
     temperature_controller.activate()
 
-    assert temperature_controller.control_active == True
+    assert temperature_controller.control_active is True
     assert temperature_controller.k_p == 0.09
     assert temperature_controller.t_i == 0.000001
     assert temperature_controller.t_d == 9
