@@ -2,7 +2,7 @@
 The file to configure mock objects
 """
 
-# pylint: disable=unused-import, ungrouped-imports
+# pylint: disable=unused-import, ungrouped-imports, wrong-import-position
 
 from titration import constants
 

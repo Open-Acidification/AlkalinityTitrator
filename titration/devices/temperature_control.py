@@ -7,8 +7,8 @@ The file for the temperature controller device
 import time
 
 import pandas as pd
-from titration.devices.library import LED
 
+from titration.devices.library import LED
 
 TIMESTEP = 1
 SETPOINT = 30
