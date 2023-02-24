@@ -3,7 +3,7 @@ The file to configure mock objects
 """
 
 # pylint: disable=unused-import, ungrouped-imports, wrong-import-position
-# nypy: allow-no-red, allow-assignment
+# mypy: disable-error-code= no-redef, assignment
 
 from titration import constants
 
