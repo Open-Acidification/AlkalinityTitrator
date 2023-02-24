@@ -1,8 +1,8 @@
 """
 The file to test the mock temperature sensor
 """
-from titration.devices.library import board
-from titration.devices.temperature_probe_mock import TemperatureProbe
+
+from titration.devices.library import TemperatureProbe, board
 
 
 def create_temperature_probe():
@@ -58,21 +58,3 @@ def test_temperature_probe_resistance_null():
     """
     temperature_sensor = TemperatureProbe(None, None, None, None)
     assert temperature_sensor.get_resistance() == 1000.0
-
-
-def test_temperature_probe_set_temperature():
-    """
-    The function to test setting the temperature for the mock sensor
-    """
-    temperature_sensor = create_temperature_probe()
-    temperature_sensor.mock_set_temperature(25)
-    assert temperature_sensor.get_temperature()
-
-
-def test_temperature_probe_set_resistance():
-    """
-    The function to test setting the resistance for the mock sensor
-    """
-    temperature_sensor = create_temperature_probe()
-    temperature_sensor.mock_set_resistance(500)
-    assert temperature_sensor.get_resistance() == 500

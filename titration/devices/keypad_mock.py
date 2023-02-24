@@ -4,7 +4,7 @@ The file for mock Keypad class
 import click
 import digitalio
 
-from titration.devices import board_mock as board
+from titration.devices.library import board
 
 
 class Keypad:
