@@ -70,6 +70,15 @@ class Keypad:
         self.cols[2].pull = digitalio.Pull.DOWN
         self.cols[3].pull = digitalio.Pull.DOWN
 
+    def get_key(self, key):
+        """
+        The function that gets a key from user input
+        """
+        if key != self.keypad_poll():
+            key = self.keypad_poll()
+            if key is not None:
+                return key
+
     def keypad_poll(self):
         """
         The function that polls the keypad and returns the button label (1,2,A,B,*,#, etc)

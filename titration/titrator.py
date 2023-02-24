@@ -81,16 +81,11 @@ class Titrator:
         The function used to receive the keypad input and process the appropriate response
         """
         print("Titrator::handleUI() - ", self.state.name())
-        if self.key != self.keypad.keypad_poll():
-            self.key = self.keypad.keypad_poll()
-            print(
-                "Titrator::handleUI() - ",
-                self.state.name(),
-                "::handle_key(",
-                self.key,
-                ")",
-            )
-            self.state.handle_key(self.key)
+        self.key = self.keypad.get_key(self.key)
+        print(
+            "Titrator::handleUI() - ", self.state.name(), "::handleKey(", self.key, ")"
+        )
+        self.state.handle_key(self.key)
         self.update_state()
         print(
             "Titrator::handleUI() - ",
