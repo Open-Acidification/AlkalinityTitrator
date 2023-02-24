@@ -3,7 +3,7 @@ The file to test the Titrator class
 """
 from unittest import mock
 
-from titration.devices.keypad_mock import Keypad
+from titration.devices.library import Keypad
 from titration.titrator import Titrator
 from titration.ui_state.main_menu import MainMenu
 from titration.ui_state.titration.setup_titration import SetupTitration

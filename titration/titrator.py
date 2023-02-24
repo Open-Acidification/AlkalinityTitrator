@@ -2,10 +2,13 @@
 The file for the Titrator class
 """
 from titration import constants
-from titration.devices.library import Keypad, LiquidCrystal
-from titration.devices.syringe_pump import SyringePump
-from titration.devices.temperature_probe import TemperatureProbe
-from titration.devices.ph_probe import PHProbe
+from titration.devices.library import (
+    Keypad,
+    LiquidCrystal,
+    PHProbe,
+    SyringePump,
+    TemperatureProbe,
+)
 from titration.ui_state.main_menu import MainMenu
 
 
