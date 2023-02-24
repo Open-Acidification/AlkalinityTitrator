@@ -29,17 +29,16 @@ class ReadValues(UIState):
         """
         The function to loop through and display to the LCD screen until a new keypad input
         """
-        if self.substate == 1:
-            self.titrator.lcd.print(
-                f"Temp: {self.titrator.temp_sensor.get_temperature():>4.3f} C", line=1
-            )
-            self.titrator.lcd.print(
-                f"Res:  {self.titrator.temp_sensor.get_resistance():>4.3f} Ohms", line=2
-            )
-            self.titrator.lcd.print(
-                f"pH:   {self.titrator.ph_probe.get_voltage():>4.5f} pH", line=3
-            )
-            self.titrator.lcd.print(
-                f"pH V: {(self.titrator.ph_probe.get_voltage() * 1000):>3.4f} mV",
-                line=4,
-            )
+        self.titrator.lcd.print(
+            f"Temp: {self.titrator.temp_sensor.get_temperature():>4.3f} C", line=1
+        )
+        self.titrator.lcd.print(
+            f"Res:  {self.titrator.temp_sensor.get_resistance():>4.3f} Ohms", line=2
+        )
+        self.titrator.lcd.print(
+            f"pH:   {self.titrator.ph_probe.get_voltage():>4.5f} pH", line=3
+        )
+        self.titrator.lcd.print(
+            f"pH V: {(self.titrator.ph_probe.get_voltage() * 1000):>3.4f} mV",
+            line=4,
+        )

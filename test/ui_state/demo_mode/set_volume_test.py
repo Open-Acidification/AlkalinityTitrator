@@ -37,7 +37,7 @@ def test_loop(print_mock):
     set_volume.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Set volume in pump", line=1),
+            mock.call("Set Volume In Pump", line=1),
             mock.call("", line=2),
             mock.call("Press any to cont", line=3),
             mock.call("", line=4),
@@ -48,8 +48,8 @@ def test_loop(print_mock):
     set_volume.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Volume in pump", line=1),
-            mock.call("recorded", line=2),
+            mock.call("Pump Volume Set To:", line=1),
+            mock.call(f"{set_volume.titrator.pump_volume}", line=2),
             mock.call("Press any to cont", line=3),
             mock.call("", line=4),
         ]
@@ -69,7 +69,7 @@ def test_set_volume(set_next_state_mock, print_mock):
     set_volume.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Set volume in pump", line=1),
+            mock.call("Set Volume In Pump", line=1),
             mock.call("", line=2),
             mock.call("Press any to cont", line=3),
             mock.call("", line=4),
@@ -84,8 +84,8 @@ def test_set_volume(set_next_state_mock, print_mock):
     set_volume.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Volume in pump", line=1),
-            mock.call("recorded", line=2),
+            mock.call("Pump Volume Set To:", line=1),
+            mock.call(f"{set_volume.titrator.pump_volume}", line=2),
             mock.call("Press any to cont", line=3),
             mock.call("", line=4),
         ]

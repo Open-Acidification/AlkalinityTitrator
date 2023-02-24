@@ -29,7 +29,7 @@ class ToggleDemoMode(UIState):
         """
         if self.substate == 1:
             if key in (constants.KEY_0, constants.KEY_1):
-                constants.IS_TEST = bool(key)
+                constants.IS_TEST = bool(int(key))
                 self.substate += 1
 
         elif self.substate == 2:
@@ -40,7 +40,7 @@ class ToggleDemoMode(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            self.titrator.lcd.print("Set Mode: ", line=1)
+            self.titrator.lcd.print("Set Mode:", line=1)
             self.titrator.lcd.print("Mock Devices: 1", line=2)
             self.titrator.lcd.print("Real Devices: 0", line=3)
             self.titrator.lcd.print("", line=4)

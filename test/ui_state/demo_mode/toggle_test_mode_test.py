@@ -22,8 +22,23 @@ def test_handle_key(set_next_state_mock):
     )
 
     toggle_demo_mode.handle_key("1")
+    assert constants.IS_TEST is True
+    assert toggle_demo_mode.substate == 2
+
+    toggle_demo_mode.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "DemoMode"
+
+    toggle_demo_mode.substate = 1
+    toggle_demo_mode.handle_key("0")
+    assert constants.IS_TEST is False
+    assert toggle_demo_mode.substate == 2
+
+    toggle_demo_mode.handle_key("0")
+    set_next_state_mock.assert_called_with(ANY, True)
+    assert set_next_state_mock.call_args.args[0].name() == "DemoMode"
+
+    constants.IS_TEST = True
 
 
 @mock.patch.object(LiquidCrystal, "print")
@@ -38,9 +53,31 @@ def test_loop(print_mock):
     toggle_demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call(f"Testing: {constants.IS_TEST}", line=1),
-            mock.call("", line=2),
-            mock.call("Press any to cont.", line=3),
+            mock.call("Set Mode:", line=1),
+            mock.call("Mock Devices: 1", line=2),
+            mock.call("Real Devices: 0", line=3),
+            mock.call("", line=4),
+        ]
+    )
+
+    toggle_demo_mode.substate = 2
+    toggle_demo_mode.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Mode Set To:", line=1),
+            mock.call("Mock Devices", line=2),
+            mock.call("", line=3),
+            mock.call("", line=4),
+        ]
+    )
+
+    constants.IS_TEST = False
+    toggle_demo_mode.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Mode Set To:", line=1),
+            mock.call("Real Devices", line=2),
+            mock.call("", line=3),
             mock.call("", line=4),
         ]
     )
@@ -60,9 +97,20 @@ def test_toggle_demo_mode(print_mock, set_next_state_mock):
     toggle_demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call(f"Testing: {constants.IS_TEST}", line=1),
-            mock.call("", line=2),
-            mock.call("Press any to cont.", line=3),
+            mock.call("Set Mode:", line=1),
+            mock.call("Mock Devices: 1", line=2),
+            mock.call("Real Devices: 0", line=3),
+            mock.call("", line=4),
+        ]
+    )
+
+    toggle_demo_mode.handle_key("1")
+    toggle_demo_mode.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Mode Set To:", line=1),
+            mock.call("Mock Devices", line=2),
+            mock.call("", line=3),
             mock.call("", line=4),
         ]
     )

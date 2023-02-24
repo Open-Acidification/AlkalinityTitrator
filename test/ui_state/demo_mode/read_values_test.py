@@ -31,29 +31,24 @@ def test_loop(print_mock):
     read_values = ReadValues(Titrator(), DemoMode(Titrator(), MainMenu(Titrator())))
 
     read_values.loop()
-    for i in range(read_values.values["numVals"]):
-        print_mock.assert_has_calls(
-            [
-                mock.call(f"Temp: {read_values.values['temp']:>4.3f} C", line=1),
-                mock.call(f"Res:  {read_values.values['res']:>4.3f} Ohms", line=2),
-                mock.call(
-                    f"pH:   {read_values.values['pH_reading']:>4.5f} pH",
-                    line=3,
-                ),
-                mock.call(
-                    f"pH V: {(read_values.values['pH_volts'] * 1000):>3.4f} mV",
-                    line=4,
-                ),
-                mock.call(f"Reading: {i}", 1, console=True),
-            ]
-        )
-
     print_mock.assert_has_calls(
         [
-            mock.call("Press any to cont", line=1),
-            mock.call("", line=2),
-            mock.call("", line=3),
-            mock.call("", line=4),
+            mock.call(
+                f"Temp: {read_values.titrator.temp_sensor.get_temperature():>4.3f} C",
+                line=1,
+            ),
+            mock.call(
+                f"Res:  {read_values.titrator.temp_sensor.get_resistance():>4.3f} Ohms",
+                line=2,
+            ),
+            mock.call(
+                f"pH:   {read_values.titrator.ph_probe.get_voltage():>4.5f} pH",
+                line=3,
+            ),
+            mock.call(
+                f"pH V: {(read_values.titrator.ph_probe.get_voltage() * 1000):>3.4f} mV",
+                line=4,
+            ),
         ]
     )
 
@@ -68,29 +63,24 @@ def test_read_values(print_mock, set_next_state_mock):
     read_values = ReadValues(Titrator(), DemoMode(Titrator(), MainMenu(Titrator())))
 
     read_values.loop()
-    for i in range(read_values.values["numVals"]):
-        print_mock.assert_has_calls(
-            [
-                mock.call(f"Temp: {read_values.values['temp']:>4.3f} C", line=1),
-                mock.call(f"Res:  {read_values.values['res']:>4.3f} Ohms", line=2),
-                mock.call(
-                    f"pH:   {read_values.values['pH_reading']:>4.5f} pH",
-                    line=3,
-                ),
-                mock.call(
-                    f"pH V: {(read_values.values['pH_volts'] * 1000):>3.4f} mV",
-                    line=4,
-                ),
-                mock.call(f"Reading: {i}", 1, console=True),
-            ]
-        )
-
     print_mock.assert_has_calls(
         [
-            mock.call("Press any to cont", line=1),
-            mock.call("", line=2),
-            mock.call("", line=3),
-            mock.call("", line=4),
+            mock.call(
+                f"Temp: {read_values.titrator.temp_sensor.get_temperature():>4.3f} C",
+                line=1,
+            ),
+            mock.call(
+                f"Res:  {read_values.titrator.temp_sensor.get_resistance():>4.3f} Ohms",
+                line=2,
+            ),
+            mock.call(
+                f"pH:   {read_values.titrator.ph_probe.get_voltage():>4.5f} pH",
+                line=3,
+            ),
+            mock.call(
+                f"pH V: {(read_values.titrator.ph_probe.get_voltage() * 1000):>3.4f} mV",
+                line=4,
+            ),
         ]
     )
 

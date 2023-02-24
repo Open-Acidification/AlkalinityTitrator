@@ -64,9 +64,9 @@ class Pump(UIState):
             self.titrator.lcd.print("", line=4)
 
         elif self.substate == 3:
-            self.titrator.lcd.print("Set Pump Direction", line=1)
+            self.titrator.lcd.print("Set Pump Direction:", line=1)
             self.titrator.lcd.print("", line=2)
-            self.titrator.lcd.print("In/Out (0/1):", line=3)
+            self.titrator.lcd.print("In/Out (0/1)", line=3)
             self.titrator.lcd.print("", line=4)
 
         elif self.substate == 4:

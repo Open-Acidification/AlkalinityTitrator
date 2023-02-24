@@ -64,7 +64,7 @@ class UpdateSettings(UIState):
         if self.substate == 1:
             self.titrator.lcd.print("Reset calibration", line=1)
             self.titrator.lcd.print("settings to default?", line=2)
-            self.titrator.lcd.print("A: Yes  B: No", line=3)
+            self.titrator.lcd.print("(y/n)", line=3)
             self.titrator.lcd.print("", line=4)
 
         elif self.substate == 2:

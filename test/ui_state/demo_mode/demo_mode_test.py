@@ -29,22 +29,22 @@ def test_handle_key(set_next_state_mock):
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "SetVolume"
 
-    demo_mode.handle_key("*")
+    demo_mode.handle_key("4")
     assert demo_mode.substate == 2
 
-    demo_mode.handle_key("4")
+    demo_mode.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "ToggleDemoMode"
 
-    demo_mode.handle_key("5")
+    demo_mode.handle_key("2")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "ReadVolume"
 
-    demo_mode.handle_key("6")
+    demo_mode.handle_key("3")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
-    demo_mode.handle_key("*")
+    demo_mode.handle_key("4")
     assert demo_mode.substate == 1
 
 
@@ -61,7 +61,7 @@ def test_loop(print_mock):
             mock.call("1: Read Values", line=1),
             mock.call("2: Pump", line=2),
             mock.call("3: Set Volume", line=3),
-            mock.call("*: Page 2", line=4),
+            mock.call("4: Page 2", line=4),
         ]
     )
 
@@ -69,10 +69,10 @@ def test_loop(print_mock):
     demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("4: Toggle Demo Mode", line=1),
-            mock.call("5: Read Volume", line=2),
-            mock.call("6: Exit Demo Mode", line=3),
-            mock.call("*: Page 1", line=4),
+            mock.call("1: Toggle Demo Mode", line=1),
+            mock.call("2: Read Volume", line=2),
+            mock.call("3: Exit Demo Mode", line=3),
+            mock.call("4: Page 1", line=4),
         ]
     )
 
@@ -85,10 +85,10 @@ def test_demo_mode(print_mock, set_next_state_mock):
         User enters "1" to read values
         User enters "2" to pump
         User enters "3" to set volume
-        User enters "*" to get to page 2
-        User enters "4" to toggle demo mode
-        User enters "5" to read volume
-        User enters "6" to exit demo mode
+        User enters "4" to get to page 2
+        User enters "1" to toggle demo mode
+        User enters "2" to read volume
+        User enters "3" to exit demo mode
     """
     demo_mode = DemoMode(Titrator(), MainMenu(Titrator()))
 
@@ -98,7 +98,7 @@ def test_demo_mode(print_mock, set_next_state_mock):
             mock.call("1: Read Values", line=1),
             mock.call("2: Pump", line=2),
             mock.call("3: Set Volume", line=3),
-            mock.call("*: Page 2", line=4),
+            mock.call("4: Page 2", line=4),
         ]
     )
 
@@ -112,7 +112,7 @@ def test_demo_mode(print_mock, set_next_state_mock):
             mock.call("1: Read Values", line=1),
             mock.call("2: Pump", line=2),
             mock.call("3: Set Volume", line=3),
-            mock.call("*: Page 2", line=4),
+            mock.call("4: Page 2", line=4),
         ]
     )
 
@@ -126,7 +126,7 @@ def test_demo_mode(print_mock, set_next_state_mock):
             mock.call("1: Read Values", line=1),
             mock.call("2: Pump", line=2),
             mock.call("3: Set Volume", line=3),
-            mock.call("*: Page 2", line=4),
+            mock.call("4: Page 2", line=4),
         ]
     )
 
@@ -140,51 +140,51 @@ def test_demo_mode(print_mock, set_next_state_mock):
             mock.call("1: Read Values", line=1),
             mock.call("2: Pump", line=2),
             mock.call("3: Set Volume", line=3),
-            mock.call("*: Page 2", line=4),
+            mock.call("4: Page 2", line=4),
         ]
     )
 
-    demo_mode.handle_key("*")
+    demo_mode.handle_key("4")
     assert demo_mode.substate == 2
 
     demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("4: Toggle Demo Mode", line=1),
-            mock.call("5: Read Volume", line=2),
-            mock.call("6: Exit Demo Mode", line=3),
-            mock.call("*: Page 1", line=4),
+            mock.call("1: Toggle Demo Mode", line=1),
+            mock.call("2: Read Volume", line=2),
+            mock.call("3: Exit Demo Mode", line=3),
+            mock.call("4: Page 1", line=4),
         ]
     )
 
-    demo_mode.handle_key("4")
+    demo_mode.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "ToggleDemoMode"
 
     demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("4: Toggle Demo Mode", line=1),
-            mock.call("5: Read Volume", line=2),
-            mock.call("6: Exit Demo Mode", line=3),
-            mock.call("*: Page 1", line=4),
+            mock.call("1: Toggle Demo Mode", line=1),
+            mock.call("2: Read Volume", line=2),
+            mock.call("3: Exit Demo Mode", line=3),
+            mock.call("4: Page 1", line=4),
         ]
     )
 
-    demo_mode.handle_key("5")
+    demo_mode.handle_key("2")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "ReadVolume"
 
     demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("4: Toggle Demo Mode", line=1),
-            mock.call("5: Read Volume", line=2),
-            mock.call("6: Exit Demo Mode", line=3),
-            mock.call("*: Page 1", line=4),
+            mock.call("1: Toggle Demo Mode", line=1),
+            mock.call("2: Read Volume", line=2),
+            mock.call("3: Exit Demo Mode", line=3),
+            mock.call("4: Page 1", line=4),
         ]
     )
 
-    demo_mode.handle_key("6")
+    demo_mode.handle_key("3")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"

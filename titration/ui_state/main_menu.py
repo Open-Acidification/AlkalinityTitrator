@@ -25,22 +25,22 @@ class MainMenu(UIState):
     def handle_key(self, key):
         """
         The function to respond to a keypad input:
-            * -> Toggle Page
-            1 -> Setup Titration
-            2 -> Setup Calibration
-            3 -> Prime Pump
-            4 -> Update Settings
-            5 -> Demo Mode
-            6 -> Quit
+            Substate 1:
+                1 -> Setup Titration
+                2 -> Setup Calibration
+                3 -> Prime Pump
+                4 -> Toggle Page
+            Substate 2:
+                1 -> Update Settings
+                2 -> Demo Mode
+                3 -> Quit
+                4 -> Toggle Page
 
         Parameters:
             key (char): the keypad input to determine which state to go to
         """
         if self.substate == 1:
-            if key == constants.KEY_STAR:
-                self.substate = 2
-
-            elif key == constants.KEY_1:
+            if key == constants.KEY_1:
                 self._set_next_state(SetupTitration(self.titrator), True)
 
             elif key == constants.KEY_2:
@@ -48,11 +48,12 @@ class MainMenu(UIState):
 
             elif key == constants.KEY_3:
                 self._set_next_state(PrimePump(self.titrator, self), True)
-        else:
-            if key == constants.KEY_STAR:
-                self.substate = 1
 
-            elif key == constants.KEY_1:
+            elif key == constants.KEY_4:
+                self.substate = 2
+        else:
+
+            if key == constants.KEY_1:
                 self._set_next_state(UpdateSettings(self.titrator, self), True)
 
             elif key == constants.KEY_2:
@@ -60,6 +61,9 @@ class MainMenu(UIState):
 
             elif key == constants.KEY_3:
                 sys.exit()
+
+            elif key == constants.KEY_4:
+                self.substate = 1
 
     def loop(self):
         """

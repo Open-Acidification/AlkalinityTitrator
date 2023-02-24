@@ -6,7 +6,6 @@ import time
 from titration.devices.library import (
     TemperatureControl,
     TemperatureProbe,
-    board,
 )
 
 
@@ -14,8 +13,7 @@ def create_temperature_controller():
     """
     The function to create a mock temperature controller for tests
     """
-    sensor = TemperatureProbe(board.SCK, board.MOSI, board.MISO, board.D0, wires=3)
-    return TemperatureControl(sensor)
+    return TemperatureControl(TemperatureProbe())
 
 
 def test_temperature_control_create():
