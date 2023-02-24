@@ -15,27 +15,10 @@ class ReadValues(UIState):
         values (dict): values is a dictionary to hold the temp, res, pH, volts, numVals, timeStep
     """
 
-    def __init__(self, titrator, previous_state):
-        """
-        The constructor for the ReadValue class
-
-        Parameters:
-            titrator (Titrator object): the titrator is used to move through the state machine
-            previous_state (UIState object): the previous_state is used to return the last visited state
-        """
-        super().__init__(titrator, previous_state)
-        self.values = {
-            "temp": 1,
-            "res": 1,
-            "pH_reading": 1,
-            "pH_volts": 1,
-            "numVals": 20,
-            "timeStep": 0.5,
-        }
-
     def handle_key(self, key):
         """
-        The function to handle keypad input. Any input will return you to the previous state
+        The function to handle keypad input:
+            Any -> Return to Previous State
 
         Parameters:
             key (char): the keypad input is used to move to the next substate
@@ -46,19 +29,17 @@ class ReadValues(UIState):
         """
         The function to loop through and display to the LCD screen until a new keypad input
         """
-        for i in range(self.values["numVals"]):
-            self.titrator.lcd.clear()
-            self.titrator.lcd.print(f"Temp: {self.values['temp']:>4.3f} C", line=1)
-            self.titrator.lcd.print(f"Res:  {self.values['res']:>4.3f} Ohms", line=2)
+        if self.substate == 1:
             self.titrator.lcd.print(
-                f"pH:   {self.values['pH_reading']:>4.5f} pH", line=3
+                f"Temp: {self.titrator.temp_sensor.get_temperature():>4.3f} C", line=1
             )
             self.titrator.lcd.print(
-                f"pH V: {(self.values['pH_volts'] * 1000):>3.4f} mV", line=4
+                f"Res:  {self.titrator.temp_sensor.get_resistance():>4.3f} Ohms", line=2
             )
-            self.titrator.lcd.print(f"Reading: {i}", 1, console=True)
-        self.titrator.lcd.clear()
-        self.titrator.lcd.print("Press any to cont", line=1)
-        self.titrator.lcd.print("", line=2)
-        self.titrator.lcd.print("", line=3)
-        self.titrator.lcd.print("", line=4)
+            self.titrator.lcd.print(
+                f"pH:   {self.titrator.ph_probe.get_voltage():>4.5f} pH", line=3
+            )
+            self.titrator.lcd.print(
+                f"pH V: {(self.titrator.ph_probe.get_voltage() * 1000):>3.4f} mV",
+                line=4,
+            )

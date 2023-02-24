@@ -20,7 +20,7 @@ class SetVolume(UIState):
         """
         The function to respond to a keypad input:
             Substate 1:
-                Any -> Enter UserValue state to set the volume in the pump
+                Any -> Set Volume in Pump, Display Volume Set
             Substate 2:
                 Any -> Return to previous state
 
@@ -39,15 +39,13 @@ class SetVolume(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            self.titrator.lcd.clear()
-            self.titrator.lcd.print("Set volume in pump", line=1)
+            self.titrator.lcd.print("Set Volume In Pump", line=1)
             self.titrator.lcd.print("", line=2)
             self.titrator.lcd.print("Press any to cont", line=3)
             self.titrator.lcd.print("", line=4)
 
         elif self.substate == 2:
-            self.titrator.lcd.clear()
-            self.titrator.lcd.print("Volume in pump", line=1)
-            self.titrator.lcd.print("recorded", line=2)
+            self.titrator.lcd.print("Pump Volume Set To:", line=1)
+            self.titrator.lcd.print(f"{self.titrator.pump_volume}", line=2)
             self.titrator.lcd.print("Press any to cont", line=3)
             self.titrator.lcd.print("", line=4)

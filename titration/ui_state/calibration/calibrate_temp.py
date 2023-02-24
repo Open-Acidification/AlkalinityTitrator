@@ -64,21 +64,18 @@ class CalibrateTemp(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("Set Ref solution", line=1)
             self.titrator.lcd.print("temp", line=2)
             self.titrator.lcd.print("Press any to cont", line=3)
             self.titrator.lcd.print("", line=4)
 
         elif self.substate == 2:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("Put probe in sol", line=1)
             self.titrator.lcd.print("", line=2)
             self.titrator.lcd.print("Press 1 to", line=3)
             self.titrator.lcd.print("record value", line=4)
 
         elif self.substate == 3:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("Recorded temp:", line=1)
             self.titrator.lcd.print(f"{self.values['actual_temperature']:0.3f}", line=2)
             self.titrator.lcd.print(f"{self.values['new_ref_resistance']}", line=3)

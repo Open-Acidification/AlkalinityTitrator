@@ -4,6 +4,8 @@ The file for the Titrator class
 from titration import constants
 from titration.devices.library import Keypad, LiquidCrystal
 from titration.devices.syringe_pump import SyringePump
+from titration.devices.temperature_probe import TemperatureProbe
+from titration.devices.ph_probe import PHProbe
 from titration.ui_state.main_menu import MainMenu
 
 
@@ -23,9 +25,6 @@ class Titrator:
         The constructor for the Titrator class
         """
 
-        # Initialize Syringe Pump
-        self.pump = SyringePump()
-
         # Initialize LCD
         self.lcd = LiquidCrystal(
             cols=constants.LCD_WIDTH,
@@ -35,6 +34,15 @@ class Titrator:
         # Initialize Keypad
         self.key = "A"
         self.keypad = Keypad()
+
+        # Initialize pH Probe
+        self.ph_probe = PHProbe()
+
+        # Initialize Syringe Pump
+        self.pump = SyringePump()
+
+        # Initialize Temperature Sensor
+        self.temp_sensor = TemperatureProbe()
 
         # Initialize State
         self.state = MainMenu(self)
@@ -91,7 +99,8 @@ class Titrator:
                 self.key,
                 ")",
             )
-            self.state.handle_key(self.key)
+            if self.key is not None:
+                self.state.handle_key(self.key)
         self.update_state()
         print(
             "Titrator::handleUI() - ",

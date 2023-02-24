@@ -9,7 +9,6 @@ import time
 import adafruit_max31865
 import busio
 import digitalio
-import pandas as pd
 from gpiozero import LED
 
 PID_DEFAULT_KP = 0.09

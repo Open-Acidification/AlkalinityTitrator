@@ -52,13 +52,13 @@ class MainMenu(UIState):
             if key == constants.KEY_STAR:
                 self.substate = 1
 
-            elif key == constants.KEY_4:
+            elif key == constants.KEY_1:
                 self._set_next_state(UpdateSettings(self.titrator, self), True)
 
-            elif key == constants.KEY_5:
+            elif key == constants.KEY_2:
                 self._set_next_state(DemoMode(self.titrator, self), True)
 
-            elif key == constants.KEY_6:
+            elif key == constants.KEY_3:
                 sys.exit()
 
     def loop(self):
@@ -67,14 +67,12 @@ class MainMenu(UIState):
         """
 
         if self.substate == 1:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("Run titration", line=1)
             self.titrator.lcd.print("Calibrate sensors", line=2)
             self.titrator.lcd.print("Prime pump", line=3)
             self.titrator.lcd.print("Page 2", line=4)
 
         elif self.substate == 2:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("Update settings", line=1)
             self.titrator.lcd.print("Test mode", line=2)
             self.titrator.lcd.print("Exit", line=3)

@@ -6,8 +6,6 @@ The file for the temperature control mock
 
 import time
 
-import pandas as pd
-
 PID_DEFAULT_KP = 0.09
 PID_DEFAULT_TI = 0.000001
 PID_DEFAULT_TD = 9

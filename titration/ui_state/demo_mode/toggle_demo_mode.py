@@ -16,32 +16,40 @@ class ToggleDemoMode(UIState):
         values (dict): values is a dictionary to hold the new_volume
     """
 
-    def __init__(self, titrator, previous_state):
-        """
-        The constructor for the ToggleDemoMode class
-
-        Parameters:
-            titrator (Titrator object): the titrator is used to move through the state machine
-            previous_state (UIState object): the previous_state is used to return the last visited state
-        """
-        super().__init__(titrator, previous_state)
-        self.values = {"new_volume": 0}
-
     def handle_key(self, key):
         """
-        The function to handle keypad input. Any input will return you to the previous state
+        The function to handle keypad input:
+            Substate 1:
+                0 or 1 -> Set Mock Mode, Display Mode
+            Substate 2:
+                Any -> Return to Previous State
 
         Parameters:
             key (char): the keypad input is used to move to the next state
         """
-        self._set_next_state(self.previous_state, True)
+        if self.substate == 1:
+            if key in (constants.KEY_0, constants.KEY_1):
+                constants.IS_TEST = bool(key)
+                self.substate += 1
+
+        elif self.substate == 2:
+            self._set_next_state(self.previous_state, True)
 
     def loop(self):
         """
         The function to loop through and display to the LCD screen until a new keypad input
         """
-        self.titrator.lcd.clear()
-        self.titrator.lcd.print(f"Testing: {constants.IS_TEST}", line=1)
-        self.titrator.lcd.print("", line=2)
-        self.titrator.lcd.print("Press any to cont.", line=3)
-        self.titrator.lcd.print("", line=4)
+        if self.substate == 1:
+            self.titrator.lcd.print("Set Mode: ", line=1)
+            self.titrator.lcd.print("Mock Devices: 1", line=2)
+            self.titrator.lcd.print("Real Devices: 0", line=3)
+            self.titrator.lcd.print("", line=4)
+
+        if self.substate == 2:
+            self.titrator.lcd.print("Mode Set To:", line=1)
+            if constants.IS_TEST:
+                self.titrator.lcd.print("Mock Devices", line=2)
+            else:
+                self.titrator.lcd.print("Real Devices", line=2)
+            self.titrator.lcd.print("", line=3)
+            self.titrator.lcd.print("", line=4)

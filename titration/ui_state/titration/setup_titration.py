@@ -53,21 +53,18 @@ class SetupTitration(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("Enter Sol.", line=1)
             self.titrator.lcd.print("weight (g)", line=2)
             self.titrator.lcd.print("Press any to cont", line=3)
             self.titrator.lcd.print("", line=4)
 
         elif self.substate == 2:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("Enter Sol.", line=1)
             self.titrator.lcd.print("salinity (ppt)", line=2)
             self.titrator.lcd.print("Press any to cont", line=3)
             self.titrator.lcd.print("", line=4)
 
         elif self.substate == 3:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("Calibrate pH probe?", line=1)
             self.titrator.lcd.print("Yes: 1", line=2)
             self.titrator.lcd.print("No (use old): 0", line=3)

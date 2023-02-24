@@ -17,24 +17,15 @@ class Pump(UIState):
         values (dict): values is a dictionary to hold the probe direction
     """
 
-    def __init__(self, titrator, previous_state):
-        """
-        The constructor for the Pump class
-
-        Parameters:
-            titrator (Titrator object): the titrator is used to move through the state machine
-            previous_state (UIState object): the previous_state is used to return the last visited state
-        """
-        super().__init__(titrator, previous_state)
-        self.values = {"p_direction": 0}
-
     def handle_key(self, key):
         """
         The function to handle keypad input:
             Substate 1:
-                Any -> Go to UserValue state to set volume
+                Any -> Set the Volume, Display Set Volume
             Substate 2:
-                0 or 1 -> Set the probe direction
+                Any -> Set the Probe Direction
+            Substate 3:
+                0 or 1 -> Display Probe Direction
             Substate 3:
                 Any -> Return to previous state
 
@@ -46,11 +37,14 @@ class Pump(UIState):
             self.substate += 1
 
         elif self.substate == 2:
-            if key in (constants.KEY_0, constants.KEY_1):
-                self.values["p_direction"] = key
-                self.substate += 1
+            self.substate += 1
 
         elif self.substate == 3:
+            if key in (constants.KEY_0, constants.KEY_1):
+                self.titrator.pump.set_pump_direction(key)
+                self.substate += 1
+
+        elif self.substate == 4:
             self._set_next_state(self.previous_state, True)
 
     def loop(self):
@@ -58,22 +52,27 @@ class Pump(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("Set Volume", line=1)
             self.titrator.lcd.print("", line=2)
             self.titrator.lcd.print("Press any to cont", line=3)
             self.titrator.lcd.print("", line=4)
 
         elif self.substate == 2:
-            self.titrator.lcd.clear()
-            self.titrator.lcd.print("In/Out (0/1):", line=1)
-            self.titrator.lcd.print("", line=2)
-            self.titrator.lcd.print("", line=3)
+            self.titrator.lcd.print("Pumping Volume Set To:", line=1)
+            self.titrator.lcd.print(f"{self.titrator.pump_volume}", line=2)
+            self.titrator.lcd.print("Press any to cont", line=3)
             self.titrator.lcd.print("", line=4)
 
         elif self.substate == 3:
-            self.titrator.lcd.clear()
-            self.titrator.lcd.print("Pumping volume", line=1)
+            self.titrator.lcd.print("Set Pump Direction", line=1)
             self.titrator.lcd.print("", line=2)
+            self.titrator.lcd.print("In/Out (0/1):", line=3)
+            self.titrator.lcd.print("", line=4)
+
+        elif self.substate == 4:
+            self.titrator.lcd.print("Pump Direction Set To:", line=1)
+            self.titrator.lcd.print(
+                f"{self.titrator.pump.get_pump_direction()}", line=2
+            )
             self.titrator.lcd.print("Press any to cont", line=3)
             self.titrator.lcd.print("", line=4)
