@@ -85,7 +85,8 @@ class Titrator:
         print(
             "Titrator::handleUI() - ", self.state.name(), "::handleKey(", self.key, ")"
         )
-        self.state.handle_key(self.key)
+        if self.key is not None:
+            self.state.handle_key(self.key)
         self.update_state()
         print(
             "Titrator::handleUI() - ",

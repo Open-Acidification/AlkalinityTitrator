@@ -75,9 +75,7 @@ class Keypad:
         The function that gets a key from user input
         """
         if key != self.keypad_poll():
-            key = self.keypad_poll()
-            if key is not None:
-                return key
+            return self.keypad_poll()
 
     def keypad_poll(self):
         """
