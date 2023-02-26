@@ -79,8 +79,7 @@ class Keypad:
         if self.key != self.keypad_poll():
             self.key = self.keypad_poll()
             return self.keypad_poll()
-        else:
-            return None
+        return None
 
     def keypad_poll(self):
         """
