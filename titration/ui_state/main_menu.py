@@ -5,7 +5,7 @@ import sys
 
 from titration import constants
 from titration.ui_state.calibration.setup_calibration import SetupCalibration
-from titration.ui_state.demo_mode.demo_mode import DemoMode
+from titration.ui_state.demo_mode.demo_mode_menu import DemoModeMenu
 from titration.ui_state.prime_pump.prime_pump import PrimePump
 from titration.ui_state.titration.setup_titration import SetupTitration
 from titration.ui_state.ui_state import UIState
@@ -57,7 +57,7 @@ class MainMenu(UIState):
                 self._set_next_state(UpdateSettings(self.titrator, self), True)
 
             elif key == constants.KEY_2:
-                self._set_next_state(DemoMode(self.titrator, self), True)
+                self._set_next_state(DemoModeMenu(self.titrator, self), True)
 
             elif key == constants.KEY_3:
                 sys.exit()

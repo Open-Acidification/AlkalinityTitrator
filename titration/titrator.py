@@ -9,6 +9,7 @@ from titration.devices.library import (
     Keypad,
     LiquidCrystal,
     PHProbe,
+    StirControl,
     SyringePump,
     TemperatureProbe,
 )
@@ -46,6 +47,9 @@ class Titrator:
 
         # Initialize Syringe Pump
         self.pump = SyringePump()
+
+        # Initialize Stir Controller
+        self.stir_controller = StirControl()
 
         # Initialize Temperature Sensor
         self.temp_sensor = TemperatureProbe()

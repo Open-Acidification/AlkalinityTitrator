@@ -1,18 +1,20 @@
 """
-The file for the DemoMode class
+The file for the  class
 """
+
 from titration import constants
-from titration.ui_state.demo_mode.pump import Pump
+from titration.ui_state.demo_mode.demo_ph_probe import DemopHProbe
+from titration.ui_state.demo_mode.demo_pump import DemoPump
+from titration.ui_state.demo_mode.demo_stir_control import DemoStirControl
+from titration.ui_state.demo_mode.demo_temp_probe import DemoTempProbe
 from titration.ui_state.demo_mode.read_values import ReadValues
-from titration.ui_state.demo_mode.read_volume import ReadVolume
-from titration.ui_state.demo_mode.set_volume import SetVolume
 from titration.ui_state.demo_mode.toggle_demo_mode import ToggleDemoMode
 from titration.ui_state.ui_state import UIState
 
 
-class DemoMode(UIState):
+class DemoModeMenu(UIState):
     """
-    This is a class for the DemoMode state of the titrator
+    This is a class for the  state of the titrator
 
     Attributes:
         titrator (Titrator object): the titrator is used to move through the state machine
@@ -25,14 +27,15 @@ class DemoMode(UIState):
         The function to respond to a keypad input:
             Substate 1:
                 1 -> Read Values
-                2 -> Pump
-                3 -> Set Volume
+                2 -> Demo pH Probe
+                3 -> Demo Pump
                 4 -> Toggle menu pages
             Substate 2:
-                1 -> Toggle Demo Mode
-                2 -> Read Volume
-                3 -> Return to previous state
+                1 -> Demo Stir Control
+                2 -> Demo Temp Probe
+                3 -> Toggle Demo Mode
                 4 -> Toggle menu pages
+            D -> Return to Main Menu
 
         Parameters:
             key (char): the keypad input to determine which state to go to
@@ -42,26 +45,29 @@ class DemoMode(UIState):
                 self._set_next_state(ReadValues(self.titrator, self), True)
 
             elif key == constants.KEY_2:
-                self._set_next_state(Pump(self.titrator, self), True)
+                self._set_next_state(DemopHProbe(self.titrator, self), True)
 
             elif key == constants.KEY_3:
-                self._set_next_state(SetVolume(self.titrator, self), True)
+                self._set_next_state(DemoPump(self.titrator, self), True)
 
             elif key == constants.KEY_4:
-                self.substate += 1
+                self.substate = 2
 
         elif self.substate == 2:
             if key == constants.KEY_1:
-                self._set_next_state(ToggleDemoMode(self.titrator, self), True)
+                self._set_next_state(DemoStirControl(self.titrator, self), True)
 
             elif key == constants.KEY_2:
-                self._set_next_state(ReadVolume(self.titrator, self), True)
+                self._set_next_state(DemoTempProbe(self.titrator, self), True)
 
             elif key == constants.KEY_3:
-                self._set_next_state(self.previous_state, True)
+                self._set_next_state(ToggleDemoMode(self.titrator, self), True)
 
             if key == constants.KEY_4:
-                self.substate -= 1
+                self.substate = 1
+
+        if key == constants.KEY_D:
+            self._set_next_state(self.previous_state, True)
 
     def loop(self):
         """
@@ -69,12 +75,12 @@ class DemoMode(UIState):
         """
         if self.substate == 1:
             self.titrator.lcd.print("1: Read Values", line=1)
-            self.titrator.lcd.print("2: Pump", line=2)
-            self.titrator.lcd.print("3: Set Volume", line=3)
+            self.titrator.lcd.print("2: Demo pH Probe", line=2)
+            self.titrator.lcd.print("3: Demo Pump", line=3)
             self.titrator.lcd.print("4: Page 2", line=4)
 
         elif self.substate == 2:
-            self.titrator.lcd.print("1: Toggle Demo Mode", line=1)
-            self.titrator.lcd.print("2: Read Volume", line=2)
-            self.titrator.lcd.print("3: Exit Demo Mode", line=3)
+            self.titrator.lcd.print("1: Demo Stir Control", line=1)
+            self.titrator.lcd.print("2: Demo Temp Probe", line=2)
+            self.titrator.lcd.print("3: Toggle Demo Mode", line=3)
             self.titrator.lcd.print("4: Page 1", line=4)

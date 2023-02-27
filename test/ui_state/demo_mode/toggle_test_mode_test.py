@@ -7,7 +7,7 @@ from unittest.mock import ANY
 from titration import constants
 from titration.devices.library import LiquidCrystal
 from titration.titrator import Titrator
-from titration.ui_state.demo_mode.demo_mode import DemoMode
+from titration.ui_state.demo_mode.demo_mode_menu import DemoModeMenu
 from titration.ui_state.demo_mode.toggle_demo_mode import ToggleDemoMode
 from titration.ui_state.main_menu import MainMenu
 
@@ -18,7 +18,7 @@ def test_handle_key(set_next_state_mock):
     The function to test ToggleDemoMode's handle_key function for each keypad input
     """
     toggle_demo_mode = ToggleDemoMode(
-        Titrator(), DemoMode(Titrator(), MainMenu(Titrator()))
+        Titrator(), DemoModeMenu(Titrator(), MainMenu(Titrator()))
     )
 
     toggle_demo_mode.handle_key("1")
@@ -27,16 +27,16 @@ def test_handle_key(set_next_state_mock):
 
     toggle_demo_mode.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "DemoMode"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoModeMenu"
 
     toggle_demo_mode.substate = 1
     toggle_demo_mode.handle_key("0")
     assert constants.IS_TEST is False
     assert toggle_demo_mode.substate == 2
 
-    toggle_demo_mode.handle_key("0")
+    toggle_demo_mode.handle_key("D")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "DemoMode"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoModeMenu"
 
     constants.IS_TEST = True
 
@@ -47,7 +47,7 @@ def test_loop(print_mock):
     The function to test ToggleDemoMode's loop function's LiquidCrystal calls
     """
     toggle_demo_mode = ToggleDemoMode(
-        Titrator(), DemoMode(Titrator(), MainMenu(Titrator()))
+        Titrator(), DemoModeMenu(Titrator(), MainMenu(Titrator()))
     )
 
     toggle_demo_mode.loop()
@@ -91,7 +91,7 @@ def test_toggle_demo_mode(print_mock, set_next_state_mock):
         User enters "1" to continue after testing
     """
     toggle_demo_mode = ToggleDemoMode(
-        Titrator(), DemoMode(Titrator(), MainMenu(Titrator()))
+        Titrator(), DemoModeMenu(Titrator(), MainMenu(Titrator()))
     )
 
     toggle_demo_mode.loop()
@@ -117,4 +117,4 @@ def test_toggle_demo_mode(print_mock, set_next_state_mock):
 
     toggle_demo_mode.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "DemoMode"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoModeMenu"

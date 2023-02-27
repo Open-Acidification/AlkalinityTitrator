@@ -35,6 +35,9 @@ class ToggleDemoMode(UIState):
         elif self.substate == 2:
             self._set_next_state(self.previous_state, True)
 
+        if key == constants.KEY_D:
+            self._set_next_state(self.previous_state, True)
+
     def loop(self):
         """
         The function to loop through and display to the LCD screen until a new keypad input
