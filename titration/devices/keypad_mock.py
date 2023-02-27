@@ -44,7 +44,7 @@ class Keypad:
         self.cols[2].pull = digitalio.Pull.DOWN
         self.cols[3].pull = digitalio.Pull.DOWN
 
-    def keypad_poll(self):
+    def get_key(self):
         """
         The function to poll a keyboard press
         """
