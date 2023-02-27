@@ -35,10 +35,7 @@ class DemopHProbe(UIState):
             elif key == constants.KEY_3:
                 self._set_next_state(self.previous_state, True)
 
-        elif self.substate == 2:
-            self.substate = 1
-
-        elif self.substate == 3:
+        else:
             self.substate = 1
 
         if key == constants.KEY_D:

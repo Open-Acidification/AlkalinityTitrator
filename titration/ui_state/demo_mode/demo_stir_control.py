@@ -34,7 +34,7 @@ class DemoStirControl(UIState):
                 self.substate = 3
             elif key == constants.KEY_4:
                 self.titrator.stir_controller.motor_stop()
-                self._set_next_state(self.previous_state)
+                self._set_next_state(self.previous_state, True)
         else:
             self.titrator.stir_controller.motor_stop()
             self.substate = 1
@@ -59,7 +59,7 @@ class DemoStirControl(UIState):
             self.titrator.lcd.print("Press any to cont.", line=3)
             self.titrator.lcd.print("", line=4)
 
-        elif self.substate == 2:
+        elif self.substate == 3:
             self.titrator.lcd.print("Motor Speed", line=1)
             self.titrator.lcd.print("Set To Slow", line=2)
             self.titrator.lcd.print("Press any to cont.", line=3)

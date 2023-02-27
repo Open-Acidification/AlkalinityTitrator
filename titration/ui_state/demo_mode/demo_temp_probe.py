@@ -29,9 +29,9 @@ class DemoTempProbe(UIState):
         """
         if self.substate == 1:
             if key == constants.KEY_1:
-                self.substate = 1
-            elif key == constants.KEY_2:
                 self.substate = 2
+            elif key == constants.KEY_2:
+                self.substate = 3
             elif key == constants.KEY_4:
                 self._set_next_state(self.previous_state, True)
         else:
@@ -50,7 +50,7 @@ class DemoTempProbe(UIState):
             self.titrator.lcd.print("", line=3)
             self.titrator.lcd.print("4: Return", line=4)
 
-        elif self.substate == 1:
+        elif self.substate == 2:
             self.titrator.lcd.print("Probe Temperature", line=1)
             self.titrator.lcd.print(
                 f"{self.titrator.temp_sensor.get_temperature()} C",
@@ -60,12 +60,12 @@ class DemoTempProbe(UIState):
             self.titrator.lcd.print("Press any to cont.", line=3)
             self.titrator.lcd.print("", line=4)
 
-        elif self.substate == 1:
+        elif self.substate == 3:
             self.titrator.lcd.print("Probe Resistance", line=1)
             self.titrator.lcd.print(
                 f"{self.titrator.temp_sensor.get_resistance()} Ohms",
                 line=2,
                 style="center",
             )
-            self.titrator.lcd.print("Press ant to cont.", line=3)
+            self.titrator.lcd.print("Press any to cont.", line=3)
             self.titrator.lcd.print("", line=4)

@@ -36,7 +36,7 @@ class DemoPump(UIState):
             if key == constants.KEY_1:
                 self.substate = 3
             elif key == constants.KEY_2:
-                self._set_next_state(PumpVolume(self.titrator, self))
+                self._set_next_state(PumpVolume(self.titrator, self), True)
             elif key == constants.KEY_3:
                 # TODO: self.titrator.pump.pump_volume_in()
                 pass
@@ -51,9 +51,6 @@ class DemoPump(UIState):
                 self.substate = 1
 
         elif self.substate == 3:
-            self.substate = 1
-
-        elif self.substate == 4:
             self.substate = 1
 
         if key == constants.KEY_D:
@@ -73,7 +70,7 @@ class DemoPump(UIState):
             self.titrator.lcd.print("1: Pump Volume Out", line=1)
             self.titrator.lcd.print("", line=2)
             self.titrator.lcd.print("", line=3)
-            self.titrator.lcd.print("4: Page 2", line=4)
+            self.titrator.lcd.print("4: Page 1", line=4)
 
         elif self.substate == 3:
             self.titrator.lcd.print("Pump Volume:", line=1)

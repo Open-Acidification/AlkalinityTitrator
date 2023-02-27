@@ -1,5 +1,5 @@
 """
-The file to test the  class
+The file to test the DemoModeMenu class
 """
 from unittest import mock
 from unittest.mock import ANY
