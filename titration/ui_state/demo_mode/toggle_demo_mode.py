@@ -40,7 +40,6 @@ class ToggleDemoMode(UIState):
         """
         The function to loop through and display to the LCD screen until a new keypad input
         """
-        self.titrator.lcd.clear()
         self.titrator.lcd.print(f"Testing: {constants.IS_TEST}", line=1)
         self.titrator.lcd.print("", line=2)
         self.titrator.lcd.print("Press any to cont.", line=3)

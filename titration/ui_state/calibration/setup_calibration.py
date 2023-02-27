@@ -40,7 +40,6 @@ class SetupCalibration(UIState):
         """
         The function to loop through and display to the LCD screen until a new keypad input
         """
-        self.titrator.lcd.clear()
         self.titrator.lcd.print("1. pH", line=1)
         self.titrator.lcd.print("2. Temperature", line=2)
         self.titrator.lcd.print("3. Return", line=3)
