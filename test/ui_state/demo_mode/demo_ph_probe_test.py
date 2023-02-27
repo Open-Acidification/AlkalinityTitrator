@@ -7,8 +7,8 @@ from unittest.mock import ANY
 
 from titration.devices.library import LiquidCrystal
 from titration.titrator import Titrator
-from titration.ui_state.demo_mode.demo_ph_probe import DemopHProbe
 from titration.ui_state.demo_mode.demo_mode_menu import DemoModeMenu
+from titration.ui_state.demo_mode.demo_ph_probe import DemopHProbe
 
 
 @mock.patch.object(DemopHProbe, "_set_next_state")

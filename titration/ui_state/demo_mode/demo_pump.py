@@ -38,14 +38,14 @@ class DemoPump(UIState):
             elif key == constants.KEY_2:
                 self._set_next_state(PumpVolume(self.titrator, self), True)
             elif key == constants.KEY_3:
-                # TODO: self.titrator.pump.pump_volume_in()
+                # self.titrator.pump.pump_volume_in()
                 pass
             elif key == constants.KEY_4:
                 self.substate = 2
 
         elif self.substate == 2:
             if key == constants.KEY_1:
-                # TODO: self.titrator.pump.pump_volume_out()
+                # self.titrator.pump.pump_volume_out()
                 pass
             elif key == constants.KEY_4:
                 self.substate = 1
