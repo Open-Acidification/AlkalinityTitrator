@@ -76,7 +76,7 @@ def test_update_state_with_next_state(start_mock):
     start_mock.assert_called()
 
 
-@mock.patch.object(Keypad, "keypad_poll")
+@mock.patch.object(Keypad, "get_key")
 @mock.patch.object(Titrator, "update_state")
 @mock.patch.object(MainMenu, "handle_key")
 @mock.patch.object(MainMenu, "loop")
