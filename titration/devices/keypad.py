@@ -1,6 +1,9 @@
 """
 The file for the Keypad device class
 """
+
+# pylint: disable = consider-using-enumerate
+
 import board
 import digitalio
 
