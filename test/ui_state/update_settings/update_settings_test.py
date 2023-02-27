@@ -18,37 +18,15 @@ def test_handle_key_update(set_next_state_mock):
     """
     update_settings = UpdateSettings(Titrator(), MainMenu(Titrator()))
 
-    update_settings.handle_key("y")
-    assert update_settings.substate == 2
-
-    update_settings.handle_key("1")
-    assert update_settings.substate == 3
-
-    update_settings.handle_key("y")
-    assert update_settings.substate == 4
-
     update_settings.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "PumpVolume"
-    assert update_settings.substate == 5
+    assert set_next_state_mock.call_args.args[0].name() == "SetGain"
 
-    update_settings.handle_key("1")
+    update_settings.handle_key("4")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
-
-@mock.patch.object(UpdateSettings, "_set_next_state")
-def test_handle_key_no_update(set_next_state_mock):
-    """
-    The function to test UpdateSettings' handle_key function for each keypad input
-    when a user does not want to update settings
-    """
-    update_settings = UpdateSettings(Titrator(), MainMenu(Titrator()))
-
-    update_settings.handle_key("n")
-    assert update_settings.substate == 3
-
-    update_settings.handle_key("n")
+    update_settings.handle_key("D")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
@@ -63,135 +41,33 @@ def test_loop(print_mock):
     update_settings.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Reset calibration", line=1),
-            mock.call("settings to default?", line=2),
-            mock.call("(y/n)", line=3),
-            mock.call("", line=4),
-        ]
-    )
-
-    update_settings.substate += 1
-    update_settings.loop()
-    print_mock.assert_has_calls(
-        [
-            mock.call("Default constants", line=1),
-            mock.call("restored", line=2),
-            mock.call("Press any to cont.", line=3),
-            mock.call("", line=4),
-        ]
-    )
-
-    update_settings.substate += 1
-    update_settings.loop()
-    print_mock.assert_has_calls(
-        [
-            mock.call("Set volume in pump?", line=1),
+            mock.call("1: Set pH Probe Gain", line=1),
             mock.call("", line=2),
-            mock.call("(y/n)", line=3),
-            mock.call("", line=4),
-        ]
-    )
-
-    update_settings.substate += 1
-    update_settings.loop()
-    print_mock.assert_has_calls(
-        [
-            mock.call("Enter Volume in pump", line=1),
-            mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
-        ]
-    )
-
-    update_settings.substate += 1
-    update_settings.loop()
-    print_mock.assert_has_calls(
-        [
-            mock.call("Volume in pump set", line=1),
-            mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("4: Return", line=4),
         ]
     )
 
 
 @mock.patch.object(UpdateSettings, "_set_next_state")
 @mock.patch.object(LiquidCrystal, "print")
-def test_prime_pump(print_mock, set_next_state_mock):
+def test_update_settings(print_mock, set_next_state_mock):
     """
     The function to test a use case of the PrimePump class:
-        User enters "y" to set calibration settings to default
-        User enters "1" to continue
-        User enters "y" to set volume in pump
-        User enters "1" to continue
-        User enters "1" to return to the main menu
+        User enters "1" to set gain
     """
     update_settings = UpdateSettings(Titrator(), MainMenu(Titrator()))
 
     update_settings.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Reset calibration", line=1),
-            mock.call("settings to default?", line=2),
-            mock.call("(y/n)", line=3),
-            mock.call("", line=4),
-        ]
-    )
-
-    update_settings.handle_key("y")
-    assert update_settings.substate == 2
-
-    update_settings.loop()
-    print_mock.assert_has_calls(
-        [
-            mock.call("Default constants", line=1),
-            mock.call("restored", line=2),
-            mock.call("Press any to cont.", line=3),
-            mock.call("", line=4),
-        ]
-    )
-
-    update_settings.handle_key("1")
-    assert update_settings.substate == 3
-
-    update_settings.loop()
-    print_mock.assert_has_calls(
-        [
-            mock.call("Set volume in pump?", line=1),
+            mock.call("1: Set pH Probe Gain", line=1),
             mock.call("", line=2),
-            mock.call("(y/n)", line=3),
-            mock.call("", line=4),
-        ]
-    )
-
-    update_settings.handle_key("y")
-    assert update_settings.substate == 4
-
-    update_settings.loop()
-    print_mock.assert_has_calls(
-        [
-            mock.call("Enter Volume in pump", line=1),
-            mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("4: Return", line=4),
         ]
     )
 
     update_settings.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "PumpVolume"
-    assert update_settings.substate == 5
-
-    update_settings.loop()
-    print_mock.assert_has_calls(
-        [
-            mock.call("Volume in pump set", line=1),
-            mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
-        ]
-    )
-
-    update_settings.handle_key("1")
-    set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
+    assert set_next_state_mock.call_args.args[0].name() == "SetGain"

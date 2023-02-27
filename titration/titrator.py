@@ -2,7 +2,7 @@
 The file for the Titrator class
 """
 from titration import constants
-from titration.devices.library import Keypad, LiquidCrystal, SyringePump
+from titration.devices.library import Keypad, LiquidCrystal, PHProbe, SyringePump
 from titration.ui_state.main_menu import MainMenu
 
 
@@ -34,6 +34,9 @@ class Titrator:
         # Initialize Keypad
         self.key = "A"
         self.keypad = Keypad()
+
+        # Initialize pH Probe
+        self.ph_probe = PHProbe()
 
         # Initialize State
         self.state = MainMenu(self)
