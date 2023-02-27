@@ -2,16 +2,13 @@
 The file to test the SetGain class
 """
 
-"""
-The file to test the SetGain class
-"""
 from unittest import mock
 from unittest.mock import ANY
 
 from titration.devices.library import LiquidCrystal, PHProbe
 from titration.titrator import Titrator
-from titration.ui_state.update_settings.update_settings import UpdateSettings
 from titration.ui_state.update_settings.set_gain import SetGain
+from titration.ui_state.update_settings.update_settings import UpdateSettings
 
 
 @mock.patch.object(SetGain, "_set_next_state")

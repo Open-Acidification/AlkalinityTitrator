@@ -2,7 +2,12 @@
 The file for the Titrator class
 """
 from titration import constants
-from titration.devices.library import Keypad, LiquidCrystal, PHProbe, SyringePump
+from titration.devices.library import (
+    Keypad,
+    LiquidCrystal,
+    PHProbe,
+    SyringePump,
+)
 from titration.ui_state.main_menu import MainMenu
 
 
