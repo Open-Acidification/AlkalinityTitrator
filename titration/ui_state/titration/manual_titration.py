@@ -85,21 +85,18 @@ class ManualTitration(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("Enter Volume", line=1)
             self.titrator.lcd.print("", line=2)
             self.titrator.lcd.print("Press any to cont", line=3)
             self.titrator.lcd.print("", line=4)
 
         elif self.substate == 2:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("Direction (0/1):", line=1)
             self.titrator.lcd.print("", line=2)
             self.titrator.lcd.print("", line=3)
             self.titrator.lcd.print("", line=4)
 
         elif self.substate == 3:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print(
                 f"Current pH: {self.values['current_pH']:>4.5f}", line=1
             )
@@ -108,7 +105,6 @@ class ManualTitration(UIState):
             self.titrator.lcd.print("", line=4)
 
         elif self.substate == 4:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print(
                 f"Current pH: {self.values['current_pH']:>4.5f}", line=1
             )
@@ -117,14 +113,12 @@ class ManualTitration(UIState):
             self.titrator.lcd.print("", line=4)
 
         elif self.substate == 5:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("Enter Degas time", line=1)
             self.titrator.lcd.print("", line=2)
             self.titrator.lcd.print("Press any to cont", line=3)
             self.titrator.lcd.print("", line=4)
 
         elif self.substate == 6:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("Return to", line=1)
             self.titrator.lcd.print("main menu", line=2)
             self.titrator.lcd.print("Press any to cont", line=3)

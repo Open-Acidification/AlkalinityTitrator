@@ -46,14 +46,12 @@ class InitialTitration(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("Bring pH to 3.5:", line=1)
             self.titrator.lcd.print("Manual: 1", line=2)
             self.titrator.lcd.print("Automatic: 2", line=3)
             self.titrator.lcd.print("Stir speed: slow", line=4)
 
         elif self.substate == 2:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("Heating to 30 C...", line=1)
             self.titrator.lcd.print("", line=2)
             self.titrator.lcd.print("Please wait...", style="center", line=3)
