@@ -14,7 +14,8 @@ class TempRefResistance(UserValue):
         """
         The function to save the temperature probe's reference resistance
         """
-        constants.TEMPERATURE_REF_RESISTANCE = float(value)
+        if value not in ("", "."):
+            constants.TEMPERATURE_REF_RESISTANCE = float(value)
 
     def get_label(self):
         """

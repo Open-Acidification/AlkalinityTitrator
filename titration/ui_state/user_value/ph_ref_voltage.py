@@ -14,7 +14,8 @@ class PHRefVoltage(UserValue):
         """
         The function to save the pH probe's reference voltage
         """
-        constants.PH_REF_VOLTAGE = float(value)
+        if value not in ("", "."):
+            constants.PH_REF_VOLTAGE = float(value)
 
     def get_label(self):
         """

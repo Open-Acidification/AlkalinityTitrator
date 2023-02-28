@@ -14,7 +14,8 @@ class PHRefpH(UserValue):
         """
         The function to save the pH probe's reference pH
         """
-        constants.PH_REF_PH = float(value)
+        if value not in ("", "."):
+            constants.PH_REF_PH = float(value)
 
     def get_label(self):
         """

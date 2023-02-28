@@ -31,7 +31,19 @@ class UpdateSettings(UIState):
         """
         The function to respond to a keypad input:
             Substate 1:
-
+                1 -> View Current Settings
+                2 -> Reset to Default Settings
+                3 -> Set Temperature Probe Reference Resistance
+                4 -> Page 2
+            Substate 2:
+                1 -> Set Temperature Probe Nominal Resistance
+                2 -> Set pH Probe Reference Voltage
+                3 -> Set pH Probe Reference pH
+                4 -> Page 3
+            Substate 3:
+                1 -> Set Gain
+                4 -> Page 1
+            D -> Return to Main Menu
 
         Parameters:
             key (char): the keypad input is used to move through the substates
@@ -69,6 +81,9 @@ class UpdateSettings(UIState):
                 self._set_next_state(SetGain(self.titrator, self), True)
             elif key == constants.KEY_4:
                 self.substate = 1
+
+        else:
+            self.substate = 1
 
         if key == constants.KEY_D:
             self._set_next_state(self.previous_state, True)

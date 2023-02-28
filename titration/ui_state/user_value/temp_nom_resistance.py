@@ -14,7 +14,8 @@ class TempNomResistance(UserValue):
         """
         The function to save the temperature probe's nominal resistance
         """
-        constants.TEMPERATURE_NOM_RESISTANCE = float(value)
+        if value not in ("", "."):
+            constants.TEMPERATURE_NOM_RESISTANCE = float(value)
 
     def get_label(self):
         """
