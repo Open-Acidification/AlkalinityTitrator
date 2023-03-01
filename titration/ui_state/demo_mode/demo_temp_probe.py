@@ -82,7 +82,9 @@ class DemoTempControl(UIState):
         elif self.substate == 4:
             self.titrator.lcd.print("Temperature Control", line=1)
             self.titrator.lcd.print("Activated", line=2, style="center")
-            self.titrator.lcd.print(f"{self.titrator.temp_probe.get_temperature()} C", line=3)
+            self.titrator.lcd.print(
+                f"{self.titrator.temp_probe.get_temperature()} C", line=3
+            )
             self.titrator.lcd.print("Press any to stop", line=4)
 
             self.titrator.temp_controller.update()

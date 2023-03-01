@@ -13,7 +13,6 @@ from titration.devices.library import (
     SyringePump,
     TemperatureControl,
     TemperatureProbe,
-    board,
 )
 from titration.ui_state.main_menu import MainMenu
 
