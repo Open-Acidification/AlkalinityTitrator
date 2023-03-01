@@ -6,7 +6,7 @@ from titration import constants
 from titration.ui_state.ui_state import UIState
 
 
-class DemoTempProbe(UIState):
+class DemoTempControl(UIState):
     """
     The class to demo the temperature probe device
     """
@@ -17,6 +17,7 @@ class DemoTempProbe(UIState):
             Substate 1:
                 1 -> Get Temperature
                 2 -> Get Resistance
+                3 -> Activate Temp Control
                 4 -> Return to Demo Mode Menu
             Substate 2:
                 Any -> Substate 1
@@ -32,8 +33,16 @@ class DemoTempProbe(UIState):
                 self.substate = 2
             elif key == constants.KEY_2:
                 self.substate = 3
+            elif key == constants.KEY_3:
+                self.titrator.temp_controller.activate()
+                self.substate = 4
             elif key == constants.KEY_4:
                 self._set_next_state(self.previous_state, True)
+
+        elif self.substate == 4:
+            self.titrator.temp_controller.deactivate()
+            self.substate = 1
+
         else:
             self.substate = 1
 
@@ -53,7 +62,7 @@ class DemoTempProbe(UIState):
         elif self.substate == 2:
             self.titrator.lcd.print("Probe Temperature", line=1)
             self.titrator.lcd.print(
-                f"{self.titrator.temp_sensor.get_temperature()} C",
+                f"{self.titrator.temp_probe.get_temperature()} C",
                 line=2,
                 style="center",
             )
@@ -63,9 +72,17 @@ class DemoTempProbe(UIState):
         elif self.substate == 3:
             self.titrator.lcd.print("Probe Resistance", line=1)
             self.titrator.lcd.print(
-                f"{self.titrator.temp_sensor.get_resistance()} Ohms",
+                f"{self.titrator.temp_probe.get_resistance()} Ohms",
                 line=2,
                 style="center",
             )
             self.titrator.lcd.print("Press any to cont.", line=3)
             self.titrator.lcd.print("", line=4)
+
+        elif self.substate == 4:
+            self.titrator.lcd.print("Temperature Control", line=1)
+            self.titrator.lcd.print("Activated", line=2, style="center")
+            self.titrator.lcd.print(f"{self.titrator.temp_probe.get_temperature()} C", line=3)
+            self.titrator.lcd.print("Press any to stop", line=4)
+
+            self.titrator.temp_controller.update()

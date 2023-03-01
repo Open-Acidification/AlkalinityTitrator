@@ -24,7 +24,7 @@ class TemperatureProbe:
         self.sensor = MAX31865(
             self.spi,
             self.c_s,
-            wires=2,
+            wires=3,
             rtd_nominal=TEMPERATURE_NOMINAL_RESISTANCE,
             ref_resistor=TEMPERATURE_REF_RESISTANCE,
         )

@@ -11,7 +11,9 @@ from titration.devices.library import (
     PHProbe,
     StirControl,
     SyringePump,
+    TemperatureControl,
     TemperatureProbe,
+    board,
 )
 from titration.ui_state.main_menu import MainMenu
 
@@ -51,7 +53,8 @@ class Titrator:
         self.stir_controller = StirControl()
 
         # Initialize Temperature Sensor
-        self.temp_sensor = TemperatureProbe()
+        self.temp_probe = TemperatureProbe()
+        self.temp_controller = TemperatureControl(self.temp_probe)
 
         # Initialize State
         self.state = MainMenu(self)

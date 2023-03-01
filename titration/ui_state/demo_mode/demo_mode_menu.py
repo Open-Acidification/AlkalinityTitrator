@@ -6,7 +6,7 @@ from titration import constants
 from titration.ui_state.demo_mode.demo_ph_probe import DemopHProbe
 from titration.ui_state.demo_mode.demo_pump import DemoPump
 from titration.ui_state.demo_mode.demo_stir_control import DemoStirControl
-from titration.ui_state.demo_mode.demo_temp_probe import DemoTempProbe
+from titration.ui_state.demo_mode.demo_temp_probe import DemoTempControl
 from titration.ui_state.demo_mode.read_values import ReadValues
 from titration.ui_state.demo_mode.toggle_demo_mode import ToggleDemoMode
 from titration.ui_state.ui_state import UIState
@@ -32,7 +32,7 @@ class DemoModeMenu(UIState):
                 4 -> Toggle menu pages
             Substate 2:
                 1 -> Demo Stir Control
-                2 -> Demo Temp Probe
+                2 -> Demo Temp Control
                 3 -> Toggle Demo Mode
                 4 -> Toggle menu pages
             D -> Return to Main Menu
@@ -58,7 +58,7 @@ class DemoModeMenu(UIState):
                 self._set_next_state(DemoStirControl(self.titrator, self), True)
 
             elif key == constants.KEY_2:
-                self._set_next_state(DemoTempProbe(self.titrator, self), True)
+                self._set_next_state(DemoTempControl(self.titrator, self), True)
 
             elif key == constants.KEY_3:
                 self._set_next_state(ToggleDemoMode(self.titrator, self), True)

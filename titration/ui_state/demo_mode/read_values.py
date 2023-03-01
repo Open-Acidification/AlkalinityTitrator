@@ -59,10 +59,10 @@ class ReadValues(UIState):
 
         elif self.substate == 2:
             self.titrator.lcd.print(
-                f"Temp: {self.titrator.temp_sensor.get_temperature():>4.3f} C", line=1
+                f"Temp: {self.titrator.temp_probe.get_temperature():>4.3f} C", line=1
             )
             self.titrator.lcd.print(
-                f"Res:  {self.titrator.temp_sensor.get_resistance():>4.3f} Ohms", line=2
+                f"Res:  {self.titrator.temp_probe.get_resistance():>4.3f} Ohms", line=2
             )
             self.titrator.lcd.print("Press any to cont.", line=3)
             self.titrator.lcd.print("", line=4)

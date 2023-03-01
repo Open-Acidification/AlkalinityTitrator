@@ -1,5 +1,5 @@
 """
-The file to test the DemoTempProbe Class
+The file to test the DemoTempControl Class
 """
 
 from unittest import mock
@@ -8,15 +8,15 @@ from unittest.mock import ANY
 from titration.devices.library import LiquidCrystal
 from titration.titrator import Titrator
 from titration.ui_state.demo_mode.demo_mode_menu import DemoModeMenu
-from titration.ui_state.demo_mode.demo_temp_probe import DemoTempProbe
+from titration.ui_state.demo_mode.demo_temp_probe import DemoTempControl
 
 
-@mock.patch.object(DemoTempProbe, "_set_next_state")
+@mock.patch.object(DemoTempControl, "_set_next_state")
 def test_handle_key(set_next_state_mock):
     """
-    The function to test the DemoTempProbe's handle_key function for each keypad input
+    The function to test the DemoTempControl's handle_key function for each keypad input
     """
-    demo_temp_probe = DemoTempProbe(Titrator(), DemoModeMenu(Titrator()))
+    demo_temp_probe = DemoTempControl(Titrator(), DemoModeMenu(Titrator()))
 
     demo_temp_probe.handle_key("1")
     assert demo_temp_probe.substate == 2
@@ -26,6 +26,12 @@ def test_handle_key(set_next_state_mock):
 
     demo_temp_probe.handle_key("2")
     assert demo_temp_probe.substate == 3
+
+    demo_temp_probe.handle_key("1")
+    assert demo_temp_probe.substate == 1
+
+    demo_temp_probe.handle_key("3")
+    assert demo_temp_probe.substate == 4
 
     demo_temp_probe.handle_key("1")
     assert demo_temp_probe.substate == 1
@@ -44,7 +50,7 @@ def test_loop(print_mock):
     """
     The function to test 's loop function's LiquidCrystal calls
     """
-    demo_temp_probe = DemoTempProbe(Titrator(), DemoModeMenu(Titrator()))
+    demo_temp_probe = DemoTempControl(Titrator(), DemoModeMenu(Titrator()))
 
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
@@ -62,7 +68,7 @@ def test_loop(print_mock):
         [
             mock.call("Probe Temperature", line=1),
             mock.call(
-                f"{demo_temp_probe.titrator.temp_sensor.get_temperature()} C",
+                f"{demo_temp_probe.titrator.temp_probe.get_temperature()} C",
                 line=2,
                 style="center",
             ),
@@ -77,7 +83,7 @@ def test_loop(print_mock):
         [
             mock.call("Probe Resistance", line=1),
             mock.call(
-                f"{demo_temp_probe.titrator.temp_sensor.get_resistance()} Ohms",
+                f"{demo_temp_probe.titrator.temp_probe.get_resistance()} Ohms",
                 line=2,
                 style="center",
             ),
@@ -86,8 +92,21 @@ def test_loop(print_mock):
         ]
     )
 
+    demo_temp_probe.substate = 4
+    demo_temp_probe.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Temperature Control", line=1),
+            mock.call("Activated", line=2, style="center"),
+            mock.call(
+                f"{demo_temp_probe.titrator.temp_probe.get_temperature()} C", line=3
+            ),
+            mock.call("Press any to stop", line=4),
+        ]
+    )
 
-@mock.patch.object(DemoTempProbe, "_set_next_state")
+
+@mock.patch.object(DemoTempControl, "_set_next_state")
 @mock.patch.object(LiquidCrystal, "print")
 def test_demo_mode(print_mock, set_next_state_mock):
     """
@@ -98,7 +117,7 @@ def test_demo_mode(print_mock, set_next_state_mock):
         User enters "1" to return to stir contolr menu
         User enters "D" to return to the main menu
     """
-    demo_temp_probe = DemoTempProbe(Titrator(), DemoModeMenu(Titrator()))
+    demo_temp_probe = DemoTempControl(Titrator(), DemoModeMenu(Titrator()))
 
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
@@ -118,7 +137,7 @@ def test_demo_mode(print_mock, set_next_state_mock):
         [
             mock.call("Probe Temperature", line=1),
             mock.call(
-                f"{demo_temp_probe.titrator.temp_sensor.get_temperature()} C",
+                f"{demo_temp_probe.titrator.temp_probe.get_temperature()} C",
                 line=2,
                 style="center",
             ),
@@ -148,7 +167,7 @@ def test_demo_mode(print_mock, set_next_state_mock):
         [
             mock.call("Probe Resistance", line=1),
             mock.call(
-                f"{demo_temp_probe.titrator.temp_sensor.get_resistance()} Ohms",
+                f"{demo_temp_probe.titrator.temp_probe.get_resistance()} Ohms",
                 line=2,
                 style="center",
             ),
