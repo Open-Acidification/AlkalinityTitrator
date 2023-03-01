@@ -32,7 +32,7 @@ class PrimePump(UIState):
             self._set_next_state(FillPump(self.titrator, self), True)
         elif key == constants.KEY_2:
             self._set_next_state(EmptyPump(self.titrator, self), True)
-        elif key == constants.KEY_4 or key == constants.KEY_D:
+        elif key in (constants.KEY_4, constants.KEY_D):
             self._set_next_state(self.previous_state, True)
 
     def loop(self):
