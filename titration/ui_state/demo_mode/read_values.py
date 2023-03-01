@@ -47,7 +47,6 @@ class ReadValues(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         for i in range(self.values["numVals"]):
-            self.titrator.lcd.clear()
             self.titrator.lcd.print(f"Temp: {self.values['temp']:>4.3f} C", line=1)
             self.titrator.lcd.print(f"Res:  {self.values['res']:>4.3f} Ohms", line=2)
             self.titrator.lcd.print(
@@ -57,7 +56,6 @@ class ReadValues(UIState):
                 f"pH V: {(self.values['pH_volts'] * 1000):>3.4f} mV", line=4
             )
             self.titrator.lcd.print(f"Reading: {i}", 1, console=True)
-        self.titrator.lcd.clear()
         self.titrator.lcd.print("Press any to cont", line=1)
         self.titrator.lcd.print("", line=2)
         self.titrator.lcd.print("", line=3)

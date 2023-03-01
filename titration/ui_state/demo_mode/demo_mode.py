@@ -65,14 +65,12 @@ class DemoMode(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("1: Read Values", line=1)
             self.titrator.lcd.print("2: Pump", line=2)
             self.titrator.lcd.print("3: Set Volume", line=3)
             self.titrator.lcd.print("*: Page 2", line=4)
 
         elif self.substate == 2:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("4: Toggle Demo Mode", line=1)
             self.titrator.lcd.print("5: Read Volume", line=2)
             self.titrator.lcd.print("6: Exit Demo Mode", line=3)

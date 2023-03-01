@@ -28,7 +28,6 @@ class ReadVolume(UIState):
         """
         The function to loop through and display to the LCD screen until a new keypad input
         """
-        self.titrator.lcd.clear()
         self.titrator.lcd.print("Pump Vol: ", line=1)
         self.titrator.lcd.print(
             f"{self.titrator.pump.get_volume_in_pump():1.2f}",

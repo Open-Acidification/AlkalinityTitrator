@@ -67,14 +67,12 @@ class MainMenu(UIState):
         """
 
         if self.substate == 1:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("Run titration", line=1)
             self.titrator.lcd.print("Calibrate sensors", line=2)
             self.titrator.lcd.print("Prime pump", line=3)
             self.titrator.lcd.print("Page 2", line=4)
 
         elif self.substate == 2:
-            self.titrator.lcd.clear()
             self.titrator.lcd.print("Update settings", line=1)
             self.titrator.lcd.print("Test mode", line=2)
             self.titrator.lcd.print("Exit", line=3)
