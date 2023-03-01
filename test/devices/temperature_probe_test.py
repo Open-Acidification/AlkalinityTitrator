@@ -2,14 +2,14 @@
 The file to test the mock temperature sensor
 """
 
-from titration.devices.library import TemperatureProbe, board
+from titration.devices.library import TemperatureProbe
 
 
 def create_temperature_probe():
     """
     The function to create a mock temperature sensor
     """
-    return TemperatureProbe(board.SCK, board.MOSI, board.MISO, board.D4, wires=2)
+    return TemperatureProbe()
 
 
 def test_temperature_probe_create():

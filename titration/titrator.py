@@ -2,7 +2,13 @@
 The file for the Titrator class
 """
 from titration import constants
-from titration.devices.library import Keypad, LiquidCrystal, SyringePump
+from titration.devices.library import (
+    Keypad,
+    LiquidCrystal,
+    SyringePump,
+    TemperatureControl,
+    TemperatureProbe,
+)
 from titration.ui_state.main_menu import MainMenu
 
 
@@ -24,6 +30,10 @@ class Titrator:
 
         # Initialize Syringe Pump
         self.pump = SyringePump()
+
+        # Initialize Temperature Probe and Controller
+        self.temp_probe = TemperatureProbe()
+        self.temp_controller = TemperatureControl(TemperatureProbe())
 
         # Initialize LCD
         self.lcd = LiquidCrystal(
@@ -49,6 +59,15 @@ class Titrator:
         """
         The function used to loop through in each state
         """
+        self.temp_controller.update()
+        self.update_state()
+        print(
+            "Titrator::handleUI() - ",
+            self.state.name(),
+            "::substate",
+            self.state.substate,
+            "::loop()",
+        )
         self.handle_ui()
 
     def set_next_state(self, new_state, update):
@@ -84,12 +103,4 @@ class Titrator:
         print("Titrator::handleUI() - ", self.state.name(), "::handleKey(", key, ")")
         if key is not None:
             self.state.handle_key(key)
-        self.update_state()
-        print(
-            "Titrator::handleUI() - ",
-            self.state.name(),
-            "::substate",
-            self.state.substate,
-            "::loop()",
-        )
         self.state.loop()
