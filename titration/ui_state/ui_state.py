@@ -46,7 +46,7 @@ class UIState:
         Returns:
             string: the name of the state
         """
-        return self.__class__.__name__
+        return str(self.__class__.__name__)
 
     def loop(self):
         """

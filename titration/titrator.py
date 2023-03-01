@@ -1,9 +1,16 @@
 """
 The file for the Titrator class
 """
+
+import logging
+
 from titration import constants
 from titration.devices.library import Keypad, LiquidCrystal, SyringePump
 from titration.ui_state.main_menu import MainMenu
+
+logging.basicConfig(
+    filename="last_titration.log", encoding="utf-8", level=logging.DEBUG
+)
 
 
 class Titrator:
@@ -21,6 +28,11 @@ class Titrator:
         """
         The constructor for the Titrator class
         """
+
+        # Initialize Logger
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging.DEBUG)
+        self.logger.info("\nNEW TITRATION\n")
 
         # Initialize Syringe Pump
         self.pump = SyringePump()
@@ -55,11 +67,10 @@ class Titrator:
         """
         The function used to set the next state the state machine will enter
         """
-        print(
-            "Titrator::setNextState() from ",
-            self.next_state.name() if self.next_state else "nullptr",
-            " to ",
-            new_state.name(),
+        self.logger.info(
+            "Titrator::setNextState() from " + self.next_state.name()
+            if self.next_state
+            else "nullptr" + " to " + new_state.name(),
         )
         self.next_state = new_state
         if update:
@@ -70,7 +81,7 @@ class Titrator:
         The function used to move to the next state
         """
         if self.next_state:
-            print("Titrator::updateState() to ", self.next_state.name())
+            self.logger.info("Titrator::updateState() to " + self.next_state.name())
             self.state = self.next_state
             self.next_state = None
             self.state.start()
@@ -79,17 +90,18 @@ class Titrator:
         """
         The function used to receive the keypad input and process the appropriate response
         """
-        print("Titrator::handleUI() - ", self.state.name())
         key = self.keypad.get_key()
-        print("Titrator::handleUI() - ", self.state.name(), "::handleKey(", key, ")")
+        self.logger.info(
+            "Titrator::handleUI() - " + self.state.name() + "::handleKey(" + key + ")"
+        )
         if key is not None:
             self.state.handle_key(key)
         self.update_state()
-        print(
-            "Titrator::handleUI() - ",
-            self.state.name(),
-            "::substate",
-            self.state.substate,
-            "::loop()",
+        self.logger.info(
+            "Titrator::handleUI() - "
+            + self.state.name()
+            + "::substate"
+            + str(self.state.substate)
+            + "::loop()"
         )
         self.state.loop()
