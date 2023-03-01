@@ -2,6 +2,7 @@
 The file for the StirControl class
 """
 import math
+import time
 
 from titration.devices.library import board, pwmio
 
@@ -58,3 +59,11 @@ class StirControl:
         The function to stop the motor
         """
         self.set_motor_speed(0)
+
+    def degas(self, degas_time):
+        """
+        The function to degas the titration solution
+        """
+        self.motor_speed_fast()
+        time.sleep(degas_time)
+        self.motor_speed_slow()
