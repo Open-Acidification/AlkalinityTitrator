@@ -417,6 +417,7 @@ disable=raw-checker-failed,
         use-symbolic-message-instead,
         import-error,
         no-member,
+        logging-not-lazy,
         
 
 # Enable the message, report, category or checker with the given id(s). You can
