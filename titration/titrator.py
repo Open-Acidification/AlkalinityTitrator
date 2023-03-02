@@ -1,8 +1,19 @@
 """
 The file for the Titrator class
 """
+
+# pylint: disable = too-many-instance-attributes
+
 from titration import constants
-from titration.devices.library import Keypad, LiquidCrystal, SyringePump
+from titration.devices.library import (
+    Keypad,
+    LiquidCrystal,
+    PHProbe,
+    StirControl,
+    SyringePump,
+    TemperatureControl,
+    TemperatureProbe,
+)
 from titration.ui_state.main_menu import MainMenu
 
 
@@ -22,9 +33,6 @@ class Titrator:
         The constructor for the Titrator class
         """
 
-        # Initialize Syringe Pump
-        self.pump = SyringePump()
-
         # Initialize LCD
         self.lcd = LiquidCrystal(
             cols=constants.LCD_WIDTH,
@@ -33,6 +41,19 @@ class Titrator:
 
         # Initialize Keypad
         self.keypad = Keypad()
+
+        # Initialize pH Probe
+        self.ph_probe = PHProbe()
+
+        # Initialize Syringe Pump
+        self.pump = SyringePump()
+
+        # Initialize Stir Controller
+        self.stir_controller = StirControl()
+
+        # Initialize Temperature Sensor
+        self.temp_probe = TemperatureProbe()
+        self.temp_controller = TemperatureControl(self.temp_probe)
 
         # Initialize State
         self.state = MainMenu(self)
