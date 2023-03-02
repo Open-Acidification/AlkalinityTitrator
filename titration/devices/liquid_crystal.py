@@ -127,7 +127,7 @@ class LiquidCrystal:
         """
         self.__lcd_byte(line, LCD_CMD)
 
-        for i in range(self.rows):
+        for i in range(self.cols):
             self.__lcd_byte(ord(message[i]), LCD_CHR)
 
     def __lcd_byte(self, bits, mode):
