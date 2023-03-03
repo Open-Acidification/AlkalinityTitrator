@@ -3,7 +3,7 @@ The file to test the StirControl class
 """
 import time
 from unittest import mock
-from unittest.mock import ANY, call
+from unittest.mock import call
 
 from titration.devices.library import StirControl
 
