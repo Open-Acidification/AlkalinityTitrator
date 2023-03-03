@@ -5,7 +5,6 @@ The file to test the DemoStirControl Class
 # pylint: disable = too-many-arguments, redefined-builtin
 
 from unittest import mock
-from unittest.mock import ANY
 
 from titration.devices.library import LiquidCrystal, StirControl
 from titration.titrator import Titrator
