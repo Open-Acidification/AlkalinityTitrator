@@ -38,7 +38,7 @@ def test_set_speed():
 
 
 @mock.patch.object(StirControl, "_set_speed")
-def test_set_speed_fast(set_speed_mock):
+def test_set_speed_fast(_set_speed):
     """
     The function to test the set motor speed fast function
     """
@@ -46,11 +46,11 @@ def test_set_speed_fast(set_speed_mock):
 
     stir_controller.set_fast()
 
-    set_speed_mock.assert_called_with(5000)
+    _set_speed.assert_called_with(5000)
 
 
 @mock.patch.object(StirControl, "_set_speed")
-def test_set_speed_slow(set_speed_mock):
+def test_set_speed_slow(_set_speed):
     """
     The function to test the set motor speed slow function
     """
@@ -58,7 +58,7 @@ def test_set_speed_slow(set_speed_mock):
 
     stir_controller.set_slow()
 
-    set_speed_mock.assert_called_with(3000)
+    _set_speed.assert_called_with(3000)
 
 
 def test_set_stop():
@@ -75,7 +75,7 @@ def test_set_stop():
 
 @mock.patch.object(time, "sleep")
 @mock.patch.object(StirControl, "_set_speed")
-def test_degas(set_speed_mock, sleep_mock):
+def test_degas(_set_speed, sleep):
     """
     The function to test the stir controller's degas function
     """
@@ -84,5 +84,5 @@ def test_degas(set_speed_mock, sleep_mock):
     stir_controller.degas(0)
 
     calls = [call(5000), call(3000)]
-    set_speed_mock.assert_has_calls(calls)
-    sleep_mock.assert_called_with(0)
+    _set_speed.assert_has_calls(calls)
+    sleep.assert_called_with(0)
