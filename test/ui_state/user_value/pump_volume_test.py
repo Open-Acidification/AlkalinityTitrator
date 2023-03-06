@@ -176,4 +176,4 @@ def test_pump_volume(print_mock, set_next_state_mock):
     pump_volume.handle_key("A")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
-    assert pump_volume.titrator.pump_volume == ""
+    assert pump_volume.titrator.pump_volume == 0

@@ -60,11 +60,11 @@ class Titrator:
         self.next_state = None
 
         # Initialize Titrator Values
-        self.pump_volume = "0"
-        self.solution_weight = "0"
-        self.solution_salinity = "0"
-        self.volume = "0"
-        self.buffer_ph = "0"
+        self.pump_volume = 0
+        self.solution_weight = 0
+        self.solution_salinity = 0
+        self.volume = 0
+        self.buffer_ph = 0
 
     def loop(self):
         """

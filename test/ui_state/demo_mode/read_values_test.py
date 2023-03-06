@@ -50,7 +50,7 @@ def test_loop(print_mock):
             ),
             mock.call(f"Gain: {read_values.titrator.ph_probe.get_gain()}", line=3),
             mock.call(
-                f"Volume: {read_values.titrator.pump.get_volume_in_pump()} ml",
+                f"Volume: {read_values.titrator.pump.get_pump_volume()} ml",
                 line=4,
             ),
         ]
@@ -97,7 +97,7 @@ def test_read_values(print_mock, set_next_state_mock):
             ),
             mock.call(f"Gain: {read_values.titrator.ph_probe.get_gain()}", line=3),
             mock.call(
-                f"Volume: {read_values.titrator.pump.get_volume_in_pump()} ml",
+                f"Volume: {read_values.titrator.pump.get_pump_volume()} ml",
                 line=4,
             ),
         ]

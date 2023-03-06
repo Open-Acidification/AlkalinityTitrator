@@ -54,7 +54,7 @@ class ReadValues(UIState):
                 f"Gain: {self.titrator.ph_probe.get_gain()}", line=3
             )
             self.titrator.lcd.print(
-                f"Volume: {self.titrator.pump.get_volume_in_pump()} ml", line=4
+                f"Volume: {self.titrator.pump.get_pump_volume()} ml", line=4
             )
 
         elif self.substate == 2:
