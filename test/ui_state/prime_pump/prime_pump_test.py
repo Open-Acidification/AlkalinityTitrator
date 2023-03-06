@@ -1,49 +1,57 @@
 """
 The file to test the PrimePump class
 """
+
 from unittest import mock
 from unittest.mock import ANY
 
-from titration.devices.library import LiquidCrystal
+from titration.devices.library import LiquidCrystal, SyringePump
 from titration.titrator import Titrator
-from titration.ui_state.demo_mode.demo_mode import DemoMode
 from titration.ui_state.main_menu import MainMenu
 from titration.ui_state.prime_pump.prime_pump import PrimePump
 
 
+@mock.patch.object(SyringePump, "pump_volume_out")
+@mock.patch.object(SyringePump, "pump_volume_in")
 @mock.patch.object(PrimePump, "_set_next_state")
-def test_handle_key(set_next_state_mock):
+def test_handle_key(_set_next_state, pump_volume_in, pump_volume_out):
     """
     The function to test PrimePump's handle_key function for each keypad input
     """
     prime_pump = PrimePump(Titrator(), MainMenu(Titrator()))
 
     prime_pump.handle_key("1")
-    set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "FillPump"
+    assert prime_pump.substate == 2
+    pump_volume_in.assert_called_with(1.1)
+
+    prime_pump.handle_key("1")
+    assert prime_pump.substate == 1
 
     prime_pump.handle_key("2")
-    set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "EmptyPump"
+    assert prime_pump.substate == 3
+    pump_volume_out.assert_called_with(1.1)
+
+    prime_pump.handle_key("1")
+    assert prime_pump.substate == 1
 
     prime_pump.handle_key("4")
-    set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
+    _set_next_state.assert_called_with(ANY, True)
+    assert _set_next_state.call_args.args[0].name() == "MainMenu"
 
     prime_pump.handle_key("D")
-    set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
+    _set_next_state.assert_called_with(ANY, True)
+    assert _set_next_state.call_args.args[0].name() == "MainMenu"
 
 
 @mock.patch.object(LiquidCrystal, "print")
-def test_loop(print_mock):
+def test_loop(print):
     """
     The function to test PrimePump's loop function's LiquidCrystal calls
     """
-    prime_pump = PrimePump(Titrator(), DemoMode(Titrator(), MainMenu(Titrator())))
+    prime_pump = PrimePump(Titrator(), MainMenu(Titrator()))
 
     prime_pump.loop()
-    print_mock.assert_has_calls(
+    print.assert_has_calls(
         [
             mock.call("1. Fill Pump", line=1),
             mock.call("2. Empty Pump", line=2),
@@ -52,20 +60,46 @@ def test_loop(print_mock):
         ]
     )
 
+    prime_pump.substate = 2
+    prime_pump.loop()
+    print.assert_has_calls(
+        [
+            mock.call("Filling Pump", line=1),
+            mock.call("", line=2),
+            mock.call("Press any to cont.", line=3),
+            mock.call("", line=4),
+        ]
+    )
 
+    prime_pump.substate = 3
+    prime_pump.loop()
+    print.assert_has_calls(
+        [
+            mock.call("Emptying Pump", line=1),
+            mock.call("", line=2),
+            mock.call("Press any to cont.", line=3),
+            mock.call("", line=4),
+        ]
+    )
+
+
+@mock.patch.object(SyringePump, "pump_volume_out")
+@mock.patch.object(SyringePump, "pump_volume_in")
 @mock.patch.object(PrimePump, "_set_next_state")
 @mock.patch.object(LiquidCrystal, "print")
-def test_prime_pump(print_mock, set_next_state_mock):
+def test_prime_pump(print, _set_next_state, pump_volume_in, pump_volume_out):
     """
     The function to test a use case of the PrimePump class:
         User enters "1" to fill pump
+        User enters "1" to return to prime pump menu
         User enters "2" to empty pump
+        User enters "1" to return to prime pump menu
         User enters "4" to return to main menu
     """
     prime_pump = PrimePump(Titrator(), MainMenu(Titrator()))
 
     prime_pump.loop()
-    print_mock.assert_has_calls(
+    print.assert_has_calls(
         [
             mock.call("1. Fill Pump", line=1),
             mock.call("2. Empty Pump", line=2),
@@ -75,11 +109,24 @@ def test_prime_pump(print_mock, set_next_state_mock):
     )
 
     prime_pump.handle_key("1")
-    set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "FillPump"
+    assert prime_pump.substate == 2
+    pump_volume_in.assert_called_with(1.1)
 
     prime_pump.loop()
-    print_mock.assert_has_calls(
+    print.assert_has_calls(
+        [
+            mock.call("Filling Pump", line=1),
+            mock.call("", line=2),
+            mock.call("Press any to cont.", line=3),
+            mock.call("", line=4),
+        ]
+    )
+
+    prime_pump.handle_key("1")
+    assert prime_pump.substate == 1
+
+    prime_pump.loop()
+    print.assert_has_calls(
         [
             mock.call("1. Fill Pump", line=1),
             mock.call("2. Empty Pump", line=2),
@@ -89,10 +136,24 @@ def test_prime_pump(print_mock, set_next_state_mock):
     )
 
     prime_pump.handle_key("2")
-    set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "EmptyPump"
+    assert prime_pump.substate == 3
+    pump_volume_out.assert_called_with(1.1)
 
-    print_mock.assert_has_calls(
+    prime_pump.loop()
+    print.assert_has_calls(
+        [
+            mock.call("Emptying Pump", line=1),
+            mock.call("", line=2),
+            mock.call("Press any to cont.", line=3),
+            mock.call("", line=4),
+        ]
+    )
+
+    prime_pump.handle_key("1")
+    assert prime_pump.substate == 1
+
+    prime_pump.loop()
+    print.assert_has_calls(
         [
             mock.call("1. Fill Pump", line=1),
             mock.call("2. Empty Pump", line=2),
@@ -102,5 +163,5 @@ def test_prime_pump(print_mock, set_next_state_mock):
     )
 
     prime_pump.handle_key("4")
-    set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
+    _set_next_state.assert_called_with(ANY, True)
+    assert _set_next_state.call_args.args[0].name() == "MainMenu"
