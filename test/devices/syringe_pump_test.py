@@ -2,6 +2,8 @@
 The file to test the syringe pump
 """
 
+# pylint: disable = protected-access
+
 from unittest import mock
 from unittest.mock import call
 

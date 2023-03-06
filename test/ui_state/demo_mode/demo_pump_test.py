@@ -2,6 +2,8 @@
 The file to test the DemoPump Class
 """
 
+# pylint: disable = redefined-builtin, too-many-statements
+
 from unittest import mock
 from unittest.mock import ANY
 
