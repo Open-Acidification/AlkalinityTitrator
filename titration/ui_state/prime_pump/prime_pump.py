@@ -45,7 +45,7 @@ class PrimePump(UIState):
 
         if key == constants.KEY_D:
             self._set_next_state(self.previous_state, True)
-        
+
     def loop(self):
         """
         The function to loop through and display to the LCD screen until a new keypad input
@@ -55,13 +55,13 @@ class PrimePump(UIState):
             self.titrator.lcd.print("2. Empty Pump", line=2)
             self.titrator.lcd.print("", line=3)
             self.titrator.lcd.print("4. Return", line=4)
-        
+
         elif self.substate == 2:
             self.titrator.lcd.print("Filling Pump", line=1)
             self.titrator.lcd.print("", line=2)
             self.titrator.lcd.print("Press any to cont.", line=3)
             self.titrator.lcd.print("", line=4)
-        
+
         elif self.substate == 3:
             self.titrator.lcd.print("Emptying Pump", line=1)
             self.titrator.lcd.print("", line=2)

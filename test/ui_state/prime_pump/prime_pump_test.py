@@ -44,14 +44,14 @@ def test_handle_key(_set_next_state, pump_volume_in, pump_volume_out):
 
 
 @mock.patch.object(LiquidCrystal, "print")
-def test_loop(print):
+def test_loop(print_mock):
     """
     The function to test PrimePump's loop function's LiquidCrystal calls
     """
     prime_pump = PrimePump(Titrator(), MainMenu(Titrator()))
 
     prime_pump.loop()
-    print.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("1. Fill Pump", line=1),
             mock.call("2. Empty Pump", line=2),
@@ -62,7 +62,7 @@ def test_loop(print):
 
     prime_pump.substate = 2
     prime_pump.loop()
-    print.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Filling Pump", line=1),
             mock.call("", line=2),
@@ -73,7 +73,7 @@ def test_loop(print):
 
     prime_pump.substate = 3
     prime_pump.loop()
-    print.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Emptying Pump", line=1),
             mock.call("", line=2),
@@ -87,7 +87,7 @@ def test_loop(print):
 @mock.patch.object(SyringePump, "pump_volume_in")
 @mock.patch.object(PrimePump, "_set_next_state")
 @mock.patch.object(LiquidCrystal, "print")
-def test_prime_pump(print, _set_next_state, pump_volume_in, pump_volume_out):
+def test_prime_pump(print_mock, _set_next_state, pump_volume_in, pump_volume_out):
     """
     The function to test a use case of the PrimePump class:
         User enters "1" to fill pump
@@ -99,7 +99,7 @@ def test_prime_pump(print, _set_next_state, pump_volume_in, pump_volume_out):
     prime_pump = PrimePump(Titrator(), MainMenu(Titrator()))
 
     prime_pump.loop()
-    print.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("1. Fill Pump", line=1),
             mock.call("2. Empty Pump", line=2),
@@ -113,7 +113,7 @@ def test_prime_pump(print, _set_next_state, pump_volume_in, pump_volume_out):
     pump_volume_in.assert_called_with(1.1)
 
     prime_pump.loop()
-    print.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Filling Pump", line=1),
             mock.call("", line=2),
@@ -126,7 +126,7 @@ def test_prime_pump(print, _set_next_state, pump_volume_in, pump_volume_out):
     assert prime_pump.substate == 1
 
     prime_pump.loop()
-    print.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("1. Fill Pump", line=1),
             mock.call("2. Empty Pump", line=2),
@@ -140,7 +140,7 @@ def test_prime_pump(print, _set_next_state, pump_volume_in, pump_volume_out):
     pump_volume_out.assert_called_with(1.1)
 
     prime_pump.loop()
-    print.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("Emptying Pump", line=1),
             mock.call("", line=2),
@@ -153,7 +153,7 @@ def test_prime_pump(print, _set_next_state, pump_volume_in, pump_volume_out):
     assert prime_pump.substate == 1
 
     prime_pump.loop()
-    print.assert_has_calls(
+    print_mock.assert_has_calls(
         [
             mock.call("1. Fill Pump", line=1),
             mock.call("2. Empty Pump", line=2),
