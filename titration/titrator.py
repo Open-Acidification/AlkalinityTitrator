@@ -65,6 +65,7 @@ class Titrator:
         self.solution_salinity = "0"
         self.volume = "0"
         self.buffer_ph = "0"
+        self.degas_time = 0
 
     def loop(self):
         """
