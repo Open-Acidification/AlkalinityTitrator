@@ -66,6 +66,7 @@ class Titrator:
         self.volume = 0
         self.buffer_ph = 0
 
+
     def loop(self):
         """
         The function used to loop through in each state
