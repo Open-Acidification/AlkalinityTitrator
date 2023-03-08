@@ -21,7 +21,7 @@ class DemoPump(UIState):
                 1 -> Get Pump Volume
                 2 -> Get Added Volume
                 3 -> Clear Added Volume
-                4 -> Got 2nd page of options
+                4 -> Go to 2nd page of options
             Substate 2:
                 1 -> Fill Pump
                 2 -> Empty Pump
@@ -30,10 +30,12 @@ class DemoPump(UIState):
             Substate 3:
                 1 -> Pump Out
                 4 -> Go to 1st page
-            Substate 4:
+            Substate 4, 5, 6:
                 Any -> Substate 1
-            Substate 5:
-                Any -> Substate 1
+            Substate 7, 8, 9:
+                Any -> Substate 2
+            Substate 10:
+                Any -> Substate 3
             D -> Return to Demo Mode Menu
 
         Parameters:
