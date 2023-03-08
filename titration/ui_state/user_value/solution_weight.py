@@ -13,7 +13,7 @@ class SolutionWeight(UserValue):
         """
         The function to save the titrator's solution weight
         """
-        self.titrator.solution_weight = value
+        self.titrator.solution_weight = float(value)
 
     def get_label(self):
         """

@@ -13,7 +13,7 @@ class ReferenceTemperature(UserValue):
         """
         The function to save the titrator's reference temperature
         """
-        self.titrator.reference_temperature = value
+        self.titrator.reference_temperature = float(value)
 
     def get_label(self):
         """

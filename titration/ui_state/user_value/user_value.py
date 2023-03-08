@@ -52,7 +52,7 @@ class UserValue(UIState):
         Parameters:
             key (char): the keypad input to determine which state to go to
         """
-        if key == "A":
+        if (key == "A") & (self.value not in ("", ".")):
             self._set_next_state(self.previous_state, True)
             self.save_value(self.value)
 

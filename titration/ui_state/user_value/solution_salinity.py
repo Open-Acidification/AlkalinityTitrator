@@ -13,7 +13,7 @@ class SolutionSalinity(UserValue):
         """
         The function to save the titrator's solution salinity
         """
-        self.titrator.solution_salinity = value
+        self.titrator.solution_salinity = float(value)
 
     def get_label(self):
         """

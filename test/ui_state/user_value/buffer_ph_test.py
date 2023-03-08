@@ -19,6 +19,10 @@ def test_handle_key(set_next_state_mock):
     buffer_ph = BufferPH(Titrator(), UpdateSettings(Titrator(), MainMenu(Titrator())))
 
     buffer_ph.handle_key("A")
+    set_next_state_mock.assert_not_called()
+
+    buffer_ph.value = "1"
+    buffer_ph.handle_key("A")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
 
@@ -168,6 +172,33 @@ def test_buffer_ph(print_mock, set_next_state_mock):
     )
 
     buffer_ph.handle_key("A")
+    set_next_state_mock.assert_not_called()
+    assert buffer_ph.value == ""
+
+    buffer_ph.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Enter buffer pH:", line=1),
+            mock.call("", style="center", line=2),
+            mock.call("* = .       B = BS", line=3),
+            mock.call("A = accept  C = Clr", line=4),
+        ]
+    )
+
+    buffer_ph.handle_key("1")
+    assert buffer_ph.value == "1"
+
+    buffer_ph.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Enter buffer pH:", line=1),
+            mock.call("1", style="center", line=2),
+            mock.call("* = .       B = BS", line=3),
+            mock.call("A = accept  C = Clr", line=4),
+        ]
+    )
+
+    buffer_ph.handle_key("A")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
-    assert buffer_ph.titrator.buffer_ph == ""
+    assert buffer_ph.titrator.buffer_ph == 1.0

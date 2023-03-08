@@ -13,7 +13,7 @@ class Volume(UserValue):
         """
         The function to save the titrator's Volume
         """
-        self.titrator.volume = value
+        self.titrator.volume = float(value)
 
     def get_label(self):
         """
