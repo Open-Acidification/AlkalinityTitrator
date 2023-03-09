@@ -9,11 +9,11 @@ class BufferPH(UserValue):
     This is a class for the BufferPH state of the titrator
     """
 
-    def save_value(self, value):
+    def save_value(self):
         """
         The function to save the titrator's buffer pH
         """
-        self.titrator.buffer_ph = float(value)
+        self.titrator.buffer_ph = self.value
 
     def get_label(self):
         """

@@ -9,11 +9,11 @@ class PumpVolume(UserValue):
     This is a class for the PumpVolume state of the titrator
     """
 
-    def save_value(self, value):
+    def save_value(self):
         """
         The function to save the titrator's pump volume
         """
-        self.titrator.pump_volume = float(value)
+        self.titrator.pump_volume = self.value
 
     def get_label(self):
         """

@@ -26,7 +26,7 @@ class UserValue(UIState):
         super().__init__(titrator, previous_state)
         self.value = ""
 
-    def save_value(self, value):
+    def save_value(self):
         """
         The function to save photometer values
         """
@@ -54,7 +54,8 @@ class UserValue(UIState):
         """
         if (key == "A") & (self.value not in ("", ".")):
             self._set_next_state(self.previous_state, True)
-            self.save_value(self.value)
+            self.value = float(self.value)
+            self.save_value()
 
         elif key == "B":
             self.value = self.value[:-1]

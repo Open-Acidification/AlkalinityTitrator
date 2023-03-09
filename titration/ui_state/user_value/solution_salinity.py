@@ -9,11 +9,11 @@ class SolutionSalinity(UserValue):
     This is a class for the SolutionSalinity state of the titrator
     """
 
-    def save_value(self, value):
+    def save_value(self):
         """
         The function to save the titrator's solution salinity
         """
-        self.titrator.solution_salinity = float(value)
+        self.titrator.solution_salinity = self.value
 
     def get_label(self):
         """
