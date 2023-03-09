@@ -418,6 +418,7 @@ disable=raw-checker-failed,
         import-error,
         no-member,
         logging-not-lazy,
+        protected-access,
         
 
 # Enable the message, report, category or checker with the given id(s). You can

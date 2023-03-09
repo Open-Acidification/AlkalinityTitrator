@@ -31,9 +31,22 @@ class SyringePump:
         )
 
         self.volume_in_pump = 0
+        self.pump_direction = 0
 
         self.serial.reset_input_buffer()
         self.serial.reset_output_buffer()
+
+    def set_pump_direction(self, direction):
+        """
+        The function to set whether the pump will take in or push out liquid
+        """
+        self.pump_direction = direction
+
+    def get_pump_direction(self):
+        """
+        The function to return the pump direction
+        """
+        return self.pump_direction
 
     def set_volume_in_pump(self, volume):
         """

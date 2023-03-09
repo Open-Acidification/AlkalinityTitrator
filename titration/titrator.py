@@ -1,11 +1,20 @@
 """
 The file for the Titrator class
 """
+# pylint: disable = too-many-instance-attributes
 
 import logging
 
 from titration import constants
-from titration.devices.library import Keypad, LiquidCrystal, SyringePump
+from titration.devices.library import (
+    Keypad,
+    LiquidCrystal,
+    PHProbe,
+    StirControl,
+    SyringePump,
+    TemperatureControl,
+    TemperatureProbe,
+)
 from titration.ui_state.main_menu import MainMenu
 
 logging.basicConfig(
@@ -46,6 +55,19 @@ class Titrator:
         # Initialize Keypad
         self.keypad = Keypad()
 
+        # Initialize pH Probe
+        self.ph_probe = PHProbe()
+
+        # Initialize Syringe Pump
+        self.pump = SyringePump()
+
+        # Initialize Stir Controller
+        self.stir_controller = StirControl()
+
+        # Initialize Temperature Sensor
+        self.temp_probe = TemperatureProbe()
+        self.temp_controller = TemperatureControl(self.temp_probe)
+
         # Initialize State
         self.state = MainMenu(self)
         self.next_state = None
@@ -56,6 +78,7 @@ class Titrator:
         self.solution_salinity = "0"
         self.volume = "0"
         self.buffer_ph = "0"
+        self.degas_time = 0
 
     def loop(self):
         """

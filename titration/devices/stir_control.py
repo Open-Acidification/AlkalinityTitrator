@@ -2,6 +2,7 @@
 The file for the StirControl class
 """
 import math
+import time
 
 from titration.devices.library import board, pwmio
 
@@ -21,40 +22,45 @@ class StirControl:
         The constructor for the mock stir controller class
         Initializes the pump's motor
         """
-        self.motor = pwmio.PWMOut(
+        self._motor = pwmio.PWMOut(
             board.D13, duty_cycle=STIR_DUTY_CYCLE, frequency=STIR_FREQUENCY
         )
 
-    def set_motor_speed(self, target, gradual=False):
+    def _set_speed(self, target):
         """
         The function to set the motor speed
         """
-        if gradual is True:
-            direction = math.copysign(1, target - self.motor.duty_cycle)
+        direction = math.copysign(1, target - self._motor.duty_cycle)
 
-            if direction == 1 and self.motor.duty_cycle < 1000:
-                self.motor.duty_cycle = 1000
+        if direction == 1 and self._motor.duty_cycle < 1000:
+            self._motor.duty_cycle = 1000
 
-            while self.motor.duty_cycle != target:
-                next_step = min(abs(target - self.motor.duty_cycle), 100)
-                self.motor.duty_cycle = self.motor.duty_cycle + (next_step * direction)
-        else:
-            self.motor.duty_cycle = target
+        while self._motor.duty_cycle != target:
+            next_step = min(abs(target - self._motor.duty_cycle), 100)
+            self._motor.duty_cycle = self._motor.duty_cycle + (next_step * direction)
 
-    def motor_speed_fast(self):
+    def set_fast(self):
         """
         The function to set the motor speed to a fast setting
         """
-        self.set_motor_speed(STIR_PWM_FAST, gradual=True)
+        self._set_speed(STIR_PWM_FAST)
 
-    def motor_speed_slow(self):
+    def set_slow(self):
         """
         The function to set the motor speed to a slow setting
         """
-        self.set_motor_speed(STIR_PWM_SLOW, gradual=True)
+        self._set_speed(STIR_PWM_SLOW)
 
-    def motor_stop(self):
+    def set_stop(self):
         """
         The function to stop the motor
         """
-        self.set_motor_speed(0)
+        self._motor.duty_cycle = 0
+
+    def degas(self, degas_time):
+        """
+        The function to degas the titration solution
+        """
+        self._set_speed(STIR_PWM_FAST)
+        time.sleep(degas_time)
+        self._set_speed(STIR_PWM_SLOW)
