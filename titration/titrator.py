@@ -1,6 +1,7 @@
 """
 The file for the Titrator class
 """
+
 # pylint: disable = too-many-instance-attributes
 
 import logging
@@ -17,9 +18,7 @@ from titration.devices.library import (
 )
 from titration.ui_state.main_menu import MainMenu
 
-logging.basicConfig(
-    filename="titration.log", encoding="utf-8", level=logging.DEBUG
-)
+logging.basicConfig(filename="titration.log", encoding="utf-8", level=logging.DEBUG)
 
 
 class Titrator:
