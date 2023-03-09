@@ -7,13 +7,16 @@ import digitalio
 
 from titration.devices.library import board
 
+LCD_WIDTH = 20
+LCD_HEIGHT = 4
+
 
 class LiquidCrystal:
     """
     The class for the mock of the Sunfire LCD 20x04 Char Display
     """
 
-    def __init__(self, cols, rows):
+    def __init__(self):
         """
         The constructor for the mock LiquidCrystal class.
         The parameters are the board pins that the LCD uses
@@ -37,8 +40,8 @@ class LiquidCrystal:
 
         self.pin_on.value = True
 
-        self.cols = cols
-        self.rows = rows
+        self.cols = LCD_WIDTH
+        self.rows = LCD_HEIGHT
 
         self.clear_flag = True
 

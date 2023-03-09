@@ -34,10 +34,7 @@ class Titrator:
         """
 
         # Initialize LCD
-        self.lcd = LiquidCrystal(
-            cols=constants.LCD_WIDTH,
-            rows=constants.LCD_HEIGHT,
-        )
+        self.lcd = LiquidCrystal()
 
         # Initialize Keypad
         self.keypad = Keypad()

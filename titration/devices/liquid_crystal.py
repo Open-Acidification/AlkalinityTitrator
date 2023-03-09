@@ -7,6 +7,9 @@ import board
 import digitalio
 
 # LCD Device Constants
+LCD_WIDTH = 20
+LCD_HEIGHT = 4
+
 LCD_CHR = True
 LCD_CMD = False
 
@@ -25,7 +28,7 @@ class LiquidCrystal:
     The class for the Sunfire LCD 20x04 Char Display
     """
 
-    def __init__(self, cols, rows):
+    def __init__(self):
         """
         The constructor for the mock LiquidCrystal class.
         The parameters are the board pins that the LCD uses
@@ -47,8 +50,8 @@ class LiquidCrystal:
         self.pin_d7.direction = digitalio.Direction.OUTPUT
         self.pin_on.direction = digitalio.Direction.OUTPUT
 
-        self.cols = cols
-        self.rows = rows
+        self.cols = LCD_WIDTH
+        self.rows = LCD_HEIGHT
 
         # Initialise display
         self.__lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
