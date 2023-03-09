@@ -13,8 +13,7 @@ class DegasTime(UserValue):
         """
         The function to save the titrator's degas time
         """
-        if value not in ("", "."):
-            self.titrator.degas_time = float(value)
+        self.titrator.degas_time = float(value)
 
     def get_label(self):
         """

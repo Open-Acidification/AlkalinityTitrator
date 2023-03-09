@@ -13,8 +13,7 @@ class PumpVolume(UserValue):
         """
         The function to save the titrator's pump volume
         """
-        if value not in ("", "."):
-            self.titrator.pump_volume = float(value)
+        self.titrator.pump_volume = float(value)
 
     def get_label(self):
         """
