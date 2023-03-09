@@ -20,7 +20,7 @@ class TemperatureProbe:
     The class for the temperature probe device
     """
 
-    def __init__(self, ref_resistor=DEFAULT_REF_RESISTANCE):
+    def __init__(self):
         """
         The constructor for the TemperatureProbe class
         """
@@ -31,10 +31,10 @@ class TemperatureProbe:
             self.c_s,
             wires=3,
             rtd_nominal=NOMINAL_RESISTANCE,
-            ref_resistor=ref_resistor,
+            ref_resistor=DEFAULT_REF_RESISTANCE,
         )
 
-        self.reference_resistance = ref_resistor
+        self.reference_resistance = DEFAULT_REF_RESISTANCE
 
     def get_temperature(self):
         """
@@ -69,9 +69,15 @@ class TemperatureProbe:
 
         # Calculate new reference temperature
         diff = temp - self.sensor.resistance
-        new_reference_resistance = (
+        self.reference_resistance = (
             self.reference_resistance + diff * self.reference_resistance / temp
         )
 
         # Reinitialize the device with the new setting
-        self.__init__(new_reference_resistance)
+        self.sensor = MAX31865(
+            self.spi,
+            self.c_s,
+            wires=3,
+            rtd_nominal=NOMINAL_RESISTANCE,
+            ref_resistor=self.reference_resistance,
+        )
