@@ -16,24 +16,7 @@ class CalibrateTemp(UIState):
         titrator (Titrator object): the titrator is used to move through the state machine
         previous_state (UIState object): the previous_state is used to return the last visited state
         substate (int): the substate is used to keep track of substate of the UIState
-        values (dict): the values dictionary is used to hold the actual temp, new reference resistance,
-         - and expected temperature
     """
-
-    def __init__(self, titrator, previous_state):
-        """
-        The constructor for the CalibrateTemp class
-
-        Parameters:
-            titrator (Titrator object): the titrator is used to move through the state machine
-            previous_state (UIState object): the previous_state is used to return the last visited state
-        """
-        super().__init__(titrator, previous_state)
-        self.values = {
-            "actual_temperature": 5,
-            "new_ref_resistance": 5,
-            "expected_temperature": 0,
-        }
 
     def handle_key(self, key):
         """
@@ -50,13 +33,14 @@ class CalibrateTemp(UIState):
         """
         if self.substate == 1:
             self._set_next_state(ReferenceTemperature(self.titrator, self), True)
-            self.substate += 1
+            self.substate = 2
 
         elif self.substate == 2:
-            if key in (1, constants.KEY_1):
-                self.substate += 1
+            # self.titrator.temp_probe.calibrate_temperature()
+            self.substate = 3
 
         elif self.substate == 3:
+            # self.titrator.temp_probe.__init__()
             self._set_next_state(self.previous_state, True)
 
     def loop(self):
@@ -72,11 +56,34 @@ class CalibrateTemp(UIState):
         elif self.substate == 2:
             self.titrator.lcd.print("Put probe in sol", line=1)
             self.titrator.lcd.print("", line=2)
-            self.titrator.lcd.print("Press 1 to", line=3)
+            self.titrator.lcd.print("Press any to", line=3)
             self.titrator.lcd.print("record value", line=4)
 
         elif self.substate == 3:
             self.titrator.lcd.print("Recorded temp:", line=1)
-            self.titrator.lcd.print(f"{self.values['actual_temperature']:0.3f}", line=2)
-            self.titrator.lcd.print(f"{self.values['new_ref_resistance']}", line=3)
+            self.titrator.lcd.print(f"{self.titrator.measured_temperature:0.3f}", line=2)
+            self.titrator.lcd.print(f"{constants.TEMP_REF_RESISTANCE}", line=3)
             self.titrator.lcd.print("", line=4)
+
+    def calibrate_temperature(self):
+        """
+        Calculates the expected resistance. Used for calibrating temperature probe.
+        https://www.analog.com/media/en/technical-documentation/application-notes/AN709_0.pdf
+        """
+
+        A = 0.0039083
+        B = -0.000000578
+        C = -0.000000000004183
+
+        temp = self.titrator.reference_temperature
+
+        if temp >= 0:
+            self.titrator.reference_resistance = constants.TEMP_NOMINAL_RESISTANCE * (1 + A * temp + B * temp ** 2)
+        else:
+            self.titrator.reference_resistance = constants.TEMP_NOMINAL_RESISTANCE * (1 + A * temp + B * temp ** 2 + C * (temp - 100) * temp ** 3)
+
+        self.titrator.measured_temperature = self.titrator.temperature_probe.get_temperature()
+        self.titrator.measured_resistance = self.titrator.temperature_probe.get_resistance()
+
+        diff = self.titrator.reference_resistance - self.titrator.temperature_probe.get_resistance()
+        constants.TEMP_REF_RESISTANCE = float(constants.TEMP_REF_RESISTANCE + diff * constants.TEMP_REF_RESISTANCE / self.titrator.reference_temperature)

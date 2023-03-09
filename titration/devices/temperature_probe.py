@@ -4,10 +4,8 @@ The file for the temperature probe device
 
 # pylint: disable = too-many-arguments
 
+from titration import constants
 from titration.devices.library import MAX31865, SPI, DigitalInOut, board
-
-TEMPERATURE_REF_RESISTANCE = 4300.0
-TEMPERATURE_NOMINAL_RESISTANCE = 1000.0
 
 
 class TemperatureProbe:
@@ -25,8 +23,8 @@ class TemperatureProbe:
             self.spi,
             self.c_s,
             wires=3,
-            rtd_nominal=TEMPERATURE_NOMINAL_RESISTANCE,
-            ref_resistor=TEMPERATURE_REF_RESISTANCE,
+            rtd_nominal=constants.TEMPERATURE_NOMINAL_RESISTANCE,
+            ref_resistor=constants.TEMPERATURE_REF_RESISTANCE,
         )
 
     def get_temperature(self):
