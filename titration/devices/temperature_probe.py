@@ -55,7 +55,7 @@ class TemperatureProbe:
         https://www.analog.com/media/en/technical-documentation/application-notes/AN709_0.pdf
 
         Parameters:
-            temp (float): reference temperature inputted by the user
+            temp (float): reference temperature inputted by the user in celsius
         """
         # Temperature below 0 C
         if temp >= 0:
