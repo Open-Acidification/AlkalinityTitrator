@@ -9,7 +9,7 @@ from titration.devices.library import Keypad, LiquidCrystal, SyringePump
 from titration.ui_state.main_menu import MainMenu
 
 logging.basicConfig(
-    filename="last_titration.log", encoding="utf-8", level=logging.DEBUG
+    filename="titration.log", encoding="utf-8", level=logging.DEBUG
 )
 
 
@@ -67,11 +67,6 @@ class Titrator:
         """
         The function used to set the next state the state machine will enter
         """
-        self.logger.info(
-            "Titrator::setNextState() from " + self.next_state.name()
-            if self.next_state
-            else "nullptr" + " to " + new_state.name(),
-        )
         self.next_state = new_state
         if update:
             self.update_state()
@@ -81,7 +76,6 @@ class Titrator:
         The function used to move to the next state
         """
         if self.next_state:
-            self.logger.info("Titrator::updateState() to " + self.next_state.name())
             self.state = self.next_state
             self.next_state = None
             self.state.start()
@@ -91,17 +85,7 @@ class Titrator:
         The function used to receive the keypad input and process the appropriate response
         """
         key = self.keypad.get_key()
-        self.logger.info(
-            "Titrator::handleUI() - " + self.state.name() + "::handleKey(" + key + ")"
-        )
         if key is not None:
             self.state.handle_key(key)
         self.update_state()
-        self.logger.info(
-            "Titrator::handleUI() - "
-            + self.state.name()
-            + "::substate"
-            + str(self.state.substate)
-            + "::loop()"
-        )
         self.state.loop()
