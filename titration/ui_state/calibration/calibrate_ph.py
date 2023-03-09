@@ -2,7 +2,6 @@
 The file for the CalibratePh class
 """
 
-from titration import constants
 from titration.ui_state.ui_state import UIState
 from titration.ui_state.user_value.buffer_ph import BufferPH
 
@@ -15,7 +14,6 @@ class CalibratePh(UIState):
         titrator (Titrator object): the titrator is used to move through the state machine
         previous_state (UIState object): the previous_state is used to return the last visited state
         substate (int): the substate is used to keep track of substate of the UIState
-        values (dict): the values dictionary is used to hold the buffer's measured voltage and actual pH
     """
 
     def handle_key(self, key):
@@ -33,15 +31,13 @@ class CalibratePh(UIState):
         """
         if self.substate == 1:
             self._set_next_state(BufferPH(self.titrator, self), True)
-            self.substate += 1
+            self.substate = 2
 
         elif self.substate == 2:
-            self.titrator.buffer_measured_volts = self.titrator.ph_probe.read_raw_pH()
-            self.substate += 1
+            self.titrator.buffer_measured_volts = self.titrator.ph_probe.get_voltage()
+            self.substate = 3
 
         elif self.substate == 3:
-            constants.PH_REF_VOLTAGE = self.titrator.buffer_measured_volts
-            constants.PH_REF_PH = self.titrator.buffer_nominal_ph
             self._set_next_state(self.previous_state, True)
 
     def loop(self):

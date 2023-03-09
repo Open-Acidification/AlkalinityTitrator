@@ -13,7 +13,8 @@ class BufferPH(UserValue):
         """
         The function to save the titrator's buffer pH
         """
-        self.titrator.nominal_buffer_ph = value
+        if value not in ("", "."):
+            self.titrator.buffer_nominal_ph = value
 
     def get_label(self):
         """

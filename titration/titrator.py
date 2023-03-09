@@ -68,14 +68,10 @@ class Titrator:
 
         # pH Calibration Values
         self.buffer_measured_volts = 0
-        self.buffer_measured_ph = 0
         self.buffer_nominal_ph = 0
 
         # Temperature Calibration Values
         self.reference_temperature = 0
-        self.reference_resistance = 0
-        self.measured_temperature = 0
-        self.measured_resistance = 0
 
     def loop(self):
         """
