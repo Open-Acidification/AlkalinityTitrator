@@ -170,4 +170,4 @@ def test_degas_time(print_mock, set_next_state_mock):
     degas_time.handle_key("A")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
-    assert degas_time.titrator.degas_time == ''
+    assert degas_time.titrator.degas_time == ""
