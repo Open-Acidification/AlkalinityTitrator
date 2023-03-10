@@ -4,6 +4,7 @@ The file to demo the stir controller device
 
 from titration import constants
 from titration.ui_state.ui_state import UIState
+from titration.ui_state.user_value.degas_time import DegasTime
 
 
 class DemoStirControl(UIState):
@@ -17,6 +18,7 @@ class DemoStirControl(UIState):
             Substate 1:
                 1 -> Set Motor Speed to Fast
                 2 -> Set Motor Speed to Slow
+                3 -> Degas
                 4 -> Return to Demo Mode Menu
             Substate 2:
                 Any -> Substate 2
@@ -27,20 +29,25 @@ class DemoStirControl(UIState):
         """
         if self.substate == 1:
             if key == constants.KEY_1:
-                self.titrator.stir_controller.motor_speed_fast()
+                self.titrator.stir_controller.set_fast()
                 self.substate = 2
             elif key == constants.KEY_2:
-                self.titrator.stir_controller.motor_speed_slow()
+                self.titrator.stir_controller.set_slow()
                 self.substate = 3
+            elif key == constants.KEY_3:
+                self._set_next_state(DegasTime(self.titrator, self), True)
+                self.titrator.stir_controller.degas(self.titrator.degas_time)
+                self.substate = 4
             elif key == constants.KEY_4:
-                self.titrator.stir_controller.motor_stop()
+                self.titrator.stir_controller.set_stop()
                 self._set_next_state(self.previous_state, True)
+
         else:
-            self.titrator.stir_controller.motor_stop()
+            self.titrator.stir_controller.set_stop()
             self.substate = 1
 
         if key == constants.KEY_D:
-            self.titrator.stir_controller.motor_stop()
+            self.titrator.stir_controller.set_stop()
             self._set_next_state(self.previous_state, True)
 
     def loop(self):
@@ -50,7 +57,7 @@ class DemoStirControl(UIState):
         if self.substate == 1:
             self.titrator.lcd.print("1: Set Fast Speed", line=1)
             self.titrator.lcd.print("2: Set Slow Speed", line=2)
-            self.titrator.lcd.print("", line=3)
+            self.titrator.lcd.print("3: Degas", line=3)
             self.titrator.lcd.print("4: Return", line=4)
 
         elif self.substate == 2:
@@ -64,3 +71,9 @@ class DemoStirControl(UIState):
             self.titrator.lcd.print("Set To Slow", line=2)
             self.titrator.lcd.print("Press any to cont.", line=3)
             self.titrator.lcd.print("", line=4)
+
+        elif self.substate == 4:
+            self.titrator.lcd.print("Degassing", line=1)
+            self.titrator.lcd.print("Solution", line=2)
+            self.titrator.lcd.print("Press any to cont.", line=3)
+            self.titrator.lcd.print("after degassing", line=4)
