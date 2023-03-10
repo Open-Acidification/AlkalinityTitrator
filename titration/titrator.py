@@ -4,6 +4,8 @@ The file for the Titrator class
 
 # pylint: disable = too-many-instance-attributes
 
+import tkinter as tk
+
 from titration import constants
 from titration.devices.library import (
     Keypad,
@@ -32,16 +34,6 @@ class Titrator:
         """
         The constructor for the Titrator class
         """
-
-        # Initialize LCD
-        self.lcd = LiquidCrystal(
-            cols=constants.LCD_WIDTH,
-            rows=constants.LCD_HEIGHT,
-        )
-
-        # Initialize Keypad
-        self.keypad = Keypad()
-
         # Initialize pH Probe
         self.ph_probe = PHProbe()
 
@@ -66,6 +58,31 @@ class Titrator:
         self.volume = "0"
         self.buffer_ph = "0"
         self.degas_time = 0
+
+        # PHYSICAL LCD AND KEYPAD
+        if constants.IS_TEST == False:
+            # Initialize LCD
+            self.lcd = LiquidCrystal(
+                cols=constants.LCD_WIDTH,
+                rows=constants.LCD_HEIGHT,
+            )
+
+            # Initialize Keypad
+            self.keypad = Keypad()
+
+        # GUI LCD AND KEYPAD    
+        else:
+            # Initialize GUI
+            self.root = tk.Tk()
+            self.root.geometry("300x220")
+            self.root.title("Alkalinity Titrator")
+            self.root.configure(background='black')
+
+            self.lcd = LiquidCrystal(self.root)
+
+            self.keypad = Keypad(self.root)
+
+            self.root.mainloop()
 
     def loop(self):
         """
