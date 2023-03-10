@@ -11,6 +11,7 @@ pytest = "*"
 pylint = "*"
 pytest-cov = "*"
 pytest-mock = "*"
+codespell = "*"
 
 [packages]
 adafruit-circuitpython-ads1x15 = "*"

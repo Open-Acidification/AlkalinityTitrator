@@ -26,7 +26,7 @@ class UserValue(UIState):
         super().__init__(titrator, previous_state)
         self.value = ""
 
-    def save_value(self, value):
+    def save_value(self):
         """
         The function to save photometer values
         """
@@ -52,9 +52,10 @@ class UserValue(UIState):
         Parameters:
             key (char): the keypad input to determine which state to go to
         """
-        if key == "A":
+        if key == "A" and self.value not in ("", "."):
             self._set_next_state(self.previous_state, True)
-            self.save_value(self.value)
+            self.value = float(self.value)
+            self.save_value()
 
         elif key == "B":
             self.value = self.value[:-1]
@@ -78,5 +79,5 @@ class UserValue(UIState):
         """
         self.titrator.lcd.print(self.get_label(), line=1)
         self.titrator.lcd.print(self.value, style="center", line=2)
-        self.titrator.lcd.print("* = .       B = BS", line=3)
-        self.titrator.lcd.print("A = accept  C = Clr", line=4)
+        self.titrator.lcd.print("*=. A)ccept B)ack", line=3, style="center")
+        self.titrator.lcd.print("D)ecline  C)lear", line=4, style="center")
