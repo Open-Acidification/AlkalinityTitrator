@@ -9,11 +9,11 @@ class SolutionWeight(UserValue):
     This is a class for the SolutionWeight state of the titrator
     """
 
-    def save_value(self, value):
+    def save_value(self):
         """
         The function to save the titrator's solution weight
         """
-        self.titrator.solution_weight = value
+        self.titrator.solution_weight = self.value
 
     def get_label(self):
         """

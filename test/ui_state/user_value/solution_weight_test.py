@@ -21,6 +21,10 @@ def test_handle_key(set_next_state_mock):
     )
 
     solution_weight.handle_key("A")
+    set_next_state_mock.assert_not_called()
+
+    solution_weight.value = "1"
+    solution_weight.handle_key("A")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
 
@@ -48,8 +52,8 @@ def test_loop(print_mock):
         [
             mock.call("Sol. weight (g):", line=1),
             mock.call("", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -77,8 +81,8 @@ def test_solution_weight(print_mock, set_next_state_mock):
         [
             mock.call("Sol. weight (g):", line=1),
             mock.call("", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -90,8 +94,8 @@ def test_solution_weight(print_mock, set_next_state_mock):
         [
             mock.call("Sol. weight (g):", line=1),
             mock.call("3", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -103,8 +107,8 @@ def test_solution_weight(print_mock, set_next_state_mock):
         [
             mock.call("Sol. weight (g):", line=1),
             mock.call("3.", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -116,8 +120,8 @@ def test_solution_weight(print_mock, set_next_state_mock):
         [
             mock.call("Sol. weight (g):", line=1),
             mock.call("3.", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -129,8 +133,8 @@ def test_solution_weight(print_mock, set_next_state_mock):
         [
             mock.call("Sol. weight (g):", line=1),
             mock.call("3.1", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -142,8 +146,8 @@ def test_solution_weight(print_mock, set_next_state_mock):
         [
             mock.call("Sol. weight (g):", line=1),
             mock.call("3.", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -155,8 +159,8 @@ def test_solution_weight(print_mock, set_next_state_mock):
         [
             mock.call("Sol. weight (g):", line=1),
             mock.call("3", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -168,12 +172,39 @@ def test_solution_weight(print_mock, set_next_state_mock):
         [
             mock.call("Sol. weight (g):", line=1),
             mock.call("", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
+        ]
+    )
+
+    solution_weight.handle_key("A")
+    set_next_state_mock.assert_not_called()
+    assert solution_weight.value == ""
+
+    solution_weight.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Sol. weight (g):", line=1),
+            mock.call("", style="center", line=2),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
+        ]
+    )
+
+    solution_weight.handle_key("1")
+    assert solution_weight.value == "1"
+
+    solution_weight.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Sol. weight (g):", line=1),
+            mock.call("1", style="center", line=2),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
     solution_weight.handle_key("A")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
-    assert solution_weight.titrator.solution_weight == ""
+    assert solution_weight.titrator.solution_weight == 1.0

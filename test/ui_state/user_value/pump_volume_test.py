@@ -21,6 +21,10 @@ def test_handle_key(set_next_state_mock):
     )
 
     pump_volume.handle_key("A")
+    set_next_state_mock.assert_not_called()
+
+    pump_volume.value = "1"
+    pump_volume.handle_key("A")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
 
@@ -48,8 +52,8 @@ def test_loop(print_mock):
         [
             mock.call("Volume in pump:", line=1),
             mock.call("", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -77,8 +81,8 @@ def test_pump_volume(print_mock, set_next_state_mock):
         [
             mock.call("Volume in pump:", line=1),
             mock.call("", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -90,8 +94,8 @@ def test_pump_volume(print_mock, set_next_state_mock):
         [
             mock.call("Volume in pump:", line=1),
             mock.call("3", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -103,8 +107,8 @@ def test_pump_volume(print_mock, set_next_state_mock):
         [
             mock.call("Volume in pump:", line=1),
             mock.call("3.", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -116,8 +120,8 @@ def test_pump_volume(print_mock, set_next_state_mock):
         [
             mock.call("Volume in pump:", line=1),
             mock.call("3.", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -129,8 +133,8 @@ def test_pump_volume(print_mock, set_next_state_mock):
         [
             mock.call("Volume in pump:", line=1),
             mock.call("3.1", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -142,8 +146,8 @@ def test_pump_volume(print_mock, set_next_state_mock):
         [
             mock.call("Volume in pump:", line=1),
             mock.call("3.", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -155,8 +159,8 @@ def test_pump_volume(print_mock, set_next_state_mock):
         [
             mock.call("Volume in pump:", line=1),
             mock.call("3", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -168,12 +172,39 @@ def test_pump_volume(print_mock, set_next_state_mock):
         [
             mock.call("Volume in pump:", line=1),
             mock.call("", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
+        ]
+    )
+
+    pump_volume.handle_key("A")
+    set_next_state_mock.assert_not_called()
+    assert pump_volume.value == ""
+
+    pump_volume.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Volume in pump:", line=1),
+            mock.call("", style="center", line=2),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
+        ]
+    )
+
+    pump_volume.handle_key("1")
+    assert pump_volume.value == "1"
+
+    pump_volume.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Volume in pump:", line=1),
+            mock.call("1", style="center", line=2),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
     pump_volume.handle_key("A")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
-    assert pump_volume.titrator.pump_volume == ""
+    assert pump_volume.titrator.pump_volume == 1.0
