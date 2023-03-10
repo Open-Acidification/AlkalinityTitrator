@@ -23,6 +23,10 @@ def test_handle_key(set_next_state_mock):
     )
 
     reference_temperature.handle_key("A")
+    set_next_state_mock.assert_not_called()
+
+    reference_temperature.value = "1"
+    reference_temperature.handle_key("A")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
 
@@ -50,8 +54,8 @@ def test_loop(print_mock):
         [
             mock.call("Ref solution temp:", line=1),
             mock.call("", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -79,8 +83,8 @@ def test_reference_temperature(print_mock, set_next_state_mock):
         [
             mock.call("Ref solution temp:", line=1),
             mock.call("", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -92,8 +96,8 @@ def test_reference_temperature(print_mock, set_next_state_mock):
         [
             mock.call("Ref solution temp:", line=1),
             mock.call("3", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -105,8 +109,8 @@ def test_reference_temperature(print_mock, set_next_state_mock):
         [
             mock.call("Ref solution temp:", line=1),
             mock.call("3.", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -118,8 +122,8 @@ def test_reference_temperature(print_mock, set_next_state_mock):
         [
             mock.call("Ref solution temp:", line=1),
             mock.call("3.", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -131,8 +135,8 @@ def test_reference_temperature(print_mock, set_next_state_mock):
         [
             mock.call("Ref solution temp:", line=1),
             mock.call("3.1", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -144,8 +148,8 @@ def test_reference_temperature(print_mock, set_next_state_mock):
         [
             mock.call("Ref solution temp:", line=1),
             mock.call("3.", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -157,8 +161,8 @@ def test_reference_temperature(print_mock, set_next_state_mock):
         [
             mock.call("Ref solution temp:", line=1),
             mock.call("3", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
@@ -170,12 +174,39 @@ def test_reference_temperature(print_mock, set_next_state_mock):
         [
             mock.call("Ref solution temp:", line=1),
             mock.call("", style="center", line=2),
-            mock.call("* = .       B = BS", line=3),
-            mock.call("A = accept  C = Clr", line=4),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
+        ]
+    )
+
+    reference_temperature.handle_key("A")
+    set_next_state_mock.assert_not_called()
+    assert reference_temperature.value == ""
+
+    reference_temperature.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Ref solution temp:", line=1),
+            mock.call("", style="center", line=2),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
+        ]
+    )
+
+    reference_temperature.handle_key("1")
+    assert reference_temperature.value == "1"
+
+    reference_temperature.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Ref solution temp:", line=1),
+            mock.call("1", style="center", line=2),
+            mock.call("*=. A)ccept B)ack", line=3, style="center"),
+            mock.call("D)ecline  C)lear", line=4, style="center"),
         ]
     )
 
     reference_temperature.handle_key("A")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
-    assert reference_temperature.titrator.reference_temperature == ""
+    assert reference_temperature.titrator.reference_temperature == 1.0
