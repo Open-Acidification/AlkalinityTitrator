@@ -4,8 +4,6 @@ The file for the Titrator class
 
 # pylint: disable = too-many-instance-attributes
 
-import tkinter as tk
-
 from titration import constants
 from titration.devices.library import (
     Keypad,
@@ -30,10 +28,20 @@ class Titrator:
         keypad (Keypad object): is used to identify what keypad value was entered
     """
 
-    def __init__(self):
+    def __init__(self, root = None):
         """
         The constructor for the Titrator class
         """
+        # Initialize LCD
+        self.lcd = LiquidCrystal(
+            cols=constants.LCD_WIDTH,
+            rows=constants.LCD_HEIGHT,
+            root = root
+        )
+
+        # Initialize Keypad
+        self.keypad = Keypad()
+        
         # Initialize pH Probe
         self.ph_probe = PHProbe()
 
@@ -58,31 +66,6 @@ class Titrator:
         self.volume = "0"
         self.buffer_ph = "0"
         self.degas_time = 0
-
-        # PHYSICAL LCD AND KEYPAD
-        if constants.IS_TEST == False:
-            # Initialize LCD
-            self.lcd = LiquidCrystal(
-                cols=constants.LCD_WIDTH,
-                rows=constants.LCD_HEIGHT,
-            )
-
-            # Initialize Keypad
-            self.keypad = Keypad()
-
-        # GUI LCD AND KEYPAD    
-        else:
-            # Initialize GUI
-            self.root = tk.Tk()
-            self.root.geometry("300x220")
-            self.root.title("Alkalinity Titrator")
-            self.root.configure(background='black')
-
-            self.lcd = LiquidCrystal(self.root)
-
-            self.keypad = Keypad(self.root)
-
-            self.root.mainloop()
 
     def loop(self):
         """
@@ -114,12 +97,13 @@ class Titrator:
             self.next_state = None
             self.state.start()
 
-    def handle_ui(self):
+    def handle_ui(self, key=None):
         """
         The function used to receive the keypad input and process the appropriate response
         """
         print("Titrator::handleUI() - ", self.state.name())
-        key = self.keypad.get_key()
+        if constants.IS_TEST == False:
+            key = self.keypad.get_key()
         print("Titrator::handleUI() - ", self.state.name(), "::handleKey(", key, ")")
         if key is not None:
             self.state.handle_key(key)

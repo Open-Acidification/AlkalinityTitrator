@@ -25,7 +25,7 @@ class LiquidCrystal:
     The class for the Sunfire LCD 20x04 Char Display
     """
 
-    def __init__(self, cols, rows):
+    def __init__(self, cols, rows, root = None):
         """
         The constructor for the mock LiquidCrystal class.
         The parameters are the board pins that the LCD uses

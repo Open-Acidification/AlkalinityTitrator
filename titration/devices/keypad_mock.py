@@ -1,100 +1,51 @@
+"""
+The file for mock Keypad class
+"""
+import click
+import digitalio
 
-import tkinter as tk
+from titration.devices.library import board
 
-class Keypad():
+
+class Keypad:
     """
-    The class for the GUI's Keypad
+    The class for the mock Keypad
     """
 
-    def __init__(self, root):
+    def __init__(self):
         """
-        The function to initialize the keypad simulation
+        The constructor for the mock Keypad class.
+        The parameters are the board pins that the keypad uses
         """
 
-        self.key_pressed = None
+        self.pin_r0 = board.D1
+        self.pin_r1 = board.D6
+        self.pin_r2 = board.D5
+        self.pin_r3 = board.D19
+        self.pin_c0 = board.D16
+        self.pin_c1 = board.D26
+        self.pin_c2 = board.D20
+        self.pin_c3 = board.D21
 
-        buttonframe = tk.Frame(root)
-        buttonframe.columnconfigure(0, weight=1)
-        buttonframe.columnconfigure(1, weight=1)
-        buttonframe.columnconfigure(2, weight=1)
-        buttonframe.columnconfigure(3, weight=1)
+        self.rows = [self.pin_r0, self.pin_r1, self.pin_r2, self.pin_r3]
+        self.cols = [self.pin_c0, self.pin_c1, self.pin_c2, self.pin_c3]
 
-        btn1 = tk.Button(buttonframe, text="1", bg='silver',
-                        command=lambda: self.set_key_pressed("1"), relief="raised")
-        btn1.grid(row = 4, column = 0, sticky=tk.W+tk.E)
+        self.rows[0].direction = digitalio.Direction.OUTPUT
+        self.rows[1].direction = digitalio.Direction.OUTPUT
+        self.rows[2].direction = digitalio.Direction.OUTPUT
+        self.rows[3].direction = digitalio.Direction.OUTPUT
+        self.cols[0].direction = digitalio.Direction.INPUT
+        self.cols[1].direction = digitalio.Direction.INPUT
+        self.cols[2].direction = digitalio.Direction.INPUT
+        self.cols[3].direction = digitalio.Direction.INPUT
 
-        btn2 = tk.Button(buttonframe, text="2", bg='silver',
-                        command=lambda: self.set_key_pressed("2"), relief="raised")
-        btn2.grid(row = 4, column = 1, sticky=tk.W+tk.E)
-
-        btn3 = tk.Button(buttonframe, text="3", bg='silver',
-                        command=lambda: self.set_key_pressed("3"), relief="raised")
-        btn3.grid(row = 4, column = 2, sticky=tk.W+tk.E)
-
-        btnA = tk.Button(buttonframe, text="A", bg='silver',
-                        command=lambda: self.set_key_pressed("A"), relief="raised")
-        btnA.grid(row = 4, column = 3, sticky=tk.W+tk.E)
-
-        btn4 = tk.Button(buttonframe, text="4", bg='silver',
-                        command=lambda: self.set_key_pressed("4"), relief="raised")
-        btn4.grid(row = 5, column = 0, sticky=tk.W+tk.E)
-
-        btn5 = tk.Button(buttonframe, text="5", bg='silver',
-                        command=lambda: self.set_key_pressed("5"), relief="raised")
-        btn5.grid(row = 5, column = 1, sticky=tk.W+tk.E)
-
-        btn6 = tk.Button(buttonframe, text="6", bg='silver',
-                        command=lambda: self.set_key_pressed("6"), relief="raised")
-        btn6.grid(row = 5, column = 2, sticky=tk.W+tk.E)
-
-        btnB = tk.Button(buttonframe, text="B", bg='silver',
-                        command=lambda: self.set_key_pressed("B"), relief="raised")
-        btnB.grid(row = 5, column = 3, sticky=tk.W+tk.E)
-
-        btn7 = tk.Button(buttonframe, text="7", bg='silver',
-                        command=lambda: self.set_key_pressed("7"), relief="raised")
-        btn7.grid(row = 6, column = 0, sticky=tk.W+tk.E)
-
-        btn8 = tk.Button(buttonframe, text="8", bg='silver',
-                        command=lambda: self.set_key_pressed("8"), relief="raised")
-        btn8.grid(row = 6, column = 1, sticky=tk.W+tk.E)
-
-        btn9 = tk.Button(buttonframe, text="9", bg='silver',
-                        command=lambda: self.set_key_pressed("9"), relief="raised")
-        btn9.grid(row = 6, column = 2, sticky=tk.W+tk.E)
-
-        btnC = tk.Button(buttonframe, text="C", bg='silver',
-                        command=lambda: self.set_key_pressed("C"), relief="raised")
-        btnC.grid(row = 6, column = 3, sticky=tk.W+tk.E)
-
-        btnStar = tk.Button(buttonframe, text="*", bg='silver',
-                        command=lambda: self.set_key_pressed("*"), relief="raised")
-        btnStar.grid(row = 7, column = 0, sticky=tk.W+tk.E)
-
-        btn0 = tk.Button(buttonframe, text="0", bg='silver',
-                        command=lambda: self.set_key_pressed("0"), relief="raised")
-        btn0.grid(row = 7, column = 1, sticky=tk.W+tk.E)
-
-        btnHash = tk.Button(buttonframe, text="#", bg='silver',
-                        command=lambda: self.set_key_pressed("#"), relief="raised")
-        btnHash.grid(row = 7, column = 2, sticky=tk.W+tk.E)
-
-        btnD = tk.Button(buttonframe, text="D", bg='silver',
-                        command=lambda: self.set_key_pressed("D"), relief="raised")
-        btnD.grid(row = 7, column = 3, sticky=tk.W+tk.E)
-
-        buttonframe.pack(fill='x')
-
-    def set_key_pressed(self, key):
-        """
-        The function to update the key that was pressed
-        """
-        self.key_pressed = key
+        self.cols[0].pull = digitalio.Pull.DOWN
+        self.cols[1].pull = digitalio.Pull.DOWN
+        self.cols[2].pull = digitalio.Pull.DOWN
+        self.cols[3].pull = digitalio.Pull.DOWN
 
     def get_key(self):
         """
-        The function to get the pressed key
+        The function to poll a keyboard press
         """
-        temp = self.key_pressed
-        self.key_pressed = None
-        return temp
+        return click.getchar()

@@ -10,9 +10,9 @@ if __name__ == "__main__":
     if opts:
         if "-dev" in opts:
             constants.IS_TEST = True
-            from titration import titrator_driver
+            from titration.gui import GUI 
 
-            titrator_driver.run()
+            gui = GUI()
         else:
             raise SystemExit(f"Usage: {sys.argv[0]} [-test | -dev]")
     else:
