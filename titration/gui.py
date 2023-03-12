@@ -1,93 +1,329 @@
+"""
+The file to hold the Alkalinity Titrator's GUI class
+"""
+
+# pylint: disable = too-many-locals, too-many-statements
 
 import tkinter as tk
 
 from titration.titrator import Titrator
 
-class GUI():
+STICKY = tk.E + tk.W + tk.S + tk.N
+FONT = ("Courier", 15)
+
+TEXTBOX_WIDTH = 15
+LABEL_WIDTH = 20
+BUTTON_WIDTH = 8
+
+
+class GUI:
+    """
+    The class for the Alkalinity Titrator's GUI
+    """
 
     def __init__(self):
         """
-        The GUI for the Alkalinity Titrator 
+        The GUI for the Alkalinity Titrator
         """
-        self.root = tk.Tk()
-        self.root.geometry("300x220")
-        self.root.title("Alkalinity Titrator")
-        self.root.configure(background='black')
 
+        # Initialize the GUI Frame
+        self.root = tk.Tk()
+        self.root.geometry("475x210")
+        self.root.title("Alkalinity Titrator")
+        self.root.configure(background="black")
+        self.root.columnconfigure(0, weight=1)
+        self.root.columnconfigure(1, weight=1)
+        self.root.columnconfigure(2, weight=1)
+
+        self.root.rowconfigure(0, weight=1)
+        self.root.rowconfigure(1, weight=1)
+
+        # Create a Titrator Instance
         self.titrator = Titrator(self.root)
 
+        # Initial loop to get the Main Menu
         self.titrator.loop()
 
+        # Initialize the Textboxes
+        textboxframe = tk.Frame(self.root)
+        textboxframe.rowconfigure(0, weight=1)
+        textboxframe.rowconfigure(1, weight=1)
+        textboxframe.rowconfigure(2, weight=1)
+        textboxframe.rowconfigure(3, weight=1)
+        textboxframe.rowconfigure(4, weight=1)
+        textboxframe.rowconfigure(5, weight=1)
+        textboxframe.rowconfigure(6, weight=1)
+        textboxframe.rowconfigure(7, weight=1)
+
+        tk.Text(
+            textboxframe,
+            font=FONT,
+            width=TEXTBOX_WIDTH,
+        ).grid(row=0, column=0, sticky=STICKY)
+
+        tk.Text(
+            textboxframe,
+            font=FONT,
+            width=TEXTBOX_WIDTH,
+        ).grid(row=1, column=0, sticky=STICKY)
+
+        tk.Text(
+            textboxframe,
+            font=FONT,
+            width=TEXTBOX_WIDTH,
+        ).grid(row=2, column=0, sticky=STICKY)
+
+        tk.Text(
+            textboxframe,
+            font=FONT,
+            width=TEXTBOX_WIDTH,
+        ).grid(row=3, column=0, sticky=STICKY)
+
+        tk.Text(
+            textboxframe,
+            font=FONT,
+            width=TEXTBOX_WIDTH,
+        ).grid(row=4, column=0, sticky=STICKY)
+
+        tk.Text(
+            textboxframe,
+            font=FONT,
+            width=TEXTBOX_WIDTH,
+        ).grid(row=5, column=0, sticky=STICKY)
+
+        tk.Text(
+            textboxframe,
+            font=FONT,
+            width=TEXTBOX_WIDTH,
+        ).grid(row=6, column=0, sticky=STICKY)
+
+        tk.Text(
+            textboxframe,
+            font=FONT,
+            width=TEXTBOX_WIDTH,
+        ).grid(row=7, column=0, sticky=STICKY)
+
+        textboxframe.grid(row=0, column=2, rowspan=2, sticky=STICKY)
+
+        # Initialize the Labels for Variables
+        labelframev = tk.Frame(self.root)
+        labelframev.rowconfigure(0, weight=1)
+        labelframev.rowconfigure(1, weight=1)
+        labelframev.rowconfigure(2, weight=1)
+        labelframev.rowconfigure(3, weight=1)
+        labelframev.rowconfigure(4, weight=1)
+        labelframev.rowconfigure(5, weight=1)
+        labelframev.rowconfigure(6, weight=1)
+        labelframev.rowconfigure(7, weight=1)
+
+        tk.Label(
+            labelframev,
+            text="pH",
+            fg="white",
+            bg="black",
+            font=FONT,
+            width=LABEL_WIDTH,
+            anchor="w",
+        ).grid(row=0, column=0, sticky=STICKY)
+
+        tk.Label(
+            labelframev,
+            text="Salinity",
+            fg="white",
+            bg="black",
+            font=FONT,
+            width=LABEL_WIDTH,
+            anchor="w",
+        ).grid(row=1, column=0, sticky=STICKY)
+
+        tk.Label(
+            labelframev,
+            text="Temperature",
+            fg="white",
+            bg="black",
+            font=FONT,
+            width=LABEL_WIDTH,
+            anchor="w",
+        ).grid(row=2, column=0, sticky=STICKY)
+
+        tk.Label(
+            labelframev,
+            text="Volume",
+            fg="white",
+            bg="black",
+            font=FONT,
+            width=LABEL_WIDTH,
+            anchor="w",
+        ).grid(row=3, column=0, sticky=STICKY)
+
+        tk.Label(
+            labelframev,
+            text="",
+            fg="white",
+            bg="black",
+            font=FONT,
+            width=LABEL_WIDTH,
+            anchor="w",
+        ).grid(row=4, column=0, sticky=STICKY)
+
+        tk.Label(
+            labelframev,
+            text="",
+            fg="white",
+            bg="black",
+            font=FONT,
+            width=LABEL_WIDTH,
+            anchor="w",
+        ).grid(row=5, column=0, sticky=STICKY)
+
+        tk.Label(
+            labelframev,
+            text="",
+            fg="white",
+            bg="black",
+            font=FONT,
+            width=LABEL_WIDTH,
+            anchor="w",
+        ).grid(row=6, column=0, sticky=STICKY)
+
+        tk.Label(
+            labelframev,
+            text="",
+            fg="white",
+            bg="black",
+            font=FONT,
+            width=LABEL_WIDTH,
+            anchor="w",
+        ).grid(row=7, column=0, sticky=STICKY)
+
+        labelframev.grid(row=0, column=1, rowspan=2, sticky=STICKY)
+
+        # Initialize the Buttons
         buttonframe = tk.Frame(self.root)
         buttonframe.columnconfigure(0, weight=1)
         buttonframe.columnconfigure(1, weight=1)
         buttonframe.columnconfigure(2, weight=1)
         buttonframe.columnconfigure(3, weight=1)
 
-        btn1 = tk.Button(buttonframe, text="1", bg='silver',
-                        command=lambda: self.titrator.handle_ui("1"), relief="raised")
-        btn1.grid(row = 4, column = 0, sticky=tk.W+tk.E)
+        tk.Button(
+            buttonframe,
+            text="1",
+            width=BUTTON_WIDTH,
+            command=lambda: self.button_press("1"),
+        ).grid(row=4, column=0, sticky=STICKY)
 
-        btn2 = tk.Button(buttonframe, text="2", bg='silver',
-                        command=lambda: self.titrator.handle_ui("2"), relief="raised")
-        btn2.grid(row = 4, column = 1, sticky=tk.W+tk.E)
+        tk.Button(
+            buttonframe,
+            text="2",
+            width=BUTTON_WIDTH,
+            command=lambda: self.button_press("2"),
+        ).grid(row=4, column=1, sticky=STICKY)
 
-        btn3 = tk.Button(buttonframe, text="3", bg='silver',
-                        command=lambda: self.titrator.handle_ui("3"), relief="raised")
-        btn3.grid(row = 4, column = 2, sticky=tk.W+tk.E)
+        tk.Button(
+            buttonframe,
+            text="3",
+            width=BUTTON_WIDTH,
+            command=lambda: self.button_press("3"),
+        ).grid(row=4, column=2, sticky=STICKY)
 
-        btnA = tk.Button(buttonframe, text="A", bg='silver',
-                        command=lambda: self.titrator.handle_ui("A"), relief="raised")
-        btnA.grid(row = 4, column = 3, sticky=tk.W+tk.E)
+        tk.Button(
+            buttonframe,
+            text="A",
+            width=BUTTON_WIDTH,
+            command=lambda: self.button_press("A"),
+        ).grid(row=4, column=3, sticky=STICKY)
 
-        btn4 = tk.Button(buttonframe, text="4", bg='silver',
-                        command=lambda: self.titrator.handle_ui("4"), relief="raised")
-        btn4.grid(row = 5, column = 0, sticky=tk.W+tk.E)
+        tk.Button(
+            buttonframe,
+            text="4",
+            width=BUTTON_WIDTH,
+            command=lambda: self.button_press("4"),
+        ).grid(row=5, column=0, sticky=STICKY)
 
-        btn5 = tk.Button(buttonframe, text="5", bg='silver',
-                        command=lambda: self.titrator.handle_ui("5"), relief="raised")
-        btn5.grid(row = 5, column = 1, sticky=tk.W+tk.E)
+        tk.Button(
+            buttonframe,
+            text="5",
+            width=BUTTON_WIDTH,
+            command=lambda: self.button_press("5"),
+        ).grid(row=5, column=1, sticky=STICKY)
 
-        btn6 = tk.Button(buttonframe, text="6", bg='silver',
-                        command=lambda: self.titrator.handle_ui("6"), relief="raised")
-        btn6.grid(row = 5, column = 2, sticky=tk.W+tk.E)
+        tk.Button(
+            buttonframe,
+            text="6",
+            width=BUTTON_WIDTH,
+            command=lambda: self.button_press("6"),
+        ).grid(row=5, column=2, sticky=STICKY)
 
-        btnB = tk.Button(buttonframe, text="B", bg='silver',
-                        command=lambda: self.titrator.handle_ui("B"), relief="raised")
-        btnB.grid(row = 5, column = 3, sticky=tk.W+tk.E)
+        tk.Button(
+            buttonframe,
+            text="B",
+            width=8,
+            command=lambda: self.button_press("B"),
+        ).grid(row=5, column=3, sticky=STICKY)
 
-        btn7 = tk.Button(buttonframe, text="7", bg='silver',
-                        command=lambda: self.titrator.handle_ui("7"), relief="raised")
-        btn7.grid(row = 6, column = 0, sticky=tk.W+tk.E)
+        tk.Button(
+            buttonframe,
+            text="7",
+            width=BUTTON_WIDTH,
+            command=lambda: self.button_press("7"),
+        ).grid(row=6, column=0, sticky=STICKY)
 
-        btn8 = tk.Button(buttonframe, text="8", bg='silver',
-                        command=lambda: self.titrator.handle_ui("8"), relief="raised")
-        btn8.grid(row = 6, column = 1, sticky=tk.W+tk.E)
+        tk.Button(
+            buttonframe,
+            text="8",
+            width=BUTTON_WIDTH,
+            command=lambda: self.button_press("8"),
+        ).grid(row=6, column=1, sticky=STICKY)
 
-        btn9 = tk.Button(buttonframe, text="9", bg='silver',
-                        command=lambda: self.titrator.handle_ui("9"), relief="raised")
-        btn9.grid(row = 6, column = 2, sticky=tk.W+tk.E)
+        tk.Button(
+            buttonframe,
+            text="9",
+            width=BUTTON_WIDTH,
+            command=lambda: self.button_press("9"),
+        ).grid(row=6, column=2, sticky=STICKY)
 
-        btnC = tk.Button(buttonframe, text="C", bg='silver',
-                        command=lambda: self.titrator.handle_ui("C"), relief="raised")
-        btnC.grid(row = 6, column = 3, sticky=tk.W+tk.E)
+        tk.Button(
+            buttonframe,
+            text="C",
+            width=BUTTON_WIDTH,
+            command=lambda: self.button_press("C"),
+        ).grid(row=6, column=3, sticky=STICKY)
 
-        btnStar = tk.Button(buttonframe, text="*", bg='silver',
-                        command=lambda: self.titrator.handle_ui("*"), relief="raised")
-        btnStar.grid(row = 7, column = 0, sticky=tk.W+tk.E)
+        tk.Button(
+            buttonframe,
+            text="*",
+            width=BUTTON_WIDTH,
+            command=lambda: self.button_press("*"),
+        ).grid(row=7, column=0, sticky=STICKY)
 
-        btn0 = tk.Button(buttonframe, text="0", bg='silver',
-                        command=lambda: self.titrator.handle_ui("0"), relief="raised")
-        btn0.grid(row = 7, column = 1, sticky=tk.W+tk.E)
+        tk.Button(
+            buttonframe,
+            text="0",
+            width=BUTTON_WIDTH,
+            command=lambda: self.button_press("0"),
+        ).grid(row=7, column=1, sticky=STICKY)
 
-        btnHash = tk.Button(buttonframe, text="#", bg='silver',
-                        command=lambda: self.titrator.handle_ui("#"), relief="raised")
-        btnHash.grid(row = 7, column = 2, sticky=tk.W+tk.E)
+        tk.Button(
+            buttonframe,
+            text="#",
+            width=BUTTON_WIDTH,
+            command=lambda: self.button_press("#"),
+        ).grid(row=7, column=2, sticky=STICKY)
 
-        btnD = tk.Button(buttonframe, text="D", bg='silver',
-                        command=lambda: self.titrator.handle_ui("D"), relief="raised")
-        btnD.grid(row = 7, column = 3, sticky=tk.W+tk.E)
+        tk.Button(
+            buttonframe,
+            text="D",
+            width=BUTTON_WIDTH,
+            command=lambda: self.button_press("D"),
+        ).grid(row=7, column=3, sticky=STICKY)
 
-        buttonframe.pack(fill='x')
+        buttonframe.grid(row=1, column=0, sticky=STICKY)
 
+        # Run the GUI loop
         self.root.mainloop()
+
+    def button_press(self, key):
+        """
+        The function to facilitate button presses
+        """
+        self.titrator.handle_ui(key)

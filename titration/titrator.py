@@ -28,20 +28,18 @@ class Titrator:
         keypad (Keypad object): is used to identify what keypad value was entered
     """
 
-    def __init__(self, root = None):
+    def __init__(self, root=None):
         """
         The constructor for the Titrator class
         """
         # Initialize LCD
         self.lcd = LiquidCrystal(
-            cols=constants.LCD_WIDTH,
-            rows=constants.LCD_HEIGHT,
-            root = root
+            cols=constants.LCD_WIDTH, rows=constants.LCD_HEIGHT, root=root
         )
 
         # Initialize Keypad
         self.keypad = Keypad()
-        
+
         # Initialize pH Probe
         self.ph_probe = PHProbe()
 
@@ -102,7 +100,7 @@ class Titrator:
         The function used to receive the keypad input and process the appropriate response
         """
         print("Titrator::handleUI() - ", self.state.name())
-        if constants.IS_TEST == False:
+        if constants.GUI_ENABLED == False:
             key = self.keypad.get_key()
         print("Titrator::handleUI() - ", self.state.name(), "::handleKey(", key, ")")
         if key is not None:
