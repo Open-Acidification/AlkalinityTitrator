@@ -25,10 +25,10 @@ class DemoPump(UIState):
             Substate 2:
                 1 -> Fill Pump
                 2 -> Empty Pump
-                3 -> Pump In
+                3 -> Pull Volume
                 4 -> Go to 3rd page of options
             Substate 3:
-                1 -> Pump Out
+                1 -> Push Volume
                 4 -> Go to 1st page
             Substate 4, 5, 6:
                 Any -> Substate 1
@@ -60,7 +60,7 @@ class DemoPump(UIState):
                 self.substate = 8
             elif key == constants.KEY_3:
                 self._set_next_state(PumpVolume(self.titrator, self), True)
-                self.titrator.pump.pump_in(self.titrator.volume)
+                self.titrator.pump.pump_out(self.titrator.volume)
                 self.substate = 9
             elif key == constants.KEY_4:
                 self.substate = 3
@@ -68,7 +68,7 @@ class DemoPump(UIState):
         elif self.substate == 3:
             if key == constants.KEY_1:
                 self._set_next_state(PumpVolume(self.titrator, self), True)
-                self.titrator.pump.pump_out(self.titrator.volume)
+                self.titrator.pump.pump_in(self.titrator.volume)
                 self.substate = 10
             if key == constants.KEY_4:
                 self.substate = 1

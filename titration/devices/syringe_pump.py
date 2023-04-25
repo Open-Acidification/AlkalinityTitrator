@@ -65,20 +65,19 @@ class SyringePump:
         """
         The function to fill the pump
         """
-        self._drive_pump_in(MAX_PUMP_CAPACITY - self._pump_volume)
+        self._drive_pump_out(MAX_PUMP_CAPACITY - self._pump_volume)
 
     def empty(self):
         """
         The function to empty the pump
         """
         temp = self._added_volume
-        self._drive_pump_out(self._pump_volume)
+        self._drive_pump_in(self._pump_volume)
         self._added_volume = temp
 
     def pump_in(self, volume_to_add):
         """
-        The function to pull volume of solution into the syringe
-        The max this function can pump in is 1.1 ml
+        The function to pump volume of solution out of the syringe
 
         Parameters:
             volume (float): amount of volume to move
@@ -89,7 +88,8 @@ class SyringePump:
 
     def pump_out(self, volume_to_add):
         """
-        The function to pump volume out into to the titrator solution
+        The function to pull volume into to the syringe
+        The max this function can pull in is 1.1 ml
 
         Parameters:
             volume_to_add (float): the volume to be added to the solution
