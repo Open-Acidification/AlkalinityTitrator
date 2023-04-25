@@ -95,13 +95,12 @@ class Titrator:
             self.next_state = None
             self.state.start()
 
-    def handle_ui(self, key=None):
+    def handle_ui(self):
         """
         The function used to receive the keypad input and process the appropriate response
         """
         print("Titrator::handleUI() - ", self.state.name())
-        if constants.GUI_ENABLED == False:
-            key = self.keypad.get_key()
+        key = self.keypad.get_key()
         print("Titrator::handleUI() - ", self.state.name(), "::handleKey(", key, ")")
         if key is not None:
             self.state.handle_key(key)

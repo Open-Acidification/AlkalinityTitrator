@@ -2,6 +2,8 @@
 The file to hold the titrator constants
 """
 
+KEY_PRESSED = None
+
 # keypad
 NO_KEY = ""
 KEY_0 = "0"

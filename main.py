@@ -12,9 +12,9 @@ if __name__ == "__main__":
             constants.IS_TEST = True
             constants.GUI_ENABLED = True
 
-            from titration.gui import GUI
+            from titration import titrator_driver
 
-            gui = GUI()
+            titrator_driver.run()
 
         elif "-con" in opts:
             constants.IS_TEST = True

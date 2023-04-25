@@ -6,6 +6,7 @@ The file to hold the Alkalinity Titrator's GUI class
 
 import tkinter as tk
 
+from titration import constants
 from titration.titrator import Titrator
 
 STICKY = tk.E + tk.W + tk.S + tk.N
@@ -319,11 +320,8 @@ class GUI:
 
         buttonframe.grid(row=1, column=0, sticky=STICKY)
 
-        # Run the GUI loop
-        self.root.mainloop()
-
     def button_press(self, key):
         """
         The function to facilitate button presses
         """
-        self.titrator.handle_ui(key)
+        constants.KEY_PRESSED = key
