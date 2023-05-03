@@ -41,10 +41,10 @@ class LiquidCrystal:
         """
         if line == 1:
             return self.lcd_line_one
-        elif line == 2:
+        if line == 2:
             return self.lcd_line_two
-        elif line == 3:
+        if line == 3:
             return self.lcd_line_three
-        elif line == 4:
+        if line == 4:
             return self.lcd_line_four
         return "ERROR"
