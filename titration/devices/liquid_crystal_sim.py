@@ -47,5 +47,4 @@ class LiquidCrystal:
             return self.lcd_line_three
         elif line == 4:
             return self.lcd_line_four
-        else:
-            return "ERROR"
+        return "ERROR"

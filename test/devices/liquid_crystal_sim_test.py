@@ -3,7 +3,6 @@ The file to test the mock liquid crystal display for the GUI
 """
 
 from titration import constants
-
 from titration.devices.liquid_crystal_sim import LiquidCrystal
 
 

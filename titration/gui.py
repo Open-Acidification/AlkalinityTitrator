@@ -4,8 +4,8 @@ The file to hold the Alkalinity Titrator's GUI class
 
 # pylint: disable = too-many-locals, too-many-statements
 
-import tkinter as tk
 import time
+import tkinter as tk
 
 STICKY = tk.E + tk.W + tk.S + tk.N
 FONT = ("Courier", 15)

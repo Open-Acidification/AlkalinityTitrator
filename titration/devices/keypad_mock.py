@@ -60,5 +60,4 @@ class Keypad:
             temp = self.key_pressed
             self.key_pressed = None
             return temp
-        else:
-            return click.getchar()
+        return click.getchar()
