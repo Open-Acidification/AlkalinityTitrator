@@ -5,16 +5,17 @@ The file to hold the Alkalinity Titrator's GUI class
 # pylint: disable = too-many-locals, too-many-statements
 
 import tkinter as tk
-
-from titration import constants
-from titration.titrator import Titrator
+import time
 
 STICKY = tk.E + tk.W + tk.S + tk.N
 FONT = ("Courier", 15)
-
 TEXTBOX_WIDTH = 15
 LABEL_WIDTH = 20
 BUTTON_WIDTH = 8
+WIDTH = 29
+FG = "white"
+BG = "blue"
+ANCHOR = "w"
 
 
 class GUI:
@@ -22,182 +23,75 @@ class GUI:
     The class for the Alkalinity Titrator's GUI
     """
 
-    def __init__(self):
+    def __init__(self, titrator):
         """
         The GUI for the Alkalinity Titrator
         """
 
+        # Keep an Instance of the Titrator
+        self.titrator = titrator
+
         # Initialize the GUI Frame
         self.root = tk.Tk()
-        self.root.geometry("475x210")
+        self.root.geometry("280x200")
         self.root.title("Alkalinity Titrator")
         self.root.configure(background="black")
         self.root.columnconfigure(0, weight=1)
-        self.root.columnconfigure(1, weight=1)
-        self.root.columnconfigure(2, weight=1)
-
         self.root.rowconfigure(0, weight=1)
-        self.root.rowconfigure(1, weight=1)
 
-        # Create a Titrator Instance
-        self.titrator = Titrator(self.root)
+        # Initialize the Labels
+        label_frame = tk.Frame(self.root)
+        label_frame.config(bg=BG)
+        label_frame.rowconfigure(0, weight=1)
+        label_frame.rowconfigure(1, weight=1)
+        label_frame.rowconfigure(2, weight=1)
+        label_frame.rowconfigure(3, weight=1)
 
-        # Initial loop to get the Main Menu
-        self.titrator.loop()
-
-        # Initialize the Textboxes
-        textboxframe = tk.Frame(self.root)
-        textboxframe.rowconfigure(0, weight=1)
-        textboxframe.rowconfigure(1, weight=1)
-        textboxframe.rowconfigure(2, weight=1)
-        textboxframe.rowconfigure(3, weight=1)
-        textboxframe.rowconfigure(4, weight=1)
-        textboxframe.rowconfigure(5, weight=1)
-        textboxframe.rowconfigure(6, weight=1)
-        textboxframe.rowconfigure(7, weight=1)
-
-        tk.Text(
-            textboxframe,
+        self.line_1 = tk.Label(
+            label_frame,
+            text=self.titrator.lcd.get_line(1),
+            fg=FG,
+            bg=BG,
             font=FONT,
-            width=TEXTBOX_WIDTH,
-        ).grid(row=0, column=0, sticky=STICKY)
+            width=WIDTH,
+            anchor=ANCHOR,
+        )
+        self.line_1.grid(row=0, column=0, sticky=STICKY)
 
-        tk.Text(
-            textboxframe,
+        self.line_2 = tk.Label(
+            label_frame,
+            text=self.titrator.lcd.get_line(2),
+            fg=FG,
+            bg=BG,
             font=FONT,
-            width=TEXTBOX_WIDTH,
-        ).grid(row=1, column=0, sticky=STICKY)
+            width=WIDTH,
+            anchor=ANCHOR,
+        )
+        self.line_2.grid(row=1, column=0, sticky=STICKY)
 
-        tk.Text(
-            textboxframe,
+        self.line_3 = tk.Label(
+            label_frame,
+            text=self.titrator.lcd.get_line(3),
+            fg=FG,
+            bg=BG,
             font=FONT,
-            width=TEXTBOX_WIDTH,
-        ).grid(row=2, column=0, sticky=STICKY)
+            width=WIDTH,
+            anchor=ANCHOR,
+        )
+        self.line_3.grid(row=2, column=0, sticky=STICKY)
 
-        tk.Text(
-            textboxframe,
+        self.line_4 = tk.Label(
+            label_frame,
+            text=self.titrator.lcd.get_line(4),
+            fg=FG,
+            bg=BG,
             font=FONT,
-            width=TEXTBOX_WIDTH,
-        ).grid(row=3, column=0, sticky=STICKY)
+            width=WIDTH,
+            anchor=ANCHOR,
+        )
+        self.line_4.grid(row=3, column=0, sticky=STICKY)
 
-        tk.Text(
-            textboxframe,
-            font=FONT,
-            width=TEXTBOX_WIDTH,
-        ).grid(row=4, column=0, sticky=STICKY)
-
-        tk.Text(
-            textboxframe,
-            font=FONT,
-            width=TEXTBOX_WIDTH,
-        ).grid(row=5, column=0, sticky=STICKY)
-
-        tk.Text(
-            textboxframe,
-            font=FONT,
-            width=TEXTBOX_WIDTH,
-        ).grid(row=6, column=0, sticky=STICKY)
-
-        tk.Text(
-            textboxframe,
-            font=FONT,
-            width=TEXTBOX_WIDTH,
-        ).grid(row=7, column=0, sticky=STICKY)
-
-        textboxframe.grid(row=0, column=2, rowspan=2, sticky=STICKY)
-
-        # Initialize the Labels for Variables
-        labelframev = tk.Frame(self.root)
-        labelframev.rowconfigure(0, weight=1)
-        labelframev.rowconfigure(1, weight=1)
-        labelframev.rowconfigure(2, weight=1)
-        labelframev.rowconfigure(3, weight=1)
-        labelframev.rowconfigure(4, weight=1)
-        labelframev.rowconfigure(5, weight=1)
-        labelframev.rowconfigure(6, weight=1)
-        labelframev.rowconfigure(7, weight=1)
-
-        tk.Label(
-            labelframev,
-            text="pH",
-            fg="white",
-            bg="black",
-            font=FONT,
-            width=LABEL_WIDTH,
-            anchor="w",
-        ).grid(row=0, column=0, sticky=STICKY)
-
-        tk.Label(
-            labelframev,
-            text="Salinity",
-            fg="white",
-            bg="black",
-            font=FONT,
-            width=LABEL_WIDTH,
-            anchor="w",
-        ).grid(row=1, column=0, sticky=STICKY)
-
-        tk.Label(
-            labelframev,
-            text="Temperature",
-            fg="white",
-            bg="black",
-            font=FONT,
-            width=LABEL_WIDTH,
-            anchor="w",
-        ).grid(row=2, column=0, sticky=STICKY)
-
-        tk.Label(
-            labelframev,
-            text="Volume",
-            fg="white",
-            bg="black",
-            font=FONT,
-            width=LABEL_WIDTH,
-            anchor="w",
-        ).grid(row=3, column=0, sticky=STICKY)
-
-        tk.Label(
-            labelframev,
-            text="",
-            fg="white",
-            bg="black",
-            font=FONT,
-            width=LABEL_WIDTH,
-            anchor="w",
-        ).grid(row=4, column=0, sticky=STICKY)
-
-        tk.Label(
-            labelframev,
-            text="",
-            fg="white",
-            bg="black",
-            font=FONT,
-            width=LABEL_WIDTH,
-            anchor="w",
-        ).grid(row=5, column=0, sticky=STICKY)
-
-        tk.Label(
-            labelframev,
-            text="",
-            fg="white",
-            bg="black",
-            font=FONT,
-            width=LABEL_WIDTH,
-            anchor="w",
-        ).grid(row=6, column=0, sticky=STICKY)
-
-        tk.Label(
-            labelframev,
-            text="",
-            fg="white",
-            bg="black",
-            font=FONT,
-            width=LABEL_WIDTH,
-            anchor="w",
-        ).grid(row=7, column=0, sticky=STICKY)
-
-        labelframev.grid(row=0, column=1, rowspan=2, sticky=STICKY)
+        label_frame.grid(row=0, column=0, sticky=STICKY)
 
         # Initialize the Buttons
         buttonframe = tk.Frame(self.root)
@@ -320,8 +214,21 @@ class GUI:
 
         buttonframe.grid(row=1, column=0, sticky=STICKY)
 
+        self.root.mainloop()
+
     def button_press(self, key):
         """
         The function to facilitate button presses
         """
-        constants.KEY_PRESSED = key
+        self.titrator.keypad.set_key(key)
+        time.sleep(0.01)
+        self.update_lcd()
+
+    def update_lcd(self):
+        """
+        The function to update the GUI LCD
+        """
+        self.line_1.config(text=self.titrator.lcd.get_line(1))
+        self.line_2.config(text=self.titrator.lcd.get_line(2))
+        self.line_3.config(text=self.titrator.lcd.get_line(3))
+        self.line_4.config(text=self.titrator.lcd.get_line(4))

@@ -28,14 +28,12 @@ class Titrator:
         keypad (Keypad object): is used to identify what keypad value was entered
     """
 
-    def __init__(self, root=None):
+    def __init__(self):
         """
         The constructor for the Titrator class
         """
         # Initialize LCD
-        self.lcd = LiquidCrystal(
-            cols=constants.LCD_WIDTH, rows=constants.LCD_HEIGHT, root=root
-        )
+        self.lcd = LiquidCrystal(cols=constants.LCD_WIDTH, rows=constants.LCD_HEIGHT)
 
         # Initialize Keypad
         self.keypad = Keypad()
