@@ -1,7 +1,6 @@
 """
 The file for mock Keypad class
 """
-import click
 import digitalio
 
 from titration.devices.library import board
@@ -17,6 +16,7 @@ class Keypad:
         The constructor for the mock Keypad class.
         The parameters are the board pins that the keypad uses
         """
+        self.key_pressed = None
 
         self.pin_r0 = board.D1
         self.pin_r1 = board.D6
@@ -44,8 +44,16 @@ class Keypad:
         self.cols[2].pull = digitalio.Pull.DOWN
         self.cols[3].pull = digitalio.Pull.DOWN
 
+    def set_key(self, key):
+        """
+        The function to set the key for the GUI
+        """
+        self.key_pressed = key
+
     def get_key(self):
         """
         The function to poll a keyboard press
         """
-        return click.getchar()
+        temp = self.key_pressed
+        self.key_pressed = None
+        return temp
