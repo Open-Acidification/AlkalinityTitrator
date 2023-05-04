@@ -282,5 +282,3 @@ test_pH_vals = [
 ]
 
 IS_TEST = False
-
-GUI_ENABLED = False

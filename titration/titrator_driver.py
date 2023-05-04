@@ -14,7 +14,7 @@ def run():
     """
     titrator = Titrator()
 
-    if constants.GUI_ENABLED:
+    if constants.IS_TEST:
         thread = threading.Thread(target=run_gui, args=[titrator], daemon=True)
         thread.start()
 

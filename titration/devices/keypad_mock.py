@@ -1,10 +1,8 @@
 """
 The file for mock Keypad class
 """
-import click
 import digitalio
 
-from titration import constants
 from titration.devices.library import board
 
 
@@ -56,8 +54,6 @@ class Keypad:
         """
         The function to poll a keyboard press
         """
-        if constants.GUI_ENABLED:
-            temp = self.key_pressed
-            self.key_pressed = None
-            return temp
-        return click.getchar()
+        temp = self.key_pressed
+        self.key_pressed = None
+        return temp

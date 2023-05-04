@@ -17,34 +17,31 @@ class LiquidCrystal:
         self.cols = cols
         self.rows = rows
 
-        self.lcd_line_one = None
-        self.lcd_line_two = None
-        self.lcd_line_three = None
-        self.lcd_line_four = None
+        self.lcd_lines = [None, None, None, None]
 
     def print(self, message, line, style="left"):
         """
         The function to send a string to the GUI LCD
         """
         if line == 1:
-            self.lcd_line_one = message
+            self.lcd_lines[0] = message
         elif line == 2:
-            self.lcd_line_two = message
+            self.lcd_lines[1] = message
         elif line == 3:
-            self.lcd_line_three = message
+            self.lcd_lines[2] = message
         elif line == 4:
-            self.lcd_line_four = message
+            self.lcd_lines[3] = message
 
     def get_line(self, line):
         """
         The function to get the lcd line message
         """
         if line == 1:
-            return self.lcd_line_one
+            return self.lcd_lines[0]
         if line == 2:
-            return self.lcd_line_two
+            return self.lcd_lines[1]
         if line == 3:
-            return self.lcd_line_three
+            return self.lcd_lines[2]
         if line == 4:
-            return self.lcd_line_four
+            return self.lcd_lines[3]
         return "ERROR"

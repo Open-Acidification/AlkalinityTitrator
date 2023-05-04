@@ -19,12 +19,7 @@ if constants.IS_TEST:
     from titration.devices.max31865_mock import MAX31865
     from titration.devices.serial_mock import Serial
     from titration.devices.spi_mock import SPI
-
-    if constants.GUI_ENABLED:
-        from titration.devices.liquid_crystal_sim import LiquidCrystal
-    else:
-        from titration.devices.liquid_crystal_con import LiquidCrystal
-
+    from titration.devices.liquid_crystal_mock import LiquidCrystal
 else:
     import adafruit_ads1x15.ads1115 as ADS
     import board
