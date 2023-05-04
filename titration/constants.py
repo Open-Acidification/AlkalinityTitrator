@@ -19,8 +19,4 @@ KEY_D = "D"
 KEY_STAR = "*"
 KEY_HASH = "#"
 
-# pH calibration values
-PH_REF_VOLTAGE = -0.012
-PH_REF_PH = 7.0
-
 IS_TEST = False
