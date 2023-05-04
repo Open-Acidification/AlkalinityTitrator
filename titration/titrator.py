@@ -36,20 +36,13 @@ class Titrator:
         """
         The constructor for the Titrator class
         """
-
         # Initialize Logger
         self.logger = logging.getLogger()
         self.logger.setLevel(logging.DEBUG)
         self.logger.info("\nNEW TITRATION\n")
 
-        # Initialize Syringe Pump
-        self.pump = SyringePump()
-
         # Initialize LCD
-        self.lcd = LiquidCrystal(
-            cols=constants.LCD_WIDTH,
-            rows=constants.LCD_HEIGHT,
-        )
+        self.lcd = LiquidCrystal(cols=constants.LCD_WIDTH, rows=constants.LCD_HEIGHT)
 
         # Initialize Keypad
         self.keypad = Keypad()
