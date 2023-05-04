@@ -32,12 +32,8 @@ class Titrator:
         """
         The constructor for the Titrator class
         """
-
         # Initialize LCD
-        self.lcd = LiquidCrystal(
-            cols=constants.LCD_WIDTH,
-            rows=constants.LCD_HEIGHT,
-        )
+        self.lcd = LiquidCrystal(cols=constants.LCD_WIDTH, rows=constants.LCD_HEIGHT)
 
         # Initialize Keypad
         self.keypad = Keypad()
