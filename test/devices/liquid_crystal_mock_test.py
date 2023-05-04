@@ -1,367 +1,60 @@
 """
-The file to test the mock liquid crystal display
+The file to test the mock liquid crystal display for the GUI
 """
 
-import digitalio
-
-from titration.devices.library import LiquidCrystal, board
+from titration.devices.liquid_crystal_mock import LiquidCrystal
 
 
 def test_lcd_create():
     """
-    The function to test initializing the mock LCD
+    The function to test creating a GUI LCD
     """
 
     liquid_crystal = LiquidCrystal()
-
-    assert liquid_crystal.pin_rs == board.D27
-    assert liquid_crystal.pin_on == board.D15
-    assert liquid_crystal.pin_e == board.D22
-    assert liquid_crystal.pin_d4 == board.D18
-    assert liquid_crystal.pin_d5 == board.D23
-    assert liquid_crystal.pin_d6 == board.D24
-    assert liquid_crystal.pin_d7 == board.D25
-
-    assert liquid_crystal.pin_rs.direction == digitalio.Direction.OUTPUT
-    assert liquid_crystal.pin_e.direction == digitalio.Direction.OUTPUT
-    assert liquid_crystal.pin_d4.direction == digitalio.Direction.OUTPUT
-    assert liquid_crystal.pin_d5.direction == digitalio.Direction.OUTPUT
-    assert liquid_crystal.pin_d6.direction == digitalio.Direction.OUTPUT
-    assert liquid_crystal.pin_d7.direction == digitalio.Direction.OUTPUT
-    assert liquid_crystal.pin_on.direction == digitalio.Direction.OUTPUT
-
-    assert liquid_crystal.pin_on.value is True
 
     assert liquid_crystal.cols == 20
     assert liquid_crystal.rows == 4
 
-    assert liquid_crystal.clear_flag is True
-    assert liquid_crystal.strings == [
-        "".ljust(liquid_crystal.cols),
-        "".ljust(liquid_crystal.cols),
-        "".ljust(liquid_crystal.cols),
-        "".ljust(liquid_crystal.cols),
-    ]
+    assert liquid_crystal.lcd_lines[0] is None
+    assert liquid_crystal.lcd_lines[1] is None
+    assert liquid_crystal.lcd_lines[2] is None
+    assert liquid_crystal.lcd_lines[3] is None
 
 
-def test_lcd_init_out(capsys):
+def test_print():
     """
-    The function to test the startup of a large mock LCD
+    The function to test the printing to the GUI
     """
-    LiquidCrystal()
 
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "*====================*\n"
-    )
-
-
-def test_lcd_print_left(capsys):
-    """
-    The function to test mock LCD printing from the left
-    """
     liquid_crystal = LiquidCrystal()
 
-    _ = capsys.readouterr()
+    liquid_crystal.print("TEST1", 1)
+    assert liquid_crystal.lcd_lines[0] == "TEST1"
 
-    liquid_crystal.print("test string 1", 1, "left")
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "|test string 1       |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "*====================*\n"
-    )
+    liquid_crystal.print("TEST2", 2)
+    assert liquid_crystal.lcd_lines[1] == "TEST2"
 
-    liquid_crystal.print("test string 1 (2)", 1, "left")
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "|test string 1 (2)   |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "*====================*\n"
-    )
+    liquid_crystal.print("TEST3", 3)
+    assert liquid_crystal.lcd_lines[2] == "TEST3"
 
-    liquid_crystal.print("test string 2", 2, "left")
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "|test string 1 (2)   |\n"
-        + "|test string 2       |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "*====================*\n"
-    )
-
-    liquid_crystal.print("test string 3", 3, "left")
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "|test string 1 (2)   |\n"
-        + "|test string 2       |\n"
-        + "|test string 3       |\n"
-        + "|                    |\n"
-        + "*====================*\n"
-    )
-
-    liquid_crystal.print("test string 4", 4, "left")
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "|test string 1 (2)   |\n"
-        + "|test string 2       |\n"
-        + "|test string 3       |\n"
-        + "|test string 4       |\n"
-        + "*====================*\n"
-    )
+    liquid_crystal.print("TEST4", 4)
+    assert liquid_crystal.lcd_lines[3] == "TEST4"
 
 
-def test_lcd_print_center(capsys):
+def test_get_line():
     """
-    The function to test mock LCD printing from the center
+    The function to testing getting the message lines
     """
+
     liquid_crystal = LiquidCrystal()
 
-    _ = capsys.readouterr()
+    liquid_crystal.lcd_lines[0] = "TEST1"
+    liquid_crystal.lcd_lines[1] = "TEST2"
+    liquid_crystal.lcd_lines[2] = "TEST3"
+    liquid_crystal.lcd_lines[3] = "TEST4"
 
-    liquid_crystal.print("test string 1", 1, "center")
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "|   test string 1    |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "*====================*\n"
-    )
-
-    liquid_crystal.print("test string 1 (2)", 1, "center")
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "| test string 1 (2)  |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "*====================*\n"
-    )
-
-    liquid_crystal.print("test string 2", 2, "center")
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "| test string 1 (2)  |\n"
-        + "|   test string 2    |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "*====================*\n"
-    )
-
-    liquid_crystal.print("test string 3", 3, "center")
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "| test string 1 (2)  |\n"
-        + "|   test string 2    |\n"
-        + "|   test string 3    |\n"
-        + "|                    |\n"
-        + "*====================*\n"
-    )
-
-    liquid_crystal.print("test string 4", 4, "center")
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "| test string 1 (2)  |\n"
-        + "|   test string 2    |\n"
-        + "|   test string 3    |\n"
-        + "|   test string 4    |\n"
-        + "*====================*\n"
-    )
-
-
-def test_lcd_print_right(capsys):
-    """
-    The function to test mock LCD printing from the right
-    """
-    liquid_crystal = LiquidCrystal()
-
-    _ = capsys.readouterr()
-
-    liquid_crystal.print("test string 1", 1, "right")
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "|       test string 1|\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "*====================*\n"
-    )
-
-    liquid_crystal.print("test string 1 (2)", 1, "right")
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "|   test string 1 (2)|\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "*====================*\n"
-    )
-
-    liquid_crystal.print("test string 2", 2, "right")
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "|   test string 1 (2)|\n"
-        + "|       test string 2|\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "*====================*\n"
-    )
-
-    liquid_crystal.print("test string 3", 3, "right")
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "|   test string 1 (2)|\n"
-        + "|       test string 2|\n"
-        + "|       test string 3|\n"
-        + "|                    |\n"
-        + "*====================*\n"
-    )
-
-    liquid_crystal.print("test string 4", 4, "right")
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "|   test string 1 (2)|\n"
-        + "|       test string 2|\n"
-        + "|       test string 3|\n"
-        + "|       test string 4|\n"
-        + "*====================*\n"
-    )
-
-
-def test_lcd_print_long(capsys):
-    """
-    The function to test mock LCD when a print call is too long
-    """
-    liquid_crystal = LiquidCrystal()
-
-    _ = capsys.readouterr()
-
-    liquid_crystal.print("test string that's too long", 1, "left")
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "|test string that's t|\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "*====================*\n"
-    )
-
-
-def test_lcd_clear(capsys):
-    """
-    The function to test a mock LCD clear
-    """
-    liquid_crystal = LiquidCrystal()
-
-    liquid_crystal.print("test string", 1, "left")
-    liquid_crystal.print("test string", 2, "left")
-    liquid_crystal.print("test string", 3, "left")
-
-    _ = capsys.readouterr()
-
-    liquid_crystal.print("test string", 4, "left")
-
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "|test string         |\n"
-        + "|test string         |\n"
-        + "|test string         |\n"
-        + "|test string         |\n"
-        + "*====================*\n"
-    )
-
-    liquid_crystal.clear()
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "*====================*\n"
-    )
-
-    liquid_crystal.clear()
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "*====================*\n"
-    )
-
-
-def test_lcd_backlight(capsys):
-    """
-    The function to test the mock LCD lcd_backlight function
-    """
-    liquid_crystal = LiquidCrystal()
-
-    _ = capsys.readouterr()
-
-    assert liquid_crystal.pin_on.value is True
-
-    liquid_crystal.lcd_backlight(False)
-
-    assert liquid_crystal.pin_on.value is False
-
-    liquid_crystal.print("test string", 1, "left")
-    captured = capsys.readouterr()
-    assert captured.out == ""
-
-    liquid_crystal.lcd_backlight(True)
-
-    assert liquid_crystal.pin_on.value is True
-
-    liquid_crystal.print("test string", 1, "left")
-    captured = capsys.readouterr()
-    assert captured.out == (
-        "*====================*\n"
-        + "|test string         |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "|                    |\n"
-        + "*====================*\n"
-    )
-
-
-def test_mock_disable_clear():
-    """
-    The function to test the LCD mock_disable_clear function
-    """
-    liquid_crystal = LiquidCrystal()
-
-    assert liquid_crystal.clear_flag is True
-
-    liquid_crystal.mock_disable_clear()
-
-    assert liquid_crystal.clear_flag is False
+    assert liquid_crystal.get_line(1) == "TEST1"
+    assert liquid_crystal.get_line(2) == "TEST2"
+    assert liquid_crystal.get_line(3) == "TEST3"
+    assert liquid_crystal.get_line(4) == "TEST4"
+    assert liquid_crystal.get_line(5) == "ERROR"

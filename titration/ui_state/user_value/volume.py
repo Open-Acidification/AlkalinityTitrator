@@ -9,11 +9,11 @@ class Volume(UserValue):
     This is a class for the Volume state of the titrator
     """
 
-    def save_value(self, value):
+    def save_value(self):
         """
         The function to save the titrator's Volume
         """
-        self.titrator.volume = value
+        self.titrator.volume = self.value
 
     def get_label(self):
         """

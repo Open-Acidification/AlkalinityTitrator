@@ -4,7 +4,6 @@ The file for the Titrator class
 
 # pylint: disable = too-many-instance-attributes
 
-from titration import constants
 from titration.devices.library import (
     Keypad,
     LiquidCrystal,
@@ -32,7 +31,6 @@ class Titrator:
         """
         The constructor for the Titrator class
         """
-
         # Initialize LCD
         self.lcd = LiquidCrystal()
 
