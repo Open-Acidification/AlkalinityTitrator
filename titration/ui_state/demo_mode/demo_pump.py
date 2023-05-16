@@ -2,7 +2,7 @@
 The file to demo the pump device
 """
 
-from titration import constants
+from titration.devices.library import Keypad
 from titration.ui_state.ui_state import UIState
 from titration.ui_state.user_value.pump_volume import PumpVolume
 
@@ -33,27 +33,27 @@ class DemoPump(UIState):
             key (char): the keypad input is used to move through the substates
         """
         if self.substate == 1:
-            if key == constants.KEY_1:
+            if key == Keypad.KEY_1:
                 self.substate = 3
-            elif key == constants.KEY_2:
+            elif key == Keypad.KEY_2:
                 self._set_next_state(PumpVolume(self.titrator, self), True)
-            elif key == constants.KEY_3:
+            elif key == Keypad.KEY_3:
                 # self.titrator.pump.pump_volume_in()
                 pass
-            elif key == constants.KEY_4:
+            elif key == Keypad.KEY_4:
                 self.substate = 2
 
         elif self.substate == 2:
-            if key == constants.KEY_1:
+            if key == Keypad.KEY_1:
                 # self.titrator.pump.pump_volume_out()
                 pass
-            elif key == constants.KEY_4:
+            elif key == Keypad.KEY_4:
                 self.substate = 1
 
         elif self.substate == 3:
             self.substate = 1
 
-        if key == constants.KEY_D:
+        if key == Keypad.KEY_D:
             self._set_next_state(self.previous_state, True)
 
     def loop(self):

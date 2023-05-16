@@ -3,7 +3,6 @@ The file to test the mock keypad
 """
 import digitalio
 
-from titration import constants
 from titration.devices.library import Keypad, board
 
 
@@ -53,6 +52,5 @@ def test_get_key():
     """
     keypad = Keypad()
 
-    constants.GUI_ENABLED = True
     keypad.key_pressed = "A"
     assert keypad.get_key() == "A"

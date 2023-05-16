@@ -2,7 +2,7 @@
 The file to demo the pH Probe device
 """
 
-from titration import constants
+from titration.devices.library import Keypad
 from titration.ui_state.ui_state import UIState
 
 
@@ -28,17 +28,17 @@ class DemopHProbe(UIState):
             key (char): the keypad input to determine which state to go to
         """
         if self.substate == 1:
-            if key == constants.KEY_1:
+            if key == Keypad.KEY_1:
                 self.substate = 2
-            elif key == constants.KEY_2:
+            elif key == Keypad.KEY_2:
                 self.substate = 3
-            elif key == constants.KEY_3:
+            elif key == Keypad.KEY_3:
                 self._set_next_state(self.previous_state, True)
 
         else:
             self.substate = 1
 
-        if key == constants.KEY_D:
+        if key == Keypad.KEY_D:
             self._set_next_state(self.previous_state, True)
 
     def loop(self):

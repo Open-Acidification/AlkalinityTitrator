@@ -1,7 +1,7 @@
 """
 The file for the CalibrateTemp class
 """
-from titration import constants
+from titration.devices.library import Keypad
 from titration.ui_state.ui_state import UIState
 from titration.ui_state.user_value.reference_temperature import (
     ReferenceTemperature,
@@ -53,7 +53,7 @@ class CalibrateTemp(UIState):
             self.substate += 1
 
         elif self.substate == 2:
-            if key in (1, constants.KEY_1):
+            if key in (1, Keypad.KEY_1):
                 self.substate += 1
 
         elif self.substate == 3:

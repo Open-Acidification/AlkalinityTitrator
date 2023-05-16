@@ -2,7 +2,7 @@
 The file for the ReadValues class
 """
 
-from titration import constants
+from titration.devices.library import Keypad
 from titration.ui_state.ui_state import UIState
 
 
@@ -35,7 +35,7 @@ class ReadValues(UIState):
         elif self.substate == 2:
             self._set_next_state(self.previous_state, True)
 
-        if key == constants.KEY_D:
+        if key == Keypad.KEY_D:
             self._set_next_state(self.previous_state, True)
 
     def loop(self):

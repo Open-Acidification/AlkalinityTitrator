@@ -1,7 +1,7 @@
 """
 The file for the SetupTitration class
 """
-from titration import constants
+from titration.devices.library import Keypad
 from titration.ui_state.titration.calibrate_ph import CalibratePh
 from titration.ui_state.titration.initial_titration import InitialTitration
 from titration.ui_state.ui_state import UIState
@@ -46,7 +46,7 @@ class SetupTitration(UIState):
             self.substate += 1
 
         elif self.substate == 3:
-            if key == constants.KEY_1:
+            if key == Keypad.KEY_1:
                 self._set_next_state(CalibratePh(self.titrator), True)
             else:
                 self._set_next_state(InitialTitration(self.titrator), True)
