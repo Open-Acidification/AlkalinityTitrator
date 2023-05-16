@@ -21,7 +21,7 @@ class SetupCalibration(UIState):
         """
         The function to handle keypad input:
             1 -> Calibrate pH
-            2 -> Calibrate Temp
+            2 -> Calibrate Temperature Probes
             3 -> Previous State
 
         Parameters:

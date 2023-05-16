@@ -31,6 +31,18 @@ def test_handle_key(_set_next_state, calibrate):
     assert calibrate_temp.substate == 3
 
     calibrate_temp.handle_key("1")
+    assert calibrate_temp.substate == 4
+
+    calibrate_temp.handle_key("1")
+    _set_next_state.assert_called_with(ANY, True)
+    assert _set_next_state.call_args.args[0].name() == "ReferenceTemperature"
+    assert calibrate_temp.substate == 5
+
+    calibrate_temp.handle_key("1")
+    calibrate.assert_called()
+    assert calibrate_temp.substate == 6
+
+    calibrate_temp.handle_key("1")
     _set_next_state.assert_called_with(ANY, True)
     assert _set_next_state.call_args.args[0].name() == "SetupCalibration"
 
@@ -47,8 +59,8 @@ def test_loop(print_mock):
     calibrate_temp.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Set ref solution", line=1),
-            mock.call("temp", line=2),
+            mock.call("Set Probe 1", line=1),
+            mock.call("Reference Temp", line=2),
             mock.call("Press any to cont", line=3),
             mock.call("", line=4),
         ]
@@ -58,7 +70,7 @@ def test_loop(print_mock):
     calibrate_temp.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Put probe in sol", line=1),
+            mock.call("Put Probe 1 in Sol", line=1),
             mock.call("", line=2),
             mock.call("Press any to cont", line=3),
             mock.call("to record value", line=4),
@@ -71,9 +83,44 @@ def test_loop(print_mock):
         [
             mock.call("Recorded temp:", line=1),
             mock.call(
-                f"{(calibrate_temp.titrator.temp_probe.get_temperature()):0.3f}", line=2
+                f"{(calibrate_temp.titrator.temp_probe_one.get_temperature()):0.3f}", line=2
             ),
-            mock.call(f"{calibrate_temp.titrator.temp_probe.get_resistance()}", line=3),
+            mock.call(f"{calibrate_temp.titrator.temp_probe_one.get_resistance()}", line=3),
+            mock.call("", line=4),
+        ]
+    )
+
+    calibrate_temp.substate = 4
+    calibrate_temp.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Set Probe 2", line=1),
+            mock.call("Reference Temp", line=2),
+            mock.call("Press any to cont", line=3),
+            mock.call("", line=4),
+        ]
+    )
+
+    calibrate_temp.substate = 5
+    calibrate_temp.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Put Probe 2 in Sol", line=1),
+            mock.call("", line=2),
+            mock.call("Press any to cont", line=3),
+            mock.call("to record value", line=4),
+        ]
+    )
+
+    calibrate_temp.substate = 6
+    calibrate_temp.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Recorded temp:", line=1),
+            mock.call(
+                f"{(calibrate_temp.titrator.temp_probe_two.get_temperature()):0.3f}", line=2
+            ),
+            mock.call(f"{calibrate_temp.titrator.temp_probe_two.get_resistance()}", line=3),
             mock.call("", line=4),
         ]
     )
@@ -96,8 +143,8 @@ def test_calibrate_temp(print_mock, _set_next_state, calibrate):
     calibrate_temp.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Set ref solution", line=1),
-            mock.call("temp", line=2),
+            mock.call("Set Probe 1", line=1),
+            mock.call("Reference Temp", line=2),
             mock.call("Press any to cont", line=3),
             mock.call("", line=4),
         ]
@@ -111,7 +158,7 @@ def test_calibrate_temp(print_mock, _set_next_state, calibrate):
     calibrate_temp.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Put probe in sol", line=1),
+            mock.call("Put Probe 1 in Sol", line=1),
             mock.call("", line=2),
             mock.call("Press any to cont", line=3),
             mock.call("to record value", line=4),
@@ -127,9 +174,53 @@ def test_calibrate_temp(print_mock, _set_next_state, calibrate):
         [
             mock.call("Recorded temp:", line=1),
             mock.call(
-                f"{(calibrate_temp.titrator.temp_probe.get_temperature()):0.3f}", line=2
+                f"{(calibrate_temp.titrator.temp_probe_one.get_temperature()):0.3f}", line=2
             ),
-            mock.call(f"{calibrate_temp.titrator.temp_probe.get_resistance()}", line=3),
+            mock.call(f"{calibrate_temp.titrator.temp_probe_one.get_resistance()}", line=3),
+            mock.call("", line=4),
+        ]
+    )
+
+    calibrate_temp.handle_key("1")
+    assert calibrate_temp.substate == 4
+
+    calibrate_temp.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Set Probe 2", line=1),
+            mock.call("Reference Temp", line=2),
+            mock.call("Press any to cont", line=3),
+            mock.call("", line=4),
+        ]
+    )
+
+    calibrate_temp.handle_key("1")
+    _set_next_state.assert_called_with(ANY, True)
+    assert _set_next_state.call_args.args[0].name() == "ReferenceTemperature"
+    assert calibrate_temp.substate == 5
+
+    calibrate_temp.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Put Probe 2 in Sol", line=1),
+            mock.call("", line=2),
+            mock.call("Press any to cont", line=3),
+            mock.call("to record value", line=4),
+        ]
+    )
+
+    calibrate_temp.handle_key("1")
+    calibrate.assert_called()
+    assert calibrate_temp.substate == 6
+
+    calibrate_temp.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Recorded temp:", line=1),
+            mock.call(
+                f"{(calibrate_temp.titrator.temp_probe_two.get_temperature()):0.3f}", line=2
+            ),
+            mock.call(f"{calibrate_temp.titrator.temp_probe_two.get_resistance()}", line=3),
             mock.call("", line=4),
         ]
     )
