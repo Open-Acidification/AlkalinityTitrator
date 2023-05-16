@@ -47,9 +47,12 @@ class Titrator:
         # Initialize Stir Controller
         self.stir_controller = StirControl()
 
-        # Initialize Temperature Sensor
-        self.temp_probe = TemperatureProbe()
-        self.temp_controller = TemperatureControl(self.temp_probe)
+        # Initialize Temperature Probes
+        self.temp_probe_one = TemperatureProbe(1)
+        self.temp_probe_two = TemperatureProbe(2)
+
+        # Initialize Temperature Controller
+        self.temp_controller = TemperatureControl(self.temp_probe_two)
 
         # Initialize State
         self.state = MainMenu(self)

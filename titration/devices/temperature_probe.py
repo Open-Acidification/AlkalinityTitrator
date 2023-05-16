@@ -15,12 +15,18 @@ class TemperatureProbe:
     The class for the temperature probe device
     """
 
-    def __init__(self):
+    def __init__(self, probe_number):
         """
         The constructor for the TemperatureProbe class
         """
         self.spi = SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
-        self.c_s = DigitalInOut(board.D4)
+
+        # Specify which probe is being initialized
+        if probe_number == 1:
+            self.c_s = DigitalInOut(board.D0)
+        elif probe_number == 2:
+            self.c_s = DigitalInOut(board.D4)
+        
         self.sensor = MAX31865(
             self.spi,
             self.c_s,
@@ -40,9 +46,3 @@ class TemperatureProbe:
         The function to get the probe's resistance
         """
         return self.sensor.resistance
-
-    def read_temperature(self):
-        """
-        The function that reads and returns the temperature from GPIO
-        """
-        return self.get_temperature(), self.get_resistance()

@@ -37,8 +37,10 @@ def test_handle_key(set_next_state_mock):
     assert demo_temp_probe.substate == 1
 
     demo_temp_probe.handle_key("4")
-    set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "DemoModeMenu"
+    assert demo_temp_probe.substate == 5
+
+    demo_temp_probe.handle_key("1")
+    assert demo_temp_probe.substate == 1
 
     demo_temp_probe.handle_key("D")
     set_next_state_mock.assert_called_with(ANY, True)
@@ -55,10 +57,10 @@ def test_loop(print_mock):
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Get Temperature", line=1),
-            mock.call("2: Get Resistance", line=2),
-            mock.call("", line=3),
-            mock.call("4: Return", line=4),
+            mock.call("1: Get Temp One", line=1),
+            mock.call("2: Get Res One", line=2),
+            mock.call("3: Get Temp Two", line=3),
+            mock.call("4: Get Res Two", line=4),
         ]
     )
 
@@ -66,9 +68,9 @@ def test_loop(print_mock):
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Probe Temperature", line=1),
+            mock.call("Probe One Temp", line=1),
             mock.call(
-                f"{demo_temp_probe.titrator.temp_probe.get_temperature()} C",
+                f"{demo_temp_probe.titrator.temp_probe_one.get_temperature()} C",
                 line=2,
                 style="center",
             ),
@@ -81,9 +83,9 @@ def test_loop(print_mock):
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Probe Resistance", line=1),
+            mock.call("Probe One Res", line=1),
             mock.call(
-                f"{demo_temp_probe.titrator.temp_probe.get_resistance()} Ohms",
+                f"{demo_temp_probe.titrator.temp_probe_one.get_resistance()} Ohms",
                 line=2,
                 style="center",
             ),
@@ -96,12 +98,29 @@ def test_loop(print_mock):
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Temperature Control", line=1),
-            mock.call("Activated", line=2, style="center"),
+            mock.call("Probe Two Temp", line=1),
             mock.call(
-                f"{demo_temp_probe.titrator.temp_probe.get_temperature()} C", line=3
+                f"{demo_temp_probe.titrator.temp_probe_two.get_temperature()} C",
+                line=2,
+                style="center",
             ),
-            mock.call("Press any to stop", line=4),
+            mock.call("Press any to cont.", line=3),
+            mock.call("", line=4),
+        ]
+    )
+
+    demo_temp_probe.substate = 5
+    demo_temp_probe.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Probe Two Res", line=1),
+            mock.call(
+                f"{demo_temp_probe.titrator.temp_probe_two.get_resistance()} Ohms",
+                line=2,
+                style="center",
+            ),
+            mock.call("Press any to cont.", line=3),
+            mock.call("", line=4),
         ]
     )
 
@@ -110,22 +129,17 @@ def test_loop(print_mock):
 @mock.patch.object(LiquidCrystal, "print")
 def test_demo_mode(print_mock, set_next_state_mock):
     """
-    The function to test a use case of the  class:
-        User enters "1" to set Motor Speed to Fast
-        User enters "1" to return to stir control menu
-        User enters "2" to set Motor Speed to Slow
-        User enters "1" to return to stir contolr menu
-        User enters "D" to return to the main menu
+    The function to test sampling through the options in DemoTempControl
     """
     demo_temp_probe = DemoTempControl(Titrator(), DemoModeMenu(Titrator()))
 
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Get Temperature", line=1),
-            mock.call("2: Get Resistance", line=2),
-            mock.call("", line=3),
-            mock.call("4: Return", line=4),
+            mock.call("1: Get Temp One", line=1),
+            mock.call("2: Get Res One", line=2),
+            mock.call("3: Get Temp Two", line=3),
+            mock.call("4: Get Res Two", line=4),
         ]
     )
 
@@ -135,9 +149,9 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Probe Temperature", line=1),
+            mock.call("Probe One Temp", line=1),
             mock.call(
-                f"{demo_temp_probe.titrator.temp_probe.get_temperature()} C",
+                f"{demo_temp_probe.titrator.temp_probe_one.get_temperature()} C",
                 line=2,
                 style="center",
             ),
@@ -152,10 +166,10 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Get Temperature", line=1),
-            mock.call("2: Get Resistance", line=2),
-            mock.call("", line=3),
-            mock.call("4: Return", line=4),
+            mock.call("1: Get Temp One", line=1),
+            mock.call("2: Get Res One", line=2),
+            mock.call("3: Get Temp Two", line=3),
+            mock.call("4: Get Res Two", line=4),
         ]
     )
 
@@ -165,9 +179,9 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Probe Resistance", line=1),
+            mock.call("Probe One Res", line=1),
             mock.call(
-                f"{demo_temp_probe.titrator.temp_probe.get_resistance()} Ohms",
+                f"{demo_temp_probe.titrator.temp_probe_one.get_resistance()} Ohms",
                 line=2,
                 style="center",
             ),
@@ -182,10 +196,70 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Get Temperature", line=1),
-            mock.call("2: Get Resistance", line=2),
-            mock.call("", line=3),
-            mock.call("4: Return", line=4),
+            mock.call("1: Get Temp One", line=1),
+            mock.call("2: Get Res One", line=2),
+            mock.call("3: Get Temp Two", line=3),
+            mock.call("4: Get Res Two", line=4),
+        ]
+    )
+
+    demo_temp_probe.handle_key("3")
+    assert demo_temp_probe.substate == 4
+
+    demo_temp_probe.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Probe Two Temp", line=1),
+            mock.call(
+                f"{demo_temp_probe.titrator.temp_probe_two.get_temperature()} C",
+                line=2,
+                style="center",
+            ),
+            mock.call("Press any to cont.", line=3),
+            mock.call("", line=4),
+        ]
+    )
+
+    demo_temp_probe.handle_key("1")
+    assert demo_temp_probe.substate == 1
+
+    demo_temp_probe.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("1: Get Temp One", line=1),
+            mock.call("2: Get Res One", line=2),
+            mock.call("3: Get Temp Two", line=3),
+            mock.call("4: Get Res Two", line=4),
+        ]
+    )
+
+    demo_temp_probe.handle_key("4")
+    assert demo_temp_probe.substate == 5
+
+    demo_temp_probe.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Probe Two Res", line=1),
+            mock.call(
+                f"{demo_temp_probe.titrator.temp_probe_two.get_resistance()} Ohms",
+                line=2,
+                style="center",
+            ),
+            mock.call("Press any to cont.", line=3),
+            mock.call("", line=4),
+        ]
+    )
+
+    demo_temp_probe.handle_key("1")
+    assert demo_temp_probe.substate == 1
+
+    demo_temp_probe.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("1: Get Temp One", line=1),
+            mock.call("2: Get Res One", line=2),
+            mock.call("3: Get Temp Two", line=3),
+            mock.call("4: Get Res Two", line=4),
         ]
     )
 
