@@ -10,8 +10,7 @@ def create_temperature_controller():
     """
     The function to create a mock temperature controller for tests
     """
-    sensor = TemperatureProbe()
-    return TemperatureControl(sensor)
+    return TemperatureControl(TemperatureProbe())
 
 
 def test_temperature_control_create():

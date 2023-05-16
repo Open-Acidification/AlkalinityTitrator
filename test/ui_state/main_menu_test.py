@@ -28,18 +28,18 @@ def test_handle_key(set_next_state_mock):
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "PrimePump"
 
-    main_menu.handle_key("*")
+    main_menu.handle_key("4")
     assert main_menu.substate == 2
 
-    main_menu.handle_key("4")
+    main_menu.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
 
-    main_menu.handle_key("5")
+    main_menu.handle_key("2")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "DemoMode"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoModeMenu"
 
-    main_menu.handle_key("*")
+    main_menu.handle_key("4")
     assert main_menu.substate == 1
 
 
@@ -53,10 +53,10 @@ def test_loop(print_mock):
     main_menu.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Run titration", line=1),
-            mock.call("Calibrate sensors", line=2),
-            mock.call("Prime pump", line=3),
-            mock.call("Page 2", line=4),
+            mock.call("1. Run titration", line=1),
+            mock.call("2. Calibrate sensors", line=2),
+            mock.call("3. Prime pump", line=3),
+            mock.call("4. Page 2", line=4),
         ]
     )
 
@@ -64,10 +64,10 @@ def test_loop(print_mock):
     main_menu.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Update settings", line=1),
-            mock.call("Test mode", line=2),
-            mock.call("Exit", line=3),
-            mock.call("Page 1", line=4),
+            mock.call("1. Update settings", line=1),
+            mock.call("2. Test mode", line=2),
+            mock.call("3. Exit", line=3),
+            mock.call("4. Page 1", line=4),
         ]
     )
 
@@ -83,10 +83,10 @@ def test_main_menu(set_next_state_mock, print_mock):
     main_menu.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Run titration", line=1),
-            mock.call("Calibrate sensors", line=2),
-            mock.call("Prime pump", line=3),
-            mock.call("Page 2", line=4),
+            mock.call("1. Run titration", line=1),
+            mock.call("2. Calibrate sensors", line=2),
+            mock.call("3. Prime pump", line=3),
+            mock.call("4. Page 2", line=4),
         ]
     )
 
@@ -102,26 +102,26 @@ def test_main_menu(set_next_state_mock, print_mock):
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "PrimePump"
 
-    main_menu.handle_key("*")
+    main_menu.handle_key("4")
     assert main_menu.substate == 2
 
     main_menu.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Update settings", line=1),
-            mock.call("Test mode", line=2),
-            mock.call("Exit", line=3),
-            mock.call("Page 1", line=4),
+            mock.call("1. Update settings", line=1),
+            mock.call("2. Test mode", line=2),
+            mock.call("3. Exit", line=3),
+            mock.call("4. Page 1", line=4),
         ]
     )
 
-    main_menu.handle_key("4")
+    main_menu.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
 
-    main_menu.handle_key("5")
+    main_menu.handle_key("2")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "DemoMode"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoModeMenu"
 
-    main_menu.handle_key("*")
+    main_menu.handle_key("4")
     assert main_menu.substate == 1

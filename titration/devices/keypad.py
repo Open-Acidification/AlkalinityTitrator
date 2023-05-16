@@ -1,6 +1,9 @@
 """
 The file for the Keypad device class
 """
+
+# pylint: disable = consider-using-enumerate
+
 import board
 import digitalio
 
@@ -86,9 +89,9 @@ class Keypad:
         The function that polls the keypad and returns the button label (1,2,A,B,*,#, etc)
         of the button pressed.
         """
-        for row in enumerate(self.rows):
+        for row in range(len(self.rows)):
             self.rows[row].value = True
-            for col in enumerate(self.cols):
+            for col in range(len(self.cols)):
                 if self.cols[col].value:
                     self.rows[row].value = False
                     return KEY_VALUES[row][col]

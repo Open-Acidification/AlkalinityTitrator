@@ -9,11 +9,11 @@ class DegasTime(UserValue):
     This is a class for the DegasTime state of the titrator
     """
 
-    def save_value(self, value):
+    def save_value(self):
         """
         The function to save the titrator's degas time
         """
-        self.titrator.degas_time = value
+        self.titrator.degas_time = self.value
 
     def get_label(self):
         """

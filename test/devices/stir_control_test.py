@@ -1,79 +1,88 @@
 """
 The file to test the StirControl class
 """
+import time
+from unittest import mock
+from unittest.mock import call
+
 from titration.devices.library import StirControl
-
-
-def create_stir_controller():
-    """
-    The function to create a test stir controller
-    """
-    return StirControl()
 
 
 def test_create_stir_controller():
     """
     The function to test the creation of a stir controller
     """
-    stir_controller = create_stir_controller()
+    stir_controller = StirControl()
 
-    assert stir_controller.motor is not None
-    assert stir_controller.motor.duty_cycle == 0
-    assert stir_controller.motor.frequency == 100
+    assert stir_controller._motor is not None
+    assert stir_controller._motor.duty_cycle == 0
+    assert stir_controller._motor.frequency == 100
 
 
-def test_set_motor_speed_gradual():
+def test_set_speed():
     """
-    The function to test the set motor speed function with the gradual option
+    The function to test the _set_speed function
+    The three asserts test the three use cases of _set_speed()
+    at STIR_PWM_FAST and STIR_PWM_SLOW
     """
-    stir_controller = create_stir_controller()
+    stir_controller = StirControl()
 
-    stir_controller.set_motor_speed(4000, gradual=True)
+    stir_controller._set_speed(5000)
+    assert stir_controller._motor.duty_cycle == 5000
 
-    assert stir_controller.motor.duty_cycle == 4000
+    stir_controller._set_speed(3000)
+    assert stir_controller._motor.duty_cycle == 3000
 
-
-def test_set_motor_speed_not_gradual():
-    """
-    The function to test the set motor speed function without the gradual option
-    """
-    stir_controller = create_stir_controller()
-
-    stir_controller.set_motor_speed(4000)
-
-    assert stir_controller.motor.duty_cycle == 4000
+    stir_controller._set_speed(0)
+    assert stir_controller._motor.duty_cycle == 0
 
 
-def test_motor_speed_fast():
+@mock.patch.object(StirControl, "_set_speed")
+def test_set_speed_fast(_set_speed):
     """
     The function to test the set motor speed fast function
     """
-    stir_controller = create_stir_controller()
+    stir_controller = StirControl()
 
-    stir_controller.motor_speed_fast()
+    stir_controller.set_fast()
 
-    assert stir_controller.motor.duty_cycle == 5000
+    _set_speed.assert_called_with(5000)
 
 
-def test_motor_speed_slow():
+@mock.patch.object(StirControl, "_set_speed")
+def test_set_speed_slow(_set_speed):
     """
     The function to test the set motor speed slow function
     """
-    stir_controller = create_stir_controller()
+    stir_controller = StirControl()
 
-    stir_controller.motor_speed_slow()
+    stir_controller.set_slow()
 
-    assert stir_controller.motor.duty_cycle == 3000
+    _set_speed.assert_called_with(3000)
 
 
-def test_motor_stop():
+def test_set_stop():
     """
     The function to test the motor stop function
     """
-    stir_controller = create_stir_controller()
+    stir_controller = StirControl()
 
-    stir_controller.motor.duty_cycle = 5000
+    stir_controller._motor.duty_cycle = 3000
 
-    stir_controller.motor_stop()
+    stir_controller.set_stop()
+    assert stir_controller._motor.duty_cycle == 0
 
-    assert stir_controller.motor.duty_cycle == 0
+
+@mock.patch.object(time, "sleep")
+@mock.patch.object(StirControl, "_set_speed")
+def test_degas(_set_speed, sleep):
+    """
+    The function to test the stir controller's degas function
+    """
+    stir_controller = StirControl()
+
+    stir_controller.degas(0)
+
+    calls = [call(5000), call(3000)]
+    _set_speed.assert_has_calls(calls)
+    sleep.assert_called_with(0)
