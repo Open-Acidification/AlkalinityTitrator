@@ -26,7 +26,7 @@ class TemperatureProbe:
             self.c_s = DigitalInOut(board.D0)
         elif probe_number == 2:
             self.c_s = DigitalInOut(board.D4)
-        
+
         self.sensor = MAX31865(
             self.spi,
             self.c_s,
