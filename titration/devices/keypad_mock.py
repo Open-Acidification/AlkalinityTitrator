@@ -10,6 +10,7 @@ class Keypad:
     """
     The class for the mock Keypad
     """
+
     KEY_0 = "0"
     KEY_1 = "1"
     KEY_2 = "2"
