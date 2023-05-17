@@ -1,7 +1,7 @@
 """
 The file for the ToggleDemoMode class
 """
-from titration import constants
+from titration import mock_config
 from titration.devices.library import Keypad
 from titration.ui_state.ui_state import UIState
 
@@ -30,7 +30,7 @@ class ToggleDemoMode(UIState):
         """
         if self.substate == 1:
             if key in (Keypad.KEY_0, Keypad.KEY_1):
-                constants.IS_TEST = bool(int(key))
+                mock_config.MOCK_ENABLED = bool(int(key))
                 self.substate += 1
 
         elif self.substate == 2:
@@ -51,7 +51,7 @@ class ToggleDemoMode(UIState):
 
         if self.substate == 2:
             self.titrator.lcd.print("Mode Set To:", line=1)
-            if constants.IS_TEST:
+            if mock_config.MOCK_ENABLED:
                 self.titrator.lcd.print("Mock Devices", line=2)
             else:
                 self.titrator.lcd.print("Real Devices", line=2)
