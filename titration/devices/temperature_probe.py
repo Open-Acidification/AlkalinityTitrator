@@ -6,8 +6,8 @@ The file for the temperature probe device
 
 from titration.devices.library import MAX31865, SPI, DigitalInOut, board
 
-#DEFAULT_REF_RESISTANCE = 4300.0
-#NOMINAL_RESISTANCE = 1000.0
+DEFAULT_REF_RESISTANCE = 4300.0
+NOMINAL_RESISTANCE = 100.0
 
 # Constants for calibration
 A = 0.0039083
@@ -36,9 +36,10 @@ class TemperatureProbe:
             self.spi,
             self.c_s,
             wires=3,
+            ref_resistor = DEFAULT_REF_RESISTANCE
         )
 
-        self.reference_resistance = None
+        self.reference_resistance = DEFAULT_REF_RESISTANCE
 
     def get_temperature(self):
         """
