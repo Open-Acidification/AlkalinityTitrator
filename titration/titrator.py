@@ -47,9 +47,12 @@ class Titrator:
         # Initialize Stir Controller
         self.stir_controller = StirControl()
 
-        # Initialize Temperature Sensor
-        self.temp_probe = TemperatureProbe()
-        self.temp_controller = TemperatureControl(self.temp_probe)
+        # Initialize Temperature Probes
+        self.temp_probe_one = TemperatureProbe(1)
+        self.temp_probe_two = TemperatureProbe(2)
+
+        # Initialize Temperature Controller
+        self.temp_controller = TemperatureControl(self.temp_probe_two)
 
         # Initialize State
         self.state = MainMenu(self)
@@ -73,6 +76,15 @@ class Titrator:
         """
         The function used to loop through in each state
         """
+        self.temp_controller.update()
+        self.update_state()
+        print(
+            "Titrator::handleUI() - ",
+            self.state.name(),
+            "::substate",
+            self.state.substate,
+            "::loop()",
+        )
         self.handle_ui()
 
     def set_next_state(self, new_state, update):
@@ -108,12 +120,4 @@ class Titrator:
         print("Titrator::handleUI() - ", self.state.name(), "::handleKey(", key, ")")
         if key is not None:
             self.state.handle_key(key)
-        self.update_state()
-        print(
-            "Titrator::handleUI() - ",
-            self.state.name(),
-            "::substate",
-            self.state.substate,
-            "::loop()",
-        )
         self.state.loop()
