@@ -64,7 +64,9 @@ class TemperatureProbe:
             temp (float): reference temperature inputted by the user in celsius
         """
         # Looping may need to occur to pinpoint the temperature?
-        while ((self.sensor.temperature - 1) >= temp) or (temp >= (self.sensor.temperature + 1)):
+        x = self.sensor.temperature
+        print(x)
+        while ((x - 1) >= temp) or (temp >= (x + 1)):
             # Temperature below 0 C
             if temp >= 0:
                 temp = NOMINAL_RESISTANCE * (1 + A * temp + B * temp**2)
