@@ -63,27 +63,29 @@ class TemperatureProbe:
         Parameters:
             temp (float): reference temperature inputted by the user in celsius
         """
-        # Temperature below 0 C
-        if temp >= 0:
-            temp = NOMINAL_RESISTANCE * (1 + A * temp + B * temp**2)
+        # Looping may need to occur to pinpoint the temperature?
+        while ((self.sensor.temperature - 1) >= temp) or (temp >= (self.sensor.temperature + 1)):
+            # Temperature below 0 C
+            if temp >= 0:
+                temp = NOMINAL_RESISTANCE * (1 + A * temp + B * temp**2)
 
-        # Temperature above 0 C
-        else:
-            temp = NOMINAL_RESISTANCE * (
-                1 + A * temp + B * temp**2 + C * (temp - 100) * temp**3
+            # Temperature above 0 C
+            else:
+                temp = NOMINAL_RESISTANCE * (
+                    1 + A * temp + B * temp**2 + C * (temp - 100) * temp**3
+                )
+
+            # Calculate new reference temperature
+            diff = temp - self.sensor.resistance
+            self.reference_resistance = (
+                self.reference_resistance + diff * self.reference_resistance / temp
             )
 
-        # Calculate new reference temperature
-        diff = temp - self.sensor.resistance
-        self.reference_resistance = (
-            self.reference_resistance + diff * self.reference_resistance / temp
-        )
-
-        # Reinitialize the device with the new setting
-        self.sensor = MAX31865(
-            self.spi,
-            self.c_s,
-            wires=3,
-            rtd_nominal=NOMINAL_RESISTANCE,
-            ref_resistor=self.reference_resistance,
-        )
+            # Reinitialize the device with the new setting
+            self.sensor = MAX31865(
+                self.spi,
+                self.c_s,
+                wires=3,
+                rtd_nominal=NOMINAL_RESISTANCE,
+                ref_resistor=self.reference_resistance,
+            )
