@@ -33,10 +33,7 @@ class TemperatureProbe:
             self.c_s = DigitalInOut(board.D4)
 
         self.sensor = MAX31865(
-            self.spi,
-            self.c_s,
-            wires=3,
-            ref_resistor = DEFAULT_REF_RESISTANCE
+            self.spi, self.c_s, wires=3, ref_resistor=DEFAULT_REF_RESISTANCE
         )
 
         self.reference_resistance = DEFAULT_REF_RESISTANCE
@@ -64,7 +61,6 @@ class TemperatureProbe:
         """
         # Temperature below 0 C
         if temp >= 0:
-            
             temp = self.sensor.rtd_nominal * (1 + A * temp + B * temp**2)
         # Temperature above 0 C
         else:
