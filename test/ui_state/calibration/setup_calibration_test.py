@@ -27,7 +27,7 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "CalibrateTemp"
     set_next_state_mock.reset_called()
 
-    setup_calibration.handle_key("3")
+    setup_calibration.handle_key("4")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "MainMenu"
 
@@ -42,10 +42,10 @@ def test_loop(print_mock):
     setup_calibration.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1. pH", line=1),
-            mock.call("2. Temperature", line=2),
-            mock.call("3. Return", line=3),
-            mock.call("", line=4),
+            mock.call("1: pH", line=1),
+            mock.call("2: Temperature", line=2),
+            mock.call("", line=3),
+            mock.call("4: Return", line=4),
         ]
     )
 
@@ -62,10 +62,10 @@ def test_setup_calibration(print_mock, set_next_state_mock):
     setup_calibration.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1. pH", line=1),
-            mock.call("2. Temperature", line=2),
-            mock.call("3. Return", line=3),
-            mock.call("", line=4),
+            mock.call("1: pH", line=1),
+            mock.call("2: Temperature", line=2),
+            mock.call("", line=3),
+            mock.call("4: Return", line=4),
         ]
     )
 

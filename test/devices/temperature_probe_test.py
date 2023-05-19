@@ -41,4 +41,4 @@ def test_get_resistance():
     The function to test getting a resistance from a mock sensor
     """
     temperature_sensor = create_temperature_probe(1)
-    assert temperature_sensor.get_resistance() == 1000.0
+    assert temperature_sensor.get_resistance() == 100

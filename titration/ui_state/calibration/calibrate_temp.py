@@ -64,45 +64,45 @@ class CalibrateTemp(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            self.titrator.lcd.print("Set Probe 1", line=1)
+            self.titrator.lcd.print("Set Probe One", line=1)
             self.titrator.lcd.print("Reference Temp", line=2)
-            self.titrator.lcd.print("Press any to cont", line=3)
-            self.titrator.lcd.print("", line=4)
+            self.titrator.lcd.print("", line=3)
+            self.titrator.lcd.print("Any key to continue", line=4)
 
         elif self.substate == 2:
-            self.titrator.lcd.print("Put Probe 1 in Sol", line=1)
+            self.titrator.lcd.print("Put Probe One in Sol", line=1)
             self.titrator.lcd.print("", line=2)
-            self.titrator.lcd.print("Press any to cont", line=3)
-            self.titrator.lcd.print("to record value", line=4)
+            self.titrator.lcd.print("Press any key to", line=3)
+            self.titrator.lcd.print("record temperature", line=4)
 
         elif self.substate == 3:
-            self.titrator.lcd.print("Recorded temp:", line=1)
+            self.titrator.lcd.print("Probe One", line=1)
             self.titrator.lcd.print(
                 f"{(self.titrator.temp_probe_one.get_temperature()):0.3f}", line=2
             )
             self.titrator.lcd.print(
                 f"{self.titrator.temp_probe_one.get_resistance()}", line=3
             )
-            self.titrator.lcd.print("", line=4)
+            self.titrator.lcd.print("Any key to continue", line=4)
 
         elif self.substate == 4:
-            self.titrator.lcd.print("Set Probe 2", line=1)
+            self.titrator.lcd.print("Set Probe Two", line=1)
             self.titrator.lcd.print("Reference Temp", line=2)
-            self.titrator.lcd.print("Press any to cont", line=3)
-            self.titrator.lcd.print("", line=4)
+            self.titrator.lcd.print("", line=3)
+            self.titrator.lcd.print("Any key to continue", line=4)
 
         elif self.substate == 5:
-            self.titrator.lcd.print("Put Probe 2 in Sol", line=1)
+            self.titrator.lcd.print("Put Probe Two in Sol", line=1)
             self.titrator.lcd.print("", line=2)
-            self.titrator.lcd.print("Press any to cont", line=3)
-            self.titrator.lcd.print("to record value", line=4)
+            self.titrator.lcd.print("Press any key to", line=3)
+            self.titrator.lcd.print("record temperature", line=4)
 
         elif self.substate == 6:
-            self.titrator.lcd.print("Recorded temp:", line=1)
+            self.titrator.lcd.print("Probe Two", line=1)
             self.titrator.lcd.print(
                 f"{(self.titrator.temp_probe_two.get_temperature()):0.3f}", line=2
             )
             self.titrator.lcd.print(
                 f"{self.titrator.temp_probe_two.get_resistance()}", line=3
             )
-            self.titrator.lcd.print("", line=4)
+            self.titrator.lcd.print("Any key to continue", line=4)
