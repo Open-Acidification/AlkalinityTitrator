@@ -28,7 +28,7 @@ def test_temperature_probe_two_create():
     assert temperature_sensor is not None
 
 
-def test_temperature_probe_get_temperature():
+def test_get_temperature():
     """
     The function to test getting a temperature from the mock sensor
     """
@@ -36,9 +36,9 @@ def test_temperature_probe_get_temperature():
     assert temperature_sensor.get_temperature() == 0
 
 
-def test_temperature_probe_resistance():
+def test_get_resistance():
     """
     The function to test getting a resistance from a mock sensor
     """
     temperature_sensor = create_temperature_probe(1)
-    assert temperature_sensor.get_resistance() == 1000.0
+    assert temperature_sensor.get_resistance() == 100

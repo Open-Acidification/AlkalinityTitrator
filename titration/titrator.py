@@ -63,8 +63,14 @@ class Titrator:
         self.solution_weight = "0"
         self.solution_salinity = "0"
         self.volume = "0"
-        self.buffer_ph = "0"
         self.degas_time = 0
+
+        # pH Calibration Values
+        self.buffer_measured_volts = 0
+        self.buffer_nominal_ph = 0
+
+        # Temperature Calibration Values
+        self.reference_temperature = 0
 
     def loop(self):
         """
