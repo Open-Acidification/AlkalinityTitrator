@@ -9,7 +9,9 @@ from titration.ui_state.demo_mode.demo_stir_control import DemoStirControl
 from titration.ui_state.demo_mode.demo_temperature_controller import (
     DemoTemperatureControl,
 )
-from titration.ui_state.demo_mode.demo_temperature_probe import DemoTemperatureProbe
+from titration.ui_state.demo_mode.demo_temperature_probe import (
+    DemoTemperatureProbe,
+)
 from titration.ui_state.demo_mode.read_values import ReadValues
 from titration.ui_state.ui_state import UIState
 
