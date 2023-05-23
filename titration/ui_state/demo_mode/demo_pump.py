@@ -35,17 +35,18 @@ class DemoPump(UIState):
         if self.substate == 1:
             if key == Keypad.KEY_1:
                 self.substate = 3
+
             elif key == Keypad.KEY_2:
-                self._set_next_state(PumpVolume(self.titrator, self), True)
+                self.titrator.pump.pump_volume(1.1,0)
+                
             elif key == Keypad.KEY_3:
-                # self.titrator.pump.pump_volume_in()
-                pass
+                self.titrator.pump.pump_volume(1.1,1)
+
             elif key == Keypad.KEY_4:
                 self.substate = 2
 
         elif self.substate == 2:
             if key == Keypad.KEY_1:
-                # self.titrator.pump.pump_volume_out()
                 pass
             elif key == Keypad.KEY_4:
                 self.substate = 1
@@ -62,12 +63,12 @@ class DemoPump(UIState):
         """
         if self.substate == 1:
             self.titrator.lcd.print("1: Get Volume", line=1)
-            self.titrator.lcd.print("2: Set Volume", line=2)
-            self.titrator.lcd.print("3: Pump Volume In", line=3)
+            self.titrator.lcd.print("2: Pump Volume 0", line=2)
+            self.titrator.lcd.print("3: Pump Volume 1", line=3)
             self.titrator.lcd.print("4: Page 2", line=4)
 
         elif self.substate == 2:
-            self.titrator.lcd.print("1: Pump Volume Out", line=1)
+            self.titrator.lcd.print("1: ", line=1)
             self.titrator.lcd.print("", line=2)
             self.titrator.lcd.print("", line=3)
             self.titrator.lcd.print("4: Page 1", line=4)
