@@ -21,7 +21,6 @@ class Syringe_Pump:
         )
 
         self.volume_in_pump = 0
-        self.max_pump_capacity = MAX_PUMP_CAPACITY
 
         self.serial.reset_input_buffer()
         self.serial.reset_output_buffer()
@@ -32,80 +31,91 @@ class Syringe_Pump:
     def get_volume_in_pump(self):
         return self.volume_in_pump
 
-    def pump_volume(self, volume, direction):
+    def pull_volume_in(self, volume_to_add):
         """
         Moves volume of solution through pump
         :param volume: amount of volume to move (float)
         :param direction: 0 to pull solution in, 1 to pump out
         """
-        volume_to_add = volume
+        space_in_pump = MAX_PUMP_CAPACITY - self.volume_in_pump
+        volume_to_add = min(volume_to_add, space_in_pump)
+        self.__drive_pump_down(volume_to_add)
 
-        # pull in solution
-        if direction == 0:
-            # if volume_to_add is greater than space in the pump
-            space_in_pump = self.max_pump_capacity - self.volume_in_pump
-            if volume_to_add > space_in_pump:
-                volume_to_add = self.max_pump_capacity - self.volume_in_pump
-            self.drive_pump(volume_to_add, direction)
+    def push_volume_out(self, volume_to_add):
+        """
+        The function to push volume out into to the titrator solution
 
-        # pump out solution
-        elif direction == 1:
-            # volume greater than max capacity of pump
-            if volume_to_add > self.max_pump_capacity:
-
-                # pump out all current volume
-                next_volume = self.volume_in_pump
-                self.drive_pump(next_volume, 1)
+        Parameters:
+            volume_to_add (float): the volume to be added to the solution
+        """
+        # volume greater than max capacity of pump
+        if volume_to_add > MAX_PUMP_CAPACITY:
+            # pump out all current volume
+            next_volume = self.volume_in_pump
+            self.__drive_pump_up(next_volume)
 
                 # calculate new volume to add
                 volume_to_add = volume_to_add - next_volume
 
-                # keep pumping until full volume_to_add is met
-                while volume_to_add > 0:
-                    next_volume = min(volume_to_add, self.max_pump_capacity)
-                    self.drive_pump(next_volume, 0)
-                    self.drive_pump(next_volume, 1)
-                    volume_to_add -= next_volume
-
-            # volume greater than volume in pump
-            elif volume_to_add > self.volume_in_pump:
-                next_volume = self.volume_in_pump
-                self.drive_pump(next_volume, 1)
-
-                # calculate remaining volume to add
+            # keep pumping until full volume_to_add is met
+            while volume_to_add > 0:
+                next_volume = min(volume_to_add, MAX_PUMP_CAPACITY)
+                self.__drive_pump_down(next_volume)
+                self.__drive_pump_up(next_volume)
                 volume_to_add -= next_volume
 
-                self.drive_pump(volume_to_add, 0)
-                self.drive_pump(volume_to_add, 1)
+        # volume greater than volume in pump
+        elif volume_to_add > self.volume_in_pump:
+            next_volume = self.volume_in_pump
+            self.__drive_pump_up(next_volume)
 
             else:
                 # volume less than volume in pump
                 self.drive_pump(volume_to_add, direction)
 
-    def drive_pump(self, volume, direction):
-        """Converts volume to cycles and ensures and checks pump level and values"""
-        if direction == 0:
-            space_in_pump = self.max_pump_capacity - self.volume_in_pump
-            if volume <= space_in_pump:
-                cycles = self.determine_pump_cycles(volume)
-                self.drive_step_stick(cycles, direction)
-                self.volume_in_pump += volume
-        elif direction == 1:
-            if volume <= self.volume_in_pump:
-                cycles = self.determine_pump_cycles(volume)
-                offset = self.drive_step_stick(cycles, direction)
-                # offset is what is returned from drive_step_stick which originally is returned from the arduino
-                if offset != 0:
-                    self.drive_step_stick(offset, 0)
-                    self.drive_step_stick(offset, 1)
-                self.set_volume_in_pump(self.volume_in_pump - volume)
+            self.__drive_pump_down(volume_to_add)
+            self.__drive_pump_up(volume_to_add)
+        else:
+            # volume less than volume in pump
+            self.__drive_pump_up(volume_to_add)
 
-    def drive_step_stick(self, cycles, direction):
+    def __drive_pump_down(self, volume):
         """
-        cycles and direction are integers
-        Communicates with arduino to add HCl through pump
-        :param cycles: number of rising edges for the pump
-        :param direction: direction of pump
+        The function to drive the down in to pull in liquid
+
+        Parameters:
+            volume (float): the volume to add
+        """
+        space_in_pump = MAX_PUMP_CAPACITY - self.volume_in_pump
+        if volume > space_in_pump:
+            raise Exception("Filling Error: Not enough space in pump")
+        cycles = self.__determine_pump_cycles(volume)
+        self.__drive_step_stick(cycles, direction=0)
+        self.volume_in_pump += volume
+
+    def __drive_pump_up(self, volume):
+        """
+        The function to drive the pump up to to push out liquid
+
+        Parameters:
+            volume (float): the volume to add
+        """
+        if volume > self.volume_in_pump:
+            raise Exception("Pumping Error: Not enough solution in pump")
+        cycles = self.__determine_pump_cycles(volume)
+        offset = self.__drive_step_stick(cycles, direction=1)
+        if offset != 0:
+            self.__drive_step_stick(offset, 0)
+            self.__drive_step_stick(offset, 1)
+        self.volume_in_pump -= volume
+
+    def __drive_step_stick(self, cycles, direction):
+        """
+        The function that communicates with the arduino to add HCl through pump
+
+        Parameters:
+            cycles (int): number of rising edges for the pump
+            direction (int): direction of pump
         """
         if cycles == 0:
             return 0
