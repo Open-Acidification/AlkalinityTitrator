@@ -166,6 +166,18 @@ class TemperatureControl:
         self.control_active = False
         self.relay.off()
 
+    def heater_on(self):
+        """
+        The function to turn the heating element on
+        """
+        self.relay.on()
+
+    def heater_off(self):
+        """
+        The function to turn the heating element off
+        """
+        self.relay.off()
+
     def __set_controlparam_antiwindup(self):
         """
         After 250 cycles, the PID control parameters should

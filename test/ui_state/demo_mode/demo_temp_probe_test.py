@@ -1,5 +1,5 @@
 """
-The file to test the DemoTempControl Class
+The file to test the DemoTemperatureProbe Class
 """
 
 from unittest import mock
@@ -8,15 +8,15 @@ from unittest.mock import ANY
 from titration.devices.library import LiquidCrystal
 from titration.titrator import Titrator
 from titration.ui_state.demo_mode.demo_mode_menu import DemoModeMenu
-from titration.ui_state.demo_mode.demo_temp_probe import DemoTempControl
+from titration.ui_state.demo_mode.demo_temp_probe import DemoTemperatureProbe
 
 
-@mock.patch.object(DemoTempControl, "_set_next_state")
+@mock.patch.object(DemoTemperatureProbe, "_set_next_state")
 def test_handle_key(set_next_state_mock):
     """
-    The function to test the DemoTempControl's handle_key function for each keypad input
+    The function to test the DemoTemperatureProbe's handle_key function for each keypad input
     """
-    demo_temp_probe = DemoTempControl(Titrator(), DemoModeMenu(Titrator()))
+    demo_temp_probe = DemoTemperatureProbe(Titrator(), DemoModeMenu(Titrator()))
 
     demo_temp_probe.handle_key("1")
     assert demo_temp_probe.substate == 2
@@ -40,7 +40,7 @@ def test_loop(print_mock):
     """
     The function to test 's loop function's LiquidCrystal calls
     """
-    demo_temp_probe = DemoTempControl(Titrator(), DemoModeMenu(Titrator()))
+    demo_temp_probe = DemoTemperatureProbe(Titrator(), DemoModeMenu(Titrator()))
 
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
@@ -91,13 +91,13 @@ def test_loop(print_mock):
     )
 
 
-@mock.patch.object(DemoTempControl, "_set_next_state")
+@mock.patch.object(DemoTemperatureProbe, "_set_next_state")
 @mock.patch.object(LiquidCrystal, "print")
 def test_demo_mode(print_mock, set_next_state_mock):
     """
-    The function to test sampling through the options in DemoTempControl
+    The function to test sampling through the options in DemoTemperatureProbe
     """
-    demo_temp_probe = DemoTempControl(Titrator(), DemoModeMenu(Titrator()))
+    demo_temp_probe = DemoTemperatureProbe(Titrator(), DemoModeMenu(Titrator()))
 
     demo_temp_probe.loop()
     print_mock.assert_has_calls(

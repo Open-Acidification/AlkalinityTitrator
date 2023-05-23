@@ -6,7 +6,7 @@ from titration.devices.library import Keypad
 from titration.ui_state.demo_mode.demo_ph_probe import DemopHProbe
 from titration.ui_state.demo_mode.demo_pump import DemoPump
 from titration.ui_state.demo_mode.demo_stir_control import DemoStirControl
-from titration.ui_state.demo_mode.demo_temp_probe import DemoTempControl
+from titration.ui_state.demo_mode.demo_temp_probe import DemoTemperatureProbe
 from titration.ui_state.demo_mode.read_values import ReadValues
 from titration.ui_state.demo_mode.toggle_demo_mode import ToggleDemoMode
 from titration.ui_state.ui_state import UIState
@@ -58,7 +58,7 @@ class DemoModeMenu(UIState):
                 self._set_next_state(DemoStirControl(self.titrator, self), True)
 
             elif key == Keypad.KEY_2:
-                self._set_next_state(DemoTempControl(self.titrator, self), True)
+                self._set_next_state(DemoTemperatureProbe(self.titrator, self), True)
 
             elif key == Keypad.KEY_3:
                 self._set_next_state(ToggleDemoMode(self.titrator, self), True)

@@ -38,7 +38,7 @@ def test_handle_key(set_next_state_mock):
 
     demo_mode.handle_key("2")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "DemoTempControl"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoTemperatureProbe"
 
     demo_mode.handle_key("3")
     set_next_state_mock.assert_called_with(ANY, True)
@@ -179,7 +179,7 @@ def test_demo_mode(print_mock, set_next_state_mock):
 
     demo_mode.handle_key("2")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "DemoTempControl"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoTemperatureProbe"
 
     demo_mode.loop()
     print_mock.assert_has_calls(

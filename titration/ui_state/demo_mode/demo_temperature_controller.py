@@ -1,22 +1,22 @@
 """
-The file to demo the temperature probe device
+The file to demo the temperature controller device
 """
 
 from titration.devices.library import Keypad
 from titration.ui_state.ui_state import UIState
 
 
-class DemoTemperatureProbe(UIState):
+class DemoTemperatureControl(UIState):
     """
-    The class to demo the temperature probe device
+    The class to demo the temperature controller device
     """
 
     def handle_key(self, key):
         """
         The function to respond to a keypad input:
             Substate 1:
-                1 -> Get Probe One
-                2 -> Get Probe Two
+                1 -> Turn Heater On
+                2 -> Turn Temperature Control On
                 4 -> Return to Demo Mode Menu
             Substate 2-3:
                 Any -> Substate 1
@@ -27,12 +27,16 @@ class DemoTemperatureProbe(UIState):
         """
         if self.substate == 1:
             if key == Keypad.KEY_1:
+                self.titrator.temp_controller.heater_on()
                 self.substate = 2
-            elif key == Keypad.KEY_2:
+            if key == Keypad.KEY_2:
+                self.titrator.temp_controller.activate()
                 self.substate = 3
             elif key == Keypad.KEY_4:
                 self._set_next_state(self.previous_state, True)
         else:
+            self.titrator.temp_controller.deactivate()
+            self.titrator.temp_controller.heater_off()
             self.substate = 1
 
         if key == Keypad.KEY_D:
@@ -43,35 +47,32 @@ class DemoTemperatureProbe(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            self.titrator.lcd.print("1: Probe One", line=1)
-            self.titrator.lcd.print("2: Probe Two", line=2)
+            self.titrator.lcd.print("1: Turn Heater On", line=1)
+            self.titrator.lcd.print("2: Temp Controller", line=2)
             self.titrator.lcd.print("", line=3)
             self.titrator.lcd.print("4: Return", line=4)
 
         elif self.substate == 2:
-            self.titrator.lcd.print("Probe One", line=1)
+            self.titrator.lcd.print("Heater is on", line=1)
+            self.titrator.lcd.print("Current Temperature:", line=2)
             self.titrator.lcd.print(
                 f"{self.titrator.temp_probe_one.get_temperature()} C",
-                line=2,
-                style="center",
-            )
-            self.titrator.lcd.print(
-                f"{self.titrator.temp_probe_one.get_resistance()} Ohms",
                 line=3,
                 style="center",
             )
-            self.titrator.lcd.print("Any key to continue", line=4)
+            self.titrator.lcd.print("Any key to turn off", line=4)
+
+            # Safety Check, does not allow the temperature to get above 80 C
+            if self.titrator.temp_probe_one.get_temperature() > 80:
+                self.titrator.temp_controller.heater_off()
+                self.substate = 1
 
         elif self.substate == 3:
-            self.titrator.lcd.print("Probe Two", line=1)
+            self.titrator.lcd.print("Temp Controller On", line=1)
+            self.titrator.lcd.print("Current Temperature:", line=2)
             self.titrator.lcd.print(
-                f"{self.titrator.temp_probe_two.get_temperature()} C",
-                line=2,
-                style="center",
-            )
-            self.titrator.lcd.print(
-                f"{self.titrator.temp_probe_two.get_resistance()} Ohms",
+                f"{self.titrator.temp_probe_one.get_temperature()} C",
                 line=3,
                 style="center",
             )
-            self.titrator.lcd.print("Any key to continue", line=4)
+            self.titrator.lcd.print("Any key to turn off", line=4)

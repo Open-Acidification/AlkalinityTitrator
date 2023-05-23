@@ -51,7 +51,7 @@ class Titrator:
         self.temp_probe_two = TemperatureProbe(2)
 
         # Initialize Temperature Controller
-        self.temp_controller = TemperatureControl(self.temp_probe_two)
+        self.temp_controller = TemperatureControl(self.temp_probe_one)
 
         # Initialize State
         self.state = MainMenu(self)
