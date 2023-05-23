@@ -1,5 +1,7 @@
-import serial
-import time
+"""
+The file for the SyringePump class
+"""
+from titration.devices.library import Serial
 
 ARDUINO_PORT = "/dev/ttyACM0"
 ARDUINO_BAUD = 9600
@@ -12,9 +14,17 @@ NUM_CYCLES = {0.05: 470, 1: 9550}
 CYCLES_VOLUME_RATIO = 9550
 
 
-class Syringe_Pump:
+class SyringePump:
+    """
+    The class for the Syringe Pump device
+    """
+
     def __init__(self):
-        self.serial = serial.Serial(
+        """
+        The constructor function for the syringe pump
+        Initializes the arduino to control the pump motor
+        """
+        self.serial = Serial(
             port=ARDUINO_PORT,
             baudrate=ARDUINO_BAUD,
             timeout=ARDUINO_TIMEOUT,
@@ -26,16 +36,35 @@ class Syringe_Pump:
         self.serial.reset_output_buffer()
 
     def set_volume_in_pump(self, volume):
+        """
+        The function to set the pump's volume
+
+        Parameters:
+            volume (float): amount of volume in the pump
+        """
+        if volume > MAX_PUMP_CAPACITY:
+            raise Exception(
+                "Set Volume Error: Volume set is higher than maximum capacity"
+            )
+        if volume < 0:
+            raise Exception("Set Volume Error: Volume set cannot be a negative value")
         self.volume_in_pump = volume
 
     def get_volume_in_pump(self):
+        """
+        The function to get the pump's volume
+
+        Returns:
+            volume_in_pump (float): the amount of volume in syringe
+        """
         return self.volume_in_pump
 
     def pull_volume_in(self, volume_to_add):
         """
-        Moves volume of solution through pump
-        :param volume: amount of volume to move (float)
-        :param direction: 0 to pull solution in, 1 to pump out
+        The function to pull volume of solution into the syringe
+
+        Parameters:
+            volume (float): amount of volume to move
         """
         space_in_pump = MAX_PUMP_CAPACITY - self.volume_in_pump
         volume_to_add = min(volume_to_add, space_in_pump)
@@ -54,8 +83,8 @@ class Syringe_Pump:
             next_volume = self.volume_in_pump
             self.__drive_pump_up(next_volume)
 
-                # calculate new volume to add
-                volume_to_add = volume_to_add - next_volume
+            # calculate new volume to add
+            volume_to_add = volume_to_add - next_volume
 
             # keep pumping until full volume_to_add is met
             while volume_to_add > 0:
@@ -69,9 +98,8 @@ class Syringe_Pump:
             next_volume = self.volume_in_pump
             self.__drive_pump_up(next_volume)
 
-            else:
-                # volume less than volume in pump
-                self.drive_pump(volume_to_add, direction)
+            # calculate remaining volume to add
+            volume_to_add -= next_volume
 
             self.__drive_pump_down(volume_to_add)
             self.__drive_pump_up(volume_to_add)
@@ -120,30 +148,27 @@ class Syringe_Pump:
         if cycles == 0:
             return 0
 
-        time.sleep(0.01)
         if self.serial.writable():
             self.serial.write(cycles.to_bytes(4, "little"))
             self.serial.write(direction.to_bytes(1, "little"))
             self.serial.flush()
-            wait_time = cycles / 1000 + 0.5
-            print("wait_time = ", wait_time)
-            time.sleep(wait_time)
             temp = self.serial.readline()
-            if temp == b"DONE\r\n" or temp == b"":
+            if temp in (b"DONE\r\n", b""):
                 return 0
-            else:
-                return int(temp)
-            
-    def determine_pump_cycles(self, volume_to_add):
+            return int(temp)
+        raise Exception("ARDUINO UNAVAILABLE")
+
+    def __determine_pump_cycles(self, volume_to_add):
         """
-        Determines the number of cycles to move given volume
-        :param volume_to_add: amount of volume to add in mL
-        :return: number of cycles
+        The function to determines the number of cycles to move given volume
+        Parameters:
+            volume_to_add (int): amount of volume to add in mL
+        Returns:
+            number of cycles (int)
         """
         if volume_to_add in NUM_CYCLES:
             return NUM_CYCLES[volume_to_add]
-        if volume_to_add > MAX_PUMP_CAPACITY:
+        if volume_to_add > 1.1:
             return 0
         pump_cycles = CYCLES_VOLUME_RATIO * volume_to_add
-        # NOTE rounds down
         return int(pump_cycles)
