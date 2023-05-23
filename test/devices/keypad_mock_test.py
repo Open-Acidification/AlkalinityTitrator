@@ -34,3 +34,23 @@ def test_keypad_create():
     assert keypad.pin_c1.pull == digitalio.Pull.DOWN
     assert keypad.pin_c2.pull == digitalio.Pull.DOWN
     assert keypad.pin_c3.pull == digitalio.Pull.DOWN
+
+
+def test_set_key():
+    """
+    The function to test setting a pressed key
+    """
+    keypad = Keypad()
+
+    keypad.set_key("A")
+    assert keypad.key_pressed == "A"
+
+
+def test_get_key():
+    """
+    The function to test getting a pressed key from the GUI
+    """
+    keypad = Keypad()
+
+    keypad.key_pressed = "A"
+    assert keypad.get_key() == "A"

@@ -6,8 +6,13 @@ The file for the temperature probe device
 
 from titration.devices.library import MAX31865, SPI, DigitalInOut, board
 
-TEMPERATURE_REF_RESISTANCE = 4300.0
-TEMPERATURE_NOMINAL_RESISTANCE = 1000.0
+DEFAULT_REF_RESISTANCE = 4300.0
+NOMINAL_RESISTANCE = 100.0
+
+# Constants for calibration
+A = 0.0039083
+B = -0.000000578
+C = -0.000000000004183
 
 
 class TemperatureProbe:
@@ -15,19 +20,23 @@ class TemperatureProbe:
     The class for the temperature probe device
     """
 
-    def __init__(self):
+    def __init__(self, probe_number):
         """
         The constructor for the TemperatureProbe class
         """
         self.spi = SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
-        self.c_s = DigitalInOut(board.D4)
+
+        # Specify which probe is being initialized
+        if probe_number == 1:
+            self.c_s = DigitalInOut(board.D0)
+        elif probe_number == 2:
+            self.c_s = DigitalInOut(board.D4)
+
         self.sensor = MAX31865(
-            self.spi,
-            self.c_s,
-            wires=3,
-            rtd_nominal=TEMPERATURE_NOMINAL_RESISTANCE,
-            ref_resistor=TEMPERATURE_REF_RESISTANCE,
+            self.spi, self.c_s, wires=3, ref_resistor=DEFAULT_REF_RESISTANCE
         )
+
+        self.reference_resistance = DEFAULT_REF_RESISTANCE
 
     def get_temperature(self):
         """
@@ -41,8 +50,34 @@ class TemperatureProbe:
         """
         return self.sensor.resistance
 
-    def read_temperature(self):
+    def calibrate(self, temp):
         """
-        The function that reads and returns the temperature from GPIO
+        The function used for calibrating the temperature probe. View this document for more
+        information on how this function works:
+        https://www.analog.com/media/en/technical-documentation/application-notes/AN709_0.pdf
+
+        Parameters:
+            temp (float): reference temperature inputted by the user in celsius
         """
-        return self.get_temperature(), self.get_resistance()
+        # Temperature below 0 C
+        if temp >= 0:
+            temp = self.sensor.rtd_nominal * (1 + A * temp + B * temp**2)
+        # Temperature above 0 C
+        else:
+            temp = self.sensor.rtd_nominal * (
+                1 + A * temp + B * temp**2 + C * (temp - 100) * temp**3
+            )
+
+        # Calculate new reference temperature
+        diff = temp - self.sensor.resistance
+        self.reference_resistance = (
+            self.reference_resistance + diff * self.reference_resistance / temp
+        )
+
+        # Reinitialize the device with the new setting
+        self.sensor = MAX31865(
+            self.spi,
+            self.c_s,
+            wires=3,
+            ref_resistor=self.reference_resistance,
+        )

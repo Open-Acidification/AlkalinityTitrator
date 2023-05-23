@@ -1,7 +1,7 @@
 """
 The file for the SetupCalibration class
 """
-from titration import constants
+from titration.devices.library import Keypad
 from titration.ui_state.calibration.calibrate_ph import CalibratePh
 from titration.ui_state.calibration.calibrate_temp import CalibrateTemp
 from titration.ui_state.ui_state import UIState
@@ -21,26 +21,26 @@ class SetupCalibration(UIState):
         """
         The function to handle keypad input:
             1 -> Calibrate pH
-            2 -> Calibrate Temp
-            3 -> Previous State
+            2 -> Calibrate Temperature Probes
+            4 -> Previous State
 
         Parameters:
             key (char): the keypad input to determine which state to go to
         """
-        if key == constants.KEY_1:
+        if key == Keypad.KEY_1:
             self._set_next_state(CalibratePh(self.titrator, self), True)
 
-        elif key == constants.KEY_2:
+        elif key == Keypad.KEY_2:
             self._set_next_state(CalibrateTemp(self.titrator, self), True)
 
-        elif key == constants.KEY_3:
+        elif key == Keypad.KEY_4:
             self._set_next_state(self.previous_state, True)
 
     def loop(self):
         """
         The function to loop through and display to the LCD screen until a new keypad input
         """
-        self.titrator.lcd.print("1. pH", line=1)
-        self.titrator.lcd.print("2. Temperature", line=2)
-        self.titrator.lcd.print("3. Return", line=3)
-        self.titrator.lcd.print("", line=4)
+        self.titrator.lcd.print("1: pH", line=1)
+        self.titrator.lcd.print("2: Temperature", line=2)
+        self.titrator.lcd.print("", line=3)
+        self.titrator.lcd.print("4: Return", line=4)

@@ -3,20 +3,16 @@ The file to run the program
 """
 import sys
 
-from titration import constants
+from titration import mock_config
 
 if __name__ == "__main__":
     opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
     if opts:
-        if "-dev" in opts:
-            constants.IS_TEST = True
-            from titration import titrator_driver
-
-            titrator_driver.run()
+        if "-gui" in opts:
+            mock_config.MOCK_ENABLED = True
         else:
-            raise SystemExit(f"Usage: {sys.argv[0]} [-test | -dev]")
-    else:
-        constants.IS_TEST = False
-        from titration import titrator_driver
+            raise SystemExit(f"Usage: {sys.argv[0]} [-gui]")
 
-        titrator_driver.run()
+    from titration import titrator_driver
+
+    titrator_driver.run()

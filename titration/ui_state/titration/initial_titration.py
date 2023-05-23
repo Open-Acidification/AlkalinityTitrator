@@ -1,7 +1,7 @@
 """
 The file for the InitialTitration class
 """
-from titration import constants
+from titration.devices.library import Keypad
 from titration.ui_state.titration.automatic_titration import AutomaticTitration
 from titration.ui_state.titration.manual_titration import ManualTitration
 from titration.ui_state.ui_state import UIState
@@ -57,7 +57,7 @@ class InitialTitration(UIState):
             self.titrator.lcd.print("Please wait...", style="center", line=3)
             self.titrator.lcd.print("", line=4)
 
-            if self.choice == constants.KEY_1:
+            if self.choice == Keypad.KEY_1:
                 self._set_next_state(ManualTitration(self.titrator), True)
             else:
                 self._set_next_state(AutomaticTitration(self.titrator), True)

@@ -7,40 +7,55 @@ The file for the Keypad device class
 import board
 import digitalio
 
-from titration import constants
-
-KEY_VALUES = {
-    0: {
-        0: constants.KEY_1,
-        1: constants.KEY_2,
-        2: constants.KEY_3,
-        3: constants.KEY_A,
-    },
-    1: {
-        0: constants.KEY_4,
-        1: constants.KEY_5,
-        2: constants.KEY_6,
-        3: constants.KEY_B,
-    },
-    2: {
-        0: constants.KEY_7,
-        1: constants.KEY_8,
-        2: constants.KEY_9,
-        3: constants.KEY_C,
-    },
-    3: {
-        0: constants.KEY_STAR,
-        1: constants.KEY_0,
-        2: constants.KEY_HASH,
-        3: constants.KEY_D,
-    },
-}
-
 
 class Keypad:
     """
     The class for the Keypad
     """
+
+    KEY_0 = "0"
+    KEY_1 = "1"
+    KEY_2 = "2"
+    KEY_3 = "3"
+    KEY_4 = "4"
+    KEY_5 = "5"
+    KEY_6 = "6"
+    KEY_7 = "7"
+    KEY_8 = "8"
+    KEY_9 = "9"
+    KEY_A = "A"
+    KEY_B = "B"
+    KEY_C = "C"
+    KEY_D = "D"
+    KEY_STAR = "*"
+    KEY_HASH = "#"
+
+    KEY_VALUES = {
+        0: {
+            0: KEY_1,
+            1: KEY_2,
+            2: KEY_3,
+            3: KEY_A,
+        },
+        1: {
+            0: KEY_4,
+            1: KEY_5,
+            2: KEY_6,
+            3: KEY_B,
+        },
+        2: {
+            0: KEY_7,
+            1: KEY_8,
+            2: KEY_9,
+            3: KEY_C,
+        },
+        3: {
+            0: KEY_STAR,
+            1: KEY_0,
+            2: KEY_HASH,
+            3: KEY_D,
+        },
+    }
 
     def __init__(self):
         """
@@ -94,7 +109,7 @@ class Keypad:
             for col in range(len(self.cols)):
                 if self.cols[col].value:
                     self.rows[row].value = False
-                    return KEY_VALUES[row][col]
+                    return self.KEY_VALUES[row][col]
             self.rows[row].value = False
 
         return None

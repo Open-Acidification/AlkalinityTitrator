@@ -4,7 +4,7 @@ The file to test the ToggleDemoMode class
 from unittest import mock
 from unittest.mock import ANY
 
-from titration import constants
+from titration import mock_config
 from titration.devices.library import LiquidCrystal
 from titration.titrator import Titrator
 from titration.ui_state.demo_mode.demo_mode_menu import DemoModeMenu
@@ -22,7 +22,7 @@ def test_handle_key(set_next_state_mock):
     )
 
     toggle_demo_mode.handle_key("1")
-    assert constants.IS_TEST is True
+    assert mock_config.MOCK_ENABLED is True
     assert toggle_demo_mode.substate == 2
 
     toggle_demo_mode.handle_key("1")
@@ -31,14 +31,14 @@ def test_handle_key(set_next_state_mock):
 
     toggle_demo_mode.substate = 1
     toggle_demo_mode.handle_key("0")
-    assert constants.IS_TEST is False
+    assert mock_config.MOCK_ENABLED is False
     assert toggle_demo_mode.substate == 2
 
     toggle_demo_mode.handle_key("D")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "DemoModeMenu"
 
-    constants.IS_TEST = True
+    mock_config.MOCK_ENABLED = True
 
 
 @mock.patch.object(LiquidCrystal, "print")
@@ -71,7 +71,7 @@ def test_loop(print_mock):
         ]
     )
 
-    constants.IS_TEST = False
+    mock_config.MOCK_ENABLED = False
     toggle_demo_mode.loop()
     print_mock.assert_has_calls(
         [

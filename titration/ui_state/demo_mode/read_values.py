@@ -2,7 +2,7 @@
 The file for the ReadValues class
 """
 
-from titration import constants
+from titration.devices.library import Keypad
 from titration.ui_state.ui_state import UIState
 
 
@@ -35,7 +35,7 @@ class ReadValues(UIState):
         elif self.substate == 2:
             self._set_next_state(self.previous_state, True)
 
-        if key == constants.KEY_D:
+        if key == Keypad.KEY_D:
             self._set_next_state(self.previous_state, True)
 
     def loop(self):
@@ -59,10 +59,12 @@ class ReadValues(UIState):
 
         elif self.substate == 2:
             self.titrator.lcd.print(
-                f"Temp: {self.titrator.temp_probe.get_temperature():>4.3f} C", line=1
+                f"Temp: {self.titrator.temp_probe_one.get_temperature():>4.3f} C",
+                line=1,
             )
             self.titrator.lcd.print(
-                f"Res:  {self.titrator.temp_probe.get_resistance():>4.3f} Ohms", line=2
+                f"Res:  {self.titrator.temp_probe_one.get_resistance():>4.3f} Ohms",
+                line=2,
             )
             self.titrator.lcd.print("Press any to cont.", line=3)
             self.titrator.lcd.print("", line=4)

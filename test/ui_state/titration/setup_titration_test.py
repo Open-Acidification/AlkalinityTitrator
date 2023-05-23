@@ -4,7 +4,6 @@ The file to test the SetupTitration class
 from unittest import mock
 from unittest.mock import ANY
 
-from titration import constants
 from titration.devices.library import LiquidCrystal
 from titration.titrator import Titrator
 from titration.ui_state.titration.setup_titration import SetupTitration
@@ -72,7 +71,7 @@ def test_loop(print_mock):
             mock.call("Yes: 1", line=2),
             mock.call("No (use old): 0", line=3),
             mock.call(
-                f"{constants.PH_REF_PH:>2.3f} pH: {constants.PH_REF_VOLTAGE:>2.4f} V",
+                f"{7.0:>2.3f} pH: {-0.012:>2.4f} V",
                 line=4,
             ),
         ]
@@ -127,7 +126,7 @@ def test_setup_titration(print_mock, set_next_state_mock):
             mock.call("Yes: 1", line=2),
             mock.call("No (use old): 0", line=3),
             mock.call(
-                f"{constants.PH_REF_PH:>2.3f} pH: {constants.PH_REF_VOLTAGE:>2.4f} V",
+                f"{7.0:>2.3f} pH: {-0.012:>2.4f} V",
                 line=4,
             ),
         ]
