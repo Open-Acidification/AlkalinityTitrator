@@ -31,22 +31,9 @@ class SyringePump:
         )
 
         self.volume_in_pump = 0
-        self.pump_direction = 0
 
         self.serial.reset_input_buffer()
         self.serial.reset_output_buffer()
-
-    def set_pump_direction(self, direction):
-        """
-        The function to set whether the pump will take in or push out liquid
-        """
-        self.pump_direction = direction
-
-    def get_pump_direction(self):
-        """
-        The function to return the pump direction
-        """
-        return self.pump_direction
 
     def set_volume_in_pump(self, volume):
         """
@@ -72,7 +59,7 @@ class SyringePump:
         """
         return self.volume_in_pump
 
-    def pump_volume_in(self, volume_to_add):
+    def pull_volume_in(self, volume_to_add):
         """
         The function to pull volume of solution into the syringe
 
@@ -81,21 +68,20 @@ class SyringePump:
         """
         space_in_pump = MAX_PUMP_CAPACITY - self.volume_in_pump
         volume_to_add = min(volume_to_add, space_in_pump)
-        self.__drive_pump_in(volume_to_add)
+        self.__drive_pump_down(volume_to_add)
 
-    def pump_volume_out(self, volume_to_add):
+    def push_volume_out(self, volume_to_add):
         """
-        The function to pump volume out into to the titrator solution
+        The function to push volume out into to the titrator solution
 
         Parameters:
             volume_to_add (float): the volume to be added to the solution
         """
         # volume greater than max capacity of pump
         if volume_to_add > MAX_PUMP_CAPACITY:
-
             # pump out all current volume
             next_volume = self.volume_in_pump
-            self.__drive_pump_out(next_volume)
+            self.__drive_pump_up(next_volume)
 
             # calculate new volume to add
             volume_to_add = volume_to_add - next_volume
@@ -103,27 +89,27 @@ class SyringePump:
             # keep pumping until full volume_to_add is met
             while volume_to_add > 0:
                 next_volume = min(volume_to_add, MAX_PUMP_CAPACITY)
-                self.__drive_pump_in(next_volume)
-                self.__drive_pump_out(next_volume)
+                self.__drive_pump_down(next_volume)
+                self.__drive_pump_up(next_volume)
                 volume_to_add -= next_volume
 
         # volume greater than volume in pump
         elif volume_to_add > self.volume_in_pump:
             next_volume = self.volume_in_pump
-            self.__drive_pump_out(next_volume)
+            self.__drive_pump_up(next_volume)
 
             # calculate remaining volume to add
             volume_to_add -= next_volume
 
-            self.__drive_pump_in(volume_to_add)
-            self.__drive_pump_out(volume_to_add)
+            self.__drive_pump_down(volume_to_add)
+            self.__drive_pump_up(volume_to_add)
         else:
             # volume less than volume in pump
-            self.__drive_pump_out(volume_to_add)
+            self.__drive_pump_up(volume_to_add)
 
-    def __drive_pump_in(self, volume):
+    def __drive_pump_down(self, volume):
         """
-        The function to drive the pump in to pull up liquid
+        The function to drive the down in to pull in liquid
 
         Parameters:
             volume (float): the volume to add
@@ -135,9 +121,9 @@ class SyringePump:
         self.__drive_step_stick(cycles, direction=0)
         self.volume_in_pump += volume
 
-    def __drive_pump_out(self, volume):
+    def __drive_pump_up(self, volume):
         """
-        The function to drive the pump out to to push out liquid
+        The function to drive the pump up to to push out liquid
 
         Parameters:
             volume (float): the volume to add

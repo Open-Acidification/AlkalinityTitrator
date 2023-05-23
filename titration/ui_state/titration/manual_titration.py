@@ -5,7 +5,7 @@ from titration.devices.library import Keypad
 from titration.ui_state import main_menu
 from titration.ui_state.ui_state import UIState
 from titration.ui_state.user_value.degas_time import DegasTime
-from titration.ui_state.user_value.volume import Volume
+from titration.ui_state.user_value.volume_to_move import VolumeToMove
 
 
 class ManualTitration(UIState):
@@ -54,7 +54,7 @@ class ManualTitration(UIState):
             key (char): the keypad input is used to move through the substates
         """
         if self.substate == 1:
-            self._set_next_state(Volume(self.titrator, self), True)
+            self._set_next_state(VolumeToMove(self.titrator, self), True)
             self.substate += 1
 
         elif self.substate == 2:
