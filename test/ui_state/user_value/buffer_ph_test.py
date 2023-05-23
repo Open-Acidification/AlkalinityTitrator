@@ -201,4 +201,4 @@ def test_buffer_ph(print_mock, set_next_state_mock):
     buffer_ph.handle_key("A")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "UpdateSettings"
-    assert buffer_ph.titrator.buffer_ph == 1.0
+    assert buffer_ph.titrator.buffer_nominal_ph == 1.0

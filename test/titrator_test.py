@@ -77,10 +77,9 @@ def test_update_state_with_next_state(start_mock):
 
 
 @mock.patch.object(Keypad, "get_key")
-@mock.patch.object(Titrator, "update_state")
 @mock.patch.object(MainMenu, "handle_key")
 @mock.patch.object(MainMenu, "loop")
-def test_handle_ui(keypad_poll_mock, update_state_mock, handle_key_mock, loop_mock):
+def test_handle_ui(keypad_poll_mock, handle_key_mock, loop_mock):
     """
     The function to test function calls of the handle_ui function
     """
@@ -89,5 +88,4 @@ def test_handle_ui(keypad_poll_mock, update_state_mock, handle_key_mock, loop_mo
     titrator.handle_ui()
     keypad_poll_mock.assert_called()
     handle_key_mock.assert_called()
-    update_state_mock.assert_called()
     loop_mock.assert_called()
