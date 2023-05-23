@@ -1,7 +1,7 @@
 """
 The file for the SetupCalibration class
 """
-from titration import constants
+from titration.devices.library import Keypad
 from titration.ui_state.calibration.calibrate_ph import CalibratePh
 from titration.ui_state.calibration.calibrate_temp import CalibrateTemp
 from titration.ui_state.ui_state import UIState
@@ -27,13 +27,13 @@ class SetupCalibration(UIState):
         Parameters:
             key (char): the keypad input to determine which state to go to
         """
-        if key == constants.KEY_1:
+        if key == Keypad.KEY_1:
             self._set_next_state(CalibratePh(self.titrator, self), True)
 
-        elif key == constants.KEY_2:
+        elif key == Keypad.KEY_2:
             self._set_next_state(CalibrateTemp(self.titrator, self), True)
 
-        elif key == constants.KEY_4:
+        elif key == Keypad.KEY_4:
             self._set_next_state(self.previous_state, True)
 
     def loop(self):

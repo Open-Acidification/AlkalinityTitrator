@@ -5,9 +5,9 @@ The file to configure mock objects
 # pylint: disable=unused-import, ungrouped-imports, wrong-import-position
 # mypy: ignore-errors
 
-from titration import constants
+from titration import mock_config
 
-if constants.IS_TEST:
+if mock_config.MOCK_ENABLED:
     from titration.devices import ads_mock as ADS
     from titration.devices import analog_mock as analog_in
     from titration.devices import board_mock as board

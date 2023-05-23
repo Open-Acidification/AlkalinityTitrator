@@ -1,8 +1,8 @@
 """
 The file to configure testing imports
 """
-from titration import constants
+from titration import mock_config
 
-# Set IS_TEST to true to avoid importing Raspberry Pi
+# Set MOCK_ENABLED to true to avoid importing Raspberry Pi
 # dependent libraries.
-constants.IS_TEST = True
+mock_config.MOCK_ENABLED = True

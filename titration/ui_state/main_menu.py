@@ -3,7 +3,7 @@ The file for the MainMenu class
 """
 import sys
 
-from titration import constants
+from titration.devices.library import Keypad
 from titration.ui_state.calibration.setup_calibration import SetupCalibration
 from titration.ui_state.demo_mode.demo_mode_menu import DemoModeMenu
 from titration.ui_state.prime_pump.prime_pump import PrimePump
@@ -40,29 +40,28 @@ class MainMenu(UIState):
             key (char): the keypad input to determine which state to go to
         """
         if self.substate == 1:
-            if key == constants.KEY_1:
+            if key == Keypad.KEY_1:
                 self._set_next_state(SetupTitration(self.titrator), True)
 
-            elif key == constants.KEY_2:
+            elif key == Keypad.KEY_2:
                 self._set_next_state(SetupCalibration(self.titrator, self), True)
 
-            elif key == constants.KEY_3:
+            elif key == Keypad.KEY_3:
                 self._set_next_state(PrimePump(self.titrator, self), True)
 
-            elif key == constants.KEY_4:
+            elif key == Keypad.KEY_4:
                 self.substate = 2
         else:
-
-            if key == constants.KEY_1:
+            if key == Keypad.KEY_1:
                 self._set_next_state(UpdateSettings(self.titrator, self), True)
 
-            elif key == constants.KEY_2:
+            elif key == Keypad.KEY_2:
                 self._set_next_state(DemoModeMenu(self.titrator, self), True)
 
-            elif key == constants.KEY_3:
+            elif key == Keypad.KEY_3:
                 sys.exit()
 
-            elif key == constants.KEY_4:
+            elif key == Keypad.KEY_4:
                 self.substate = 1
 
     def loop(self):
