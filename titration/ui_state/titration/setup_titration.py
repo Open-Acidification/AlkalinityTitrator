@@ -1,12 +1,15 @@
 """
 The file for the SetupTitration class
 """
-from titration import constants
+from titration.devices.library import Keypad
 from titration.ui_state.titration.calibrate_ph import CalibratePh
 from titration.ui_state.titration.initial_titration import InitialTitration
 from titration.ui_state.ui_state import UIState
 from titration.ui_state.user_value.solution_salinity import SolutionSalinity
 from titration.ui_state.user_value.solution_weight import SolutionWeight
+
+PH_REF_VOLTAGE = -0.012
+PH_REF_PH = 7.0
 
 
 class SetupTitration(UIState):
@@ -43,7 +46,7 @@ class SetupTitration(UIState):
             self.substate += 1
 
         elif self.substate == 3:
-            if key == constants.KEY_1:
+            if key == Keypad.KEY_1:
                 self._set_next_state(CalibratePh(self.titrator), True)
             else:
                 self._set_next_state(InitialTitration(self.titrator), True)
@@ -69,6 +72,6 @@ class SetupTitration(UIState):
             self.titrator.lcd.print("Yes: 1", line=2)
             self.titrator.lcd.print("No (use old): 0", line=3)
             self.titrator.lcd.print(
-                f"{constants.PH_REF_PH:>2.3f} pH: {constants.PH_REF_VOLTAGE:>2.4f} V",
+                f"{PH_REF_PH:>2.3f} pH: {PH_REF_VOLTAGE:>2.4f} V",
                 line=4,
             )

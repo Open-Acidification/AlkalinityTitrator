@@ -1,7 +1,7 @@
 """
 The file for the ManualTitration class
 """
-from titration import constants
+from titration.devices.library import Keypad
 from titration.ui_state import main_menu
 from titration.ui_state.ui_state import UIState
 from titration.ui_state.user_value.degas_time import DegasTime
@@ -62,15 +62,15 @@ class ManualTitration(UIState):
             self.substate += 1
 
         elif self.substate == 3:
-            if key == constants.KEY_1:
+            if key == Keypad.KEY_1:
                 self.substate -= 1
-            elif key == constants.KEY_0:
+            elif key == Keypad.KEY_0:
                 self.substate += 1
 
         elif self.substate == 4:
-            if key == constants.KEY_0:
+            if key == Keypad.KEY_0:
                 self.substate += 2
-            elif key == constants.KEY_1:
+            elif key == Keypad.KEY_1:
                 self.substate += 1
 
         elif self.substate == 5:

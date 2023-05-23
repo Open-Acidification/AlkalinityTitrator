@@ -2,7 +2,7 @@
 The file for the  class
 """
 
-from titration import constants
+from titration.devices.library import Keypad
 from titration.ui_state.demo_mode.demo_ph_probe import DemopHProbe
 from titration.ui_state.demo_mode.demo_pump import DemoPump
 from titration.ui_state.demo_mode.demo_stir_control import DemoStirControl
@@ -41,32 +41,32 @@ class DemoModeMenu(UIState):
             key (char): the keypad input to determine which state to go to
         """
         if self.substate == 1:
-            if key == constants.KEY_1:
+            if key == Keypad.KEY_1:
                 self._set_next_state(ReadValues(self.titrator, self), True)
 
-            elif key == constants.KEY_2:
+            elif key == Keypad.KEY_2:
                 self._set_next_state(DemopHProbe(self.titrator, self), True)
 
-            elif key == constants.KEY_3:
+            elif key == Keypad.KEY_3:
                 self._set_next_state(DemoPump(self.titrator, self), True)
 
-            elif key == constants.KEY_4:
+            elif key == Keypad.KEY_4:
                 self.substate = 2
 
         elif self.substate == 2:
-            if key == constants.KEY_1:
+            if key == Keypad.KEY_1:
                 self._set_next_state(DemoStirControl(self.titrator, self), True)
 
-            elif key == constants.KEY_2:
+            elif key == Keypad.KEY_2:
                 self._set_next_state(DemoTempControl(self.titrator, self), True)
 
-            elif key == constants.KEY_3:
+            elif key == Keypad.KEY_3:
                 self._set_next_state(ToggleDemoMode(self.titrator, self), True)
 
-            if key == constants.KEY_4:
+            if key == Keypad.KEY_4:
                 self.substate = 1
 
-        if key == constants.KEY_D:
+        if key == Keypad.KEY_D:
             self._set_next_state(self.previous_state, True)
 
     def loop(self):

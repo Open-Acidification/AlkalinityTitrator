@@ -2,7 +2,7 @@
 The file to demo the stir controller device
 """
 
-from titration import constants
+from titration.devices.library import Keypad
 from titration.ui_state.ui_state import UIState
 from titration.ui_state.user_value.degas_time import DegasTime
 
@@ -28,17 +28,17 @@ class DemoStirControl(UIState):
             key (char): the keypad input to determine which state to go to
         """
         if self.substate == 1:
-            if key == constants.KEY_1:
+            if key == Keypad.KEY_1:
                 self.titrator.stir_controller.set_fast()
                 self.substate = 2
-            elif key == constants.KEY_2:
+            elif key == Keypad.KEY_2:
                 self.titrator.stir_controller.set_slow()
                 self.substate = 3
-            elif key == constants.KEY_3:
+            elif key == Keypad.KEY_3:
                 self._set_next_state(DegasTime(self.titrator, self), True)
                 self.titrator.stir_controller.degas(self.titrator.degas_time)
                 self.substate = 4
-            elif key == constants.KEY_4:
+            elif key == Keypad.KEY_4:
                 self.titrator.stir_controller.set_stop()
                 self._set_next_state(self.previous_state, True)
 
@@ -46,7 +46,7 @@ class DemoStirControl(UIState):
             self.titrator.stir_controller.set_stop()
             self.substate = 1
 
-        if key == constants.KEY_D:
+        if key == Keypad.KEY_D:
             self.titrator.stir_controller.set_stop()
             self._set_next_state(self.previous_state, True)
 

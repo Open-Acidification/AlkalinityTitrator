@@ -4,18 +4,21 @@ The file for mocking the LiquidCrystal class for testing purposes
 
 # pylint: disable = unused-argument
 
+LCD_WIDTH = 20
+LCD_HEIGHT = 4
+
 
 class LiquidCrystal:
     """
     The class for the mock of the Sunfire LCD 20x04 Char Display
     """
 
-    def __init__(self, cols, rows):
+    def __init__(self):
         """
         The function to initialize the gui lcd
         """
-        self.cols = cols
-        self.rows = rows
+        self.cols = LCD_WIDTH
+        self.rows = LCD_HEIGHT
 
         self.lcd_lines = [None, None, None, None]
 
