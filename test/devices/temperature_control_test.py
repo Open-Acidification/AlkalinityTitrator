@@ -1,7 +1,6 @@
 """
 The file to test the mock temperature controller
 """
-import time
 
 from titration.devices.library import (
     Heater,
