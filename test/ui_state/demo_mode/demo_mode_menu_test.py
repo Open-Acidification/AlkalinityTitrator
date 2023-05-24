@@ -38,11 +38,11 @@ def test_handle_key(set_next_state_mock):
 
     demo_mode.handle_key("2")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "DemoTempControl"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoTemperatureProbe"
 
     demo_mode.handle_key("3")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "ToggleDemoMode"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoTemperatureControl"
 
     demo_mode.handle_key("4")
     assert demo_mode.substate == 1
@@ -75,7 +75,7 @@ def test_loop(print_mock):
         [
             mock.call("1: Demo Stir Control", line=1),
             mock.call("2: Demo Temp Probe", line=2),
-            mock.call("3: Toggle Demo Mode", line=3),
+            mock.call("3: Demo Temp Control", line=3),
             mock.call("4: Page 1", line=4),
         ]
     )
@@ -158,7 +158,7 @@ def test_demo_mode(print_mock, set_next_state_mock):
         [
             mock.call("1: Demo Stir Control", line=1),
             mock.call("2: Demo Temp Probe", line=2),
-            mock.call("3: Toggle Demo Mode", line=3),
+            mock.call("3: Demo Temp Control", line=3),
             mock.call("4: Page 1", line=4),
         ]
     )
@@ -172,35 +172,35 @@ def test_demo_mode(print_mock, set_next_state_mock):
         [
             mock.call("1: Demo Stir Control", line=1),
             mock.call("2: Demo Temp Probe", line=2),
-            mock.call("3: Toggle Demo Mode", line=3),
+            mock.call("3: Demo Temp Control", line=3),
             mock.call("4: Page 1", line=4),
         ]
     )
 
     demo_mode.handle_key("2")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "DemoTempControl"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoTemperatureProbe"
 
     demo_mode.loop()
     print_mock.assert_has_calls(
         [
             mock.call("1: Demo Stir Control", line=1),
             mock.call("2: Demo Temp Probe", line=2),
-            mock.call("3: Toggle Demo Mode", line=3),
+            mock.call("3: Demo Temp Control", line=3),
             mock.call("4: Page 1", line=4),
         ]
     )
 
     demo_mode.handle_key("3")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "ToggleDemoMode"
+    assert set_next_state_mock.call_args.args[0].name() == "DemoTemperatureControl"
 
     demo_mode.loop()
     print_mock.assert_has_calls(
         [
             mock.call("1: Demo Stir Control", line=1),
             mock.call("2: Demo Temp Probe", line=2),
-            mock.call("3: Toggle Demo Mode", line=3),
+            mock.call("3: Demo Temp Control", line=3),
             mock.call("4: Page 1", line=4),
         ]
     )

@@ -109,7 +109,7 @@ class SyringePump:
 
     def __drive_pump_down(self, volume):
         """
-        The function to drive the down in to pull in liquid
+        The function to drive the pump in to pull in liquid
 
         Parameters:
             volume (float): the volume to add
