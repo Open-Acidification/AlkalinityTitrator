@@ -61,11 +61,11 @@ def test_loop(print_mock):
     print_mock.assert_has_calls(
         [
             mock.call(
-                f"Temp: {read_values.titrator.temp_probe_one.get_temperature():>4.3f} C",
+                f"Temp: {read_values.titrator.temperature_probe_control.get_temperature():>4.3f} C",
                 line=1,
             ),
             mock.call(
-                f"Res:  {read_values.titrator.temp_probe_one.get_resistance():>4.3f} Ohms",
+                f"Res:  {read_values.titrator.temperature_probe_control.get_resistance():>4.3f} Ohms",
                 line=2,
             ),
             mock.call("Press any to cont.", line=3),
@@ -110,11 +110,11 @@ def test_read_values(print_mock, set_next_state_mock):
     print_mock.assert_has_calls(
         [
             mock.call(
-                f"Temp: {read_values.titrator.temp_probe_one.get_temperature():>4.3f} C",
+                f"Temp: {read_values.titrator.temperature_probe_control.get_temperature():>4.3f} C",
                 line=1,
             ),
             mock.call(
-                f"Res:  {read_values.titrator.temp_probe_one.get_resistance():>4.3f} Ohms",
+                f"Res:  {read_values.titrator.temperature_probe_control.get_resistance():>4.3f} Ohms",
                 line=2,
             ),
             mock.call("Press any to cont.", line=3),

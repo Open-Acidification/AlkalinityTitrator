@@ -27,7 +27,7 @@ class DemoTemperatureControl(UIState):
         """
         if self.substate == 1:
             if key == Keypad.KEY_1:
-                self.titrator.temp_controller.heater_on()
+                self.titrator.heater.on()
                 self.substate = 2
             if key == Keypad.KEY_2:
                 self.titrator.temp_controller.activate()
@@ -36,7 +36,7 @@ class DemoTemperatureControl(UIState):
                 self._set_next_state(self.previous_state, True)
         else:
             self.titrator.temp_controller.deactivate()
-            self.titrator.temp_controller.heater_off()
+            self.titrator.heater.off()
             self.substate = 1
 
         if key == Keypad.KEY_D:
@@ -47,32 +47,36 @@ class DemoTemperatureControl(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            self.titrator.lcd.print("1: Turn Heater On", line=1)
-            self.titrator.lcd.print("2: Temp Controller", line=2)
+            self.titrator.lcd.print("1: Test Heater", line=1)
+            self.titrator.lcd.print("2: Test Controller", line=2)
             self.titrator.lcd.print("", line=3)
             self.titrator.lcd.print("4: Return", line=4)
 
         elif self.substate == 2:
-            self.titrator.lcd.print("Heater is on", line=1)
-            self.titrator.lcd.print("Current Temperature:", line=2)
+            self.titrator.lcd.print("Test Heater", line=1)
             self.titrator.lcd.print(
-                f"{self.titrator.temp_probe_one.get_temperature()} C",
-                line=3,
+                f"{self.titrator.temperature_probe_control.get_temperature():>4.3f} C",
+                line=2,
                 style="center",
+            )
+            self.titrator.lcd.print(
+                "Heater on: " + str(self.titrator.heater.value), line=3, style="center"
             )
             self.titrator.lcd.print("Any key to turn off", line=4)
 
             # Safety Check, does not allow the temperature to get above 80 C
-            if self.titrator.temp_probe_one.get_temperature() > 80:
+            if self.titrator.temperature_probe_control.get_temperature() > 80:
                 self.titrator.temp_controller.heater_off()
                 self.substate = 1
 
         elif self.substate == 3:
-            self.titrator.lcd.print("Temp Controller On", line=1)
-            self.titrator.lcd.print("Current Temperature:", line=2)
+            self.titrator.lcd.print("Test Controller", line=1)
             self.titrator.lcd.print(
-                f"{self.titrator.temp_probe_one.get_temperature()} C",
-                line=3,
+                f"{self.titrator.temperature_probe_control.get_temperature():>4.3f} C",
+                line=2,
                 style="center",
+            )
+            self.titrator.lcd.print(
+                "Heater on: " + str(self.titrator.heater.value), line=3, style="center"
             )
             self.titrator.lcd.print("Any key to turn off", line=4)

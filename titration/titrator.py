@@ -5,6 +5,7 @@ The file for the Titrator class
 # pylint: disable = too-many-instance-attributes
 
 from titration.devices.library import (
+    Heater,
     Keypad,
     LiquidCrystal,
     PHProbe,
@@ -47,11 +48,16 @@ class Titrator:
         self.stir_controller = StirControl()
 
         # Initialize Temperature Probes
-        self.temp_probe_one = TemperatureProbe(1)
-        self.temp_probe_two = TemperatureProbe(2)
+        self.temperature_probe_control = TemperatureProbe(1)
+        self.temperature_probe_logging = TemperatureProbe(2)
+
+        # Initialize Heater to PIN 12
+        self.heater = Heater(12)
 
         # Initialize Temperature Controller
-        self.temp_controller = TemperatureControl(self.temp_probe_one)
+        self.temp_controller = TemperatureControl(
+            self.temperature_probe_control, self.heater
+        )
 
         # Initialize State
         self.state = MainMenu(self)

@@ -60,12 +60,12 @@ def test_loop(print_mock):
         [
             mock.call("Probe One", line=1),
             mock.call(
-                f"{demo_temp_probe.titrator.temp_probe_one.get_temperature()} C",
+                f"{demo_temp_probe.titrator.temperature_probe_control.get_temperature():>4.3f} C",
                 line=2,
                 style="center",
             ),
             mock.call(
-                f"{demo_temp_probe.titrator.temp_probe_one.get_resistance()} Ohms",
+                f"{demo_temp_probe.titrator.temperature_probe_control.get_resistance()} Ohms",
                 line=3,
                 style="center",
             ),
@@ -79,12 +79,12 @@ def test_loop(print_mock):
         [
             mock.call("Probe Two", line=1),
             mock.call(
-                f"{demo_temp_probe.titrator.temp_probe_two.get_temperature()} C",
+                f"{demo_temp_probe.titrator.temperature_probe_logging.get_temperature():>4.3f} C",
                 line=2,
                 style="center",
             ),
             mock.call(
-                f"{demo_temp_probe.titrator.temp_probe_two.get_resistance()} Ohms",
+                f"{demo_temp_probe.titrator.temperature_probe_logging.get_resistance()} Ohms",
                 line=3,
                 style="center",
             ),
@@ -119,12 +119,12 @@ def test_demo_mode(print_mock, set_next_state_mock):
         [
             mock.call("Probe One", line=1),
             mock.call(
-                f"{demo_temp_probe.titrator.temp_probe_one.get_temperature()} C",
+                f"{demo_temp_probe.titrator.temperature_probe_control.get_temperature():>4.3f} C",
                 line=2,
                 style="center",
             ),
             mock.call(
-                f"{demo_temp_probe.titrator.temp_probe_one.get_resistance()} Ohms",
+                f"{demo_temp_probe.titrator.temperature_probe_control.get_resistance()} Ohms",
                 line=3,
                 style="center",
             ),
@@ -153,12 +153,12 @@ def test_demo_mode(print_mock, set_next_state_mock):
         [
             mock.call("Probe Two", line=1),
             mock.call(
-                f"{demo_temp_probe.titrator.temp_probe_two.get_temperature()} C",
+                f"{demo_temp_probe.titrator.temperature_probe_logging.get_temperature():>4.3f} C",
                 line=2,
                 style="center",
             ),
             mock.call(
-                f"{demo_temp_probe.titrator.temp_probe_two.get_resistance()} Ohms",
+                f"{demo_temp_probe.titrator.temperature_probe_logging.get_resistance()} Ohms",
                 line=3,
                 style="center",
             ),

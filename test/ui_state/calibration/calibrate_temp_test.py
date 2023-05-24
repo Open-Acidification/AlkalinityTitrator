@@ -83,11 +83,12 @@ def test_loop(print_mock):
         [
             mock.call("Probe One", line=1),
             mock.call(
-                f"{(calibrate_temp.titrator.temp_probe_one.get_temperature()):0.3f}",
+                f"{(calibrate_temp.titrator.temperature_probe_control.get_temperature()):4.3f}",
                 line=2,
             ),
             mock.call(
-                f"{calibrate_temp.titrator.temp_probe_one.get_resistance()}", line=3
+                f"{calibrate_temp.titrator.temperature_probe_control.get_resistance()}",
+                line=3,
             ),
             mock.call("Any key to continue", line=4),
         ]
@@ -121,11 +122,12 @@ def test_loop(print_mock):
         [
             mock.call("Probe Two", line=1),
             mock.call(
-                f"{(calibrate_temp.titrator.temp_probe_two.get_temperature()):0.3f}",
+                f"{(calibrate_temp.titrator.temperature_probe_logging.get_temperature()):>4.3f}",
                 line=2,
             ),
             mock.call(
-                f"{calibrate_temp.titrator.temp_probe_two.get_resistance()}", line=3
+                f"{calibrate_temp.titrator.temperature_probe_logging.get_resistance()}",
+                line=3,
             ),
             mock.call("Any key to continue", line=4),
         ]
@@ -180,11 +182,12 @@ def test_calibrate_temp(print_mock, _set_next_state, calibrate):
         [
             mock.call("Probe One", line=1),
             mock.call(
-                f"{(calibrate_temp.titrator.temp_probe_one.get_temperature()):0.3f}",
+                f"{(calibrate_temp.titrator.temperature_probe_control.get_temperature()):4.3f}",
                 line=2,
             ),
             mock.call(
-                f"{calibrate_temp.titrator.temp_probe_one.get_resistance()}", line=3
+                f"{calibrate_temp.titrator.temperature_probe_control.get_resistance()}",
+                line=3,
             ),
             mock.call("Any key to continue", line=4),
         ]
@@ -227,11 +230,12 @@ def test_calibrate_temp(print_mock, _set_next_state, calibrate):
         [
             mock.call("Probe Two", line=1),
             mock.call(
-                f"{(calibrate_temp.titrator.temp_probe_two.get_temperature()):0.3f}",
+                f"{(calibrate_temp.titrator.temperature_probe_logging.get_temperature()):>4.3f}",
                 line=2,
             ),
             mock.call(
-                f"{calibrate_temp.titrator.temp_probe_two.get_resistance()}", line=3
+                f"{calibrate_temp.titrator.temperature_probe_logging.get_resistance()}",
+                line=3,
             ),
             mock.call("Any key to continue", line=4),
         ]

@@ -8,8 +8,6 @@ import time
 
 import pandas as pd
 
-from titration.devices.library import LED
-
 TIMESTEP = 1
 SETPOINT = 30
 
@@ -20,8 +18,6 @@ PID_ANTIWINDUP_KP = 0.04
 PID_ANTIWINDUP_TI = 0.004
 PID_ANTIWINDUP_TD = 9
 
-RELAY_PIN = 12
-
 
 class TemperatureControl:
     """
@@ -30,18 +26,18 @@ class TemperatureControl:
     using a SSR and Heated Beaker Jacket
     """
 
-    def __init__(self, sensor):
+    def __init__(self, temperature_probe, heater):
         """
         The constructor for the TemperatureControl class
 
         Parameters:
-            relay_pin (Pin object): the pin for the relay
-            sensor (Pin object): the pin for the temperature sensor
+            heater (Heater object): the heater the controller uses
+            temperature_probe (TemperatureProbe object): the temperature probe the controller uses
         """
-        self.sensor = sensor
-        self.relay = LED(RELAY_PIN)
+        self.temperature_probe = temperature_probe
+        self.heater = heater
 
-        # Flag - if False, update() does not toggle relay
+        # Flag - if False, update() does not toggle heater
         self.control_active = False
 
         # PID Gain
@@ -72,8 +68,8 @@ class TemperatureControl:
     def update(self):
         """
         The function run during the titration. update() will
-        check if it is time to change the state of the relay and
-        update the PID control and relay status as necessary
+        check if it is time to change the state of the heater and
+        update the PID control and heater status as necessary
         """
         if not self.control_active:
             return
@@ -81,15 +77,15 @@ class TemperatureControl:
         time_now = time.time()
 
         if time_now >= self.time_next:
-            if self.relay.value == 1:
-                self.relay.off()
+            if self.heater.value == 1:
+                self.heater.off()
                 self.step_count += 1
                 self.__update_priors()
                 self.time_next = time.time() + TIMESTEP * (1 - self.k)
 
             else:
                 # Get data values
-                temperature = self.sensor.get_temperature()
+                temperature = self.temperature_probe.get_temperature()
                 self.temperature_last = temperature
 
                 # anti-windup
@@ -101,23 +97,23 @@ class TemperatureControl:
                 # Update PID Gain
                 self.__update_gains(temperature)
 
-                # Check if relay needs to be turned on
+                # Check if heater needs to be turned on
                 if temperature < SETPOINT:
                     if self.k <= 0:
                         self.k = 0
                         self.time_next = time.time() + TIMESTEP
                     elif self.k < 1:
-                        self.relay.on()
+                        self.heater.on()
                         self.time_next = time.time() + TIMESTEP * self.k
                     else:
                         self.k = 1
-                        self.relay.on()
+                        self.heater.on()
                         self.time_next = time.time() + TIMESTEP
 
                 # temperature above setpoint
                 else:
                     self.k = 0
-                    self.relay.off()
+                    self.heater.off()
                     self.time_next = time.time() + TIMESTEP
                     self.__update_priors()
 
@@ -126,8 +122,8 @@ class TemperatureControl:
                     [[time.ctime(time_now), temperature, self.k]],
                     columns=["time (s)", "temperature (C)", "gain"],
                 )
-                self.data_frame = self.data_frame.append(
-                    data_frame_new, ignore_index=True
+                self.data_frame = pd.concat(
+                    [self.data_frame, data_frame_new], axis=0, ignore_index=True
                 )
 
     def output_csv(self, filename):
@@ -138,18 +134,12 @@ class TemperatureControl:
 
     def at_temperature(self):
         """
-        The function to see if the sensor is at the specified temperature
+        The function to see if the temperature probe is at the specified temperature
         """
         return bool(
-            self.sensor.get_temperature() >= 29.5
-            and self.sensor.get_temperature() <= 30.5
+            self.temperature_probe.get_temperature() >= (SETPOINT - 0.5)
+            and self.temperature_probe.get_temperature() <= (SETPOINT + 0.5)
         )
-
-    def get_last_temperature(self):
-        """
-        The function to get the last measured temperature
-        """
-        return self.temperature_last
 
     def activate(self):
         """
@@ -164,19 +154,7 @@ class TemperatureControl:
         The function to deactivate the temperature controller
         """
         self.control_active = False
-        self.relay.off()
-
-    def heater_on(self):
-        """
-        The function to turn the heating element on
-        """
-        self.relay.on()
-
-    def heater_off(self):
-        """
-        The function to turn the heating element off
-        """
-        self.relay.off()
+        self.heater.off()
 
     def __set_controlparam_antiwindup(self):
         """
