@@ -27,17 +27,24 @@ def test_handle_key(set_next_state_mock):
     demo_pump.handle_key("2")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "PumpVolume"
+    assert demo_pump.substate == 3
+
+    demo_pump.handle_key("1")
+    assert demo_pump.substate == 1
 
     demo_pump.handle_key("3")
+    assert demo_pump.substate == 3
+
+    demo_pump.handle_key("1")
     assert demo_pump.substate == 1
 
     demo_pump.handle_key("4")
     assert demo_pump.substate == 2
 
     demo_pump.handle_key("1")
-    assert demo_pump.substate == 2
+    assert demo_pump.substate == 3
 
-    demo_pump.handle_key("4")
+    demo_pump.handle_key("1")
     assert demo_pump.substate == 1
 
     demo_pump.handle_key("D")
@@ -83,8 +90,8 @@ def test_loop(print_mock):
                 line=2,
                 style="center",
             ),
-            mock.call("Press any to cont.", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -127,8 +134,8 @@ def test_demo_mode(print_mock, set_next_state_mock):
                 line=2,
                 style="center",
             ),
-            mock.call("Press any to cont.", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -148,8 +155,53 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_pump.handle_key("2")
     set_next_state_mock.assert_called_with(ANY, True)
     assert set_next_state_mock.call_args.args[0].name() == "PumpVolume"
+    assert demo_pump.substate == 3
+
+    demo_pump.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Pump Volume:", line=1),
+            mock.call(
+                f"{demo_pump.titrator.pump.get_volume_in_pump()} ml",
+                line=2,
+                style="center",
+            ),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
+        ]
+    )
+
+    demo_pump.handle_key("1")
+    assert demo_pump.substate == 1
+
+    demo_pump.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("1: Get Volume", line=1),
+            mock.call("2: Set Volume", line=2),
+            mock.call("3: Pull Volume In", line=3),
+            mock.call("4: Page 2", line=4),
+        ]
+    )
 
     demo_pump.handle_key("3")
+    assert demo_pump.substate == 3
+
+    demo_pump.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("Pump Volume:", line=1),
+            mock.call(
+                f"{demo_pump.titrator.pump.get_volume_in_pump()} ml",
+                line=2,
+                style="center",
+            ),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
+        ]
+    )
+
+    demo_pump.handle_key("1")
     assert demo_pump.substate == 1
 
     demo_pump.loop()
@@ -176,19 +228,23 @@ def test_demo_mode(print_mock, set_next_state_mock):
     )
 
     demo_pump.handle_key("1")
-    assert demo_pump.substate == 2
+    assert demo_pump.substate == 3
 
     demo_pump.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Push Volume Out", line=1),
-            mock.call("", line=2),
+            mock.call("Pump Volume:", line=1),
+            mock.call(
+                f"{demo_pump.titrator.pump.get_volume_in_pump()} ml",
+                line=2,
+                style="center",
+            ),
             mock.call("", line=3),
-            mock.call("4: Page 1", line=4),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
-    demo_pump.handle_key("4")
+    demo_pump.handle_key("1")
     assert demo_pump.substate == 1
 
     demo_pump.loop()

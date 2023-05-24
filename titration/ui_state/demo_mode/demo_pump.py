@@ -45,6 +45,7 @@ class DemoPump(UIState):
                 self._set_next_state(VolumeToMove(self.titrator, self), True)
                 self.titrator.pump.pull_volume_in(self.titrator.volume_to_move)
                 self.titrator.volume_to_move = 0
+                self.substate = 3
 
             elif key == Keypad.KEY_4:
                 self.substate = 2
@@ -54,6 +55,7 @@ class DemoPump(UIState):
                 self._set_next_state(VolumeToMove(self.titrator, self), True)
                 self.titrator.pump.push_volume_out(self.titrator.volume_to_move)
                 self.titrator.volume_to_move = 0
+                self.substate = 3
 
             elif key == Keypad.KEY_4:
                 self.substate = 1
@@ -85,5 +87,5 @@ class DemoPump(UIState):
             self.titrator.lcd.print(
                 f"{self.titrator.pump.get_volume_in_pump()} ml", line=2, style="center"
             )
-            self.titrator.lcd.print("Press any to cont.", line=3)
-            self.titrator.lcd.print("", line=4)
+            self.titrator.lcd.print("", line=3)
+            self.titrator.lcd.print("Any key to continue", line=4)
