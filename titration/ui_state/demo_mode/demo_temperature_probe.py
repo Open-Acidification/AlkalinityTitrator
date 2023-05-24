@@ -6,7 +6,7 @@ from titration.devices.library import Keypad
 from titration.ui_state.ui_state import UIState
 
 
-class DemoTempControl(UIState):
+class DemoTemperatureProbe(UIState):
     """
     The class to demo the temperature probe device
     """
@@ -51,12 +51,12 @@ class DemoTempControl(UIState):
         elif self.substate == 2:
             self.titrator.lcd.print("Probe One", line=1)
             self.titrator.lcd.print(
-                f"{self.titrator.temp_probe_one.get_temperature()} C",
+                f"{self.titrator.temperature_probe_control.get_temperature():>4.3f} C",
                 line=2,
                 style="center",
             )
             self.titrator.lcd.print(
-                f"{self.titrator.temp_probe_one.get_resistance()} Ohms",
+                f"{self.titrator.temperature_probe_control.get_resistance()} Ohms",
                 line=3,
                 style="center",
             )
@@ -65,12 +65,12 @@ class DemoTempControl(UIState):
         elif self.substate == 3:
             self.titrator.lcd.print("Probe Two", line=1)
             self.titrator.lcd.print(
-                f"{self.titrator.temp_probe_two.get_temperature()} C",
+                f"{self.titrator.temperature_probe_logging.get_temperature():>4.3f} C",
                 line=2,
                 style="center",
             )
             self.titrator.lcd.print(
-                f"{self.titrator.temp_probe_two.get_resistance()} Ohms",
+                f"{self.titrator.temperature_probe_logging.get_resistance()} Ohms",
                 line=3,
                 style="center",
             )

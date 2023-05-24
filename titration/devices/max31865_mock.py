@@ -20,3 +20,9 @@ class MAX31865:
         self.ref_resistor = ref_resistor
         self.temperature = 0
         self.resistance = 100
+
+    def set_temperature(self, temperature):
+        """
+        The function to set the mock temperature
+        """
+        self.temperature = temperature

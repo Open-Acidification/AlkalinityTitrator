@@ -41,7 +41,9 @@ class CalibrateTemp(UIState):
             self.substate = 2
 
         elif self.substate == 2:
-            self.titrator.temp_probe_one.calibrate(self.titrator.reference_temperature)
+            self.titrator.temperature_probe_control.calibrate(
+                self.titrator.reference_temperature
+            )
             self.substate = 3
 
         elif self.substate == 3:
@@ -52,7 +54,9 @@ class CalibrateTemp(UIState):
             self.substate = 5
 
         elif self.substate == 5:
-            self.titrator.temp_probe_two.calibrate(self.titrator.reference_temperature)
+            self.titrator.temperature_probe_logging.calibrate(
+                self.titrator.reference_temperature
+            )
             self.substate = 6
 
         elif self.substate == 6:
@@ -77,10 +81,11 @@ class CalibrateTemp(UIState):
         elif self.substate == 3:
             self.titrator.lcd.print("Probe One", line=1)
             self.titrator.lcd.print(
-                f"{(self.titrator.temp_probe_one.get_temperature()):0.3f}", line=2
+                f"{(self.titrator.temperature_probe_control.get_temperature()):4.3f}",
+                line=2,
             )
             self.titrator.lcd.print(
-                f"{self.titrator.temp_probe_one.get_resistance()}", line=3
+                f"{self.titrator.temperature_probe_control.get_resistance()}", line=3
             )
             self.titrator.lcd.print("Any key to continue", line=4)
 
@@ -99,9 +104,10 @@ class CalibrateTemp(UIState):
         elif self.substate == 6:
             self.titrator.lcd.print("Probe Two", line=1)
             self.titrator.lcd.print(
-                f"{(self.titrator.temp_probe_two.get_temperature()):0.3f}", line=2
+                f"{(self.titrator.temperature_probe_logging.get_temperature()):>4.3f}",
+                line=2,
             )
             self.titrator.lcd.print(
-                f"{self.titrator.temp_probe_two.get_resistance()}", line=3
+                f"{self.titrator.temperature_probe_logging.get_resistance()}", line=3
             )
             self.titrator.lcd.print("Any key to continue", line=4)

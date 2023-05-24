@@ -6,9 +6,13 @@ from titration.devices.library import Keypad
 from titration.ui_state.demo_mode.demo_ph_probe import DemopHProbe
 from titration.ui_state.demo_mode.demo_pump import DemoPump
 from titration.ui_state.demo_mode.demo_stir_control import DemoStirControl
-from titration.ui_state.demo_mode.demo_temp_probe import DemoTempControl
+from titration.ui_state.demo_mode.demo_temperature_controller import (
+    DemoTemperatureControl,
+)
+from titration.ui_state.demo_mode.demo_temperature_probe import (
+    DemoTemperatureProbe,
+)
 from titration.ui_state.demo_mode.read_values import ReadValues
-from titration.ui_state.demo_mode.toggle_demo_mode import ToggleDemoMode
 from titration.ui_state.ui_state import UIState
 
 
@@ -32,8 +36,8 @@ class DemoModeMenu(UIState):
                 4 -> Toggle menu pages
             Substate 2:
                 1 -> Demo Stir Control
-                2 -> Demo Temp Control
-                3 -> Toggle Demo Mode
+                2 -> Demo Temperature Probes
+                3 -> Demo Temperature Controls
                 4 -> Toggle menu pages
             D -> Return to Main Menu
 
@@ -58,10 +62,10 @@ class DemoModeMenu(UIState):
                 self._set_next_state(DemoStirControl(self.titrator, self), True)
 
             elif key == Keypad.KEY_2:
-                self._set_next_state(DemoTempControl(self.titrator, self), True)
+                self._set_next_state(DemoTemperatureProbe(self.titrator, self), True)
 
             elif key == Keypad.KEY_3:
-                self._set_next_state(ToggleDemoMode(self.titrator, self), True)
+                self._set_next_state(DemoTemperatureControl(self.titrator, self), True)
 
             if key == Keypad.KEY_4:
                 self.substate = 1
@@ -82,5 +86,5 @@ class DemoModeMenu(UIState):
         elif self.substate == 2:
             self.titrator.lcd.print("1: Demo Stir Control", line=1)
             self.titrator.lcd.print("2: Demo Temp Probe", line=2)
-            self.titrator.lcd.print("3: Toggle Demo Mode", line=3)
+            self.titrator.lcd.print("3: Demo Temp Control", line=3)
             self.titrator.lcd.print("4: Page 1", line=4)
