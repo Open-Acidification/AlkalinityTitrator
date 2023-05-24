@@ -200,7 +200,7 @@ def test_temperature_control_active_inactive_below_set_point():
     assert temperature_controller.heater.value is False
 
 
-def test_temperature_control_inactive_above_set_point():
+def test_temperature_control_active_inactive_above_set_point():
     """
     The function to test the response of the temperature controller
     when it is active and then inactive while above the set point
@@ -222,7 +222,7 @@ def test_temperature_control_inactive_above_set_point():
     assert temperature_controller.heater.value is False
 
 
-def test_temperature_control_inactive_at_set_point():
+def test_temperature_control_active_inactive_at_set_point():
     """
     The function to test the response of the temperature controller
     when it is active and then inactive while at the set point
