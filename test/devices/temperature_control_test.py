@@ -56,17 +56,6 @@ def test_temperature_control_at_temperature():
     assert temperature_controller.at_temperature() is False
 
 
-def test_temperature_control_update():
-    """
-    The function to test updating the temperature controller
-    """
-    temperature_controller = create_temperature_controller()
-
-    temperature_controller.update()
-    time.sleep(1)
-    temperature_controller.update()
-
-
 def test_temperature_control_deactivate():
     """
     The function to deactivate the temperature controller
@@ -181,6 +170,72 @@ def test_temperature_control_inactive_at_set_point():
     temperature_controller = create_temperature_controller()
 
     temperature_controller.temperature_probe.sensor.set_temperature(30)
+
+    temperature_controller.deactivate()
+    assert temperature_controller.control_active is False
+
+    temperature_controller.update()
+    assert temperature_controller.heater.value is False
+
+
+def test_temperature_control_active_inactive_below_set_point():
+    """
+    The function to test the response of the temperature controller
+    when it is active and then inactive while below the set point
+    """
+    temperature_controller = create_temperature_controller()
+
+    temperature_controller.temperature_probe.sensor.set_temperature(25)
+
+    temperature_controller.activate()
+    assert temperature_controller.control_active is True
+
+    temperature_controller.update()
+    assert temperature_controller.heater.value is True
+
+    temperature_controller.deactivate()
+    assert temperature_controller.control_active is False
+
+    temperature_controller.update()
+    assert temperature_controller.heater.value is False
+
+
+def test_temperature_control_inactive_above_set_point():
+    """
+    The function to test the response of the temperature controller
+    when it is active and then inactive while above the set point
+    """
+    temperature_controller = create_temperature_controller()
+
+    temperature_controller.temperature_probe.sensor.set_temperature(35)
+
+    temperature_controller.activate()
+    assert temperature_controller.control_active is True
+
+    temperature_controller.update()
+    assert temperature_controller.heater.value is False
+
+    temperature_controller.deactivate()
+    assert temperature_controller.control_active is False
+
+    temperature_controller.update()
+    assert temperature_controller.heater.value is False
+
+
+def test_temperature_control_inactive_at_set_point():
+    """
+    The function to test the response of the temperature controller
+    when it is active and then inactive while at the set point
+    """
+    temperature_controller = create_temperature_controller()
+
+    temperature_controller.temperature_probe.sensor.set_temperature(30)
+
+    temperature_controller.activate()
+    assert temperature_controller.control_active is True
+
+    temperature_controller.update()
+    assert temperature_controller.heater.value is False
 
     temperature_controller.deactivate()
     assert temperature_controller.control_active is False
