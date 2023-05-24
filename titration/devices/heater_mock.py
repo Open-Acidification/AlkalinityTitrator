@@ -2,6 +2,8 @@
 The file for the mock Heater class
 """
 
+# pylint:disable = invalid-name
+
 
 class Heater:
     """

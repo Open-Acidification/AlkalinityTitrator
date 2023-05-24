@@ -3,7 +3,11 @@ The file to test the mock temperature controller
 """
 import time
 
-from titration.devices.library import Heater, TemperatureControl, TemperatureProbe
+from titration.devices.library import (
+    Heater,
+    TemperatureControl,
+    TemperatureProbe,
+)
 
 
 def create_temperature_controller():
@@ -33,6 +37,25 @@ def test_temperature_control_create():
     assert temperature_controller.temperature_last == 0
 
 
+def test_temperature_control_at_temperature():
+    """
+    The function to test the temperature controller's at_temperature function
+    """
+    temperature_controller = create_temperature_controller()
+
+    temperature_controller.temperature_probe.sensor.set_temperature(30.5)
+    assert temperature_controller.at_temperature() is True
+
+    temperature_controller.temperature_probe.sensor.set_temperature(30.6)
+    assert temperature_controller.at_temperature() is False
+
+    temperature_controller.temperature_probe.sensor.set_temperature(29.5)
+    assert temperature_controller.at_temperature() is True
+
+    temperature_controller.temperature_probe.sensor.set_temperature(29.4)
+    assert temperature_controller.at_temperature() is False
+
+
 def test_temperature_control_update():
     """
     The function to test updating the temperature controller
@@ -42,17 +65,6 @@ def test_temperature_control_update():
     temperature_controller.update()
     time.sleep(1)
     temperature_controller.update()
-
-
-def test_temperature_control_at_temperature():
-    """
-    The function to test the at_temperature function
-    """
-    temperature_controller = create_temperature_controller()
-
-    temperature_controller.at_temperature()
-
-    assert temperature_controller.at_temperature() is False
 
 
 def test_temperature_control_deactivate():
@@ -79,25 +91,6 @@ def test_temperature_control_activate():
     assert temperature_controller.k_p == 0.09
     assert temperature_controller.t_i == 0.000001
     assert temperature_controller.t_d == 9
-
-
-def test_temperature_control_at_temperature():
-    """
-    The function to test the temperature controller's at_temperature function
-    """
-    temperature_controller = create_temperature_controller()
-
-    temperature_controller.temperature_probe.sensor.set_temperature(30.5)
-    assert temperature_controller.at_temperature() is True
-
-    temperature_controller.temperature_probe.sensor.set_temperature(30.6)
-    assert temperature_controller.at_temperature() is False
-
-    temperature_controller.temperature_probe.sensor.set_temperature(29.5)
-    assert temperature_controller.at_temperature() is True
-
-    temperature_controller.temperature_probe.sensor.set_temperature(29.4)
-    assert temperature_controller.at_temperature() is False
 
 
 def test_temperature_control_active_below_set_point():

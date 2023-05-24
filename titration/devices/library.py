@@ -14,8 +14,8 @@ if mock_config.MOCK_ENABLED:
     from titration.devices import i2c_mock as busio
     from titration.devices import pwm_out_mock as pwmio
     from titration.devices.digital_mock import DigitalInOut
-    from titration.devices.keypad_mock import Keypad
     from titration.devices.heater_mock import Heater
+    from titration.devices.keypad_mock import Keypad
     from titration.devices.liquid_crystal_mock import LiquidCrystal
     from titration.devices.max31865_mock import MAX31865
     from titration.devices.serial_mock import Serial
