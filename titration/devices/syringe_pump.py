@@ -31,22 +31,9 @@ class SyringePump:
         )
 
         self.volume_in_pump = 0
-        self.pump_direction = 0
 
         self.serial.reset_input_buffer()
         self.serial.reset_output_buffer()
-
-    def set_pump_direction(self, direction):
-        """
-        The function to set whether the pump will take in or push out liquid
-        """
-        self.pump_direction = direction
-
-    def get_pump_direction(self):
-        """
-        The function to return the pump direction
-        """
-        return self.pump_direction
 
     def set_volume_in_pump(self, volume):
         """
@@ -72,7 +59,7 @@ class SyringePump:
         """
         return self.volume_in_pump
 
-    def pump_volume_in(self, volume_to_add):
+    def pull_volume_in(self, volume_to_add):
         """
         The function to pull volume of solution into the syringe
 
@@ -83,16 +70,15 @@ class SyringePump:
         volume_to_add = min(volume_to_add, space_in_pump)
         self.__drive_pump_in(volume_to_add)
 
-    def pump_volume_out(self, volume_to_add):
+    def push_volume_out(self, volume_to_add):
         """
-        The function to pump volume out into to the titrator solution
+        The function to push volume out into to the titrator solution
 
         Parameters:
             volume_to_add (float): the volume to be added to the solution
         """
         # volume greater than max capacity of pump
         if volume_to_add > MAX_PUMP_CAPACITY:
-
             # pump out all current volume
             next_volume = self.volume_in_pump
             self.__drive_pump_out(next_volume)
@@ -123,7 +109,7 @@ class SyringePump:
 
     def __drive_pump_in(self, volume):
         """
-        The function to drive the pump in to pull up liquid
+        The function to drive the pump in to pull in liquid
 
         Parameters:
             volume (float): the volume to add

@@ -82,7 +82,7 @@ def test_pump_volume_in():
     """
     pump = create_syringe_pump()
 
-    pump.pump_volume_in(0.5)
+    pump.pull_volume_in(0.5)
 
     assert pump.volume_in_pump == 0.5
 
@@ -93,7 +93,7 @@ def test_pump_volume_in_above_max():
     """
     pump = create_syringe_pump()
 
-    pump.pump_volume_in(1.11)
+    pump.pull_volume_in(1.11)
 
     assert pump.volume_in_pump == 1.1
 
@@ -105,7 +105,7 @@ def test_pump_volume_in_negative():
     pump = create_syringe_pump()
 
     with pytest.raises(Exception) as exc_info:
-        pump.pump_volume_in(-0.5)
+        pump.pull_volume_in(-0.5)
 
     assert exc_info.value.args == ("can't convert negative int to unsigned",)
     assert pump.volume_in_pump == 0
@@ -120,7 +120,7 @@ def test_pump_volume_out_exact():
     pump = create_syringe_pump()
 
     pump.volume_in_pump = 0.5
-    pump.pump_volume_out(0.5)
+    pump.push_volume_out(0.5)
 
     assert pump.volume_in_pump == 0
 
@@ -134,7 +134,7 @@ def test_pump_volume_out_above_max_capacity():
     pump = create_syringe_pump()
 
     pump.volume_in_pump = 1.1
-    pump.pump_volume_out(1.11)
+    pump.push_volume_out(1.11)
 
     assert pump.volume_in_pump == 0
 
@@ -148,7 +148,7 @@ def test_pump_volume_out_above_syringe_volume():
     pump = create_syringe_pump()
 
     pump.volume_in_pump = 0.5
-    pump.pump_volume_out(0.75)
+    pump.push_volume_out(0.75)
 
     assert pump.volume_in_pump == 0
 
@@ -162,7 +162,7 @@ def test_pump_volume_out_negative():
     pump.volume_in_pump = 0.5
 
     with pytest.raises(Exception) as exc_info:
-        pump.pump_volume_out(-0.5)
+        pump.push_volume_out(-0.5)
 
     assert exc_info.value.args == ("can't convert negative int to unsigned",)
     assert pump.volume_in_pump == 0.5

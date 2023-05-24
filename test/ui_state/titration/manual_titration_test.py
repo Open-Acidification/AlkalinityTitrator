@@ -18,7 +18,7 @@ def test_handle_key(set_next_state_mock):
 
     manual_titration.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "Volume"
+    assert set_next_state_mock.call_args.args[0].name() == "VolumeToMove"
     assert manual_titration.substate == 2
 
     manual_titration.handle_key("1")
@@ -147,7 +147,7 @@ def test_manual_titration(print_mock, set_next_state_mock):
 
     manual_titration.handle_key("1")
     set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "Volume"
+    assert set_next_state_mock.call_args.args[0].name() == "VolumeToMove"
     assert manual_titration.substate == 2
 
     manual_titration.loop()
