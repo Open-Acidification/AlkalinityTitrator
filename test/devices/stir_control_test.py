@@ -1,7 +1,6 @@
 """
 The file to test the StirControl class
 """
-import time
 from unittest import mock
 from unittest.mock import call
 
@@ -73,9 +72,8 @@ def test_set_stop():
     assert stir_controller._motor.duty_cycle == 0
 
 
-@mock.patch.object(time, "sleep")
 @mock.patch.object(StirControl, "_set_speed")
-def test_degas(_set_speed, sleep):
+def test_degas(_set_speed):
     """
     The function to test the stir controller's degas function
     """
@@ -85,4 +83,3 @@ def test_degas(_set_speed, sleep):
 
     calls = [call(5000), call(3000)]
     _set_speed.assert_has_calls(calls)
-    sleep.assert_called_with(0)

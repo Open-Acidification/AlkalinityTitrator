@@ -57,14 +57,14 @@ class CalibratePh(UIState):
         if self.substate == 1:
             self.titrator.lcd.print("Enter buffer pH", line=1)
             self.titrator.lcd.print("", line=2)
-            self.titrator.lcd.print("Press any to cont", line=3)
-            self.titrator.lcd.print("", line=4)
+            self.titrator.lcd.print("", line=3)
+            self.titrator.lcd.print("Any key to continue", line=4)
 
         elif self.substate == 2:
             self.titrator.lcd.print("Put sensor in buffer", line=1)
             self.titrator.lcd.print("", line=2)
-            self.titrator.lcd.print("Press any to cont", line=3)
-            self.titrator.lcd.print("", line=4)
+            self.titrator.lcd.print("", line=3)
+            self.titrator.lcd.print("Any key to continue", line=4)
 
         elif self.substate == 3:
             self.titrator.lcd.print("Recorded pH, volts:", line=1)
@@ -72,5 +72,5 @@ class CalibratePh(UIState):
                 f"{self.values['buffer1_actual_pH']:>2.5f} pH, {self.values['buffer1_measured_volts']:>3.4f} V",
                 line=2,
             )
-            self.titrator.lcd.print("Press any to cont", line=3)
-            self.titrator.lcd.print("", line=4)
+            self.titrator.lcd.print("", line=3)
+            self.titrator.lcd.print("Any key to continue", line=4)

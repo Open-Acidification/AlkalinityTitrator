@@ -61,8 +61,8 @@ def test_loop(print_mock):
     demo_temperature_controller.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Test Heater", line=1),
-            mock.call("2: Test Controller", line=2),
+            mock.call("1: Test heater", line=1),
+            mock.call("2: Test controller", line=2),
             mock.call("", line=3),
             mock.call("4: Return", line=4),
         ]
@@ -72,7 +72,7 @@ def test_loop(print_mock):
     demo_temperature_controller.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Test Heater", line=1),
+            mock.call("Test heater", line=1),
             mock.call(
                 f"{demo_temperature_controller.titrator.temperature_probe_control.get_temperature():>4.3f} C",
                 line=2,
@@ -91,7 +91,7 @@ def test_loop(print_mock):
     demo_temperature_controller.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Test Controller", line=1),
+            mock.call("Test controller", line=1),
             mock.call(
                 f"{demo_temperature_controller.titrator.temperature_probe_control.get_temperature():>4.3f} C",
                 line=2,
@@ -120,8 +120,8 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_temperature_controller.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Test Heater", line=1),
-            mock.call("2: Test Controller", line=2),
+            mock.call("1: Test heater", line=1),
+            mock.call("2: Test controller", line=2),
             mock.call("", line=3),
             mock.call("4: Return", line=4),
         ]
@@ -133,7 +133,7 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_temperature_controller.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Test Heater", line=1),
+            mock.call("Test heater", line=1),
             mock.call(
                 f"{demo_temperature_controller.titrator.temperature_probe_control.get_temperature():>4.3f} C",
                 line=2,
@@ -154,8 +154,8 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_temperature_controller.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Test Heater", line=1),
-            mock.call("2: Test Controller", line=2),
+            mock.call("1: Test heater", line=1),
+            mock.call("2: Test controller", line=2),
             mock.call("", line=3),
             mock.call("4: Return", line=4),
         ]
@@ -167,7 +167,7 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_temperature_controller.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Test Controller", line=1),
+            mock.call("Test controller", line=1),
             mock.call(
                 f"{demo_temperature_controller.titrator.temperature_probe_control.get_temperature():>4.3f} C",
                 line=2,
@@ -188,8 +188,8 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_temperature_controller.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Test Heater", line=1),
-            mock.call("2: Test Controller", line=2),
+            mock.call("1: Test heater", line=1),
+            mock.call("2: Test controller", line=2),
             mock.call("", line=3),
             mock.call("4: Return", line=4),
         ]

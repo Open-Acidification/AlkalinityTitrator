@@ -45,10 +45,10 @@ def test_loop(print_mock):
     setup_titration.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Enter Sol.", line=1),
+            mock.call("Enter solution", line=1),
             mock.call("weight (g)", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -56,10 +56,10 @@ def test_loop(print_mock):
     setup_titration.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Enter Sol.", line=1),
+            mock.call("Enter solution", line=1),
             mock.call("salinity (ppt)", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -67,7 +67,7 @@ def test_loop(print_mock):
     setup_titration.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Calibrate pH probe?", line=1),
+            mock.call("Calibrate pH probe:", line=1),
             mock.call("Yes: 1", line=2),
             mock.call("No (use old): 0", line=3),
             mock.call(
@@ -92,10 +92,10 @@ def test_setup_titration(print_mock, set_next_state_mock):
     setup_titration.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Enter Sol.", line=1),
+            mock.call("Enter solution", line=1),
             mock.call("weight (g)", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -107,10 +107,10 @@ def test_setup_titration(print_mock, set_next_state_mock):
     setup_titration.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Enter Sol.", line=1),
+            mock.call("Enter solution", line=1),
             mock.call("salinity (ppt)", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -122,7 +122,7 @@ def test_setup_titration(print_mock, set_next_state_mock):
     setup_titration.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Calibrate pH probe?", line=1),
+            mock.call("Calibrate pH probe:", line=1),
             mock.call("Yes: 1", line=2),
             mock.call("No (use old): 0", line=3),
             mock.call(

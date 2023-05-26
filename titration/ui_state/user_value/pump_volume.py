@@ -19,4 +19,4 @@ class PumpVolume(UserValue):
         """
         The function to return the label printed on the LCD Screen
         """
-        return "Volume in pump:"
+        return "Volume in pump (ml):"

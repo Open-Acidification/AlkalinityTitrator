@@ -3,7 +3,6 @@ The file for the  class
 """
 
 from titration.devices.library import Keypad
-from titration.ui_state.demo_mode.demo_ph_probe import DemopHProbe
 from titration.ui_state.demo_mode.demo_pump import DemoPump
 from titration.ui_state.demo_mode.demo_stir_control import DemoStirControl
 from titration.ui_state.demo_mode.demo_temperature_controller import (
@@ -39,6 +38,8 @@ class DemoModeMenu(UIState):
                 2 -> Demo Temperature Probes
                 3 -> Demo Temperature Controls
                 4 -> Toggle menu pages
+            Substate 3:
+                Any -> Return to Demo Mode Menu
             D -> Return to Main Menu
 
         Parameters:
@@ -49,7 +50,7 @@ class DemoModeMenu(UIState):
                 self._set_next_state(ReadValues(self.titrator, self), True)
 
             elif key == Keypad.KEY_2:
-                self._set_next_state(DemopHProbe(self.titrator, self), True)
+                self.substate = 3
 
             elif key == Keypad.KEY_3:
                 self._set_next_state(DemoPump(self.titrator, self), True)
@@ -70,6 +71,9 @@ class DemoModeMenu(UIState):
             if key == Keypad.KEY_4:
                 self.substate = 1
 
+        elif self.substate == 3:
+            self.substate = 1
+
         if key == Keypad.KEY_D:
             self._set_next_state(self.previous_state, True)
 
@@ -78,13 +82,23 @@ class DemoModeMenu(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            self.titrator.lcd.print("1: Read Values", line=1)
-            self.titrator.lcd.print("2: Demo pH Probe", line=2)
-            self.titrator.lcd.print("3: Demo Pump", line=3)
+            self.titrator.lcd.print("1: Read values", line=1)
+            self.titrator.lcd.print("2: Demo pH probe", line=2)
+            self.titrator.lcd.print("3: Demo pump", line=3)
             self.titrator.lcd.print("4: Page 2", line=4)
 
         elif self.substate == 2:
-            self.titrator.lcd.print("1: Demo Stir Control", line=1)
-            self.titrator.lcd.print("2: Demo Temp Probe", line=2)
-            self.titrator.lcd.print("3: Demo Temp Control", line=3)
+            self.titrator.lcd.print("1: Demo stir control", line=1)
+            self.titrator.lcd.print("2: Demo temp probe", line=2)
+            self.titrator.lcd.print("3: Demo temp control", line=3)
             self.titrator.lcd.print("4: Page 1", line=4)
+
+        elif self.substate == 3:
+            self.titrator.lcd.print("pH probe", line=1)
+            self.titrator.lcd.print(
+                f"{self.titrator.ph_probe.get_voltage()} volts", line=2, style="center"
+            )
+            self.titrator.lcd.print(
+                f"{self.titrator.ph_probe.get_gain()} volts", line=3, style="center"
+            )
+            self.titrator.lcd.print("Any key to continue", line=4)

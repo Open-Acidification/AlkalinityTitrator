@@ -4,6 +4,7 @@ The file to hold the Alkalinity Titrator's GUI class
 
 # pylint: disable = too-many-locals, too-many-statements
 
+import threading
 import time
 import tkinter as tk
 
@@ -214,6 +215,9 @@ class GUI:
 
         buttonframe.grid(row=1, column=0, sticky=STICKY)
 
+        self.thread = threading.Thread(target=self.update_lcd, daemon=True)
+        self.thread.start()
+
         self.root.mainloop()
 
     def button_press(self, key):
@@ -221,14 +225,14 @@ class GUI:
         The function to facilitate button presses
         """
         self.titrator.keypad.set_key(key)
-        time.sleep(0.01)
-        self.update_lcd()
 
     def update_lcd(self):
         """
         The function to update the GUI LCD
         """
-        self.line_1.config(text=self.titrator.lcd.get_line(1))
-        self.line_2.config(text=self.titrator.lcd.get_line(2))
-        self.line_3.config(text=self.titrator.lcd.get_line(3))
-        self.line_4.config(text=self.titrator.lcd.get_line(4))
+        while True:
+            time.sleep(0.001)
+            self.line_1.config(text=self.titrator.lcd.get_line(1))
+            self.line_2.config(text=self.titrator.lcd.get_line(2))
+            self.line_3.config(text=self.titrator.lcd.get_line(3))
+            self.line_4.config(text=self.titrator.lcd.get_line(4))

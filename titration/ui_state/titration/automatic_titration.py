@@ -63,28 +63,28 @@ class AutomaticTitration(UIState):
                 line=1,
             )
             self.titrator.lcd.print("", line=2)
-            self.titrator.lcd.print("Press any to cont", line=3)
-            self.titrator.lcd.print("", line=4)
+            self.titrator.lcd.print("", line=3)
+            self.titrator.lcd.print("Any key to continue", line=4)
 
         elif self.substate == 2:
             self.titrator.lcd.print("Mixing...", line=1)
             self.titrator.lcd.print("", line=2)
-            self.titrator.lcd.print("Press any to cont", line=3)
-            self.titrator.lcd.print("", line=4)
+            self.titrator.lcd.print("", line=3)
+            self.titrator.lcd.print("Any key to continue", line=4)
 
         elif self.substate == 3:
             self.titrator.lcd.print(
                 f"pH value {self.values['current_pH']} reached", line=1
             )
             self.titrator.lcd.print("", line=2)
-            self.titrator.lcd.print("Press any to cont", line=3)
-            self.titrator.lcd.print("", line=4)
+            self.titrator.lcd.print("", line=3)
+            self.titrator.lcd.print("Any key to continue", line=4)
 
         elif self.substate == 4:
             self.titrator.lcd.print("Return to", line=1)
             self.titrator.lcd.print("main menu", line=2)
-            self.titrator.lcd.print("Press any to cont", line=3)
-            self.titrator.lcd.print("", line=4)
+            self.titrator.lcd.print("", line=3)
+            self.titrator.lcd.print("Any key to continue", line=4)
 
     def start(self):
         """

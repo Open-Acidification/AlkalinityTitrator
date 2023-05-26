@@ -71,19 +71,19 @@ class DemoPump(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            self.titrator.lcd.print("1: Get Volume", line=1)
-            self.titrator.lcd.print("2: Set Volume", line=2)
-            self.titrator.lcd.print("3: Pull Volume In", line=3)
+            self.titrator.lcd.print("1: Get volume", line=1)
+            self.titrator.lcd.print("2: Set volume", line=2)
+            self.titrator.lcd.print("3: Pull volume in", line=3)
             self.titrator.lcd.print("4: Page 2", line=4)
 
         elif self.substate == 2:
-            self.titrator.lcd.print("1: Push Volume Out", line=1)
+            self.titrator.lcd.print("1: Push volume out", line=1)
             self.titrator.lcd.print("", line=2)
             self.titrator.lcd.print("", line=3)
             self.titrator.lcd.print("4: Page 1", line=4)
 
         elif self.substate == 3:
-            self.titrator.lcd.print("Pump Volume:", line=1)
+            self.titrator.lcd.print("Pump volume:", line=1)
             self.titrator.lcd.print(
                 f"{self.titrator.pump.get_volume_in_pump()} ml", line=2, style="center"
             )

@@ -68,8 +68,8 @@ def test_loop(print_mock):
                 f"Res:  {read_values.titrator.temperature_probe_control.get_resistance():>4.3f} Ohms",
                 line=2,
             ),
-            mock.call("Press any to cont.", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -117,8 +117,8 @@ def test_read_values(print_mock, set_next_state_mock):
                 f"Res:  {read_values.titrator.temperature_probe_control.get_resistance():>4.3f} Ohms",
                 line=2,
             ),
-            mock.call("Press any to cont.", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 

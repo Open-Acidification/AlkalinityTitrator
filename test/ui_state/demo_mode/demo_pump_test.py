@@ -62,9 +62,9 @@ def test_loop(print_mock):
     demo_pump.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Get Volume", line=1),
-            mock.call("2: Set Volume", line=2),
-            mock.call("3: Pull Volume In", line=3),
+            mock.call("1: Get volume", line=1),
+            mock.call("2: Set volume", line=2),
+            mock.call("3: Pull volume in", line=3),
             mock.call("4: Page 2", line=4),
         ]
     )
@@ -73,7 +73,7 @@ def test_loop(print_mock):
     demo_pump.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Push Volume Out", line=1),
+            mock.call("1: Push volume out", line=1),
             mock.call("", line=2),
             mock.call("", line=3),
             mock.call("4: Page 1", line=4),
@@ -84,7 +84,7 @@ def test_loop(print_mock):
     demo_pump.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Pump Volume:", line=1),
+            mock.call("Pump volume:", line=1),
             mock.call(
                 f"{demo_pump.titrator.pump.get_volume_in_pump()} ml",
                 line=2,
@@ -115,9 +115,9 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_pump.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Get Volume", line=1),
-            mock.call("2: Set Volume", line=2),
-            mock.call("3: Pull Volume In", line=3),
+            mock.call("1: Get volume", line=1),
+            mock.call("2: Set volume", line=2),
+            mock.call("3: Pull volume in", line=3),
             mock.call("4: Page 2", line=4),
         ]
     )
@@ -128,7 +128,7 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_pump.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Pump Volume:", line=1),
+            mock.call("Pump volume:", line=1),
             mock.call(
                 f"{demo_pump.titrator.pump.get_volume_in_pump()} ml",
                 line=2,
@@ -145,9 +145,9 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_pump.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Get Volume", line=1),
-            mock.call("2: Set Volume", line=2),
-            mock.call("3: Pull Volume In", line=3),
+            mock.call("1: Get volume", line=1),
+            mock.call("2: Set volume", line=2),
+            mock.call("3: Pull volume in", line=3),
             mock.call("4: Page 2", line=4),
         ]
     )
@@ -160,7 +160,7 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_pump.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Pump Volume:", line=1),
+            mock.call("Pump volume:", line=1),
             mock.call(
                 f"{demo_pump.titrator.pump.get_volume_in_pump()} ml",
                 line=2,
@@ -177,9 +177,9 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_pump.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Get Volume", line=1),
-            mock.call("2: Set Volume", line=2),
-            mock.call("3: Pull Volume In", line=3),
+            mock.call("1: Get volume", line=1),
+            mock.call("2: Set volume", line=2),
+            mock.call("3: Pull volume in", line=3),
             mock.call("4: Page 2", line=4),
         ]
     )
@@ -190,7 +190,7 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_pump.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Pump Volume:", line=1),
+            mock.call("Pump volume:", line=1),
             mock.call(
                 f"{demo_pump.titrator.pump.get_volume_in_pump()} ml",
                 line=2,
@@ -207,9 +207,9 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_pump.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Get Volume", line=1),
-            mock.call("2: Set Volume", line=2),
-            mock.call("3: Pull Volume In", line=3),
+            mock.call("1: Get volume", line=1),
+            mock.call("2: Set volume", line=2),
+            mock.call("3: Pull volume in", line=3),
             mock.call("4: Page 2", line=4),
         ]
     )
@@ -220,7 +220,7 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_pump.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Push Volume Out", line=1),
+            mock.call("1: Push volume out", line=1),
             mock.call("", line=2),
             mock.call("", line=3),
             mock.call("4: Page 1", line=4),
@@ -233,7 +233,7 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_pump.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Pump Volume:", line=1),
+            mock.call("Pump volume:", line=1),
             mock.call(
                 f"{demo_pump.titrator.pump.get_volume_in_pump()} ml",
                 line=2,
@@ -250,9 +250,9 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_pump.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Get Volume", line=1),
-            mock.call("2: Set Volume", line=2),
-            mock.call("3: Pull Volume In", line=3),
+            mock.call("1: Get volume", line=1),
+            mock.call("2: Set volume", line=2),
+            mock.call("3: Pull volume in", line=3),
             mock.call("4: Page 2", line=4),
         ]
     )

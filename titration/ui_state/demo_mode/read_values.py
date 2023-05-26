@@ -66,5 +66,5 @@ class ReadValues(UIState):
                 f"Res:  {self.titrator.temperature_probe_control.get_resistance():>4.3f} Ohms",
                 line=2,
             )
-            self.titrator.lcd.print("Press any to cont.", line=3)
-            self.titrator.lcd.print("", line=4)
+            self.titrator.lcd.print("", line=3)
+            self.titrator.lcd.print("Any key to continue", line=4)
