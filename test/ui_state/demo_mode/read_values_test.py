@@ -41,14 +41,14 @@ def test_loop(print_mock):
     print_mock.assert_has_calls(
         [
             mock.call(
-                f"pH: {read_values.titrator.ph_probe.get_voltage():>4.5f} pH",
+                f"pH:     {read_values.titrator.ph_probe.get_voltage():>4.5f} pH",
                 line=1,
             ),
             mock.call(
-                f"pH V: {(read_values.titrator.ph_probe.get_voltage() * 1000):>3.4f} mV",
+                f"pH V:   {(read_values.titrator.ph_probe.get_voltage() * 1000):>3.4f} mV",
                 line=2,
             ),
-            mock.call(f"Gain: {read_values.titrator.ph_probe.get_gain()}", line=3),
+            mock.call(f"Gain:   {read_values.titrator.ph_probe.get_gain()}", line=3),
             mock.call(
                 f"Volume: {read_values.titrator.pump.get_volume_in_pump()} ml",
                 line=4,
@@ -61,11 +61,11 @@ def test_loop(print_mock):
     print_mock.assert_has_calls(
         [
             mock.call(
-                f"Temp: {read_values.titrator.temperature_probe_control.get_temperature():>4.3f} C",
+                f"Temp:   {read_values.titrator.temperature_probe_control.get_temperature():>4.3f} C",
                 line=1,
             ),
             mock.call(
-                f"Res:  {read_values.titrator.temperature_probe_control.get_resistance():>4.3f} Ohms",
+                f"Res:    {read_values.titrator.temperature_probe_control.get_resistance():>4.3f} Ohms",
                 line=2,
             ),
             mock.call("", line=3),
@@ -88,14 +88,14 @@ def test_read_values(print_mock, set_next_state_mock):
     print_mock.assert_has_calls(
         [
             mock.call(
-                f"pH: {read_values.titrator.ph_probe.get_voltage():>4.5f} pH",
+                f"pH:     {read_values.titrator.ph_probe.get_voltage():>4.5f} pH",
                 line=1,
             ),
             mock.call(
-                f"pH V: {(read_values.titrator.ph_probe.get_voltage() * 1000):>3.4f} mV",
+                f"pH V:   {(read_values.titrator.ph_probe.get_voltage() * 1000):>3.4f} mV",
                 line=2,
             ),
-            mock.call(f"Gain: {read_values.titrator.ph_probe.get_gain()}", line=3),
+            mock.call(f"Gain:   {read_values.titrator.ph_probe.get_gain()}", line=3),
             mock.call(
                 f"Volume: {read_values.titrator.pump.get_volume_in_pump()} ml",
                 line=4,
@@ -110,11 +110,11 @@ def test_read_values(print_mock, set_next_state_mock):
     print_mock.assert_has_calls(
         [
             mock.call(
-                f"Temp: {read_values.titrator.temperature_probe_control.get_temperature():>4.3f} C",
+                f"Temp:   {read_values.titrator.temperature_probe_control.get_temperature():>4.3f} C",
                 line=1,
             ),
             mock.call(
-                f"Res:  {read_values.titrator.temperature_probe_control.get_resistance():>4.3f} Ohms",
+                f"Res:    {read_values.titrator.temperature_probe_control.get_resistance():>4.3f} Ohms",
                 line=2,
             ),
             mock.call("", line=3),

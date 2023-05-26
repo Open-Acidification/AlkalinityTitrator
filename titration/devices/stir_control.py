@@ -3,7 +3,6 @@ The file for the StirControl class
 """
 import math
 import time
-import sys
 
 from titration.devices.library import board, pwmio
 
@@ -84,5 +83,4 @@ class StirControl:
             if seconds >= 10:
                 return f"{minutes:>0.0f}:{seconds:>0.0f}"
             return f"{minutes:>0.0f}:0{seconds:>0.0f}"
-        else:
-            return "0:00"
+        return "0:00"
