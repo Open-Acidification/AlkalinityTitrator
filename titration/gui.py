@@ -13,7 +13,7 @@ FONT = ("Courier", 15)
 TEXTBOX_WIDTH = 15
 LABEL_WIDTH = 20
 BUTTON_WIDTH = 8
-WIDTH = 29
+WIDTH = 22
 FG = "white"
 BG = "blue"
 ANCHOR = "w"
@@ -232,7 +232,19 @@ class GUI:
         """
         while True:
             time.sleep(0.001)
-            self.line_1.config(text=self.titrator.lcd.get_line(1))
-            self.line_2.config(text=self.titrator.lcd.get_line(2))
-            self.line_3.config(text=self.titrator.lcd.get_line(3))
-            self.line_4.config(text=self.titrator.lcd.get_line(4))
+            self.line_1.config(
+                text=self.titrator.lcd.get_line(1),
+                anchor=self.titrator.lcd.get_style(1),
+            )
+            self.line_2.config(
+                text=self.titrator.lcd.get_line(2),
+                anchor=self.titrator.lcd.get_style(2),
+            )
+            self.line_3.config(
+                text=self.titrator.lcd.get_line(3),
+                anchor=self.titrator.lcd.get_style(3),
+            )
+            self.line_4.config(
+                text=self.titrator.lcd.get_line(4),
+                anchor=self.titrator.lcd.get_style(4),
+            )
