@@ -45,8 +45,8 @@ def test_loop(print_mock):
                 line=1,
             ),
             mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -56,8 +56,8 @@ def test_loop(print_mock):
         [
             mock.call("Mixing...", line=1),
             mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -70,8 +70,8 @@ def test_loop(print_mock):
                 line=1,
             ),
             mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -81,8 +81,8 @@ def test_loop(print_mock):
         [
             mock.call("Return to", line=1),
             mock.call("main menu", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -107,8 +107,8 @@ def test_automatic_titration(print_mock, set_next_state_mock):
                 line=1,
             ),
             mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -120,8 +120,8 @@ def test_automatic_titration(print_mock, set_next_state_mock):
         [
             mock.call("Mixing...", line=1),
             mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -136,8 +136,8 @@ def test_automatic_titration(print_mock, set_next_state_mock):
                 line=1,
             ),
             mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -149,8 +149,8 @@ def test_automatic_titration(print_mock, set_next_state_mock):
         [
             mock.call("Return to", line=1),
             mock.call("main menu", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 

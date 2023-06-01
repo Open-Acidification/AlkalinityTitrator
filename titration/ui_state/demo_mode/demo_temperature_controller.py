@@ -47,13 +47,13 @@ class DemoTemperatureControl(UIState):
         The function to loop through and display to the LCD screen until a new keypad input
         """
         if self.substate == 1:
-            self.titrator.lcd.print("1: Test Heater", line=1)
-            self.titrator.lcd.print("2: Test Controller", line=2)
+            self.titrator.lcd.print("1: Test heater", line=1)
+            self.titrator.lcd.print("2: Test controller", line=2)
             self.titrator.lcd.print("", line=3)
             self.titrator.lcd.print("4: Return", line=4)
 
         elif self.substate == 2:
-            self.titrator.lcd.print("Test Heater", line=1)
+            self.titrator.lcd.print("Test heater", line=1)
             self.titrator.lcd.print(
                 f"{self.titrator.temperature_probe_control.get_temperature():>4.3f} C",
                 line=2,
@@ -70,7 +70,7 @@ class DemoTemperatureControl(UIState):
                 self.substate = 1
 
         elif self.substate == 3:
-            self.titrator.lcd.print("Test Controller", line=1)
+            self.titrator.lcd.print("Test controller", line=1)
             self.titrator.lcd.print(
                 f"{self.titrator.temperature_probe_control.get_temperature():>4.3f} C",
                 line=2,

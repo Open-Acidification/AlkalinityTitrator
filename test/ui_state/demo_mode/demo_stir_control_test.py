@@ -41,6 +41,9 @@ def test_handle_key(set_next_state, set_fast, set_slow, set_stop, degas):
     assert demo_stir_control.substate == 1
 
     demo_stir_control.handle_key("3")
+    assert demo_stir_control.substate == 5
+
+    demo_stir_control.handle_key("1")
     degas.assert_called()
     assert demo_stir_control.substate == 4
 
@@ -68,8 +71,8 @@ def test_loop(print_mock):
     demo_stir_control.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Set Fast Speed", line=1),
-            mock.call("2: Set Slow Speed", line=2),
+            mock.call("1: Set fast speed", line=1),
+            mock.call("2: Set slow speed", line=2),
             mock.call("3: Degas", line=3),
             mock.call("4: Return", line=4),
         ]
@@ -79,10 +82,10 @@ def test_loop(print_mock):
     demo_stir_control.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Motor Speed", line=1),
-            mock.call("Set To Fast", line=2),
-            mock.call("Press any to cont.", line=3),
-            mock.call("", line=4),
+            mock.call("Motor speed", line=1),
+            mock.call("set to fast", line=2),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -90,10 +93,10 @@ def test_loop(print_mock):
     demo_stir_control.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Motor Speed", line=1),
-            mock.call("Set To Slow", line=2),
-            mock.call("Press any to cont.", line=3),
-            mock.call("", line=4),
+            mock.call("Motor speed", line=1),
+            mock.call("set to slow", line=2),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -101,10 +104,21 @@ def test_loop(print_mock):
     demo_stir_control.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Degassing", line=1),
-            mock.call("Solution", line=2),
-            mock.call("Press any to cont.", line=3),
-            mock.call("after degassing", line=4),
+            mock.call("Degassing solution", line=1),
+            mock.call("Time remaining:", line=2),
+            mock.call(demo_stir_control.titrator.stir_controller.get_timer(), line=3),
+            mock.call("Any key to continue", line=4),
+        ]
+    )
+
+    demo_stir_control.substate = 5
+    demo_stir_control.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("", line=1),
+            mock.call("Any key to begin", line=2),
+            mock.call("degassing solution", line=3),
+            mock.call("", line=4),
         ]
     )
 
@@ -130,8 +144,8 @@ def test_demo_mode(print, set_next_state, set_fast, set_slow, set_stop, degas):
     demo_stir_control.loop()
     print.assert_has_calls(
         [
-            mock.call("1: Set Fast Speed", line=1),
-            mock.call("2: Set Slow Speed", line=2),
+            mock.call("1: Set fast speed", line=1),
+            mock.call("2: Set slow speed", line=2),
             mock.call("3: Degas", line=3),
             mock.call("4: Return", line=4),
         ]
@@ -144,10 +158,10 @@ def test_demo_mode(print, set_next_state, set_fast, set_slow, set_stop, degas):
     demo_stir_control.loop()
     print.assert_has_calls(
         [
-            mock.call("Motor Speed", line=1),
-            mock.call("Set To Fast", line=2),
-            mock.call("Press any to cont.", line=3),
-            mock.call("", line=4),
+            mock.call("Motor speed", line=1),
+            mock.call("set to fast", line=2),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -158,8 +172,8 @@ def test_demo_mode(print, set_next_state, set_fast, set_slow, set_stop, degas):
     demo_stir_control.loop()
     print.assert_has_calls(
         [
-            mock.call("1: Set Fast Speed", line=1),
-            mock.call("2: Set Slow Speed", line=2),
+            mock.call("1: Set fast speed", line=1),
+            mock.call("2: Set slow speed", line=2),
             mock.call("3: Degas", line=3),
             mock.call("4: Return", line=4),
         ]
@@ -172,10 +186,10 @@ def test_demo_mode(print, set_next_state, set_fast, set_slow, set_stop, degas):
     demo_stir_control.loop()
     print.assert_has_calls(
         [
-            mock.call("Motor Speed", line=1),
-            mock.call("Set To Slow", line=2),
-            mock.call("Press any to cont.", line=3),
-            mock.call("", line=4),
+            mock.call("Motor speed", line=1),
+            mock.call("set to slow", line=2),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -186,24 +200,37 @@ def test_demo_mode(print, set_next_state, set_fast, set_slow, set_stop, degas):
     demo_stir_control.loop()
     print.assert_has_calls(
         [
-            mock.call("1: Set Fast Speed", line=1),
-            mock.call("2: Set Slow Speed", line=2),
+            mock.call("1: Set fast speed", line=1),
+            mock.call("2: Set slow speed", line=2),
             mock.call("3: Degas", line=3),
             mock.call("4: Return", line=4),
         ]
     )
 
     demo_stir_control.handle_key("3")
+    assert demo_stir_control.substate == 5
+
+    demo_stir_control.loop()
+    print.assert_has_calls(
+        [
+            mock.call("", line=1),
+            mock.call("Any key to begin", line=2),
+            mock.call("degassing solution", line=3),
+            mock.call("", line=4),
+        ]
+    )
+
+    demo_stir_control.handle_key("1")
     degas.assert_called()
     assert demo_stir_control.substate == 4
 
     demo_stir_control.loop()
     print.assert_has_calls(
         [
-            mock.call("Degassing", line=1),
-            mock.call("Solution", line=2),
-            mock.call("Press any to cont.", line=3),
-            mock.call("after degassing", line=4),
+            mock.call("Degassing solution", line=1),
+            mock.call("Time remaining:", line=2),
+            mock.call(demo_stir_control.titrator.stir_controller.get_timer(), line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -214,8 +241,8 @@ def test_demo_mode(print, set_next_state, set_fast, set_slow, set_stop, degas):
     demo_stir_control.loop()
     print.assert_has_calls(
         [
-            mock.call("1: Set Fast Speed", line=1),
-            mock.call("2: Set Slow Speed", line=2),
+            mock.call("1: Set fast speed", line=1),
+            mock.call("2: Set slow speed", line=2),
             mock.call("3: Degas", line=3),
             mock.call("4: Return", line=4),
         ]

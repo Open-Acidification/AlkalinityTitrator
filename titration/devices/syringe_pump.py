@@ -68,7 +68,7 @@ class SyringePump:
         """
         space_in_pump = MAX_PUMP_CAPACITY - self.volume_in_pump
         volume_to_add = min(volume_to_add, space_in_pump)
-        self.__drive_pump_in(volume_to_add)
+        self.__drive_liquid_in(volume_to_add)
 
     def push_volume_out(self, volume_to_add):
         """
@@ -81,7 +81,7 @@ class SyringePump:
         if volume_to_add > MAX_PUMP_CAPACITY:
             # pump out all current volume
             next_volume = self.volume_in_pump
-            self.__drive_pump_out(next_volume)
+            self.__drive_liquid_out(next_volume)
 
             # calculate new volume to add
             volume_to_add = volume_to_add - next_volume
@@ -89,25 +89,25 @@ class SyringePump:
             # keep pumping until full volume_to_add is met
             while volume_to_add > 0:
                 next_volume = min(volume_to_add, MAX_PUMP_CAPACITY)
-                self.__drive_pump_in(next_volume)
-                self.__drive_pump_out(next_volume)
+                self.__drive_liquid_in(next_volume)
+                self.__drive_liquid_out(next_volume)
                 volume_to_add -= next_volume
 
         # volume greater than volume in pump
         elif volume_to_add > self.volume_in_pump:
             next_volume = self.volume_in_pump
-            self.__drive_pump_out(next_volume)
+            self.__drive_liquid_out(next_volume)
 
             # calculate remaining volume to add
             volume_to_add -= next_volume
 
-            self.__drive_pump_in(volume_to_add)
-            self.__drive_pump_out(volume_to_add)
+            self.__drive_liquid_in(volume_to_add)
+            self.__drive_liquid_out(volume_to_add)
         else:
             # volume less than volume in pump
-            self.__drive_pump_out(volume_to_add)
+            self.__drive_liquid_out(volume_to_add)
 
-    def __drive_pump_in(self, volume):
+    def __drive_liquid_in(self, volume):
         """
         The function to drive the pump in to pull in liquid
 
@@ -121,9 +121,9 @@ class SyringePump:
         self.__drive_step_stick(cycles, direction=0)
         self.volume_in_pump += volume
 
-    def __drive_pump_out(self, volume):
+    def __drive_liquid_out(self, volume):
         """
-        The function to drive the pump out to to push out liquid
+        The function to drive the pump up to to push out liquid
 
         Parameters:
             volume (float): the volume to add

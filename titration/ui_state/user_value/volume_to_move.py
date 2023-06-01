@@ -19,4 +19,4 @@ class VolumeToMove(UserValue):
         """
         The function to return the label printed on the LCD Screen
         """
-        return "Volume to move:"
+        return "Volume to move (ml):"

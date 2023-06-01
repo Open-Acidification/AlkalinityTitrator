@@ -51,10 +51,10 @@ def test_loop(print_mock):
     manual_titration.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Enter Volume", line=1),
+            mock.call("Enter volume", line=1),
             mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -77,7 +77,7 @@ def test_loop(print_mock):
                 f"Current pH: {manual_titration.values['current_pH']:>4.5f}",
                 line=1,
             ),
-            mock.call("Add more HCl?", line=2),
+            mock.call("Add more HCl:", line=2),
             mock.call("(0 - No, 1 - Yes)", line=3),
             mock.call("", line=4),
         ]
@@ -91,7 +91,7 @@ def test_loop(print_mock):
                 f"Current pH: {manual_titration.values['current_pH']:>4.5f}",
                 line=1,
             ),
-            mock.call("Degas?", line=2),
+            mock.call("Degas:", line=2),
             mock.call("(0 - No, 1 - Yes)", line=3),
             mock.call("", line=4),
         ]
@@ -101,10 +101,10 @@ def test_loop(print_mock):
     manual_titration.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Enter Degas time", line=1),
+            mock.call("Enter degas time", line=1),
             mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -114,8 +114,8 @@ def test_loop(print_mock):
         [
             mock.call("Return to", line=1),
             mock.call("main menu", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -138,10 +138,10 @@ def test_manual_titration(print_mock, set_next_state_mock):
     manual_titration.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Enter Volume", line=1),
+            mock.call("Enter volume", line=1),
             mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -171,7 +171,7 @@ def test_manual_titration(print_mock, set_next_state_mock):
                 f"Current pH: {manual_titration.values['current_pH']:>4.5f}",
                 line=1,
             ),
-            mock.call("Add more HCl?", line=2),
+            mock.call("Add more HCl:", line=2),
             mock.call("(0 - No, 1 - Yes)", line=3),
             mock.call("", line=4),
         ]
@@ -187,7 +187,7 @@ def test_manual_titration(print_mock, set_next_state_mock):
                 f"Current pH: {manual_titration.values['current_pH']:>4.5f}",
                 line=1,
             ),
-            mock.call("Degas?", line=2),
+            mock.call("Degas:", line=2),
             mock.call("(0 - No, 1 - Yes)", line=3),
             mock.call("", line=4),
         ]
@@ -199,10 +199,10 @@ def test_manual_titration(print_mock, set_next_state_mock):
     manual_titration.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Enter Degas time", line=1),
+            mock.call("Enter degas time", line=1),
             mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -216,8 +216,8 @@ def test_manual_titration(print_mock, set_next_state_mock):
         [
             mock.call("Return to", line=1),
             mock.call("main menu", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 

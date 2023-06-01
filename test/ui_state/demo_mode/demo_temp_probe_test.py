@@ -47,8 +47,8 @@ def test_loop(print_mock):
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Probe One", line=1),
-            mock.call("2: Probe Two", line=2),
+            mock.call("1: Probe one", line=1),
+            mock.call("2: Probe two", line=2),
             mock.call("", line=3),
             mock.call("4: Return", line=4),
         ]
@@ -58,7 +58,7 @@ def test_loop(print_mock):
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Probe One", line=1),
+            mock.call("Probe one", line=1),
             mock.call(
                 f"{demo_temp_probe.titrator.temperature_probe_control.get_temperature():>4.3f} C",
                 line=2,
@@ -77,7 +77,7 @@ def test_loop(print_mock):
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Probe Two", line=1),
+            mock.call("Probe two", line=1),
             mock.call(
                 f"{demo_temp_probe.titrator.temperature_probe_logging.get_temperature():>4.3f} C",
                 line=2,
@@ -104,8 +104,8 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Probe One", line=1),
-            mock.call("2: Probe Two", line=2),
+            mock.call("1: Probe one", line=1),
+            mock.call("2: Probe two", line=2),
             mock.call("", line=3),
             mock.call("4: Return", line=4),
         ]
@@ -117,7 +117,7 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Probe One", line=1),
+            mock.call("Probe one", line=1),
             mock.call(
                 f"{demo_temp_probe.titrator.temperature_probe_control.get_temperature():>4.3f} C",
                 line=2,
@@ -138,8 +138,8 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Probe One", line=1),
-            mock.call("2: Probe Two", line=2),
+            mock.call("1: Probe one", line=1),
+            mock.call("2: Probe two", line=2),
             mock.call("", line=3),
             mock.call("4: Return", line=4),
         ]
@@ -151,7 +151,7 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Probe Two", line=1),
+            mock.call("Probe two", line=1),
             mock.call(
                 f"{demo_temp_probe.titrator.temperature_probe_logging.get_temperature():>4.3f} C",
                 line=2,
@@ -172,8 +172,8 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_temp_probe.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Probe One", line=1),
-            mock.call("2: Probe Two", line=2),
+            mock.call("1: Probe one", line=1),
+            mock.call("2: Probe two", line=2),
             mock.call("", line=3),
             mock.call("4: Return", line=4),
         ]

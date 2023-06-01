@@ -46,7 +46,7 @@ def test_loop(print_mock):
     volume.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Volume to move:", line=1),
+            mock.call("Volume to move (ml):", line=1),
             mock.call("", style="center", line=2),
             mock.call("*=. A)ccept B)ack", line=3, style="center"),
             mock.call("D)ecline  C)lear", line=4, style="center"),
@@ -73,7 +73,7 @@ def test_volume_to_move(print_mock, set_next_state_mock):
     volume.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Volume to move:", line=1),
+            mock.call("Volume to move (ml):", line=1),
             mock.call("", style="center", line=2),
             mock.call("*=. A)ccept B)ack", line=3, style="center"),
             mock.call("D)ecline  C)lear", line=4, style="center"),
@@ -86,7 +86,7 @@ def test_volume_to_move(print_mock, set_next_state_mock):
     volume.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Volume to move:", line=1),
+            mock.call("Volume to move (ml):", line=1),
             mock.call("3", style="center", line=2),
             mock.call("*=. A)ccept B)ack", line=3, style="center"),
             mock.call("D)ecline  C)lear", line=4, style="center"),
@@ -99,7 +99,7 @@ def test_volume_to_move(print_mock, set_next_state_mock):
     volume.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Volume to move:", line=1),
+            mock.call("Volume to move (ml):", line=1),
             mock.call("3.", style="center", line=2),
             mock.call("*=. A)ccept B)ack", line=3, style="center"),
             mock.call("D)ecline  C)lear", line=4, style="center"),
@@ -112,7 +112,7 @@ def test_volume_to_move(print_mock, set_next_state_mock):
     volume.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Volume to move:", line=1),
+            mock.call("Volume to move (ml):", line=1),
             mock.call("3.", style="center", line=2),
             mock.call("*=. A)ccept B)ack", line=3, style="center"),
             mock.call("D)ecline  C)lear", line=4, style="center"),
@@ -125,7 +125,7 @@ def test_volume_to_move(print_mock, set_next_state_mock):
     volume.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Volume to move:", line=1),
+            mock.call("Volume to move (ml):", line=1),
             mock.call("3.1", style="center", line=2),
             mock.call("*=. A)ccept B)ack", line=3, style="center"),
             mock.call("D)ecline  C)lear", line=4, style="center"),
@@ -138,7 +138,7 @@ def test_volume_to_move(print_mock, set_next_state_mock):
     volume.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Volume to move:", line=1),
+            mock.call("Volume to move (ml):", line=1),
             mock.call("3.", style="center", line=2),
             mock.call("*=. A)ccept B)ack", line=3, style="center"),
             mock.call("D)ecline  C)lear", line=4, style="center"),
@@ -151,7 +151,7 @@ def test_volume_to_move(print_mock, set_next_state_mock):
     volume.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Volume to move:", line=1),
+            mock.call("Volume to move (ml):", line=1),
             mock.call("3", style="center", line=2),
             mock.call("*=. A)ccept B)ack", line=3, style="center"),
             mock.call("D)ecline  C)lear", line=4, style="center"),
@@ -164,7 +164,7 @@ def test_volume_to_move(print_mock, set_next_state_mock):
     volume.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Volume to move:", line=1),
+            mock.call("Volume to move (ml):", line=1),
             mock.call("", style="center", line=2),
             mock.call("*=. A)ccept B)ack", line=3, style="center"),
             mock.call("D)ecline  C)lear", line=4, style="center"),
@@ -178,7 +178,7 @@ def test_volume_to_move(print_mock, set_next_state_mock):
     volume.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Volume to move:", line=1),
+            mock.call("Volume to move (ml):", line=1),
             mock.call("", style="center", line=2),
             mock.call("*=. A)ccept B)ack", line=3, style="center"),
             mock.call("D)ecline  C)lear", line=4, style="center"),
@@ -191,7 +191,7 @@ def test_volume_to_move(print_mock, set_next_state_mock):
     volume.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Volume to move:", line=1),
+            mock.call("Volume to move (ml):", line=1),
             mock.call("1", style="center", line=2),
             mock.call("*=. A)ccept B)ack", line=3, style="center"),
             mock.call("D)ecline  C)lear", line=4, style="center"),

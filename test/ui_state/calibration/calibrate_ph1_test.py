@@ -49,8 +49,8 @@ def test_loop(print_mock):
         [
             mock.call("Enter buffer pH", line=1),
             mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -60,8 +60,8 @@ def test_loop(print_mock):
         [
             mock.call("Put sensor in buffer", line=1),
             mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("to record value", line=4),
+            mock.call("Any key to", line=3),
+            mock.call("record value", line=4),
         ]
     )
 
@@ -75,8 +75,8 @@ def test_loop(print_mock):
                 + f" {calibrate_ph.titrator.buffer_measured_volts:>3.4f} V",
                 line=2,
             ),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -100,8 +100,8 @@ def test_calibrate_ph(print_mock, _set_next_state, get_voltage):
         [
             mock.call("Enter buffer pH", line=1),
             mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -115,8 +115,8 @@ def test_calibrate_ph(print_mock, _set_next_state, get_voltage):
         [
             mock.call("Put sensor in buffer", line=1),
             mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("to record value", line=4),
+            mock.call("Any key to", line=3),
+            mock.call("record value", line=4),
         ]
     )
 
@@ -133,8 +133,8 @@ def test_calibrate_ph(print_mock, _set_next_state, get_voltage):
                 + f" {calibrate_ph.titrator.buffer_measured_volts:>3.4f} V",
                 line=2,
             ),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
