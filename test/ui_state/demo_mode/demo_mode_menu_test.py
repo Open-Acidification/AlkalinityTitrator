@@ -22,8 +22,10 @@ def test_handle_key(set_next_state_mock):
     assert set_next_state_mock.call_args.args[0].name() == "ReadValues"
 
     demo_mode.handle_key("2")
-    set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "DemopHProbe"
+    assert demo_mode.substate == 3
+
+    demo_mode.handle_key("1")
+    assert demo_mode.substate == 1
 
     demo_mode.handle_key("3")
     set_next_state_mock.assert_called_with(ANY, True)
@@ -62,9 +64,9 @@ def test_loop(print_mock):
     demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Read Values", line=1),
-            mock.call("2: Demo pH Probe", line=2),
-            mock.call("3: Demo Pump", line=3),
+            mock.call("1: Read values", line=1),
+            mock.call("2: Demo pH probe", line=2),
+            mock.call("3: Demo pump", line=3),
             mock.call("4: Page 2", line=4),
         ]
     )
@@ -73,10 +75,29 @@ def test_loop(print_mock):
     demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Demo Stir Control", line=1),
-            mock.call("2: Demo Temp Probe", line=2),
-            mock.call("3: Demo Temp Control", line=3),
+            mock.call("1: Demo stir control", line=1),
+            mock.call("2: Demo temp probe", line=2),
+            mock.call("3: Demo temp control", line=3),
             mock.call("4: Page 1", line=4),
+        ]
+    )
+
+    demo_mode.substate = 3
+    demo_mode.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("pH probe", line=1),
+            mock.call(
+                f"{demo_mode.titrator.ph_probe.get_voltage()} volts",
+                line=2,
+                style="center",
+            ),
+            mock.call(
+                f"{demo_mode.titrator.ph_probe.get_gain()} volts",
+                line=3,
+                style="center",
+            ),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -101,9 +122,9 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Read Values", line=1),
-            mock.call("2: Demo pH Probe", line=2),
-            mock.call("3: Demo Pump", line=3),
+            mock.call("1: Read values", line=1),
+            mock.call("2: Demo pH probe", line=2),
+            mock.call("3: Demo pump", line=3),
             mock.call("4: Page 2", line=4),
         ]
     )
@@ -115,23 +136,43 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Read Values", line=1),
-            mock.call("2: Demo pH Probe", line=2),
-            mock.call("3: Demo Pump", line=3),
+            mock.call("1: Read values", line=1),
+            mock.call("2: Demo pH probe", line=2),
+            mock.call("3: Demo pump", line=3),
             mock.call("4: Page 2", line=4),
         ]
     )
 
     demo_mode.handle_key("2")
-    set_next_state_mock.assert_called_with(ANY, True)
-    assert set_next_state_mock.call_args.args[0].name() == "DemopHProbe"
+    assert demo_mode.substate == 3
 
     demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Read Values", line=1),
-            mock.call("2: Demo pH Probe", line=2),
-            mock.call("3: Demo Pump", line=3),
+            mock.call("pH probe", line=1),
+            mock.call(
+                f"{demo_mode.titrator.ph_probe.get_voltage()} volts",
+                line=2,
+                style="center",
+            ),
+            mock.call(
+                f"{demo_mode.titrator.ph_probe.get_gain()} volts",
+                line=3,
+                style="center",
+            ),
+            mock.call("Any key to continue", line=4),
+        ]
+    )
+
+    demo_mode.handle_key("1")
+    assert demo_mode.substate == 1
+
+    demo_mode.loop()
+    print_mock.assert_has_calls(
+        [
+            mock.call("1: Read values", line=1),
+            mock.call("2: Demo pH probe", line=2),
+            mock.call("3: Demo pump", line=3),
             mock.call("4: Page 2", line=4),
         ]
     )
@@ -143,9 +184,9 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Read Values", line=1),
-            mock.call("2: Demo pH Probe", line=2),
-            mock.call("3: Demo Pump", line=3),
+            mock.call("1: Read values", line=1),
+            mock.call("2: Demo pH probe", line=2),
+            mock.call("3: Demo pump", line=3),
             mock.call("4: Page 2", line=4),
         ]
     )
@@ -156,9 +197,9 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Demo Stir Control", line=1),
-            mock.call("2: Demo Temp Probe", line=2),
-            mock.call("3: Demo Temp Control", line=3),
+            mock.call("1: Demo stir control", line=1),
+            mock.call("2: Demo temp probe", line=2),
+            mock.call("3: Demo temp control", line=3),
             mock.call("4: Page 1", line=4),
         ]
     )
@@ -170,9 +211,9 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Demo Stir Control", line=1),
-            mock.call("2: Demo Temp Probe", line=2),
-            mock.call("3: Demo Temp Control", line=3),
+            mock.call("1: Demo stir control", line=1),
+            mock.call("2: Demo temp probe", line=2),
+            mock.call("3: Demo temp control", line=3),
             mock.call("4: Page 1", line=4),
         ]
     )
@@ -184,9 +225,9 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Demo Stir Control", line=1),
-            mock.call("2: Demo Temp Probe", line=2),
-            mock.call("3: Demo Temp Control", line=3),
+            mock.call("1: Demo stir control", line=1),
+            mock.call("2: Demo temp probe", line=2),
+            mock.call("3: Demo temp control", line=3),
             mock.call("4: Page 1", line=4),
         ]
     )
@@ -198,9 +239,9 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Demo Stir Control", line=1),
-            mock.call("2: Demo Temp Probe", line=2),
-            mock.call("3: Demo Temp Control", line=3),
+            mock.call("1: Demo stir control", line=1),
+            mock.call("2: Demo temp probe", line=2),
+            mock.call("3: Demo temp control", line=3),
             mock.call("4: Page 1", line=4),
         ]
     )
@@ -211,9 +252,9 @@ def test_demo_mode(print_mock, set_next_state_mock):
     demo_mode.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("1: Read Values", line=1),
-            mock.call("2: Demo pH Probe", line=2),
-            mock.call("3: Demo Pump", line=3),
+            mock.call("1: Read values", line=1),
+            mock.call("2: Demo pH probe", line=2),
+            mock.call("3: Demo pump", line=3),
             mock.call("4: Page 2", line=4),
         ]
     )

@@ -66,6 +66,8 @@ class Titrator:
         # Initialize Titrator Values
         self.solution_weight = "0"
         self.solution_salinity = "0"
+
+        # Stir Control Values
         self.degas_time = 0
 
         # pH Calibration Values

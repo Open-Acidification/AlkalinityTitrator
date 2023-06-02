@@ -64,7 +64,7 @@ def test_loop(print_mock):
     print_mock.assert_has_calls(
         [
             mock.call("Reset calibration", line=1),
-            mock.call("settings to default?", line=2),
+            mock.call("settings to default:", line=2),
             mock.call("(y/n)", line=3),
             mock.call("", line=4),
         ]
@@ -76,8 +76,8 @@ def test_loop(print_mock):
         [
             mock.call("Default constants", line=1),
             mock.call("restored", line=2),
-            mock.call("Press any to cont.", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -85,7 +85,7 @@ def test_loop(print_mock):
     update_settings.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Set volume in pump?", line=1),
+            mock.call("Set volume in pump:", line=1),
             mock.call("", line=2),
             mock.call("(y/n)", line=3),
             mock.call("", line=4),
@@ -98,8 +98,8 @@ def test_loop(print_mock):
         [
             mock.call("Enter Volume in pump", line=1),
             mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -109,8 +109,8 @@ def test_loop(print_mock):
         [
             mock.call("Volume in pump set", line=1),
             mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -132,7 +132,7 @@ def test_prime_pump(print_mock, set_next_state_mock):
     print_mock.assert_has_calls(
         [
             mock.call("Reset calibration", line=1),
-            mock.call("settings to default?", line=2),
+            mock.call("settings to default:", line=2),
             mock.call("(y/n)", line=3),
             mock.call("", line=4),
         ]
@@ -146,8 +146,8 @@ def test_prime_pump(print_mock, set_next_state_mock):
         [
             mock.call("Default constants", line=1),
             mock.call("restored", line=2),
-            mock.call("Press any to cont.", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -157,7 +157,7 @@ def test_prime_pump(print_mock, set_next_state_mock):
     update_settings.loop()
     print_mock.assert_has_calls(
         [
-            mock.call("Set volume in pump?", line=1),
+            mock.call("Set volume in pump:", line=1),
             mock.call("", line=2),
             mock.call("(y/n)", line=3),
             mock.call("", line=4),
@@ -172,8 +172,8 @@ def test_prime_pump(print_mock, set_next_state_mock):
         [
             mock.call("Enter Volume in pump", line=1),
             mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 
@@ -187,8 +187,8 @@ def test_prime_pump(print_mock, set_next_state_mock):
         [
             mock.call("Volume in pump set", line=1),
             mock.call("", line=2),
-            mock.call("Press any to cont", line=3),
-            mock.call("", line=4),
+            mock.call("", line=3),
+            mock.call("Any key to continue", line=4),
         ]
     )
 

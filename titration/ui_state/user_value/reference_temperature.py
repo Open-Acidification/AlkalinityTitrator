@@ -19,4 +19,4 @@ class ReferenceTemperature(UserValue):
         """
         The function to return the label printed on the LCD Screen
         """
-        return "Ref solution temp:"
+        return "Reference temp (C):"

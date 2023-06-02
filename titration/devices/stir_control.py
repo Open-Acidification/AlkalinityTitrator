@@ -26,6 +26,10 @@ class StirControl:
             board.D13, duty_cycle=STIR_DUTY_CYCLE, frequency=STIR_FREQUENCY
         )
 
+        # Timer variables
+        self.start_time = 0
+        self.current_time = 0
+
     def _set_speed(self, target):
         """
         The function to set the motor speed
@@ -61,6 +65,22 @@ class StirControl:
         """
         The function to degas the titration solution
         """
+        # Timer values
+        self.start_time = degas_time
+        self.current_time = time.time()
+
         self._set_speed(STIR_PWM_FAST)
-        time.sleep(degas_time)
         self._set_speed(STIR_PWM_SLOW)
+
+    def get_timer(self):
+        """
+        The function to return the time left on the degas function
+        """
+        if time.time() < (self.current_time + self.start_time):
+            seconds = float(self.start_time - (time.time() - self.current_time))
+            minutes = math.floor(seconds / 60)
+            seconds = int(seconds % 60)
+            if seconds >= 10:
+                return f"{minutes:>0.0f}:{seconds:>0.0f}"
+            return f"{minutes:>0.0f}:0{seconds:>0.0f}"
+        return "0:00"
