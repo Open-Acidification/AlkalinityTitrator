@@ -97,7 +97,9 @@ To start up the device provide power to the Raspberry Pi board. The device shoul
 
 ### Updating the Device
 
-To update the device you will need the Raspberry Pi connected to ethernet, keyboard, mouse, and monitor. Upon startup of the device you will see the Raspbian OS launch on the monitor. You will automatically be logged in as admin as it starts up. Once connected to the interent, update the device by pulling from the Alkalinity Titrator repository found in the Raspberry Pi's Desktop location. After pulling, the device should be rebooted and the new version will launch automatically, or you can just run /run.sh from a terminal in the Alkalinity Titrator folder.
+To update the device you will need the Raspberry Pi connected to ethernet, keyboard, mouse, and monitor. Upon startup of the device you will see the Raspbian OS launch on the monitor. You will automatically be logged in as admin as it starts up. 
+
+Once connected to the interent, update the device by pulling from the Alkalinity Titrator repository found in the Raspberry Pi's Desktop location. After pulling, the device should be rebooted and the new version will launch automatically, or you can just run /run.sh from a terminal in the Alkalinity Titrator folder.
 
 ## Pins
 
