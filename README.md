@@ -21,7 +21,7 @@ The titration process used in this project is based on SOP 3b from
 
 ## Current Development Note
 
-The most recent development in this project is the implementation of a UI State Machine framework (see the titration/utils/UIState folder for UI states implemented). While the UI State Machine framework has been fully implemented, the actual titration processes and routines have not been integrated with the UI State Machine (see GitHub Issues for further specifications).
+The most recent development in this project is the implementation of the titration device with the UI State Machine framework. The UI States still need to be implemented for the manual titration, settings, and prime pump (see GitHub Issues for further specifications).
 
 ## Setup and Installation
 
@@ -67,7 +67,7 @@ sudo ./install.sh
 
 ### Run on Device
 
-To run (with the UI State Machine integrated)
+To run from the Raspberry Pi.
 
 ``` sh
 ./run.sh
@@ -75,19 +75,29 @@ To run (with the UI State Machine integrated)
 
 ### Run in Local Environment
 
-To run in a local environment with mocked devices (with the UI State Machine integrated)
+To run in a local environment with GUI and mocked devices.
 
 ``` sh
-./run_mocked.sh
+./run_gui.sh
 ```
 
-## Testing
+### Testing
 
 To perform Pytest tests for the devices and UI states.
 
 ``` sh
 ./test.sh
 ```
+
+## Walla Walla University's Device Specific Instructions
+
+### Startup
+
+To start up the device provide power to the Raspberry Pi board. The device should boot up after about 10 seconds and the main menu screen should be visible.
+
+### Updating the Device
+
+To update the device you will need the Raspberry Pi connected to ethernet, keyboard, mouse, and monitor. Upon startup of the device you will see the Raspbian OS launch on the monitor. You will automatically be logged in as admin as it starts up. Once connected to the interent, update the device by pulling from the Alkalinity Titrator repository found in the Raspberry Pi's Desktop location. After pulling, the device should be rebooted and the new version will launch automatically, or you can just run /run.sh from a terminal in the Alkalinity Titrator folder.
 
 ## Pins
 
